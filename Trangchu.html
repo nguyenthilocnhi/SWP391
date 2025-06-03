@@ -1,19 +1,200 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trang chủ - Guest</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-white font-sans">
-    <!-- Header -->
-    <header class="p-4 border-b">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-          <img src="https://via.placeholder.com/50x50" alt="Logo" class="w-10 h-10" />
-          <h1 class="text-lg font-semibold text-sky-700">Trang chủ - Guest</h1>
-        </div>
-        <nav class="hidden sm:flex space-x-4 text-sm text-gray-700">
-          <a href="#">Giới thiệu</a>
-          <a href="#">Dịch vụ</
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trung Tâm Sức Khỏe An Giới</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      line-height: 1.6;
+      color: #333;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo img {
+      height: 80px; /* chỉnh size logo*/
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+    nav a {
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+    }
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    .section {
+      padding: 3rem 2rem;
+      text-align: left;
+    }
+    .highlight-box {
+      display: flex;
+      justify-content: space-around;
+      background-color: #e1f9e7;
+      padding: 2rem;
+      margin: 2rem 0;
+      border-radius: 10px;
+    }
+    .highlight-item {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .features {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .feature {
+      width: 150px;
+      text-align: center;
+    }
+    .consultants, .certificates, .testimonials {
+      margin-top: 3rem;
+    }
+    .consultant-list {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .consultant {
+      width: 200px;
+      text-align: center;
+    }
+    .consultant img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .certificates img {
+      width: 45%;
+      margin: 1rem;
+    }
+    .testimonials blockquote {
+      font-style: italic;
+      margin: 1rem auto;
+      max-width: 800px;
+    }
+    footer {
+      background: #f0f0f0;
+      padding: 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    .footer-logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      margin-bottom: 1.0rem;
+    }
+    .hotline {
+      font-size: 1.5rem;
+      color: #007c4c;
+      font-weight: bold;
+      text-align: right;
+}
+
+ 
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo" />
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#">Giới thiệu</a></li>
+        <li><a href="#">Dịch vụ</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Đội ngũ</a></li>
+        <li><a href="#">Tư vấn viên</a></li>
+        <li><a href="#">Đăng nhập</a></li>
+        <li><a href="#">Đăng ký</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <img src = "https://i.postimg.cc/7PC0jg8h/nh-n-n.png" alt ="ảnh nền">
+  
+  </section>
+
+  <section class="section">
+    <button style="background: #2a932e; color: white; padding: 1rem 2rem; font-size: 1rem; border: none; border-radius: 8px;">Vì sao nên chọn An Giới?</button>
+    <div class="highlight-box">
+      <div class="highlight-item">2500+<br>Lượt xét nghiệm</div>
+      <div class="highlight-item">96%<br>Khách hàng hài lòng</div>
+      <div class="highlight-item">20000+<br>Lượt đặt lịch tư vấn</div>
+      <div class="highlight-item">100000+<br>Khách hàng/năm</div>
+    </div>
+
+    <div class="features">
+      <div class="feature">Xét nghiệm</div>
+      <div class="feature">Sức khỏe sinh sản</div>
+      <div class="feature">Theo dõi chu kì</div>
+      <div class="feature">Đặt lịch tư vấn</div>
+    </div>
+  </section>
+
+  <section class="section consultants">
+    <h2>Tư vấn viên</h2>
+    <div class="consultant-list">
+      <div class="consultant">
+        <img src="https://i.postimg.cc/yNwrc70y/T.jpg" alt="Nguyễn Minh D">
+        <p><b>Thạc sĩ Nguyễn Minh D</b></p>
+        <small>Chuyên viên tư vấn –Trung tâm sức khỏe An Giới</small>
+      </div>
+      <div class="consultant">
+        <img src="https://i.postimg.cc/FzxPMc8T/VI-N.jpg" alt="Trần Văn F">
+        <p><b>Tiến sĩ Trần Văn F</b></p>
+        <small>Chuyên viên tư vấn –Trung tâm sức khỏe An Giới</small>
+      </div>
+      <div class="consultant">
+        <img src="https://i.postimg.cc/sX7HJbcd/V-N.jpg" alt="Ngọc M">
+        <p><b>Thạc sĩ Lý Ngọc M</b></p>
+        <small>Chuyên viên tư vấn – Trung tâm sức khỏe An Giới</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="section certificates">
+    <h2>Giấy chứng nhận</h2>
+    <img src="https://i.postimg.cc/C5Z1tHRg/Gemini-Generated-Image-ucs9wcucs9wcucs9.png" alt="Certificate 1">
+    <img src="https://i.postimg.cc/d0dzCjCx/Gemini-Generated-Image-75m61o75m61o75m6.png" alt="Certificate 2">
+  </section>
+
+  <section class="section testimonials">
+    <h2>Cảm nhận từ khách hàng</h2>
+    <blockquote>"Tôi rất hài lòng với dịch vụ và sự nhiệt tình của đội ngũ An Giới..." – Chị Phương, Quận 3</blockquote>
+    <blockquote>"Tư vấn rất cụ thể, khoa học và hữu ích. Tôi sẽ tiếp tục sử dụng dịch vụ tại đây." – Anh Minh, Quận 5</blockquote>
+    <blockquote>"Trung tâm sạch sẽ, chuyên nghiệp và rất thân thiện. Rất đáng tin cậy!" – Cô Trâm, TP. Thủ Đức</blockquote>
+  </section>
+
+  <footer>
+    <div>
+      <img src ="https://i.postimg.cc/02wj0ngG/Screenshot-2025-06-02-225907.png" alt ="footer-logo">
+    </div> 
+    <div class="hotline">Hotline: 1900 8484</div>
+    <p>© 2025 Trung tâm Chăm sóc Sức khỏe An Giới. Mọi quyền được bảo lưu.</p>
+  </footer>
+</body>
+</html>
