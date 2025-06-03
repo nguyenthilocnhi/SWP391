@@ -21,7 +21,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .logo img {
@@ -33,6 +33,7 @@ h1 {
   font-weight: bold;
   font-size:20px;
   margin:0;
+  font-family: 'Roboto', sans-serif;
 }
 
 h2 {
@@ -53,15 +54,18 @@ input {
 .links {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 0;
   margin-bottom: 20px;
+  font-size: 14px;
+  box-sizing: border-box;
 }
-
 .links a {
   color: #4caf50;
-  text-decoration: none;
+  display: inline-block;
+  line-height: 40px;
 }
-
 button {
   background-color: #8bc34a;
   color: black;
@@ -69,7 +73,9 @@ button {
   border: none;
   padding: 15px;
   border-radius: 10px;
-  width: 100%;
+  width: 200px;
   font-size: 16px;
   cursor: pointer;
+  display: block;
+  margin: 20px auto;
 }
