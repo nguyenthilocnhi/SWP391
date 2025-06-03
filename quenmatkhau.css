@@ -1,26 +1,20 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: "Roboto",sans-serif;
-}
-
 body {
-  background-color: #3a3a3a;
-  height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #f8f8f8;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .container {
-  background: #fff;
+  background: white;
   padding: 40px;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+  text-align:center;
   width: 400px;
-  text-align: center;
 }
-
 .logo {
   display: flex;
   align-items: center;
@@ -30,42 +24,52 @@ body {
 
 .logo img {
   width: 100px;
-  margin-right: 5px;
+}
+.logo h1 {
+  margin-left: 5px;
+  font-size: 24px;
+  font-weight: bold;
+
 }
 
-.brand-name {
-  font-weight: bold;
-  font-size: 20px;
-}
 
-.title {
-  font-weight: bold;
-  font-size: 22px;
+h2 {
+  margin-top: 20px;
   margin-bottom: 30px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
 }
 
-.form input {
+form input {
   width: 100%;
   padding: 12px;
-  margin-bottom: 15px;
-  border: 2px solid #8BC34A;
+  margin: 10px 0;
+  border: 2px solid #8bc34a;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
-.form button {
-  width: 50%;
+button {
+  display: block;          
+  margin: 20px auto 0;     
   padding: 12px;
-  background-color: #8BC34A;
-  color: #000;
+  background-color: #8bc34a;
+  border: none;
+  color: white;
   font-weight: bold;
   font-size: 16px;
-  border: none;
   border-radius: 6px;
+  width: 60%;           
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background 0.3s ease;
 }
 
-.form button:hover {
+button:hover {
+  background-color: #7cb342;
+}
+
+
+button:hover {
   background-color: #7cb342;
 }
