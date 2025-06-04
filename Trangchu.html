@@ -27,16 +27,41 @@
     .logo img {
       height: 80px; /* chỉnh size logo*/
     }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 1rem;
-    }
-    nav a {
-      text-decoration: none;
-      color: #000;
-      font-weight: bold;
-    }
+    nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  background-color: #eee;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.search-form input[type="text"] {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 5px;
+  font-size: 16px;
+  width: 120px;
+}
+
+.search-form button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size:16;
+} 
     .hero {
       text-align: center;
       padding: 4rem 2rem;
@@ -94,23 +119,67 @@
       margin: 1rem auto;
       max-width: 800px;
     }
-    footer {
-      background: #f0f0f0;
-      padding: 2rem;
-      text-align: center;
-      margin-top: 3rem;
-    }
-    .footer-logo {
-      font-weight: bold;
-      font-size: 1.5rem;
-      margin-bottom: 1.0rem;
-    }
-    .hotline {
-      font-size: 1.5rem;
-      color: #007c4c;
-      font-weight: bold;
-      text-align: right;
+    .custom-footer {
+  background-color: #a4eaa2;
+  padding: 20px 30px;
+  font-size: 16px;
+  color: #000;
+  font-family: Arial, sans-serif;
 }
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo img {
+  width: 170px;
+}
+
+.footer-logo .brand-name {
+  font-weight: bold;
+  font-size: 24px;
+  color: #000;
+}
+
+.footer-hotline {
+  text-align: right;
+  font-size: 18px;
+}
+
+.footer-hotline span {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+hr {
+  margin: 20px 0;
+  border: none;
+  height: 1px;
+  background-color: #000;
+}
+
+.footer-info {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-info p {
+  margin-bottom: 10px;
+}
+
+.footer-info .copyright {
+  margin-top: 10px;
+}
+
 
  
   </style>
@@ -118,21 +187,24 @@
 <body>
   <header>
     <div class="logo">
-      <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo" />
+      <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
     </div>
     <nav>
-      <ul>
-        <li><a href="gioithieu.html">Giới thiệu</a></li>
-        <li><a href="#">Dịch vụ</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Đội ngũ</a></li>
-        <li><a href="#">Tư vấn viên</a></li>
-        <li><a href="trangdangnhap.html">Đăng nhập</a></li>
-        <li><a href="dangky.html">Đăng ký</a></li>
-      </ul>
+      <ul class="nav-menu">
+      <li><a href="gioithieu.html">Giới thiệu</a></li>
+      <li><a href="#">Dịch vụ</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">Gói khám</a></li>
+      <li><a href="#">Tư vấn viên</a></li>
+      <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
+      <li><a href="dangky.html">Đăng ký</a></li>
+    </ul>
+    <form class="search-form" action="#" method="get">
+      <input type="text" name="q" placeholder="Tìm kiếm" />
+      <button type="submit"><span>&#128269;</span></button>
+    </form>
     </nav>
   </header>
-
   <section class="hero">
     <img src = "https://i.postimg.cc/7PC0jg8h/nh-n-n.png" alt ="ảnh nền">
   
@@ -189,12 +261,27 @@
     <blockquote>"Trung tâm sạch sẽ, chuyên nghiệp và rất thân thiện. Rất đáng tin cậy!" – Cô Trâm, TP. Thủ Đức</blockquote>
   </section>
 
-  <footer>
-    <div>
-      <img src ="https://i.postimg.cc/02wj0ngG/Screenshot-2025-06-02-225907.png" alt ="footer-logo">
-    </div> 
-    <div class="hotline">Hotline: 1900 8484</div>
-    <p>© 2025 Trung tâm Chăm sóc Sức khỏe An Giới. Mọi quyền được bảo lưu.</p>
-  </footer>
+   <footer class="custom-footer">
+  <div class="footer-top">
+    <div class="footer-logo">
+      <img src="https://i.postimg.cc/QxDGD46T/logo-footer.png" alt="Logo An Giới" />
+    </div>
+    <div class="footer-hotline">
+      <span>HOTLINE</span>
+      <strong>1900 8484</strong>
+    </div>
+  </div>
+  <hr />
+  <div class="footer-info">
+    <p>
+      <strong>Địa chỉ:</strong><br />
+      Trung tâm Xét nghiệm và Chăm sóc sức khỏe giới tính – An Giới Gender Health<br />
+      123 - 125 Đồng Văn Cống, Phường Thạnh Mỹ Lợi, Thành phố Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam
+    </p>
+    <p class="copyright">
+      © 2020 - 2025 Công Ty Trách Nhiệm Hữu Hạn An Giới Health Số ĐKKD 0315907012 do Sở KH và ĐT TP Hồ Chí Minh cấp ngày 23/09/2020
+    </p>
+  </div>
+</footer>
 </body>
 </html>
