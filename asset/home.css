@@ -4,7 +4,12 @@
   flex-direction: row;
   justify-content: center;
   width: 100%;
+  /* width: 1440px;
+    height: 1024px;
+    background-color: #ffffff; */
 }
+
+
 
 .consultant-h-s .consultant-demo-h-s {
   background-color: #ffffff;
@@ -86,7 +91,7 @@
   border-radius: 50px / 49.5px;
 }
 
-.consultant-h-s .text-wrapper {
+/* .consultant-h-s .text-wrapper {
   position: absolute;
   width: 48px;
   top: 27px;
@@ -99,7 +104,7 @@
   letter-spacing: 1.32px;
   line-height: 45px;
   white-space: nowrap;
-}
+} */
 
 .consultant-h-s .text-wrapper-2 {
   position: absolute;
@@ -262,6 +267,13 @@
   left: 60px;
 }
 
+.gray-divider {
+  border: none;
+  height: 2px;
+  background-color: #ccc; /* Màu xám nhạt */
+  margin: 0; /* Hoặc tuỳ chỉnh lề nếu cần */
+}
+
 .consultant-h-s .text-wrapper-7 {
   position: absolute;
   width: 158px;
@@ -347,7 +359,7 @@
   position: absolute;
   width: 970px;
   top: 367px;
-  left: 438px;
+  left: 447px;
   font-family: "Lexend Deca-Bold", Helvetica;
   font-weight: 400;
   color: #000000;
@@ -370,7 +382,7 @@
   position: absolute;
   width: 970px;
   top: 594px;
-  left: 438px;
+  left: 447px;
   font-family: "Roboto Flex-Bold", Helvetica;
   font-weight: 400;
   color: #000000;
@@ -404,12 +416,12 @@
 .consultant-h-s .text-wrapper-11 {
   position: absolute;
   top: 19px;
-  left: 44px;
+  left: 79px;
   font-family: "Bungee-Regular", Helvetica;
-  font-weight: 400;
+  font-weight: bold;
   color: #000000;
   font-size: 22.5px;
-  letter-spacing: 2.70px;
-  line-height: 45px;
+  letter-spacing: 1.5px;
+  line-height: 50px;
   white-space: nowrap;
 }
