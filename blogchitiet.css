@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #fff;
+  color: #333;
+  font-size: 18px; 
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: #f4f4f4;
+  border-bottom: 2px solid #ccc;
+}
+
+.logo img {
+  width: 115px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  background-color: #eee;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.search-form input[type="text"] {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 5px;
+  font-size: 16px;
+  width: 120px;
+}
+
+.search-form button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size:16;
+} 
+
+
+main {
+  padding: 20px 40px;
+}
+
+.breadcrumb {
+  color: #0f3711;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.main-title {
+  background-color: #a3f59f;
+  padding: 10px;
+  text-transform: uppercase;
+  color: #100101;
+}
+
+.content {
+  margin-top: 20px;
+}
+
+.content h2 {
+  color: #006400;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.main-image {
+  display: block;
+  margin: 20px auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.custom-footer {
+  background-color: #a4eaa2;
+  padding: 20px 30px;
+  font-size: 16px;
+  color: #000;
+  font-family: Arial, sans-serif;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo img {
+  width: 170px;
+}
+
+.footer-logo .brand-name {
+  font-weight: bold;
+  font-size: 24px;
+  color: #000;
+}
+
+.footer-hotline {
+  text-align: right;
+  font-size: 18px;
+}
+
+.footer-hotline span {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+hr {
+  margin: 20px 0;
+  border: none;
+  height: 1px;
+  background-color: #000;
+}
+
+.footer-info {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-info p {
+  margin-bottom: 10px;
+}
+
+.footer-info .copyright {
+  margin-top: 10px;
+}
