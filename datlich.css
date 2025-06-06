@@ -1,0 +1,151 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f7fff6;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #fff;
+}
+
+.logo img {
+  height: 110px;
+}
+
+nav {
+  display: flex;
+  gap: 30px;
+}
+
+nav a {
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-frame {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.dropdown-icon img {
+  width: 20px;
+  height: 20px;
+}
+
+.search-bar {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #eee;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.search-bar input {
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+.search-bar button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+
+.booking-section {
+  display: flex;
+  padding: 40px;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.booking-image img {
+  width: 400px;
+}
+
+.booking-form {
+  flex: 1;
+}
+
+.booking-form h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.booking-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.booking-form label {
+  font-weight: bold;
+  color: #333;
+}
+
+.booking-form label span {
+  color: red;
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #ecfae6;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.booking-form button {
+  background-color: #97cc59;
+  color: black;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 200px;
+  align-self: center;
+}

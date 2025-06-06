@@ -79,3 +79,22 @@ button {
   display: block;
   margin: 20px auto;
 }
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  width:fit-content;
+  margin:0 auto;
+}
+.google-btn img {
+  width: 20px;
+  height: 20px;
+}
