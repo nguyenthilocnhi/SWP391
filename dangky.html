@@ -21,13 +21,24 @@
           <input type="text" placeholder="Tên" required />
         </div>
         <input type="text" placeholder="Số điện thoại" required />
-        <input type="email" placeholder="Email" required />
+        <input type="email" id="email" placeholder="Email" required />
         <input type="text" placeholder="Địa chỉ" required />
         <input type="password" placeholder="Mật khẩu" required />
         <input type="password" placeholder="Xác nhận mật khẩu" required />
 
         <p>Đã có tài khoản? <a href="Trangdangnhap.html">Đăng nhập</a></p>
-        <button type="button" onclick="window.location.href='Trangdangnhap.html'">ĐĂNG KÝ</button>
+        <button type="button" onclick="goToOTPPage()">ĐĂNG KÝ</button>
+
+<script>
+  function goToOTPPage() {
+    const email = document.getElementById("email").value;
+    if (!email) {
+      alert("Vui lòng nhập email.");
+      return;
+    }
+    window.location.href = `xacthucOTP.html?email=${encodeURIComponent(email)}`;
+  }
+</script>
 
       </form>
 
