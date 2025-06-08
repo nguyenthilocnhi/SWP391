@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: 'Asan', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: #a5d6a7;
   display: flex;
   align-items: center;
@@ -31,7 +31,7 @@ body {
 }
 
 .logo img {
-  height: 60px;
+  height: 40px;
 }
 
 .brand-name {
