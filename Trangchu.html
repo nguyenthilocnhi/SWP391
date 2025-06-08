@@ -4,188 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trung Tâm Sức Khỏe An Giới</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-    }
-    body {
-      line-height: 1.6;
-      color: #333;
-    }
-    header {
-      background: #fff;
-      border-bottom: 1px solid #ccc;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo img {
-      height: 80px; /* chỉnh size logo*/
-    }
-    nav {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.nav-menu {
-  display: flex;
-  gap: 20px;
-  list-style: none;
-}
-
-.search-form {
-  display: flex;
-  align-items: center;
-  background-color: #eee;
-  border-radius: 20px;
-  padding: 5px 10px;
-}
-
-.search-form input[type="text"] {
-  border: none;
-  background: transparent;
-  outline: none;
-  padding: 5px;
-  font-size: 16px;
-  width: 120px;
-}
-
-.search-form button {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size:16;
-} 
-    .hero {
-      text-align: center;
-      padding: 4rem 2rem;
-    }
-    .section {
-      padding: 3rem 2rem;
-      text-align: left;
-    }
-    .highlight-box {
-      display: flex;
-      justify-content: space-around;
-      background-color: #e1f9e7;
-      padding: 2rem;
-      margin: 2rem 0;
-      border-radius: 10px;
-    }
-    .highlight-item {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-    .features {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin: 2rem 0;
-    }
-    .feature {
-      width: 150px;
-      text-align: center;
-    }
-    .consultants, .certificates, .testimonials {
-      margin-top: 3rem;
-    }
-    .consultant-list {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-    .consultant {
-      width: 200px;
-      text-align: center;
-    }
-    .consultant img {
-      width: 100%;
-      border-radius: 10px;
-    }
-    .certificates img {
-      width: 45%;
-      margin: 1rem;
-    }
-    .testimonials blockquote {
-      font-style: italic;
-      margin: 1rem auto;
-      max-width: 800px;
-    }
-    .custom-footer {
-  background-color: #a4eaa2;
-  padding: 20px 30px;
-  font-size: 16px;
-  color: #000;
-  font-family: Arial, sans-serif;
-}
-
-.footer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.footer-logo img {
-  width: 170px;
-}
-
-.footer-logo .brand-name {
-  font-weight: bold;
-  font-size: 24px;
-  color: #000;
-}
-
-.footer-hotline {
-  text-align: right;
-  font-size: 18px;
-}
-
-.footer-hotline span {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-hr {
-  margin: 20px 0;
-  border: none;
-  height: 1px;
-  background-color: #000;
-}
-
-.footer-info {
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.footer-info p {
-  margin-bottom: 10px;
-}
-
-.footer-info .copyright {
-  margin-top: 10px;
-}
-
-
- 
-  </style>
+  <link rel="stylesheet" href="assets/css/trangchu.css" />
 </head>
 <body>
-  <header>
+  <header class="site-header">
     <div class="logo">
       <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
     </div>
@@ -217,31 +39,43 @@ hr {
       <div class="highlight-item">20000+<br>Lượt đặt lịch tư vấn</div>
       <div class="highlight-item">100000+<br>Khách hàng/năm</div>
     </div>
-
-    <div class="features">
-      <div class="feature">Xét nghiệm</div>
-      <div class="feature">Sức khỏe sinh sản</div>
-      <div class="feature">Theo dõi chu kì</div>
-      <div class="feature">Đặt lịch tư vấn</div>
-    </div>
+  <h2>Nổi bật</h2>
+   <div class="info-container">
+     <div class="info-item">
+    <p><b>Xét nghiệm</b></p>
+    <img src="https://i.postimg.cc/VNnhzzJz/X-t-nghi-m.png" alt="Xét nghiệm" class="infoinfo-item img">
+  </div>
+  <div class="info-item">
+    <p><b>Sức khỏe sinh sản</b></p>
+    <img src="https://i.postimg.cc/HsvR2ZG1/S-c-kh-e-sinh-s-n.png" alt="Sức khỏe sinh sản" class="infoinfo-item img">
+  </div>
+  <div class="info-item">
+    <p><b>Theo dõi chu kì</b></p>
+    <img src="https://i.postimg.cc/vmtvPT1x/Theo-d-i-chu-k.png" alt="Theo dõi chu kì" class="infoinfo-item img">
+  </div>
+  <div class="info-item">
+    <p><b>Đặt lịch tư vấn</b></p>
+    <img src="https://i.postimg.cc/CMNWZMm1/t-l-ch-t-v-n.png" alt="Đặt lịch tư vấn" class="infoinfo-item img">
+  </div>
+</div>
   </section>
 
   <section class="section consultants">
     <h2>Tư vấn viên</h2>
     <div class="consultant-list">
       <div class="consultant">
-        <img src="https://i.postimg.cc/yNwrc70y/T.jpg" alt="Nguyễn Minh D">
+        <img src="https://i.postimg.cc/Kz4qs1Kw/Nguy-n-Minh.jpg" alt="Nguyễn Minh D">
         <p><b>Thạc sĩ Nguyễn Minh D</b></p>
-        <small>Chuyên viên tư vấn –Trung tâm sức khỏe An Giới</small>
+        <small>Chuyên viên tư vấn – Trung tâm sức khỏe An Giới</small>
       </div>
       <div class="consultant">
-        <img src="https://i.postimg.cc/FzxPMc8T/VI-N.jpg" alt="Trần Văn F">
+        <img src="https://i.postimg.cc/KvmC0ZJv/Tr-n-V-n.jpg" alt="Trần Văn F">
         <p><b>Tiến sĩ Trần Văn F</b></p>
-        <small>Chuyên viên tư vấn –Trung tâm sức khỏe An Giới</small>
+        <small>Chuyên viên tư vấn – Trung tâm sức khỏe An Giới</small>
       </div>
       <div class="consultant">
-        <img src="https://i.postimg.cc/sX7HJbcd/V-N.jpg" alt="Ngọc M">
-        <p><b>Thạc sĩ Lý Ngọc M</b></p>
+        <img src="https://i.postimg.cc/Dw6G1cmw/L-Ng-c.jpg" alt="Lý Ngọc NN">
+        <p><b>Thạc sĩ Lý Ngọc N</b></p>
         <small>Chuyên viên tư vấn – Trung tâm sức khỏe An Giới</small>
       </div>
     </div>
@@ -249,8 +83,8 @@ hr {
 
   <section class="section certificates">
     <h2>Giấy chứng nhận</h2>
-    <img src="https://i.postimg.cc/C5Z1tHRg/Gemini-Generated-Image-ucs9wcucs9wcucs9.png" alt="Certificate 1">
-    <img src="https://i.postimg.cc/d0dzCjCx/Gemini-Generated-Image-75m61o75m61o75m6.png" alt="Certificate 2">
+    <img src="https://i.postimg.cc/3N5Jd8B9/Gi-y-ch-ng-nh-n-1.png" alt="Certificate 1">
+    <img src="https://i.postimg.cc/WzGpZBYV/Gi-y-ch-ng-nh-n-2.png" alt="Certificate 2">
   </section>
 
   <section class="section testimonials">
