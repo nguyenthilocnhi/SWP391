@@ -1,3 +1,4 @@
+/* header cho tất cả các trang*/
 * {
   box-sizing: border-box;
   margin: 0;
@@ -35,7 +36,7 @@ header {
   background-color: white;
   z-index: 1000;
   padding: 10px 20px;
-  box-shadow: #b6e8c6 0 2px 4px ;
+  box-shadow: #b6e8c6 0 2px 4px;
 }
 
 .logo img {
@@ -54,14 +55,13 @@ nav {
   list-style: none
 }
 
-/* Hero */
+
 .hero {
   margin-top: 100px;
   text-align: center;
   padding: 4rem 2rem;
 }
 
-/* Highlight */
 .highlight-box {
   display: flex;
   justify-content: space-around;
@@ -102,7 +102,7 @@ nav {
   border-radius: 8px;
 }
 
-/* Search Form */
+/*Tìm kiếm cho các trang*/
 .search-form {
   display: flex;
   align-items: center;
@@ -168,7 +168,6 @@ nav {
   background-color: #e0f5e7;
 }
 
-/* Info Container */
 .info-container {
   display: flex;
   justify-content: center;
@@ -176,42 +175,100 @@ nav {
   text-align: center;
 }
 
-/* Consultants */
-.consultants, .certificates, .testimonials {
-  margin-top: 3rem;
-}
-
-.consultant-list {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.consultant {
-  width: 200px;
-  text-align: center;
-}
-
-.consultant img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-/* Certificates */
 .certificates img {
   width: 45%;
   margin: 1rem;
 }
 
-/* Testimonials */
 .testimonials blockquote {
   font-style: italic;
   margin: 1rem auto;
   max-width: 800px;
 }
 
-/* Footer */
+.faq-container {
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 40px 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+}
+
+.faq-container h2 {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.faq-container .highlight {
+  color: #28a745;
+  /* Màu xanh lá */
+  font-weight: bold;
+}
+
+details {
+  margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 0 20px;
+  background-color: #fafafa;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+summary {
+  padding: 16px 0;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  list-style: none;
+  color: #28a745;
+  position: relative;
+}
+
+summary::marker {
+  display: none;
+}
+
+summary::after {
+  content: "▾";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+  color: #28a745;
+}
+
+details[open] summary::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.faq-answer {
+  padding: 0 0 16px;
+  color: #555;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.more-question {
+  font-size: 14px;
+  color: #777;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.more-question a {
+  color: #28a745;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.more-question a:hover {
+  text-decoration: underline;
+}
+
+/*Footer cho tất cả các trang*/
 .custom-footer {
   background-color: #a4eaa2;
   padding: 20px 30px;
