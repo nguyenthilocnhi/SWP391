@@ -20,27 +20,16 @@ h3 {
 }
 
 header {
-  background: #fff;
-  border-bottom: 1px solid white;
-  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: white;
-  z-index: 1000;
-  padding: 10px 20px;
-  box-shadow: #b6e8c6 0 2px 4px;
+  padding: 10px 30px;
+  background-color: #f4f4f4;
+  border-bottom: 2px solid #5cd994;
 }
 
 .logo img {
-  height: 80px;
+  width: 115px;
 }
 
 nav {
