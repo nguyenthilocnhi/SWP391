@@ -1,22 +1,15 @@
 /* header cho tất cả các trang*/
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
+  background-color: #fff;
   color: #333;
-  margin: 0;
-  padding: 20px;
-}
-
-h3 {
-  text-align: center;
-  margin-bottom: 20px;
+  font-size: 18px; 
 }
 
 header {
@@ -25,7 +18,7 @@ header {
   align-items: center;
   padding: 10px 30px;
   background-color: #f4f4f4;
-  border-bottom: 2px solid #5cd994;
+  border-bottom: 2px solid #ccc;
 }
 
 .logo img {
@@ -35,14 +28,44 @@ header {
 nav {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
 .nav-menu {
   display: flex;
-  gap: 40px;
-  list-style: none
+  gap: 20px;
+  list-style: none;
 }
+
+.search-form {
+  display: flex;
+  align-items: center;
+  background-color: #eee;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.search-form input[type="text"] {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 5px;
+  font-size: 16px;
+  width: 120px;
+}
+
+.search-form button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.search-form img {
+  width: 12px;
+  height: 12px;
+}
+
 
 
 .hero {
