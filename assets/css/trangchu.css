@@ -9,7 +9,7 @@
 body {
   background-color: #fff;
   color: #333;
-  font-size: 18px; 
+  font-size: 18px;
 }
 
 header {
@@ -66,7 +66,12 @@ nav {
   height: 12px;
 }
 
-
+.container {
+  max-width: 100%;
+  width: 100%;
+  margin: 30px auto;
+  padding: 0 40px;
+}
 
 .hero {
   margin-top: 100px;
@@ -195,7 +200,7 @@ nav {
 .testimonials blockquote {
   font-style: italic;
   margin: 1rem auto;
-  max-width: 800px;
+  max-width: 900px;
 }
 
 .faq-container {
