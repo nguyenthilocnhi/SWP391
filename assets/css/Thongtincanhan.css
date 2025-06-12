@@ -1,0 +1,239 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #fff;
+  padding: 10px 30px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo img {
+  width: 60px;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 35px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu li a {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  color: #000;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.icon-bell {
+  width: 20px;
+  height: 20px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.user-role {
+  font-size: 12px;
+  color: #555;
+}
+
+.icon-dropdown {
+  width: 14px;
+  height: 14px;
+}
+
+.search-form {
+  position: relative;
+}
+
+.search-form input {
+  padding: 5px 25px 5px 10px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+}
+
+.search-icon {
+  position: absolute;
+  right: 8px;
+  top: 6px;
+  width: 14px;
+}
+
+.personal-info-container {
+  background-color: #fff;
+  padding: 30px;
+}
+
+h2 {
+  background-color: #72d060;
+  padding: 10px 20px;
+  color: #000;
+  font-size: 22px;
+  font-weight: bold;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+.profile-section {
+  display: flex;
+  gap: 50px;
+  margin-top: 30px;
+  align-items: flex-start;
+}
+
+.profile-photo {
+  text-align: center;
+}
+
+.profile-photo img {
+  width: 220px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.profile-photo p {
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+.info-form {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.form-group {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 10px;
+  background-color: #e8f9e5;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  height: 100px;
+  width: 100%;
+}
+
+.edit-button {
+  background-color: #72d060;
+  color: #000;
+  font-weight: bold;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 30
+}
+
+.custom-footer {
+  background-color: #a4eaa2;
+  padding: 20px 30px;
+  font-size: 16px;
+  color: #000;
+  font-family: Arial, sans-serif;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo img {
+  width: 170px;
+}
+
+.footer-logo .brand-name {
+  font-weight: bold;
+  font-size: 24px;
+  color: #000;
+}
+
+.footer-hotline {
+  text-align: right;
+  font-size: 18px;
+}
+
+.footer-hotline span {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+hr {
+  margin: 20px 0;
+  border: none;
+  height: 1px;
+  background-color: #000;
+}
+
+.footer-info {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-info p {
+  margin-bottom: 10px;
+}
+
+.footer-info .copyright {
+  margin-top: 10px;
+}
