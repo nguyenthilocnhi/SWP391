@@ -1,30 +1,19 @@
-* {
+body {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
-
-body {
-  background-color: #fff;
-  color: #333;
-  font-size: 18px;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 30px;
-  background-color: #f4f4f4;
-  border-bottom: 2px solid #ccc;
-}
-
-.logo img {
-  width: 115px;
-}
-
-nav {
+    header {
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo img {
+      height: 80px; /* chỉnh size logo*/
+    }
+    nav {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -57,99 +46,98 @@ nav {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 16px;
-}
-
+  font-size:16px;
+} 
 .search-form img {
   width: 12px;
   height: 12px;
 }
-
 .container {
-  max-width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: Inter, sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+
+/* Tiêu đề theo mẫu */
+.intro {
   width: 100%;
+  max-width: 1250px;
+  height: 60px;
+  position: relative;
   margin: 30px auto;
-  padding: 0 40px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-section {
-  margin-bottom: 40px;
+.intro-1 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50 0%, #7ADD6B 100%);
+  border-radius: 10px;
 }
 
-section h2 {
-  background-color: #7ed957;
-  padding: 12px 20px;
-  color: white;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  font-size: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.intro-2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-family: 'Bungee', sans-serif;
+  color: #000;
+  font-size: 22px;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
 }
 
 .articles {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 30px;
 }
 
 .article {
   display: flex;
   justify-content: space-between;
-  align-items: left;
-  background-color: #f8f9fa;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease;
 }
 
 .article:hover {
-  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .article .text {
   flex: 1;
-  padding-right: 15px;
+  padding-right: 20px;
 }
 
-.article h3 {
-  font-size: 18px;
-  margin: 0 0 8px;
-  color: #333;
+.article .text h3 {
+  font-size: 20px;
+  color: #000;
+  margin: 0 0 10px;
+  line-height: 1.4;
 }
 
-.article p {
-  margin: 0;
-  color: #28a745;
+.article .text p {
   font-size: 14px;
+  color: #777;
+  margin: 0;
 }
 
 .article img {
-  width: 120px;
-  height: 80px;
+  width: 290px;
+  height: 180px;
   object-fit: cover;
-  border-radius: 6px;
-}
-
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  box-shadow: none;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  text-align: center;
-  padding: 12px;
-  font-size: 15px;
-}
-
-th {
-  background-color: #e0ffe0;
-  font-weight: bold;
+  border-radius: 8px;
 }
 
 .custom-footer {

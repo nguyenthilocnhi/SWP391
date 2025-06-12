@@ -11,20 +11,18 @@ body {
   font-size: 18px; 
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 30px;
-  background-color: #f4f4f4;
-  border-bottom: 2px solid #ccc;
-}
-
-.logo img {
-  width: 115px;
-}
-
-nav {
+  header {
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo img {
+      height: 80px; /* chỉnh size logo*/
+    }
+    nav {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -57,9 +55,8 @@ nav {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 16px;
-}
-
+  font-size:16px;
+} 
 .search-form img {
   width: 12px;
   height: 12px;
