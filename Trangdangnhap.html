@@ -7,24 +7,29 @@
   <link rel="stylesheet" href="assets/css/trangdangnhap.css" />
 </head>
 <body>
-    <a href="Trangchu.html" style="position: absolute; top: 20px; left: 20px; text-decoration: none; color: black;">← Về trang chủ</a>
-
+  <div class="header">
+  <a href="Trangchu.html" class="logo-group">
+    <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+    <span class="logo-text">AN GIỚI</span>
+  </a>
+  <div class="nav-links">
+    <a href="#">Đăng nhập</a>
+    <a href="dangky.html">Đăng ký</a>
+  </div>
+</div>
   <div class="login-container">
-    <div class="logo">
-      <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo" />
-      <h1>AN GIỚI</h1>
-    </div>
     <h2>ĐĂNG NHẬP</h2>
     <form>
-      <input type="email" placeholder="Email" required >
-      <input type="password" placeholder="Mật khẩu" required >
+      <input type="email" placeholder="Email" required>
+      <input type="password" placeholder="Mật khẩu" required>
       <div class="links">
         <span>Chưa có tài khoản? <a href="dangky.html">Đăng ký</a></span>
         <a href="quenmatkhau.html">Quên mật khẩu</a>
       </div>
-      <button type="submit">ĐĂNG NHẬP</button>
-          <button class="google-btn">
-        <img src="https://i.postimg.cc/G3TbyjXM/Screenshot-2025-06-03-231524.png" />
+      <button type="submit" class="login-btn">ĐĂNG NHẬP</button>
+      <div class="divider"><span>Hoặc</span></div>
+      <button type="button" class="google-btn">
+        <img src="https://i.postimg.cc/G3TbyjXM/Screenshot-2025-06-03-231524.png" alt="Google">
         ĐĂNG NHẬP VỚI GOOGLE
       </button>
     </form>
