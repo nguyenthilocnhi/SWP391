@@ -62,7 +62,7 @@ header {
   align-items: center;
   gap: 15px;
 }
-.icon-bell, .icon-dropdown {
+.icon-dropdown {
   width: 25px;
   height: 30px;
 }
