@@ -1,44 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+
 body {
   font-family: Arial, sans-serif;
-  background: #a5d6a7;
+  background: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  margin: 0;
 }
 
 .container {
   background: white;
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.1);
-  text-align:center;
+  text-align: center;
   width: 400px;
 }
+
 .logo {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 30px;
+  justify-content: flex-start; 
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
+
 
 .logo img {
-  width: 100px;
+  width: 60px;
+  margin-right: 10px;
 }
+
 .logo h1 {
-  margin-left: 5px;
+  font-family: 'Bungee', sans-serif;
   font-size: 24px;
-  font-weight: bold;
-
+  margin: 0;
+  color: #333;
+  text-transform: uppercase;
 }
-
+.logo a:hover {
+  opacity: 0.9;
+}
 
 h2 {
-  margin-top: 20px;
-  margin-bottom: 30px;
-  font-size: 22px;
+  font-family: 'Bungee', sans-serif;
+  font-size: 20px;
   font-weight: bold;
-  color: #333;
+  text-transform: uppercase;
+  color: #222;
+  margin: 20px 0;
 }
 
 form input {
@@ -46,29 +58,26 @@ form input {
   padding: 12px;
   margin: 10px 0;
   border: 2px solid #8bc34a;
-  border-radius: 6px;
+  border-radius: 10px;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 button {
-  display: block;          
-  margin: 20px auto 0;     
+  font-family: 'Bungee', sans-serif;
+  display: block;
+  margin: 20px auto 0;
   padding: 12px;
   background-color: #8bc34a;
   border: none;
-  color: white;
+  color: black;
   font-weight: bold;
   font-size: 16px;
-  border-radius: 6px;
-  width: 60%;           
+  border-radius: 10px;
+  width: 70%;
   cursor: pointer;
   transition: background 0.3s ease;
 }
-
-button:hover {
-  background-color: #7cb342;
-}
-
 
 button:hover {
   background-color: #7cb342;

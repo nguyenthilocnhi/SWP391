@@ -1,28 +1,21 @@
 /* header cho tất cả các trang*/
-* {
+body {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
 
-body {
-  background-color: #fff;
-  color: #333;
-  font-size: 18px;
-}
-
 header {
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 30px;
-  background-color: #f4f4f4;
-  border-bottom: 2px solid #ccc;
 }
 
 .logo img {
-  width: 115px;
+  height: 80px;
+  /* chỉnh size logo*/
 }
 
 nav {
@@ -66,18 +59,28 @@ nav {
   height: 12px;
 }
 
+
 .container {
-  max-width: 100%;
-  width: 100%;
-  margin: 30px auto;
-  padding: 0 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .hero {
-  margin-top: 100px;
-  text-align: center;
-  padding: 4rem 2rem;
+  width: 100vw;
+  /* dùng chiều rộng toàn bộ màn hình */
+  margin: 0;
+  overflow: hidden;
+  /* tránh cuộn nếu có */
 }
+
+.hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
 
 .highlight-box {
   display: flex;
@@ -118,6 +121,11 @@ nav {
   padding: 10px;
   border-radius: 8px;
 }
+
+.section:first-of-type {
+  margin-top: 60px;
+}
+
 
 /*Tìm kiếm cho các trang*/
 .search-form {

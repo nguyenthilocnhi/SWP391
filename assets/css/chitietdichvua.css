@@ -1,0 +1,169 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+    header {
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo img {
+      height: 80px; /* chỉnh size logo*/
+    }
+    nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  background-color: #eee;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.search-form input[type="text"] {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 5px;
+  font-size: 16px;
+  width: 120px;
+}
+
+.search-form button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size:16px;
+} 
+.search-form img {
+  width: 12px;
+  height: 12px;
+}
+
+.main-content {
+  padding: 20px;
+}
+
+.section-title {
+  background-color: #70d680;
+  color: #000;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.box {
+  background-color: #e9f8ed;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.box h3 {
+  margin-top: 0;
+}
+
+.box ul {
+  padding-left: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background-color: white;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #70d680;
+}
+.custom-footer {
+  background-color: #a4eaa2;
+  padding: 20px 30px;
+  font-size: 16px;
+  color: #000;
+  font-family: Arial, sans-serif;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo img {
+  width: 170px;
+}
+
+.footer-logo .brand-name {
+  font-weight: bold;
+  font-size: 24px;
+  color: #000;
+}
+
+.footer-hotline {
+  text-align: right;
+  font-size: 18px;
+}
+
+.footer-hotline span {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+hr {
+  margin: 20px 0;
+  border: none;
+  height: 1px;
+  background-color: #000;
+}
+
+.footer-info {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.footer-info p {
+  margin-bottom: 10px;
+}
+
+.footer-info .copyright {
+  margin-top: 10px;
+}
+.header, .footer {
+  width: 100%;
+  padding: 16px 32px;
+}
+
+.section {
+  width: 100%;
+  margin-bottom: 40px;
+}
+* {
+  box-sizing: border-box;
+}
