@@ -38,8 +38,8 @@ header {
   padding: 10px 40px;
 }
 .logo img {
-  height: 40px;
-  width: 50PX;
+  height: 90px;
+  width: 100px;
 }
 .nav-menu {
   list-style: none;
@@ -65,6 +65,10 @@ header {
 .icon-dropdown {
   width: 25px;
   height: 30px;
+}
+.icon-bell{
+  width: 30px;
+  height: 35px;
 }
 .user-info {
   display: flex;
