@@ -24,7 +24,7 @@ function loadQuestions(data) {
 
 function toggleStatus(index) {
   questions[index].status = questions[index].status === "Chưa trả lời" ? "Đã trả lời" : "Chưa trả lời";
-  filterQuestions(); // reload lại bảng
+  filterQuestions(); 
 }
 
 function filterQuestions() {

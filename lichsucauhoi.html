@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lịch Sử Câu Hỏi</title>
+  <link rel="stylesheet" href="assets/css/lichsucauhoi.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <img src="https://i.postimg.cc/g2NJNPzk/Logo.png" alt="Logo" />
+        <span class="brand">AN GIỚI</span>
+      </div>
+      <h1>LỊCH SỬ CÂU HỎI</h1>
+    </header>
+
+    <main>
+      <table id="historyTable">
+        <thead>
+          <tr>
+            <th>Thời gian</th>
+            <th>Người gửi</th>
+            <th>Chủ đề</th>
+            <th>Câu hỏi</th>
+            <th>Trạng thái</th>
+            <th>Chi tiết</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+  </div>
+
+  <!-- Modal chi tiết -->
+  <div class="modal" id="detailModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>Chi tiết câu hỏi</h3>
+      <p id="modalContent"></p>
+    </div>
+  </div>
+
+  <footer class="custom-footer">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <img src="https://i.postimg.cc/Qxfg131W/Logo-L-ch-S-c-u-h-i.png" alt="Logo An Giới" />
+      </div>
+      <div class="footer-hotline">
+        <span>HOTLINE</span>
+        <strong>1900 8484</strong>
+      </div>
+    </div>
+    <hr />
+    <div class="footer-info">
+      <p>
+        <strong>Địa chỉ:</strong><br />
+        Trung tâm Xét nghiệm và Chăm sóc sức khỏe giới tính – An Giới Gender Health<br />
+        123 - 125 Đồng Văn Cống, Phường Thạnh Mỹ Lợi, TP Thủ Đức, TP Hồ Chí Minh, Việt Nam
+      </p>
+      <p class="copyright">
+        © 2025 Công Ty TNHH An Giới Health — ĐKKD 0315907012 cấp ngày 23/09/2025
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const tableBody = document.querySelector('#historyTable tbody');
+    const questions = JSON.parse(localStorage.getItem('questions') || '[]');
+
+    const getStatusHTML = (status) => {
+      let icon = '', color = '';
+      switch (status.toLowerCase()) {
+        case 'đã phản hồi':
+          icon = '🟢'; color = 'green'; break;
+        case 'đang xử lý':
+          icon = '🟡'; color = 'orange'; break;
+        case 'từ chối':
+        case 'hủy':
+          icon = '🔴'; color = 'red'; break;
+        default:
+          icon = '⚪'; color = '#888';
+      }
+      return `<span style="color:${color}">${icon} ${status}</span>`;
+    };
+
+    if (questions.length === 0) {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td colspan="6">Chưa có câu hỏi nào được gửi.</td>`;
+      tableBody.appendChild(row);
+    } else {
+      questions.forEach((q, i) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${q.time}</td>
+          <td>${q.sender}</td>
+          <td>${q.topic}</td>
+          <td>${q.text}</td>
+          <td>${getStatusHTML(q.status)}</td>
+          <td><button class="detail-btn" onclick="showModal(${i})">Chi tiết</button></td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function showModal(index) {
+      const q = questions[index];
+      const content = `
+        <strong>Thời gian:</strong> ${q.time}<br>
+        <strong>Người gửi:</strong> ${q.sender}<br>
+        <strong>Chủ đề:</strong> ${q.topic}<br>
+        <strong>Câu hỏi:</strong> ${q.text}<br>
+        <strong>Trạng thái:</strong> ${q.status}
+      `;
+      document.getElementById('modalContent').innerHTML = content;
+      document.getElementById('detailModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('detailModal').style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+      const modal = document.getElementById('detailModal');
+      if (event.target === modal) modal.style.display = 'none';
+    };
+  </script>
+</body>
+</html>
