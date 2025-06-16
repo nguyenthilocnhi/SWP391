@@ -6,48 +6,132 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trung Tâm Sức Khỏe An Giới</title>
   <link rel="stylesheet" href="assets/css/trangchu.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 
 <body>
   <header>
-    <div class="logo">
-      <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-    </div>
-    <nav>
-      <ul class="nav-menu">
-      <li><a href="gioithieu.html">Giới thiệu</a></li>
-      <li><a href="dichvu.html">Dịch vụ</a></li>
-      <li><a href="TrangBlog.html">Blog</a></li>
-      <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-      <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
-      <li><a href="dangky.html">Đăng ký</a></li>
-    </ul>
-    <form class="search-form" action="#" method="get">
-      <input type="text" name="q" placeholder="Tìm kiếm" />
-      <button type="submit">
-          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" class="search-icon" />
+    <div class="header-container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+        </a>
+      </div>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="gioithieu.html">Giới thiệu</a></li>
+          <li><a href="dichvu.html">Dịch vụ</a></li>
+          <li><a href="TrangBlog.html">Blog</a></li>
+          <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
+          <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
+          <li><a href="dangky.html">Đăng ký</a></li>
+        </ul>
+      </nav>
+
+      <form class="search-form" action="#" method="get">
+        <input type="text" name="q" placeholder="Tìm kiếm..." />
+        <button type="submit">
+          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
         </button>
       </form>
-    </nav>
+    </div>
   </header>
-   <section class="hero">
-      <img src="https://i.postimg.cc/7PC0jg8h/nh-n-n.png" alt="ảnh nền">
-    </section>
-  <main class="container">
 
-    <section class="section">
-      <button
-        style="background: #65b862; color: white; padding: 1rem 2rem; font-size: 1rem; border: none; border-radius: 8px;">Vì
-        sao nên chọn An Giới?</button>
-      <div class="highlight-box">
-        <div class="highlight-item">2500+<br>Lượt xét nghiệm</div>
-        <div class="highlight-item">96%<br>Khách hàng hài lòng</div>
-        <div class="highlight-item">20000+<br>Lượt đặt lịch tư vấn</div>
-        <div class="highlight-item">100000+<br>Khách hàng/năm</div>
+
+  <section class="hero">
+    <img src="https://i.postimg.cc/x1V5ncWS/nh-n-n.png" alt="Ảnh nền">
+  </section>
+
+  <main class="container">
+    <section class="statistic-section">
+      <div class="statistic-box">
+        <div class="stat-item">
+          <img src="https://i.postimg.cc/vZkwh7jd/labs-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
+            alt="xét nghiệm" />
+          <div>
+            <h3>2.000+</h3>
+            <p>Lượt xét nghiệm</p>
+          </div>
+        </div>
+        <div class="stat-item">
+          <img src="https://i.postimg.cc/8zFq7JCX/sentiment-satisfied-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
+            alt="
+            độ hài lòng" />
+          <div>
+            <h3>96%</h3>
+            <p>Mức độ hài lòng</p>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <img src="https://i.postimg.cc/8CvQ0JQf/support-agent-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
+            alt="tư vấn" />
+          <div>
+            <h3>1.500+</h3>
+            <p>Lượt tư vấn/p>
+          </div>
+        </div>
+
+        <div class="stat-item">
+          <img src="https://i.postimg.cc/QtkLj2MX/groups-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
+            alt="số khách hàng" />
+          <div>
+            <h3>1.500.000+</h3>
+            <p>Số lượng khách hàng/năm</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <div class="offer-section">
+    <section class="Angioi-services">
+      <div class="services-content">
+        <h2>Dịch vụ y tế của AN GIỚI</h2>
+
+        <div class="service-item">
+          <img src="https://i.postimg.cc/8zFq7JCX/sentiment-satisfied-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
+            alt="icon xét nghiệm">
+          <div>
+            <h3>Xét nghiệm</h3>
+            <p>Đa dạng danh mục xét nghiệm đảm bảo kết quả chính xác và nhanh chóng</p>
+          </div>
+        </div>
+
+        <div class="service-item">
+          <img src="https://i.postimg.cc/8CvQ0JQf/support-agent-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
+            alt="icon tư vấn">
+          <div>
+            <h3>Tư vấn</h3>
+            <p>Tư vấn cá nhân hóa đảm bảo sự riêng tư cho khách hàng</p>
+          </div>
+        </div>
+
+        <div class="service-item">
+          <img src="https://i.postimg.cc/zX4xPdJp/menstrual-health-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
+            alt="icon chu kì">
+          <div>
+            <h3>Theo dõi chu kì</h3>
+            <p>Nắm bắt thay đổi những ngày mà cơ thể nhạy cảm</p>
+          </div>
+        </div>
+
+        <div class="service-item">
+          <img src="https://i.postimg.cc/XvbQnpBC/pill-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
+            alt="icon uống thuốc">
+          <div>
+            <h3>Nhắc nhở uống thuốc tránh thai</h3>
+            <p>Mang lại hạnh phúc cho nhiều người</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="services-image">
+        <img src="https://i.postimg.cc/4yrDJXTF/Screenshot-2025-06-17-013039.png" alt="bác sĩ và bệnh nhân">
+      </div>
+    </section>
+
+
+    <section class="offer-section">
       <h2>Ưu đãi đặc biệt</h2>
       <div class="offers">
         <div class="offer-box">
@@ -71,13 +155,8 @@
           <button>Xem ưu đãi</button>
         </div>
       </div>
-    </div>
-
-    <section class="section certificates">
-      <h2>Giấy chứng nhận</h2>
-      <img src="https://i.postimg.cc/3N5Jd8B9/Gi-y-ch-ng-nh-n-1.png" alt="Certificate 1">
-      <img src="https://i.postimg.cc/WzGpZBYV/Gi-y-ch-ng-nh-n-2.png" alt="Certificate 2">
     </section>
+
 
     <section class="section testimonials">
       <h2>Cảm nhận từ khách hàng</h2>
@@ -89,7 +168,6 @@
       </blockquote>
     </section>
   </main>
-
   <section class="faq-container">
     <h2><span class="highlight">Câu Hỏi</span> Thường Gặp?</h2>
 
@@ -123,7 +201,7 @@
   <footer class="custom-footer">
     <div class="footer-top">
       <div class="footer-logo">
-        <img src="https://i.postimg.cc/QxDGD46T/logo-footer.png" alt="Logo An Giới" />
+        <img src="https://i.postimg.cc/Y2F9c0k7/logo-footer.png" alt="Logo An Giới" />
       </div>
       <div class="footer-hotline">
         <span>HOTLINE</span>
@@ -135,11 +213,10 @@
       <p>
         <strong>Địa chỉ:</strong><br />
         Trung tâm Xét nghiệm và Chăm sóc sức khỏe giới tính – An Giới Gender Health<br />
-        123 - 125 Đồng Văn Cống, Phường Thạnh Mỹ Lợi, Thành phố Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam
+        123 - 125 Đồng Văn Cống, Phường Thạnh Mỹ Lợi, Thành phố Thủ Đức, TP.HCM, Việt Nam
       </p>
       <p class="copyright">
-        © 2025 Công Ty Trách Nhiệm Hữu Hạn An Giới Health Số ĐKKD 0315907012 do Sở KH và ĐT TP Hồ Chí Minh cấp ngày
-        23/05/2025
+        © 2025 Công Ty TNHH An Giới Health – ĐKKD 0315907012 do Sở KH&ĐT TP.HCM cấp ngày 23/09/2025
       </p>
     </div>
   </footer>

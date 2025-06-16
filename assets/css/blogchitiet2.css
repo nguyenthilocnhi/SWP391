@@ -1,107 +1,132 @@
-* {
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+  color: #1f2937;
+  line-height: 1.6;
 }
 
-body {
-  background-color: #fff;
-  color: #333;
-  font-size: 18px; 
+header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  padding: 10px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
-    header {
-      background: #fff;
-      border-bottom: 1px solid #ccc;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo img {
-      height: 80px; /* chỉnh size logo*/
-    }
-    nav {
+.header-container {
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
 }
 
-.nav-menu {
-  display: flex;
-  gap: 20px;
+.logo img {
+  height: 70px;
+}
+
+.main-nav ul {
   list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
 }
 
+.main-nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.main-nav ul li a:hover {
+  color: #10b981;
+}
+
+/* Search form */
 .search-form {
   display: flex;
   align-items: center;
-  background-color: #eee;
-  border-radius: 20px;
-  padding: 5px 10px;
 }
 
-.search-form input[type="text"] {
-  border: none;
-  background: transparent;
+.search-form input {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
   outline: none;
-  padding: 5px;
-  font-size: 16px;
-  width: 120px;
+  font-size: 14px;
 }
 
 .search-form button {
-  background: transparent;
+  background: none;
   border: none;
+  margin-left: 8px;
   cursor: pointer;
-  font-size:16px;
-} 
-.search-form img {
-  width: 12px;
-  height: 12px;
 }
 
+.search-form button img {
+  width: 18px;
+  height: 18px;
+}
+
+
 main {
-  padding: 20px 40px;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .breadcrumb {
-  color: #0f3711;
-  font-size: 20px;
-  margin-bottom: 10px;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
 }
 
 .main-title {
-  background-color: #a3f59f;
-  padding: 10px;
-  text-transform: uppercase;
-  color: #100101;
-}
-
-.content {
-  margin-top: 20px;
+  font-size: 2rem;
+  color: #111827;
+  margin-bottom: 1.5rem;
 }
 
 .content h2 {
-  color: #006400;
-  font-size: 20px;
-  margin-top: 20px;
+  margin-top: 2rem;
+  color: #0f172a;
+  font-size: 1.25rem;
+  border-left: 4px solid #10b981;
+  padding-left: 0.5rem;
+}
+
+.content p {
+  margin: 1rem 0;
+}
+
+.content ul {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.content ul li {
+  margin-bottom: 0.5rem;
 }
 
 .main-image {
-  display: block;
-  margin: 20px auto;
-  max-width: 100%;
+  width: 100%;
   height: auto;
+  border-radius: 8px;
+  margin: 1rem 0;
 }
 
-.custom-footer {
-  background-color: #a4eaa2;
-  padding: 20px 30px;
-  font-size: 16px;
-  color: #000;
-  font-family: Arial, sans-serif;
+footer.custom-footer {
+  margin-top: 4rem;
+  padding: 2rem;
+  background-color: #f3f4f6;
+  color: #374151;
 }
 
 .footer-top {
@@ -111,48 +136,41 @@ main {
   flex-wrap: wrap;
 }
 
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .footer-logo img {
-  width: 170px;
-}
-
-.footer-logo .brand-name {
-  font-weight: bold;
-  font-size: 24px;
-  color: #000;
+  height: 100px;
 }
 
 .footer-hotline {
   text-align: right;
-  font-size: 18px;
 }
 
-.footer-hotline span {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-hr {
-  margin: 20px 0;
-  border: none;
-  height: 1px;
-  background-color: #000;
+.footer-hotline strong {
+  font-size: 1.25rem;
+  color: #10b981;
 }
 
 .footer-info {
-  font-size: 14px;
-  line-height: 1.6;
+  margin-top: 1rem;
+  font-size: 0.875rem;
 }
 
-.footer-info p {
-  margin-bottom: 10px;
-}
+@media (max-width: 768px) {
+  .nav-menu {
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-.footer-info .copyright {
-  margin-top: 10px;
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  main {
+    padding: 1rem;
+  }
 }
