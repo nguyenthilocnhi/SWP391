@@ -1,110 +1,176 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Danh sách dịch vụ</title>
-  <link rel="stylesheet" href="assets/css/dichvu.css"/>
+  <link rel="stylesheet" href="assets/css/dichvu.css" />
 </head>
+
 <body>
   <header>
-       <div class="logo">
-  <a href="Trangchu.html">
-    <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-  </a>
-</div>
-    <nav>
-      <ul class="nav-menu">
-      <li><a href="gioithieu.html">Giới thiệu</a></li>
-      <li><a href="dichvu.html">Dịch vụ</a></li>
-      <li><a href="TrangBlog.html">Blog</a></li>
-      <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-      <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
-      <li><a href="dangky.html">Đăng ký</a></li>
-    </ul>
-    <form class="search-form" action="#" method="get">
-      <input type="text" name="q" placeholder="Tìm kiếm" />
-      <button type="submit">
-          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" class="search-icon" />
+    <div class="header-container">
+      <div class="logo">
+        <a href="Trangchu.html">
+          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+        </a>
+      </div>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="gioithieu.html">Giới thiệu</a></li>
+          <li><a href="dichvu.html">Dịch vụ</a></li>
+          <li><a href="TrangBlog.html">Blog</a></li>
+          <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
+          <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
+          <li><a href="dangky.html">Đăng ký</a></li>
+        </ul>
+      </nav>
+
+      <form class="search-form" action="#" method="get">
+        <input type="text" name="q" placeholder="Tìm kiếm..." />
+        <button type="submit">
+          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
         </button>
-    </nav>
+      </form>
+    </div>
   </header>
 
-   <!-- PHẦN DỊCH VỤ XÉT NGHIỆM -->
-<section class="section">
-  <h2 class="section-title">DANH SÁCH DỊCH VỤ XÉT NGHIỆM</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Mã dịch vụ</th>
-        <th>Tên dịch vụ</th>
-        <th>Thời gian thực hiện</th>
-        <th>Chi phí</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-      <td>XN123</td>
-      <td>
-  <a href="chitietdichvu.html" style="text-decoration: none; color: inherit;">Xét nghiệm HPV</a>
-      </td>
-      <td>30 phút</td>
-      <td>200,000</td>
-      </tr>
-      <tr><td>XN124</td><td>Xét nghiệm Giang Mai</td><td>45 phút</td><td>150,000</td></tr>
-      <tr><td>XN126</td><td>Xét nghiệm Herpers</td><td>20 phút</td><td>250,000</td></tr>
-      <tr><td>XN127</td><td>Xét nghiệm Nấm Cadina</td><td>45 phút</td><td>150,000</td></tr>
-      <tr><td>XN128</td><td>Xét nghiệm HIV</td><td>60 phút</td><td>300,000</td></tr>
-      <tr><td>XN129</td><td>Xét nghiệm Lậu Cầu</td><td>30 phút</td><td>150,000</td></tr>
-      <tr><td>XN130</td><td>Xét nghiệm Chlamydia</td><td>30 phút</td><td>250,000</td></tr>
-    </tbody>
-  </table>
-</section>
+  <main>
+    <div class="container">
+      <h1>Dịch vụ tại trung tâm An Giới</h1>
+      <div class="filter-bar">
+        <label for="filter">Lọc theo loại dịch vụ:</label>
+        <select id="filter" onchange="filterTable()">
+          <option value="all">Tất cả</option>
+          <option value="tuvan">Tư vấn</option>
+          <option value="xetnghiem">Xét nghiệm</option>
+        </select>
+      </div>
 
-<!-- PHẦN DỊCH VỤ TƯ VẤN -->
-<section class="section">
-  <h2 class="section-title">DANH SÁCH DỊCH VỤ TƯ VẤN</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Mã dịch vụ</th>
-        <th>Tên dịch vụ</th>
-        <th>Thời gian thực hiện</th>
-        <th>Chi phí</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>TV123</td><td>Tư vấn tiền hôn nhân</td><td>90 phút</td><td>200,000</td></tr>
-      <tr><td>TV124</td><td>Tư vấn sức khỏe sinh lý nữ giới theo lứa tuổi</td><td>90 phút</td><td>150,000</td></tr>
-      <tr><td>TV125</td><td>Tư vấn sức khỏe tình dục cho vị thành niên</td><td>90 phút</td><td>250,000</td></tr>
-      <tr><td>TV126</td><td>Tư vấn chế độ ăn uống theo lứa tuổi</td><td>90 phút</td><td>150,000</td></tr>
-      <tr><td>TV127</td><td>Tư vấn sức khỏe sinh lý nam giới theo lứa tuổi</td><td>90 phút</td><td>300,000</td></tr>
-      <tr><td>TV128</td><td>Tư vấn phòng chống các bệnh tình dục</td><td>90 phút</td><td>250,000</td></tr>
-      <tr><td>TV129</td><td>Tư vấn cá nhân</td><td>90 phút</td><td>250,000</td></tr>
-    </tbody>
-  </table>
-</section>
-
+      <table>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Loại dịch vụ</th>
+            <th>Tên dịch vụ</th>
+            <th>Mục đích</th>
+            <th>Thời gian thực hiện</th>
+            <th>Chi phí</th>
+            <th>Tình trạng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Xét nghiệm</td>
+            <td>HIV Ag/Ab combo (HIV test thế hệ 4)</td>
+            <td>Phát hiện sớm HIV (sau 2 - 4 tuần)</td>
+            <td>1 - 3 giờ</td>
+            <td>250.000 - 400.000</td>
+            <td>Có</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Xét nghiệm</td>
+            <td>Xét nghiệm giang mai (RPR/TPHA)</td>
+            <td>Phát hiện bệnh giang mai</td>
+            <td>2 - 24 giờ</td>
+            <td>150.000 - 300.000</td>
+            <td>Có</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Xét nghiệm</td>
+            <td>Xét nghiệm lậu (PCR hoặc nhuộm soi)</td>
+            <td>Phát hiện vi khuẩn lậu</td>
+            <td>3 - 24 giờ</td>
+            <td>300.000 - 600.000</td>
+            <td>Có</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Tiêu chảy cấp do Rota virus</td>
+            <td>Rotarix</td>
+            <td>Bỉ</td>
+            <td>825.000</td>
+            <td>–</td>
+            <td>Có</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Tiêu chảy cấp do Rota virus</td>
+            <td>Rotavin</td>
+            <td>Việt Nam</td>
+            <td>490.000</td>
+            <td>–</td>
+            <td>Có</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Các bệnh do phế cầu</td>
+            <td>Synflorix</td>
+            <td>Bỉ</td>
+            <td>1.045.000</td>
+            <td>1.024.000</td>
+            <td>Có</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Các bệnh do phế cầu</td>
+            <td>Prevenar 13</td>
+            <td>Bỉ</td>
+            <td>1.290.000</td>
+            <td>1.190.000</td>
+            <td>Có</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Các bệnh do phế cầu</td>
+            <td>Vaxneuvance</td>
+            <td>Ireland</td>
+            <td>1.650.000</td>
+            <td>–</td>
+            <td>Có</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Các bệnh do phế cầu</td>
+            <td>Prevenar 20</td>
+            <td>Bỉ</td>
+            <td>1.750.000</td>
+            <td>–</td>
+            <td>Có</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </main>
-<footer class="custom-footer">
-  <div class="footer-top">
-    <div class="footer-logo">
-      <img src="https://i.postimg.cc/QxDGD46T/logo-footer.png" alt="Logo An Giới" />
+
+
+  <footer class="custom-footer">
+    <div class="footer-top">
+      <div class="footer-logo">
+        <img src="https://i.postimg.cc/Y2F9c0k7/logo-footer.png" alt="Logo An Giới" />
+      </div>
+      <div class="footer-hotline">
+        <span>HOTLINE</span>
+        <strong>1900 8484</strong>
+      </div>
     </div>
-    <div class="footer-hotline">
-      <span>HOTLINE</span>
-      <strong>1900 8484</strong>
+    <hr />
+    <div class="footer-info">
+      <p>
+        <strong>Địa chỉ:</strong><br />
+        Trung tâm Xét nghiệm và Chăm sóc sức khỏe giới tính – An Giới Gender Health<br />
+        123 - 125 Đồng Văn Cống, Phường Thạnh Mỹ Lợi, Thành phố Thủ Đức, TP.HCM, Việt Nam
+      </p>
+      <p class="copyright">
+        © 2025 Công Ty TNHH An Giới Health – ĐKKD 0315907012 do Sở KH&ĐT TP.HCM cấp ngày 23/09/2025
+      </p>
     </div>
-  </div>
-  <hr />
-  <div class="footer-info">
-    <p>
-      <strong>Địa chỉ:</strong><br />
-      Trung tâm Xét nghiệm và Chăm sóc sức khỏe giới tính – An Giới Gender Health<br />
-      123 - 125 Đồng Văn Cống, Phường Thạnh Mỹ Lợi, Thành phố Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam
-    </p>
-    <p class="copyright">
-      © 2025 Công Ty Trách Nhiệm Hữu Hạn An Giới Health Số ĐKKD 0315907012 do Sở KH và ĐT TP Hồ Chí Minh cấp ngày 23/09/2025
-    </p>
-  </div>
-</footer>
+  </footer>
+</body>
+
+</html>

@@ -1,4 +1,3 @@
-/* Reset & Base */
 * {
   margin: 0;
   padding: 0;
@@ -150,7 +149,7 @@ header {
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 .info-boxes .box h3 {
@@ -162,11 +161,13 @@ header {
 .info-boxes .box p {
   font-size: 15px;
 }
+
 .vision h2 {
   text-align: center;
   color: #004d40;
   margin-bottom: 20px;
 }
+
 /*Giấy chứng nhận*/
 .certificates {
   margin-bottom: 60px;
@@ -187,7 +188,7 @@ header {
   border-radius: 10px;
   padding: 15px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .certificate img {
@@ -201,6 +202,7 @@ header {
   font-size: 14px;
   color: #333;
 }
+
 .certificates h2 {
   text-align: center;
   color: #004d40;

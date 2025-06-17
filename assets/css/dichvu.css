@@ -1,65 +1,140 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background-color: #f7fff7;
 }
-    header {
-      background: #fff;
-      border-bottom: 1px solid #ccc;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo img {
-      height: 80px; /* chỉnh size logo*/
-    }
-    nav {
+
+header {
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 10px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.header-container {
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
 }
 
-.nav-menu {
-  display: flex;
-  gap: 20px;
+.logo img {
+  height: 70px;
+}
+
+.main-nav ul {
   list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
 }
 
+.main-nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.main-nav ul li a:hover {
+  color: #10b981;
+}
+
+/* Search form */
 .search-form {
   display: flex;
   align-items: center;
-  background-color: #eee;
-  border-radius: 20px;
-  padding: 5px 10px;
 }
 
-.search-form input[type="text"] {
-  border: none;
-  background: transparent;
+.search-form input {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
   outline: none;
-  padding: 5px;
-  font-size: 16px;
-  width: 120px;
+  font-size: 14px;
 }
 
 .search-form button {
-  background: transparent;
+  background: none;
   border: none;
+  margin-left: 8px;
   cursor: pointer;
-  font-size:16px;
-} 
-.search-form img {
-  width: 12px;
-  height: 12px;
 }
+
+.search-form button img {
+  width: 18px;
+  height: 18px;
+}
+
+h1 {
+  color: #003366;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #007BFF;
+  color: #10b981;
+}
+
+thead th {
+  padding: 12px;
+  text-align: center;
+}
+
+
+tbody td {
+  padding: 10px;
+  vertical-align: top;
+  border-bottom: 1px solid #ccc;
+}
+
+tbody tr:hover {
+  background-color: #e6f0ff;
+}
+
+.filter-bar {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.filter-bar label {
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+.filter-bar select {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+
+.main-title {
+  text-align: center;
+  font-size: 28px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #2a7c2a;
+}
+
 
 
 .content {
   padding: 32px;
-  width: 100%;
-  background-color: white;
 }
-
 
 .section {
   margin-bottom: 40px;
@@ -74,14 +149,20 @@ body {
   margin-bottom: 16px;
 }
 
+.table-container {
+  overflow-x: auto;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
   background-color: white;
-  box-shadow: none;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-th, td {
+th,
+td {
   border: 1px solid #ddd;
   text-align: center;
   padding: 12px;
@@ -93,12 +174,23 @@ th {
   font-weight: bold;
 }
 
-.custom-footer {
-  background-color: #a4eaa2;
-  padding: 20px 30px;
-  font-size: 16px;
+tbody tr:hover {
+  background-color: #f0fff0;
+  cursor: pointer;
+}
+
+table a {
+  text-decoration: none;
   color: #000;
-  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+/* Footer */
+footer.custom-footer {
+  margin-top: 4rem;
+  padding: 2rem;
+  background-color: #f3f4f6;
+  color: #374151;
 }
 
 .footer-top {
@@ -108,61 +200,20 @@ th {
   flex-wrap: wrap;
 }
 
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .footer-logo img {
-  width: 170px;
-}
-
-.footer-logo .brand-name {
-  font-weight: bold;
-  font-size: 24px;
-  color: #000;
+  height: 100px;
 }
 
 .footer-hotline {
   text-align: right;
-  font-size: 18px;
 }
 
-.footer-hotline span {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-hr {
-  margin: 20px 0;
-  border: none;
-  height: 1px;
-  background-color: #000;
+.footer-hotline strong {
+  font-size: 1.25rem;
+  color: #10b981;
 }
 
 .footer-info {
-  font-size: 14px;
-  line-height: 1.6;
+  margin-top: 1rem;
+  font-size: 0.875rem;
 }
-
-.footer-info p {
-  margin-bottom: 10px;
-}
-
-.footer-info .copyright {
-  margin-top: 10px;
-}
-.header, .footer {
-  width: 100%;
-  padding: 16px 32px;
-}
-
-.section {
-  width: 100%;
-  margin-bottom: 40px;
-}
-* {
-  box-sizing: border-box;
-}
-
