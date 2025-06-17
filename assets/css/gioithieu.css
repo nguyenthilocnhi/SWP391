@@ -135,34 +135,79 @@ header {
   font-size: 17px;
 }
 
-/* Thống kê */
-.statistics {
+/* Tầm nhìn và sứ mệnh */
+.vision .info-boxes {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 40px 0;
   gap: 20px;
+  margin-top: 20px;
 }
 
-.stat {
-  background: #ffffff;
-  border: 1px solid #cfd8dc;
-  border-radius: 12px;
+.info-boxes .box {
+  flex: 1 1 calc(25% - 20px);
+  background: white;
+  border: 2px solid #00796b;
+  border-radius: 10px;
   padding: 20px;
-  width: 200px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
 }
 
-.stat h3 {
-  font-size: 28px;
-  color: #00796b;
+.info-boxes .box h3 {
+  color: #1a7738;
+  margin-bottom: 10px;
+  font-size: 18px;
 }
 
-.stat p {
-  font-size: 16px;
-  color: #555;
+.info-boxes .box p {
+  font-size: 15px;
 }
+.vision h2 {
+  text-align: center;
+  color: #004d40;
+  margin-bottom: 20px;
+}
+/*Giấy chứng nhận*/
+.certificates {
+  margin-bottom: 60px;
+}
+
+.certificates-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.certificate {
+  width: 300px;
+  background: #fff;
+  border: 2px solid #00796b;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.certificate img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.certificate p {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+.certificates h2 {
+  text-align: center;
+  color: #004d40;
+  margin-bottom: 20px;
+  padding-top: 50px;
+}
+
 
 /* Footer */
 footer.custom-footer {
