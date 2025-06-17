@@ -22,7 +22,6 @@ header {
 
 .logo img {
   height: 70px;
-  weight: 80px;
 }
 
 .main-nav ul {
@@ -325,6 +324,7 @@ details[open] summary::after {
   text-decoration: underline;
 }
 
+/*Footer*/
 footer.custom-footer {
   margin-top: 4rem;
   padding: 2rem;
