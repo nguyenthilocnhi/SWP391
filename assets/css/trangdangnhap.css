@@ -1,153 +1,117 @@
-body {
+/* Reset */
+* {
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #fff;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 30px 50px;
-}
-
-.logo-group img {
-  width: 80px;
-}
-.logo-group {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  text-decoration: none;
-  color: inherit;
-}
-
-.logo-group:hover {
-  opacity: 0.9;
-}
-.logo-text {
-  font-weight: bold;
-  font-size: 28px;
-  font-family: 'Courier New', monospace;
-  text-decoration: none; 
-  color: black; 
-}
-.logo-text:focus {
-  outline: none;
-  border: none;
-}
-
-.nav-links a {
-  margin-left: 20px;
-  text-decoration: none;
-  color: black;
-  font-weight: bold;
-}
-
-/* LOGIN FORM */
-
-.login-container {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-h2 {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 30px;
-}
-
-input {
-  width: 100%;
-  padding: 14px;
-  margin: 10px 0;
-  border: 2px solid #8bc34a;
-  border-radius: 10px;
-  font-size: 16px;
   box-sizing: border-box;
 }
 
-input::placeholder {
-  color: #aaa;
-}
-
-.links {
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to right, #e8f5e9, #ffffff);
+  height: 100vh;
   display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  margin-top: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
-.links a {
-  color: #4caf50;
+/* Container */
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+.logo {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.logo img {
+  width: 80px;
+  height: auto;
+  margin-bottom: 0.5rem;
+}
+
+.logo h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+/* Form */
+.login-form label {
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.login-form input:focus {
+  border-color: #66bb6a;
+}
+
+/* Forgot password */
+.forgot-password {
+  text-align: right;
+  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.forgot-password a {
+  font-size: 0.9rem;
+  color: #388e3c;
   text-decoration: none;
 }
 
-.login-btn {
-  background-color: #8bc34a;
-  color: black;
-  font-weight: bold;
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* Button */
+button[type="submit"] {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #43a047;
+  color: white;
   border: none;
-  padding: 15px;
-  border-radius: 12px;
-  width: 60%;
-  font-size: 16px;
-  margin: 25px 0;
-  cursor: pointer;
-}
-
-/* DIVIDER */
-
-.divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 20px 0;
-}
-
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: #ccc;
-}
-
-.divider:not(:empty)::before {
-  margin-right: 10px;
-}
-
-.divider:not(:empty)::after {
-  margin-left: 10px;
-}
-
-.divider span {
-  color: #555;
-  font-size: 14px;
-}
-
-/* GOOGLE BUTTON */
-
-.google-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 12px 20px;
-  border: 1.5px solid #3c4858;
   border-radius: 8px;
-  background-color: white;
-  color: #1f1f1f;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  font-size: 14px;
-  margin: 0 auto;
+  transition: background-color 0.3s ease;
 }
 
-.google-btn img {
-  width: 20px;
-  height: 20px;
+button[type="submit"]:hover {
+  background-color: #388e3c;
+}
+
+/* Sign up link */
+.signup-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.signup-link a {
+  color: #2e7d32;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
 }

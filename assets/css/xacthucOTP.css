@@ -1,79 +1,109 @@
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
 }
 
 body {
-  background-color:#a5d6a7;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #ffffff);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 100vh;
 }
 
-.container {
-  background-color: white;
-  padding: 40px;
-  border-radius: 10px;
-  width: 400px;
-  text-align: center;
+.otp-wrapper {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 30px;
+.otp-card {
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  transition: all 0.3s ease;
 }
 
 .logo img {
-  height: 60px;
+  width: 100px;
+  margin-bottom: 16px;
+  transition: transform 0.3s ease;
 }
 
-.logo h1 {
-  font-size: 24px;
-  font-weight: bold;
+.logo:hover img {
+  transform: scale(1.05);
 }
 
 h2 {
-  margin: 20px 0;
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 24px;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
 }
 
 input {
-  padding: 10px;
-  border: 2px solid #a5d6a7;
-  border-radius: 6px;
+  padding: 14px 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
   outline: none;
 }
 
 .resend {
-  text-align: left;
-  font-size: 12px;
-  color: gray;
-  text-decoration: none;
-  margin-top: -10px;
+  font-size: 14px;
+  color: #007bff;
+  text-align: right;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: -8px;
 }
 
 button {
-  background-color: #8bc34a;
-  color: white;
+  padding: 14px;
+  background-color: #4caf50;
   border: none;
-  padding: 10px;
+  color: white;
   font-size: 16px;
-  border-radius: 6px;
+  border-radius: 10px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #7cb342;
+  background-color: #43a047;
+}
+
+@media (max-width: 480px) {
+  .otp-card {
+    padding: 30px 20px;
+  }
+
+  .logo img {
+    width: 80px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
 }

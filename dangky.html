@@ -1,54 +1,52 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Đăng ký tài khoản</title>
-  <link rel="stylesheet" href="	assets/css/dangky.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Ký Tài Khoản - An Giới</title>
+  <link rel="stylesheet" href="assets/css/dangky.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="register-container">
-    <div class="left-panel">
+  <div class="container">
+    <div class="left-section">
+      <!-- Logo có thể click về trang chủ -->
       <a href="Trangchu.html">
-  <img src="https://i.postimg.cc/tTsQjX1q/Screenshot-2025-06-03-233609.png" alt="Logo" class="logo" />
-</a>
-      <img src="https://i.postimg.cc/cJWVrRrb/Screenshot-2025-06-03-233129.png" alt="Minh họa bác sĩ" class="illustration" />
+        <img class="logo" src="https://i.postimg.cc/X7T9qyhn/logo.png" alt="Logo An Giới">
+      </a>
+      <img class="illustration" src="https://i.postimg.cc/t4WWx4QW/h-nh.png" alt="Minh họa bác sĩ">
     </div>
 
-    <div class="right-panel">
-      <h2>ĐĂNG KÍ TÀI KHOẢN</h2>
-      <form class="register-form">
-        <div class="row">
-          <input type="text" placeholder="Họ" required />
-          <input type="text" placeholder="Tên" required />
+    <div class="right-section">
+      <h1>Đăng ký tài khoản</h1>
+      <form class="form" id="registerForm">
+        <div class="form-group name-row">
+          <input type="text" name="first_name" placeholder="Họ" required>
+          <input type="text" name="last_name" placeholder="Tên" required>
         </div>
-        <input type="text" placeholder="Số điện thoại" required />
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="text" placeholder="Địa chỉ" required />
-        <input type="password" placeholder="Mật khẩu" required />
-        <input type="password" placeholder="Xác nhận mật khẩu" required />
-
-        <p>Đã có tài khoản? <a href="Trangdangnhap.html">Đăng nhập</a></p>
-        <button type="button" onclick="goToOTPPage()">ĐĂNG KÝ</button>
-
-<script>
-  function goToOTPPage() {
-    const email = document.getElementById("email").value;
-    if (!email) {
-      alert("Vui lòng nhập email.");
-      return;
-    }
-    window.location.href = `xacthucOTP.html?email=${encodeURIComponent(email)}`;
-  }
-</script>
-
+        <input type="text" name="phone" placeholder="Số điện thoại" required>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <input type="text" name="address" placeholder="Địa chỉ" required>
+        <input type="password" name="password" placeholder="Mật khẩu" required>
+        <input type="password" name="confirm_password" placeholder="Xác nhận mật khẩu" required>
+        <button type="submit">ĐĂNG KÝ</button>
       </form>
-
-      <div class="divider">
-        <hr />
-        <hr />
-      </div>
+      <p>Đã có tài khoản? <a href="Trangdangnhap.html">Đăng nhập</a></p>
     </div>
   </div>
+
+  <script>
+    // Khi form được submit, chuyển sang trang xác thực OTP
+    document.getElementById("registerForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Chặn submit mặc định
+      const email = document.getElementById("email").value;
+      if (email) {
+        // Chuyển tới trang xác thực OTP, đính kèm email để hiển thị bên trang kia nếu cần
+        window.location.href = `xacthucOTP.html?email=${encodeURIComponent(email)}`;
+      } else {
+        alert("Vui lòng nhập email để tiếp tục.");
+      }
+    });
+  </script>
 </body>
 </html>

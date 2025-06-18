@@ -1,0 +1,59 @@
+body {
+  background: url('https://i.postimg.cc/ZYj2KbF0/N-n.png') no-repeat center center fixed;
+  background-size: cover;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 40px;
+  color: #000;
+}
+
+h1 {
+  font-size: 28px;
+  text-align: center;
+  color: #333;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.form-container {
+  max-width: 600px;
+  margin: auto;
+  background: #ffffffcc;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+input, select, textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #78be20;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #66a91c;
+}
+
+.text-success {
+  color: green;
+  font-weight: bold;
+  text-align: center;
+}

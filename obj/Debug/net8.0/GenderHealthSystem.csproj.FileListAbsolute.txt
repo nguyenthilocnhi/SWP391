@@ -1,0 +1,8 @@
+D:\SWP391\SWP391\SWP391\obj\Debug\net8.0\GenderHealthSystem.csproj.AssemblyReference.cache
+D:\SWP391\SWP391\SWP391\obj\Debug\net8.0\GenderHealthSystem.GeneratedMSBuildEditorConfig.editorconfig
+D:\SWP391\SWP391\SWP391\obj\Debug\net8.0\GenderHealthSystem.AssemblyInfoInputs.cache
+D:\SWP391\SWP391\SWP391\obj\Debug\net8.0\GenderHealthSystem.AssemblyInfo.cs
+D:\SWP391\SWP391\SWP391\obj\Debug\net8.0\GenderHealthSystem.csproj.CoreCompileInputs.cache
+D:\SWP391\SWP391\SWP391\obj\Debug\net8.0\GenderHealthSystem.MvcApplicationPartsAssemblyInfo.cs
+D:\SWP391\SWP391\SWP391\obj\Debug\net8.0\GenderHealthSystem.MvcApplicationPartsAssemblyInfo.cache
+D:\SWP391\SWP391\SWP391\obj\Debug\net8.0\GenderHealthSystem.sourcelink.json

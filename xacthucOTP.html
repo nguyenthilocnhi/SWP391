@@ -5,37 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Xác Thực OTP</title>
   <link rel="stylesheet" href="assets/css/xacthucOTP.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <div class="form-box">
-      <div class="logo">
-        <img src="https://i.postimg.cc/g2NJNPzk/Logo.png" alt="An Giới Logo" />
-      </div>
-      <h2>XÁC THỰC OTP</h2>
+  <div class="otp-wrapper">
+    <div class="otp-card">
+      <a href="Trangchu.html" class="logo">
+        <img src="https://i.postimg.cc/g2NJNPzk/Logo.png" alt="Logo An Giới" />
+      </a>
+      <h2>Xác thực OTP</h2>
+      <p class="subtitle">Vui lòng nhập mã OTP được gửi đến email của bạn.</p>
       <form id="otpForm">
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="text" id="otp" placeholder="Xác thực OTP" required />
-        <a href="#" class="resend" onclick="resendOTP()">Gửi lại mã xác thực</a>
+        <input type="email" id="email" placeholder="Nhập email" required />
+        <input type="text" id="otp" placeholder="Nhập mã OTP" required />
+        <a class="resend" onclick="resendOTP()">Gửi lại mã</a>
         <button type="submit">XÁC THỰC</button>
       </form>
     </div>
   </div>
 
   <script>
-
     const params = new URLSearchParams(window.location.search);
     const emailFromUrl = params.get("email");
     if (emailFromUrl) {
       document.getElementById("email").value = emailFromUrl;
     }
 
-
     function resendOTP() {
       const email = document.getElementById("email").value;
       if (email) {
         alert(`Đã gửi lại mã OTP đến ${email}`);
-
       } else {
         alert("Vui lòng nhập email để gửi lại mã OTP.");
       }

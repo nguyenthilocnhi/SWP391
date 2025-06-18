@@ -2,37 +2,37 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Đăng nhập</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng Nhập - An Giới</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/trangdangnhap.css" />
 </head>
 <body>
-  <div class="header">
-  <a href="Trangchu.html" class="logo-group">
-    <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-    <span class="logo-text">AN GIỚI</span>
-  </a>
-  <div class="nav-links">
-    <a href="#">Đăng nhập</a>
-    <a href="dangky.html">Đăng ký</a>
-  </div>
-</div>
   <div class="login-container">
-    <h2>ĐĂNG NHẬP</h2>
-    <form>
-      <input type="email" placeholder="Email" required>
-      <input type="password" placeholder="Mật khẩu" required>
-      <div class="links">
-        <span>Chưa có tài khoản? <a href="dangky.html">Đăng ký</a></span>
-        <a href="quenmatkhau.html">Quên mật khẩu</a>
+    <div class="login-box">
+      <div class="logo">
+        <a href="Trangchu.html">
+          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+        </a>
+        <h2>Chào mừng bạn đến với An Giới</h2>
       </div>
-      <button type="submit" class="login-btn">ĐĂNG NHẬP</button>
-      <div class="divider"><span>Hoặc</span></div>
-      <button type="button" class="google-btn">
-        <img src="https://i.postimg.cc/G3TbyjXM/Screenshot-2025-06-03-231524.png" alt="Google">
-        ĐĂNG NHẬP VỚI GOOGLE
-      </button>
-    </form>
+
+      <form action="#" method="post" class="login-form">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Nhập email của bạn" required />
+
+        <label for="password">Mật khẩu</label>
+        <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" required />
+
+        <div class="forgot-password">
+          <a href="quenmatkhau.html">Quên mật khẩu?</a>
+        </div>
+
+        <button type="submit">Đăng nhập</button>
+
+        <p class="signup-link">Chưa có tài khoản? <a href="dangky.html">Đăng ký ngay</a></p>
+      </form>
+    </div>
   </div>
 </body>
 </html>
