@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="assets/css/thongtinchuky.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="modal">
@@ -16,13 +16,25 @@
         <img src="https://i.postimg.cc/g2NJNPzk/Logo.png" alt="Logo" />
         <span class="brand-name">AN GIỚI</span>
       </div>
-      <h2>NHẬP THÔNG TIN CHU KÌ</h2>
+      <h2>Thông Tin Chu Kỳ</h2>
       <form>
-        <input type="text" placeholder="Ngày bắt đầu gần nhất" />
-        <input type="text" placeholder="Ngày kết thúc gần nhất" />
-        <input type="text" placeholder="Số ngày hành kinh" />
-        <input type="text" placeholder="Chu kì" />
-        <button type="submit">TIẾP TỤC</button>
+        <div class="input-group">
+          <label>Ngày bắt đầu gần nhất</label>
+          <input type="date" required />
+        </div>
+        <div class="input-group">
+          <label>Ngày kết thúc gần nhất</label>
+          <input type="date" required />
+        </div>
+        <div class="input-group">
+          <label>Số ngày hành kinh</label>
+          <input type="number" min="1" max="10" required />
+        </div>
+        <div class="input-group">
+          <label>Chu kỳ trung bình (ngày)</label>
+          <input type="number" min="20" max="40" required />
+        </div>
+        <button type="submit">Tiếp tục</button>
       </form>
     </div>
   </div>

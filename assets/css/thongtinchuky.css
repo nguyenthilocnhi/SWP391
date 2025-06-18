@@ -1,33 +1,39 @@
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
+}
+
+body {
   font-family: 'Inter', sans-serif;
-  background-color: #a5d6a7;
+  background: linear-gradient(to right, #e3fcec, #f9f9fb);
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
 }
 
 .modal {
-  background-color: white;
-  border-radius: 8px;
-  padding: 32px;
-  max-width: 400px;
   width: 100%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  padding: 20px;
 }
 
 .form-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: #fff;
+  max-width: 450px;
+  margin: auto;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .logo img {
@@ -35,43 +41,73 @@ body {
 }
 
 .brand-name {
-  font-family: 'Bungee', cursive;
-  font-size: 18px;
-  color: #333;
+  font-weight: 600;
+  font-size: 20px;
+  color: #2e7d32; /* Xanh lá đậm */
 }
 
 h2 {
-  font-weight: bold;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 25px;
+  font-size: 22px;
+  color: #2e7d32;
 }
 
 form {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #2e7d32;
 }
 
 input {
-  padding: 10px;
-  border: 2px solid #7bc043;
+  padding: 10px 14px;
+  border: 1px solid #a5d6a7;
   border-radius: 8px;
-  outline: none;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 button {
+  margin-top: 10px;
   padding: 12px;
-  background-color: #7bc043;
+  font-size: 16px;
+  font-weight: 600;
   border: none;
   border-radius: 8px;
-  color: white;
-  font-weight: bold;
+  background-color: #43a047;
+  color: #fff;
   cursor: pointer;
-  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #66a236;
+  background-color: #388e3c;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 500px) {
+  .form-box {
+    padding: 25px;
+  }
 }
