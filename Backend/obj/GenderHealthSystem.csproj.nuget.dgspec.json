@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\SWP391\\SWP391\\GenderHealthSystem.csproj": {}
+    "D:\\SWP391\\SWP391\\Backend\\GenderHealthSystem.csproj": {}
   },
   "projects": {
-    "D:\\SWP391\\SWP391\\GenderHealthSystem.csproj": {
+    "D:\\SWP391\\SWP391\\Backend\\GenderHealthSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SWP391\\SWP391\\GenderHealthSystem.csproj",
+        "projectUniqueName": "D:\\SWP391\\SWP391\\Backend\\GenderHealthSystem.csproj",
         "projectName": "GenderHealthSystem",
-        "projectPath": "D:\\SWP391\\SWP391\\GenderHealthSystem.csproj",
+        "projectPath": "D:\\SWP391\\SWP391\\Backend\\GenderHealthSystem.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\SWP391\\SWP391\\obj\\",
+        "outputPath": "D:\\SWP391\\SWP391\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
