@@ -1,34 +1,24 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Xét Nghiệm HPV - An Giới</title>
   <link rel="stylesheet" href="/Frontend/assets/css/chitietdichvua.css" />
 </head>
+
 <body>
-  <header>
-    <div class="logo">
-      <a href="Trangchu.html"></a>
-      <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-    </div>
-    <nav>
-      <ul class="nav-menu">
-      <li><a href="gioithieu.html">Giới thiệu</a></li>
-      <li><a href="dichvu.html">Dịch vụ</a></li>
-      <li><a href="TrangBlog.html">Blog</a></li>
-      <li><a href="datlich.html">Đặt lịch</a></li>
-      <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-      <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
-      <li><a href="dangky.html">Đăng ký</a></li>
-    </ul>
-    <form class="search-form" action="#" method="get">
-      <input type="text" name="q" placeholder="Tìm kiếm" />
-      <button type="submit">
-          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" class="search-icon" />
-        </button>
-    </nav>
-  </header>
+  <div id="header-placeholder"></div>
+
+  <script>
+    fetch('/Frontend/components/header.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+      });
+  </script>
+
 
   <main class="main-content">
     <section>
@@ -37,7 +27,9 @@
       <div class="box">
         <h3>Tổng quan về xét nghiệm HPV</h3>
         <p>
-          Đây là xét nghiệm nhằm xác định sự hiện diện của virus HPV, chủ yếu lây qua đường tình dục. Xét nghiệm này giúp phát hiện sớm nguy cơ ung thư cổ tử cung, đặc biệt ở phụ nữ từ 30 tuổi trở lên. Đây là bước quan trọng giúp phát hiện sớm những thay đổi tế bào bất thường để điều trị kịp thời.
+          Đây là xét nghiệm nhằm xác định sự hiện diện của virus HPV, chủ yếu lây qua đường tình dục. Xét nghiệm này
+          giúp phát hiện sớm nguy cơ ung thư cổ tử cung, đặc biệt ở phụ nữ từ 30 tuổi trở lên. Đây là bước quan trọng
+          giúp phát hiện sớm những thay đổi tế bào bất thường để điều trị kịp thời.
         </p>
       </div>
 
@@ -93,27 +85,15 @@
     </section>
   </main>
 
-  <footer class="custom-footer">
-  <div class="footer-top">
-    <div class="footer-logo">
-      <img src="https://i.postimg.cc/Y2F9c0k7/logo-footer.png" alt="Logo An Giới" />
-    </div>
-    <div class="footer-hotline">
-      <span>HOTLINE</span>
-      <strong>1900 8484</strong>
-    </div>
-  </div>
-  <hr />
-  <div class="footer-info">
-    <p>
-      <strong>Địa chỉ:</strong><br />
-      Trung tâm Xét nghiệm và Chăm sóc sức khỏe giới tính – An Giới Gender Health<br />
-      123 - 125 Đồng Văn Cống, Phường Thạnh Mỹ Lợi, Thành phố Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam
-    </p>
-    <p class="copyright">
-      © 2025 Công Ty Trách Nhiệm Hữu Hạn An Giới Health Số ĐKKD 0315907012 do Sở KH và ĐT TP Hồ Chí Minh cấp ngày 23/09/2025
-    </p>
-  </div>
-</footer>
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
+
 </body>
+
 </html>

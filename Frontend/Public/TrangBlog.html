@@ -1,144 +1,112 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trang Blog</title>
   <link rel="stylesheet" href="/Frontend/assets/css/TrangBlog.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
+  <div id="header-placeholder"></div>
 
-<header>
-    <div class="header-container">
-      <div class="logo">
-        <a href="Trangchu.html">
-          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+  <script>
+    fetch('/Frontend/components/header.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+      });
+  </script>
+
+  <main class="blog-container">
+    <div class="intro-banner">
+      <h1>KIẾN THỨC Y KHOA & CHIA SẺ KINH NGHIỆM</h1>
+    </div>
+
+    <section class="blog-grid">
+      <!-- Blog item -->
+      <article class="blog-card">
+        <a href="blogchitiet_1.html">
+          <img src="https://i.postimg.cc/90x2yyHm/H-nh-tin-t-c-1.png" alt="Chu kì kinh nguyệt">
+          <div class="content">
+            <h2>Chu kì kinh nguyệt là gì?</h2>
+            <p>1 tháng trước</p>
+          </div>
         </a>
-      </div>
+      </article>
 
-      <nav class="main-nav">
-        <ul>
-          <li><a href="gioithieu.html">Giới thiệu</a></li>
-          <li><a href="dichvu.html">Dịch vụ</a></li>
-          <li><a href="TrangBlog.html">Blog</a></li>
-          <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-          <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
-          <li><a href="dangky.html">Đăng ký</a></li>
-        </ul>
-      </nav>
+      <article class="blog-card">
+        <a href="blogchitiet_2.html">
+          <img src="https://i.postimg.cc/RVF44pwN/H-nh-tin-t-c-2.jpg" alt="HPV">
+          <div class="content">
+            <h2>Hướng dẫn đọc kết quả xét nghiệm HPV</h2>
+            <p>1 tháng trước</p>
+          </div>
+        </a>
+      </article>
 
-      <form class="search-form" action="#" method="get">
-        <input type="text" name="q" placeholder="Tìm kiếm..." />
-        <button type="submit">
-          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
-        </button>
-      </form>
-    </div>
-  </header>
-
-
-<main class="blog-container">
-  <div class="intro-banner">
-    <h1>KIẾN THỨC Y KHOA & CHIA SẺ KINH NGHIỆM</h1>
-  </div>
-
-  <section class="blog-grid">
-    <!-- Blog item -->
-    <article class="blog-card">
-      <a href="blogchitiet_1.html">
-        <img src="https://i.postimg.cc/90x2yyHm/H-nh-tin-t-c-1.png" alt="Chu kì kinh nguyệt">
+      <!-- More articles (you can copy-paste this block and change data) -->
+      <article class="blog-card">
+        <img src="https://i.postimg.cc/SNvqsLGV/H-nh-tin-t-c-3.jpg" alt="Bệnh phụ nữ">
         <div class="content">
-          <h2>Chu kì kinh nguyệt là gì?</h2>
+          <h2>Các bệnh tình dục nữ là gì? Dấu hiệu bệnh</h2>
           <p>1 tháng trước</p>
         </div>
-      </a>
-    </article>
+      </article>
 
-    <article class="blog-card">
-      <a href="blogchitiet_2.html">
-        <img src="https://i.postimg.cc/RVF44pwN/H-nh-tin-t-c-2.jpg" alt="HPV">
+      <article class="blog-card">
+        <img src="https://i.postimg.cc/tTkGHFT3/H-nh-tin-t-c-4.jpg" alt="Bệnh nam giới">
         <div class="content">
-          <h2>Hướng dẫn đọc kết quả xét nghiệm HPV</h2>
+          <h2>Các bệnh tình dục nam là gì? Dấu hiệu bệnh</h2>
           <p>1 tháng trước</p>
         </div>
-      </a>
-    </article>
+      </article>
 
-    <!-- More articles (you can copy-paste this block and change data) -->
-    <article class="blog-card">
-      <img src="https://i.postimg.cc/SNvqsLGV/H-nh-tin-t-c-3.jpg" alt="Bệnh phụ nữ">
-      <div class="content">
-        <h2>Các bệnh tình dục nữ là gì? Dấu hiệu bệnh</h2>
-        <p>1 tháng trước</p>
-      </div>
-    </article>
+      <article class="blog-card">
+        <img src="https://i.postimg.cc/YSB5GdLN/H-nh-tin-t-c-5.jpg" alt="Herpes">
+        <div class="content">
+          <h2>Bệnh Herpes lây qua đường nào?</h2>
+          <p>1 tháng trước</p>
+        </div>
+      </article>
 
-    <article class="blog-card">
-      <img src="https://i.postimg.cc/tTkGHFT3/H-nh-tin-t-c-4.jpg" alt="Bệnh nam giới">
-      <div class="content">
-        <h2>Các bệnh tình dục nam là gì? Dấu hiệu bệnh</h2>
-        <p>1 tháng trước</p>
-      </div>
-    </article>
+      <article class="blog-card">
+        <img src="https://i.postimg.cc/nc65g328/H-nh-tin-t-c-6.jpg" alt="HPV và thai sản">
+        <div class="content">
+          <h2>Nhiễm HPV có mang thai được không?</h2>
+          <p>1 tháng trước</p>
+        </div>
+      </article>
 
-    <article class="blog-card">
-      <img src="https://i.postimg.cc/YSB5GdLN/H-nh-tin-t-c-5.jpg" alt="Herpes">
-      <div class="content">
-        <h2>Bệnh Herpes lây qua đường nào?</h2>
-        <p>1 tháng trước</p>
-      </div>
-    </article>
+      <article class="blog-card">
+        <img src="https://i.postimg.cc/cLwjSfkv/H-nh-tin-t-c-7.jpg" alt="Mãn kinh">
+        <div class="content">
+          <h2>Sinh lý nữ giới tuổi mãn kinh thay đổi thế nào?</h2>
+          <p>1 tháng trước</p>
+        </div>
+      </article>
+    </section>
 
-    <article class="blog-card">
-      <img src="https://i.postimg.cc/nc65g328/H-nh-tin-t-c-6.jpg" alt="HPV và thai sản">
-      <div class="content">
-        <h2>Nhiễm HPV có mang thai được không?</h2>
-        <p>1 tháng trước</p>
-      </div>
-    </article>
-
-    <article class="blog-card">
-      <img src="https://i.postimg.cc/cLwjSfkv/H-nh-tin-t-c-7.jpg" alt="Mãn kinh">
-      <div class="content">
-        <h2>Sinh lý nữ giới tuổi mãn kinh thay đổi thế nào?</h2>
-        <p>1 tháng trước</p>
-      </div>
-    </article>
-  </section>
-
-  <div class="pagination">
-    <span class="page active">1</span>
-    <span class="page">2</span>
-    <span class="page">...</span>
-    <span class="page">10</span>
-    <span class="page">&raquo;</span>
-  </div>
-</main>
-
-<footer class="custom-footer">
-    <div class="footer-top">
-      <div class="footer-logo">
-        <img src="https://i.postimg.cc/Y2F9c0k7/logo-footer.png" alt="Logo An Giới" />
-      </div>
-      <div class="footer-hotline">
-        <span>HOTLINE</span>
-        <strong>1900 8484</strong>
-      </div>
+    <div class="pagination">
+      <span class="page active">1</span>
+      <span class="page">2</span>
+      <span class="page">...</span>
+      <span class="page">10</span>
+      <span class="page">&raquo;</span>
     </div>
-    <hr />
-    <div class="footer-info">
-      <p>
-        <strong>Địa chỉ:</strong><br />
-        Trung tâm Xét nghiệm và Chăm sóc sức khỏe giới tính – An Giới Gender Health<br />
-        123 - 125 Đồng Văn Cống, Phường Thạnh Mỹ Lợi, Thành phố Thủ Đức, TP.HCM, Việt Nam
-      </p>
-      <p class="copyright">
-        © 2025 Công Ty TNHH An Giới Health – ĐKKD 0315907012 do Sở KH&ĐT TP.HCM cấp ngày 23/09/2025
-      </p>
-    </div>
-  </footer>
+  </main>
 
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
 
 </body>
+
 </html>

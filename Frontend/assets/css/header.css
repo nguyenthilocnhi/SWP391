@@ -1,13 +1,5 @@
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #f8fafc;
-  color: #1f2937;
-}
-
 header {
   background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   padding: 10px 40px;
   position: sticky;
   top: 0;

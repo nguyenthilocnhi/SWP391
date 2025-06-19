@@ -9,362 +9,334 @@
 </head>
 
 <body>
-   <header>
-   <div class="logo">
-  <a href="Trangchu.html">
-    <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-  </a>
-</div>
-    <nav>
-      <ul class="nav-menu">
-      <li><a href="gioithieu.html">Giới thiệu</a></li>
-      <li><a href="dichvu.html">Dịch vụ</a></li>
-      <li><a href="TrangBlog.html">Blog</a></li>
-      <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-      <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
-      <li><a href="dangky.html">Đăng ký</a></li>
-    </ul>
-    <form class="search-form" action="#" method="get">
-      <input type="text" name="q" placeholder="Tìm kiếm" />
-      <button type="submit">
-          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" class="search-icon" />
-        </button>
-    </nav>
-  </header>
+    <div id="header-placeholder"></div>
 
+    <script>
+        fetch('/Frontend/components/header.html')
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById('header-placeholder').innerHTML = data;
+            });
+    </script>
 
     <main class="container">
         <section>
-        <h2>TƯ VẤN VIÊN</h2>
-        <div class="card-container">
-            <div class="card">
-                <img src="https://i.postimg.cc/Y2QtdmMC/Tr-ng-Thanh.png" alt="GV Trương Thanh K" />
-                <h3>Giáo sư Trương Thanh K</h3>
-                <p>Trưởng khoa Sức khỏe sinh sản - Trung tâm sức khỏe An Giới</p>
+            <h2>TƯ VẤN VIÊN</h2>
+            <div class="card-container">
+                <div class="card">
+                    <img src="https://i.postimg.cc/Y2QtdmMC/Tr-ng-Thanh.png" alt="GV Trương Thanh K" />
+                    <h3>Giáo sư Trương Thanh K</h3>
+                    <p>Trưởng khoa Sức khỏe sinh sản - Trung tâm sức khỏe An Giới</p>
 
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon" style="color:#ffb400;">⭐</span>
-                        <span class="text">4.9</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon" style="color:#5a3daa;">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon" style="color:#5a3daa;">🎓</span>
-                        <span class="text">20 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon" style="color:#ffb400;">⭐</span>
+                            <span class="text">4.9</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon" style="color:#5a3daa;">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon" style="color:#5a3daa;">🎓</span>
+                            <span class="text">20 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/SNQHcXK5/Ng-C-m.png" alt="TS Ngô Cẩm P" />
-                <h3>Tiến sĩ Ngô Cẩm P</h3>
-                <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nữ - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.8</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">10 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/SNQHcXK5/Ng-C-m.png" alt="TS Ngô Cẩm P" />
+                    <h3>Tiến sĩ Ngô Cẩm P</h3>
+                    <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nữ - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.8</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">10 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/Dw6G1cmw/L-Ng-c.jpg" alt="TS Lý Ngọc N" />
-                <h3>Thạc sĩ Lý Ngọc N</h3>
-                <p>Chuyên viên tư vấn sức khỏe sinh sản - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.8</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">12 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/Dw6G1cmw/L-Ng-c.jpg" alt="TS Lý Ngọc N" />
+                    <h3>Thạc sĩ Lý Ngọc N</h3>
+                    <p>Chuyên viên tư vấn sức khỏe sinh sản - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.8</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">12 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/d3hrKmBp/Nguy-n-Thu.png" alt="CV Nguyễn Thu T" />
-                <h3>Chuyên viên Nguyễn Thu T</h3>
-                <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nữ - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.8</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">8 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/d3hrKmBp/Nguy-n-Thu.png" alt="CV Nguyễn Thu T" />
+                    <h3>Chuyên viên Nguyễn Thu T</h3>
+                    <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nữ - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.8</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">8 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/KvmC0ZJv/Tr-n-V-n.jpg" alt="TS Trần Văn F" />
-                <h3>Tiến sĩ Trần Văn F</h3>
-                <p>Chuyên viên tư vấn sức khỏe sinh sản - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.7</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">9 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/KvmC0ZJv/Tr-n-V-n.jpg" alt="TS Trần Văn F" />
+                    <h3>Tiến sĩ Trần Văn F</h3>
+                    <p>Chuyên viên tư vấn sức khỏe sinh sản - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.7</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">9 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/RZ5fjtnp/L-Minh.png" alt="TS Lý Minh P" />
-                <h3>Tiến sĩ Lý Minh P</h3>
-                <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nam - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.9</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">15 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/RZ5fjtnp/L-Minh.png" alt="TS Lý Minh P" />
+                    <h3>Tiến sĩ Lý Minh P</h3>
+                    <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nam - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.9</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">15 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/Kz4qs1Kw/Nguy-n-Minh.jpg" alt="TS Nguyễn Minh D" />
-                <h3>Thạc sĩ Nguyễn Minh D</h3>
-                <p>Chuyên viên tư vấn sức khỏe sinh lý vị thành niên - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.7</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">9 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/Kz4qs1Kw/Nguy-n-Minh.jpg" alt="TS Nguyễn Minh D" />
+                    <h3>Thạc sĩ Nguyễn Minh D</h3>
+                    <p>Chuyên viên tư vấn sức khỏe sinh lý vị thành niên - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.7</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">9 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/fWf637Mm/L-Nh.png" alt="TS Lê Nhã T" />
-                <h3>Thạc sĩ Lê Nhã T</h3>
-                <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nam - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.7</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">10 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/fWf637Mm/L-Nh.png" alt="TS Lê Nhã T" />
+                    <h3>Thạc sĩ Lê Nhã T</h3>
+                    <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nam - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.7</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">10 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/28zNTc00/L-m-nh.png" alt="TS Lâm Ánh D" />
-                <h3>Thạc sĩ Lâm Ánh D</h3>
-                <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nữ - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.8</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">12 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/28zNTc00/L-m-nh.png" alt="TS Lâm Ánh D" />
+                    <h3>Thạc sĩ Lâm Ánh D</h3>
+                    <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nữ - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.8</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">12 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/7YcXbbJS/Ho-ng-Ph-c.png" alt="CV Hoàng Phúc K" />
-                <h3>Chuyên viên Hoàng Phúc K</h3>
-                <p>Chuyên viên tư vấn sức khỏe sinh lý vị thành niên - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.6</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">12 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/7YcXbbJS/Ho-ng-Ph-c.png" alt="CV Hoàng Phúc K" />
+                    <h3>Chuyên viên Hoàng Phúc K</h3>
+                    <p>Chuyên viên tư vấn sức khỏe sinh lý vị thành niên - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.6</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">12 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/XJJywcTq/Minh.png" alt="CV Đỗ Minh N" />
-                <h3>Chuyên viên Đỗ Minh N</h3>
-                <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nữ - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.7</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">15 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/XJJywcTq/Minh.png" alt="CV Đỗ Minh N" />
+                    <h3>Chuyên viên Đỗ Minh N</h3>
+                    <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nữ - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.7</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">15 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card">
-                <img src="https://i.postimg.cc/1Rvvhv9C/V-ng.png" alt="TS Võ Đăng H" />
-                <h3>Tiến sĩ Võ Đăng H</h3>
-                <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nam - Trung tâm sức khỏe An Giới</p>
-                <div class="info-section">
-                    <div class="info-item">
-                        <span class="icon">⭐</span>
-                        <span class="text">4.8</span>
-                        <div class="label">Đánh giá</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">👤</span>
-                        <span class="text">100+</span>
-                        <div class="label">Lượt tư vấn</div>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="info-item">
-                        <span class="icon">🎓</span>
-                        <span class="text">14 Năm</span>
-                        <div class="label">Kinh nghiệm</div>
+                <div class="card">
+                    <img src="https://i.postimg.cc/1Rvvhv9C/V-ng.png" alt="TS Võ Đăng H" />
+                    <h3>Tiến sĩ Võ Đăng H</h3>
+                    <p>Chuyên viên tư vấn sức khỏe chuyên khoa sinh lý nam - Trung tâm sức khỏe An Giới</p>
+                    <div class="info-section">
+                        <div class="info-item">
+                            <span class="icon">⭐</span>
+                            <span class="text">4.8</span>
+                            <div class="label">Đánh giá</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">👤</span>
+                            <span class="text">100+</span>
+                            <div class="label">Lượt tư vấn</div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="info-item">
+                            <span class="icon">🎓</span>
+                            <span class="text">14 Năm</span>
+                            <div class="label">Kinh nghiệm</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
-  </section>
+            </div>
+        </section>
     </main>
 
-    <footer class="custom-footer">
-        <div class="footer-top">
-            <div class="footer-logo">
-                <img src="https://i.postimg.cc/QxDGD46T/logo-footer.png" alt="Logo An Giới" />
-            </div>
-            <div class="footer-hotline">
-                <span>HOTLINE</span>
-                <strong>1900 8484</strong>
-            </div>
-        </div>
-        <hr />
-        <div class="footer-info">
-            <p>
-                <strong>Địa chỉ:</strong><br />
-                Trung tâm Xét nghiệm và Chăm sóc sức khỏe giới tính – An Giới Gender Health<br />
-                123 - 125 Đồng Văn Cống, Phường Thạnh Mỹ Lợi, Thành phố Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam
-            </p>
-            <p class="copyright">
-                © 2025 Công Ty Trách Nhiệm Hữu Hạn An Giới Health Số ĐKKD 0315907012 do Sở KH và ĐT TP Hồ Chí Minh cấp
-                ngày 23/05/2025
-            </p>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('/Frontend/components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            });
+    </script>
+
 </body>
 
 </html>

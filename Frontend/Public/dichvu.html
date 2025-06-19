@@ -5,37 +5,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Danh sách dịch vụ</title>
-  <link rel="stylesheet" href="/Frontend/assets/css/dichvu.css" />
+  <link rel="stylesheet" href="/Frontend/assets/css/dichvu.css">
+
 </head>
+<script>
+  function filterTable() {
+    const filter = document.getElementById("filter").value;
+    const rows = document.querySelectorAll("table tbody tr");
+
+    rows.forEach(row => {
+      const type = row.cells[1].textContent.trim().toLowerCase(); // Cột Loại dịch vụ
+      if (filter === "all" ||
+        (filter === "tuvan" && type === "tư vấn") ||
+        (filter === "xetnghiem" && type === "xét nghiệm")) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
+    });
+  }
+</script>
 
 <body>
-  <header>
-    <div class="header-container">
-      <div class="logo">
-        <a href="Trangchu.html">
-          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-        </a>
-      </div>
+  <div id="header-placeholder"></div>
 
-      <nav class="main-nav">
-        <ul>
-          <li><a href="gioithieu.html">Giới thiệu</a></li>
-          <li><a href="dichvu.html">Dịch vụ</a></li>
-          <li><a href="TrangBlog.html">Blog</a></li>
-          <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-          <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
-          <li><a href="dangky.html">Đăng ký</a></li>
-        </ul>
-      </nav>
-
-      <form class="search-form" action="#" method="get">
-        <input type="text" name="q" placeholder="Tìm kiếm..." />
-        <button type="submit">
-          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
-        </button>
-      </form>
-    </div>
-  </header>
+  <script>
+    fetch('/Frontend/components/header.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+      });
+  </script>
 
   <main>
     <div class="container">
@@ -329,29 +329,16 @@
     </div>
   </main>
 
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
 
-  <footer class="custom-footer">
-    <div class="footer-top">
-      <div class="footer-logo">
-        <img src="https://i.postimg.cc/Y2F9c0k7/logo-footer.png" alt="Logo An Giới" />
-      </div>
-      <div class="footer-hotline">
-        <span>HOTLINE</span>
-        <strong>1900 8484</strong>
-      </div>
-    </div>
-    <hr />
-    <div class="footer-info">
-      <p>
-        <strong>Địa chỉ:</strong><br />
-        Trung tâm Xét nghiệm và Chăm sóc sức khỏe giới tính – An Giới Gender Health<br />
-        123 - 125 Đồng Văn Cống, Phường Thạnh Mỹ Lợi, Thành phố Thủ Đức, TP.HCM, Việt Nam
-      </p>
-      <p class="copyright">
-        © 2025 Công Ty TNHH An Giới Health – ĐKKD 0315907012 do Sở KH&ĐT TP.HCM cấp ngày 23/09/2025
-      </p>
-    </div>
-  </footer>
+
 </body>
 
 </html>
