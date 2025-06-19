@@ -189,6 +189,45 @@ section h2 {
   display: block;
   color: #ffb400;
 }
+.advisor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 40px 0;
+}
+
+.advisor-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  text-align: center;
+  padding: 20px;
+  transition: transform 0.3s ease;
+}
+
+.advisor-card:hover {
+  transform: translateY(-5px);
+}
+
+.advisor-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.advisor-card h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.advisor-card p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #333;
+}
 
 .custom-footer {
   background-color: #a4eaa2;
