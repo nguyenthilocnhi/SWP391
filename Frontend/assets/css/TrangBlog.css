@@ -114,6 +114,7 @@ header {
   color: #555;
   font-size: 15px;
 }
+
 .intro-banner {
   text-align: center;
   background: #e8f0fe;
@@ -125,6 +126,15 @@ header {
   font-size: 24px;
   color: #1a237e;
 }
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
 
 .blog-container {
   max-width: 1200px;
@@ -142,7 +152,7 @@ header {
   background: #fff;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease;
 }
 

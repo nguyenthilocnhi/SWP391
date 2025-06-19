@@ -70,6 +70,14 @@ header {
   height: 18px;
 }
 
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
 @media (max-width: 768px) {
   .header-container {
     flex-direction: column;
@@ -85,6 +93,7 @@ header {
     margin: 24px auto;
   }
 }
+
 main {
   max-width: 800px;
   margin: 40px auto;
@@ -92,72 +101,65 @@ main {
 }
 
 .breadcrumb {
-    font-size: 14px;
-    color: #6b7280;
-    margin-bottom: 10px;
-  }
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
 
-  .main-title {
-    font-size: 32px;
-    font-weight: 700;
-    color: #0a8e76;
-    margin-bottom: 24px;
-    line-height: 1.4;
-    text-align: center;
-  }
+.main-title {
+  font-size: 2rem;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
 
-  .content {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: 'Inter', sans-serif;
-    line-height: 1.8;
-    color: #374151;
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
+.content h2 {
+  margin-top: 2rem;
+  color: #0f172a;
+  font-size: 1.25rem;
+  border-left: 4px solid #10b981;
+  padding-left: 0.5rem;
+}
 
-  .section {
-    margin-bottom: 30px;
-  }
+.section {
+  margin-bottom: 30px;
+}
 
-  .section h2 {
-    font-size: 24px;
-    color: #111827;
-    margin-bottom: 12px;
-  }
+.section h2 {
+  font-size: 24px;
+  color: #111827;
+  margin-bottom: 12px;
+}
 
-  ul {
-    padding-left: 20px;
-  }
+ul {
+  padding-left: 20px;
+}
 
-  ul li {
-    margin-bottom: 8px;
-    list-style: none;
-  }
+ul li {
+  margin-bottom: 8px;
+  list-style: none;
+}
 
-  .alert-box {
-    padding: 15px;
-    background-color: #fff7ed;
-    border-left: 5px solid #f97316;
-    border-radius: 8px;
-    color: #92400e;
-    margin-top: 16px;
-  }
+.alert-box {
+  padding: 15px;
+  background-color: #fff7ed;
+  border-left: 5px solid #f97316;
+  border-radius: 8px;
+  color: #92400e;
+  margin-top: 16px;
+}
 
-  .final-call {
-    font-size: 16px;
-    padding: 16px;
-    background: #f0f9ff;
-    border-left: 5px solid #0a8e76;
-    border-radius: 8px;
-    margin-top: 40px;
-    color: #0369a1;
-  }
+.final-call {
+  font-size: 16px;
+  padding: 16px;
+  background: #f0f9ff;
+  border-left: 5px solid #0a8e76;
+  border-radius: 8px;
+  margin-top: 40px;
+  color: #0369a1;
+}
 
-  .final-call a {
-    color: #0a8e76;
-    font-weight: 500;
-    text-decoration: underline;
-  }
+.final-call a {
+  color: #0a8e76;
+  font-weight: 500;
+  text-decoration: underline;
+}
