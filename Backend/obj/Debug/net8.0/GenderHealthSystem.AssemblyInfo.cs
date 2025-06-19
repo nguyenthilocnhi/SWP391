@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GenderHealthSystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d08f75b93df10504525f31b86fde38ef770d4a5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16198a7f02451aa14e478c3ebabea11e81ff8d4b")]
 [assembly: System.Reflection.AssemblyProductAttribute("GenderHealthSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GenderHealthSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
