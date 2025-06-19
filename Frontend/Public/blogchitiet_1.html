@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chu kỳ kinh nguyệt là gì?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/Frontend/assets/css/blogchitiet_1.css" />
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="/Frontend/Public/Trangchu.html">
+                    <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+                </a>
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="gioithieu.html">Giới thiệu</a></li>
+                    <li><a href="dichvu.html">Dịch vụ</a></li>
+                    <li><a href="TrangBlog.html">Blog</a></li>
+                    <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
+                    <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
+                    <li><a href="dangky.html">Đăng ký</a></li>
+                </ul>
+            </nav>
+
+            <form class="search-form" action="#" method="get">
+                <input type="text" name="q" placeholder="Tìm kiếm..." />
+                <button type="submit">
+                    <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
+                </button>
+            </form>
+        </div>
+    </header>
+
+
+  <main class="reader-page">
+    <article class="reader-article">
+      <div class="reader-meta"> Kiến thức y khoa & Xét nghiệm</div>
+      <h1 class="reader-title">Chu kỳ kinh nguyệt là gì? Chu kỳ kinh nguyệt bình thường là bao nhiêu ngày?</h1>
+
+      <section class="reader-content">
+        <h2> Chu kỳ kinh nguyệt là gì?</h2>
+        <p><strong>Chu kỳ kinh nguyệt</strong> là quá trình sinh lý tự nhiên của phụ nữ, điều khiển bởi hormone estrogen và progesterone. Mỗi chu kỳ, lớp nội mạc tử cung dày lên để chuẩn bị mang thai. Nếu không thụ tinh, lớp này sẽ bong ra dưới dạng máu kinh.</p>
+
+        <h2> Chu kỳ kinh nguyệt được tính như thế nào?</h2>
+        <p>Chu kỳ được tính từ <strong>ngày đầu tiên có kinh</strong> đến <strong>ngày trước kỳ kinh tiếp theo</strong>.</p>
+        <p>Ví dụ: Bắt đầu ngày 1/6 và chu kỳ tiếp theo bắt đầu ngày 29/6 ⇒ Chu kỳ dài 28 ngày.</p>
+
+        <h2> Chu kỳ bình thường kéo dài bao lâu?</h2>
+        <p>Chu kỳ thường dài từ <strong>21 đến 35 ngày</strong>, phổ biến là 28 ngày. Quan trọng là tính đều đặn.</p>
+
+        <blockquote><strong>Lưu ý:</strong> Nếu chu kỳ quá ngắn, quá dài, ra máu nhiều, đau dữ dội,... nên đi khám bác sĩ.</blockquote>
+
+        <h2> Vì sao cần theo dõi chu kỳ?</h2>
+        <ul>
+          <li> Xác định ngày rụng trứng (kế hoạch hóa gia đình)</li>
+          <li> Phát hiện sớm rối loạn nội tiết, PCOS</li>
+          <li> Chủ động công việc, sinh hoạt</li>
+        </ul>
+
+        <h2> Cách theo dõi hiệu quả</h2>
+        <p>Dùng ứng dụng theo dõi chu kỳ như: <strong>Flo</strong>, <strong>Clue</strong>, <strong>Period Tracker</strong>.</p>
+
+        <h2> Khi nào nên khám bác sĩ?</h2>
+        <ul>
+          <li>Mất kinh > 3 tháng</li>
+          <li>Chu kỳ &lt; 21 hoặc &gt; 35 ngày kéo dài</li>
+          <li>Ra máu kéo dài hoặc giữa chu kỳ</li>
+          <li>Đau dữ dội ảnh hưởng sinh hoạt</li>
+        </ul>
+
+        <blockquote><strong>Chuyên gia khuyên:</strong> Theo dõi chu kỳ là một cách chăm sóc sức khỏe sinh sản đơn giản nhưng rất quan trọng.</blockquote>
+
+        <p> Hy vọng bài viết giúp bạn hiểu rõ hơn và chăm sóc bản thân tốt hơn mỗi ngày.</p>
+      </section>
+    </article>
+  </main>
+
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
+</body>
+</html>

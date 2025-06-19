@@ -1,19 +1,13 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
 body {
-  background-color: #fff;
-  color: #333;
-  font-size: 18px; 
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+  color: #1f2937;
 }
 
 header {
   background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   padding: 10px 40px;
   position: sticky;
   top: 0;
@@ -76,143 +70,94 @@ header {
   height: 18px;
 }
 
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
+  .main-nav ul {
+    flex-direction: column;
+    gap: 8px;
+  }
 
+  main {
+    margin: 24px auto;
+  }
+}
 main {
-  padding: 171px 246px;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 16px;
 }
 
 .breadcrumb {
-  margin-top: -46px;
-  padding-top: 10px;
-  color: #0f3711;
-  font-size: 17px;
-  margin-bottom: 10px;
-}
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 10px;
+  }
 
-.main-title {
-  background-color: #a3f59f;
-  padding: 10px;
-  text-transform: uppercase;
-  color: #100101;
-  font-size: medium;
-}
+  .main-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0a8e76;
+    margin-bottom: 24px;
+    line-height: 1.4;
+    text-align: center;
+  }
 
-/* đếm số lượn mục  */
-body {
-  /* Set "my-counter" to 5 */
-  counter-set: my-counter 0;
-}
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.8;
+    color: #374151;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
 
-h2::before{
-  /* Increment "my-counter" by 1 */
-  counter-increment: my-counter;
-  content: " " counter(my-counter) ". ";
-}
+  .section {
+    margin-bottom: 30px;
+  }
 
-.content {
-  margin-top: 20px;
-  margin-bottom: -105px;
-}
+  .section h2 {
+    font-size: 24px;
+    color: #111827;
+    margin-bottom: 12px;
+  }
 
-.warning,
-.content-child{
-    background-color: #f5f9ff; 
-    padding: 20px; 
-    border-left: 6px solid #2196f3; 
-    border-radius: 8px; 
-    margin-bottom: 20px;
-}
+  ul {
+    padding-left: 20px;
+  }
 
-.demo{
-  margin-top: 19px;
-  padding-top: 593px;
-  background: url('/assets/img/blog3.webp') top center/ cover no-repeat;
-}
+  ul li {
+    margin-bottom: 8px;
+    list-style: none;
+  }
 
+  .alert-box {
+    padding: 15px;
+    background-color: #fff7ed;
+    border-left: 5px solid #f97316;
+    border-radius: 8px;
+    color: #92400e;
+    margin-top: 16px;
+  }
 
-.content h2 {
-  color: #006400;
-  font-size: 20px;
-  margin-top: 20px;
-}
+  .final-call {
+    font-size: 16px;
+    padding: 16px;
+    background: #f0f9ff;
+    border-left: 5px solid #0a8e76;
+    border-radius: 8px;
+    margin-top: 40px;
+    color: #0369a1;
+  }
 
-.main-topic{
-    color: #1976d2; 
-    margin-top: 0;
-}
-
-.idea{
-    font-size: 1.1em; 
-    color: #333;
-}
-
-.main-image {
-  display: block;
-  margin: 20px auto;
-  max-width: 100%;
-  height: auto;
-}
-
-.custom-footer {
-  background-color: #a4eaa2;
-  padding: 20px 30px;
-  font-size: 16px;
-  color: #000;
-  font-family: Arial, sans-serif;
-}
-
-.footer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.footer-logo img {
-  width: 170px;
-}
-
-.footer-logo .brand-name {
-  font-weight: bold;
-  font-size: 24px;
-  color: #000;
-}
-
-
-
-.footer-hotline {
-  text-align: right;
-  font-size: 18px;
-}
-
-.footer-hotline span {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-hr {
-  margin: 20px 0;
-  border: none;
-  height: 1px;
-  background-color: #000;
-}
-
-.footer-info {
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.footer-info p {
-  margin-bottom: 10px;
-}
-
-.footer-info .copyright {
-  margin-top: 10px;
-}
+  .final-call a {
+    color: #0a8e76;
+    font-weight: 500;
+    text-decoration: underline;
+  }

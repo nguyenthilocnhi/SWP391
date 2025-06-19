@@ -64,7 +64,7 @@ header {
 }
 .search-form button {
   padding: 6px 10px;
-  background-color: #007bff;
+  background-color: #00ff77;
   border: none;
   border-radius: 0 4px 4px 0;
   cursor: pointer;
@@ -88,7 +88,7 @@ main.personal-info-container {
 .intro-2 {
   font-size: 24px;
   font-weight: bold;
-  color: #007bff;
+  color: #00ffb7#00ff77;
 }
 .profile-section {
   display: flex;
@@ -102,7 +102,7 @@ main.personal-info-container {
 .profile-photo img {
   width: 150px;
   border-radius: 50%;
-  border: 3px solid #007bff;
+  border: 3px solid #00ff77;
   margin-bottom: 10px;
 }
 .info-form {
@@ -134,8 +134,8 @@ main.personal-info-container {
 }
 .edit-button {
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: #00ff77;
+  color: black;
   border: none;
   border-radius: 6px;
   font-weight: 600;
