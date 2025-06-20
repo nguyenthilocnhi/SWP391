@@ -1,15 +1,13 @@
 body {
   margin: 0;
-  padding: 0;
-  background-color: #f8fafc;
   font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
   color: #1f2937;
-  line-height: 1.6;
 }
 
 header {
   background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   padding: 10px 40px;
   position: sticky;
   top: 0;
@@ -72,20 +70,40 @@ header {
   height: 18px;
 }
 
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  main {
+    margin: 24px auto;
+  }
+}
 
 main {
   max-width: 800px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  margin: 40px auto;
+  padding: 0 16px;
 }
 
 .breadcrumb {
-  font-size: 0.875rem;
+  font-size: 14px;
   color: #6b7280;
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
 
 .main-title {
@@ -102,75 +120,46 @@ main {
   padding-left: 0.5rem;
 }
 
-.content p {
-  margin: 1rem 0;
+.section {
+  margin-bottom: 30px;
 }
 
-.content ul {
-  margin: 1rem 0;
-  padding-left: 1.5rem;
+.section h2 {
+  font-size: 24px;
+  color: #111827;
+  margin-bottom: 12px;
 }
 
-.content ul li {
-  margin-bottom: 0.5rem;
+ul {
+  padding-left: 20px;
 }
 
-.main-image {
-  width: 100%;
-  height: auto;
+ul li {
+  margin-bottom: 8px;
+  list-style: none;
+}
+
+.alert-box {
+  padding: 15px;
+  background-color: #fff7ed;
+  border-left: 5px solid #f97316;
   border-radius: 8px;
-  margin: 1rem 0;
+  color: #92400e;
+  margin-top: 16px;
 }
 
-footer.custom-footer {
-  margin-top: 4rem;
-  padding: 2rem;
-  background-color: #f3f4f6;
-  color: #374151;
+.final-call {
+  font-size: 16px;
+  padding: 16px;
+  background: #f0f9ff;
+  border-left: 5px solid #0a8e76;
+  border-radius: 8px;
+  margin-top: 40px;
+  color: #0369a1;
 }
 
-.footer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer-logo img {
-  height: 100px;
-}
-
-.footer-hotline {
-  text-align: right;
-}
-
-.footer-hotline strong {
-  font-size: 1.25rem;
-  color: #10b981;
-}
-
-.footer-info {
-  margin-top: 1rem;
-  font-size: 0.875rem;
-}
-
-@media (max-width: 768px) {
-  .nav-menu {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .footer-top {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  main {
-    padding: 1rem;
-  }
+.final-call a {
+  color: #0a8e76;
+  font-weight: 500;
+  text-decoration: underline;
 }

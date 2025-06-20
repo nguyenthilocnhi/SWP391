@@ -5203,19 +5203,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+    "C:\\Users\\HP\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\SWP391\\SWP391\\Backend\\GenderHealthSystem.csproj",
+      "projectUniqueName": "d:\\SWP391\\SWP391\\SWP391\\Backend\\GenderHealthSystem.csproj",
       "projectName": "GenderHealthSystem",
-      "projectPath": "D:\\SWP391\\SWP391\\Backend\\GenderHealthSystem.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\SWP391\\SWP391\\Backend\\obj\\",
+      "projectPath": "d:\\SWP391\\SWP391\\SWP391\\Backend\\GenderHealthSystem.csproj",
+      "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+      "outputPath": "d:\\SWP391\\SWP391\\SWP391\\Backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -5288,7 +5288,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.411/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.314/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
