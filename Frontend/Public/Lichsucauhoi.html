@@ -11,7 +11,7 @@
   <header>
     <div class="header-container">
       <div class="logo">
-        <a href="Trangchu.html">
+        <a href="TrangchuCustomer.html">
           <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" width="100" />
         </a>
       </div>
@@ -36,70 +36,82 @@
 
     <div class="filter-bar">
       <label for="status">Lọc theo trạng thái:</label>
-      <select id="status">
+      <select id="status" onchange="filterQuestions()">
         <option value="all">Tất cả</option>
         <option value="answered">Đã trả lời</option>
         <option value="pending">Đang chờ trả lời</option>
       </select>
     </div>
 
-    <div class="question-list">
-      <div class="question-card">
-        <div class="question-info">
-          <h2>Chu kỳ kinh nguyệt không đều phải làm sao?</h2>
-          <p><strong>Trạng thái:</strong> Đã trả lời</p>
-          <p><strong>Chuyên khoa:</strong> Phụ khoa</p>
-          <p><strong>Ngày gửi:</strong> 10/06/2025</p>
-        </div>
-        <button class="view-btn" onclick="showPopup('popup1')">Xem chi tiết</button>
-      </div>
-
-      <div class="question-card">
-        <div class="question-info">
-          <h2>Ngứa vùng kín có phải nhiễm trùng không?</h2>
-          <p><strong>Trạng thái:</strong> Đang chờ trả lời</p>
-          <p><strong>Chuyên khoa:</strong> Nam khoa</p>
-          <p><strong>Ngày gửi:</strong> 18/06/2025</p>
-        </div>
-        <button class="view-btn" onclick="showPopup('popup2')">Xem chi tiết</button>
-      </div>
-    </div>
+    <div class="question-list" id="questionList"></div>
   </main>
 
-  <!-- Popup Overlay -->
-  <div id="popup1" class="popup-overlay">
+  <div id="popupDetail" class="popup-overlay" style="display: none;">
     <div class="popup">
       <h3>Chi tiết câu hỏi</h3>
-      <p><strong>Câu hỏi:</strong> Chu kỳ kinh nguyệt không đều phải làm sao?</p>
-      <p><strong>Trả lời:</strong> Bạn nên theo dõi chu kỳ thêm 2 tháng nữa, tránh căng thẳng và ăn uống đủ chất. Nếu không cải thiện, nên khám chuyên khoa.</p>
-      <button onclick="closePopup('popup1')">Đóng</button>
+      <p><strong>Tiêu đề:</strong> <span id="popupSubject"></span></p>
+      <p><strong>Chuyên khoa:</strong> <span id="popupSpecialty"></span></p>
+      <p><strong>Trạng thái:</strong> <span id="popupStatus"></span></p>
+      <p><strong>Ngày gửi:</strong> <span id="popupDate"></span></p>
+      <p><strong>Nội dung:</strong> <span id="popupMessage"></span></p>
+      <button onclick="closePopup()">Đóng</button>
     </div>
   </div>
 
-  <div id="popup2" class="popup-overlay">
-    <div class="popup">
-      <h3>Chi tiết câu hỏi</h3>
-      <p><strong>Câu hỏi:</strong> Ngứa vùng kín có phải nhiễm trùng không?</p>
-      <p><em>Hệ thống đang xử lý câu hỏi của bạn...</em></p>
-      <button onclick="closePopup('popup2')">Đóng</button>
-    </div>
-  </div>
-
-  <script>
-    function showPopup(id) {
-      document.getElementById(id).style.display = "flex";
-    }
-
-    function closePopup(id) {
-      document.getElementById(id).style.display = "none";
-    }
-  </script>
   <div id="footer-placeholder"></div>
+
   <script>
+    let allQuestions = [];
+
+    function renderQuestions(filter = 'all') {
+      const container = document.getElementById("questionList");
+      container.innerHTML = "";
+      const filtered = allQuestions.filter(q => filter === "all" || q.status === filter);
+
+      filtered.forEach((q, index) => {
+        const card = document.createElement("div");
+        card.className = "question-card";
+        card.innerHTML = `
+          <div class="question-info">
+            <h2>${q.subject}</h2>
+            <p><strong>Trạng thái:</strong> ${q.status}</p>
+            <p><strong>Chuyên khoa:</strong> ${q.specialty}</p>
+            <p><strong>Ngày gửi:</strong> ${q.date}</p>
+          </div>
+          <button class="view-btn" onclick="showPopup(${index})">Xem chi tiết</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function showPopup(index) {
+      const q = allQuestions[index];
+      document.getElementById("popupSubject").textContent = q.subject;
+      document.getElementById("popupSpecialty").textContent = q.specialty;
+      document.getElementById("popupStatus").textContent = q.status;
+      document.getElementById("popupDate").textContent = q.date;
+      document.getElementById("popupMessage").textContent = q.message || "(Không có nội dung chi tiết)";
+      document.getElementById("popupDetail").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popupDetail").style.display = "none";
+    }
+
+    function filterQuestions() {
+      const value = document.getElementById("status").value;
+      renderQuestions(value);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      allQuestions = JSON.parse(localStorage.getItem("questionHistory")) || [];
+      renderQuestions();
+    });
+
     fetch('/Frontend/components/footer.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("footer-placeholder").innerHTML = data;
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("footer-placeholder").innerHTML = html;
       });
   </script>
 </body>

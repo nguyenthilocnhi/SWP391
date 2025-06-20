@@ -8,25 +8,33 @@
   <link rel="stylesheet" href="/Frontend/assets/css/datcauhoi.css">
 </head>
 <body>
+
+  <!-- Nút góc phải dẫn đến lịch sử -->
+  <div class="corner-history">
+    <a href="Lichsucauhoi.html" class="history-icon" title="Xem lịch sử câu hỏi">📋</a>
+  </div>
+
   <main class="question-form-container">
     <div class="logo">
       <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
     </div>
     <h1>Gửi Câu Hỏi Tư Vấn Sức Khỏe</h1>
-    <div class="navigate-history">
-  <a href="Lichsucauhoi.html" class="history-link">📋 Xem lịch sử câu hỏi</a>
-</div>
-    <div class="alert-success" id="successMessage">✅ Câu hỏi của bạn đã được gửi thành công!</div>
-    <form class="question-form" id="formQuestion">
-      <div class="anonymous-toggle">
-        <input type="checkbox" id="anonymousCheckbox">
-        <label for="anonymousCheckbox">Gửi ẩn danh</label>
-      </div>
 
-      <div id="nameField">
-        <label for="name">Họ và tên</label>
-        <input type="text" id="name" name="name">
-      </div>
+    <div class="alert-success" id="successMessage">✅ Câu hỏi của bạn đã được gửi thành công!</div>
+
+    <form class="question-form" id="formQuestion">
+      <div class="name-anonymous-row">
+  <div class="name-field" id="nameField">
+    <label for="name">Họ và tên</label>
+    <input type="text" id="name" name="name">
+  </div>
+
+  <div class="anonymous-toggle">
+    <input type="checkbox" id="anonymousCheckbox">
+    <label for="anonymousCheckbox">Gửi ẩn danh</label>
+  </div>
+</div>
+
 
       <label for="email">Email</label>
       <input type="email" id="email" name="email" required>
@@ -48,8 +56,7 @@
         <option value="namkhoa">Nam khoa</option>
         <option value="phukhoa">Phụ khoa</option>
         <option value="noitiet">Nội tiết</option>
-        <option value="xetnghiem">Xét nghiệm</option>
-        <option value="tamsinhly">Tâm sinh lý</option>
+        <option value="xetnghiem">Xét nghiệm</option>>
       </select>
 
       <label for="topic">Chủ đề câu hỏi</label>
@@ -73,46 +80,55 @@
   </main>
 
   <script>
-  document.getElementById("formQuestion").addEventListener("submit", function(e) {
-    e.preventDefault();
+    document.getElementById("formQuestion").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-    // Hiện thông báo thành công
-    const successMessage = document.getElementById("successMessage");
-    successMessage.style.display = "block";
+      const subject = document.getElementById("subject").value;
+      const specialty = document.getElementById("specialty").value;
+      const now = new Date();
+      const dateSent = now.toLocaleDateString('vi-VN');
+      const status = "Đang chờ trả lời";
 
-    // Ẩn form
-    document.querySelector(".question-form").style.display = "none";
+      const newQuestion = {
+        subject: subject,
+        specialty: specialty,
+        status: status,
+        date: dateSent
+      };
 
-    // Cuộn lên thông báo
-    successMessage.scrollIntoView({ behavior: "smooth" });
+      let questions = JSON.parse(localStorage.getItem("questionHistory")) || [];
+      questions.push(newQuestion);
+      localStorage.setItem("questionHistory", JSON.stringify(questions));
 
-    // Reset form (vẫn nên giữ để clear dữ liệu trước khi ẩn)
-    this.reset();
-    
-    // Reset trường ẩn danh và tên
-    document.getElementById("nameField").style.display = "block";
-    document.getElementById("name").required = true;
-    document.getElementById("anonymousCheckbox").checked = false;
+      document.getElementById("successMessage").style.display = "block";
+      this.reset();
+      document.getElementById("nameField").style.display = "block";
+      document.getElementById("name").required = true;
+      document.getElementById("anonymousCheckbox").checked = false;
 
-    // Tuỳ chọn: sau 10 giây hiện form lại (nếu muốn)
-    // setTimeout(() => {
-    //   document.querySelector(".question-form").style.display = "block";
-    //   successMessage.style.display = "none";
-    // }, 10000);
-  });
+      document.getElementById("successMessage").scrollIntoView({ behavior: 'smooth' });
+    });
 
-  document.getElementById("anonymousCheckbox").addEventListener("change", function () {
-    const nameField = document.getElementById("nameField");
-    const nameInput = document.getElementById("name");
-    if (this.checked) {
-      nameField.style.display = "none";
-      nameInput.required = false;
-    } else {
-      nameField.style.display = "block";
-      nameInput.required = true;
-    }
-  });
-</script>
+    document.getElementById("anonymousCheckbox").addEventListener("change", function () {
+      const nameField = document.getElementById("nameField");
+      const nameInput = document.getElementById("name");
+      if (this.checked) {
+        nameField.style.display = "none";
+        nameInput.required = false;
+      } else {
+        nameField.style.display = "block";
+        nameInput.required = true;
+      }
+    });
+    const isAnonymous = document.getElementById("anonymousCheckbox").checked;
+const newQuestion = {
+  subject,
+  specialty,
+  status,
+  date: dateSent,
+  isAnonymous
+};
+  </script>
 
 </body>
 </html>
