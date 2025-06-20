@@ -1,73 +1,193 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Đặt lịch dịch vụ</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đặt Lịch Dịch Vụ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/Frontend/assets/css/datlich.css">
 </head>
 <body>
-  <header>
-      <div class="logo">
-  <a href="Trangchu.html">
-    <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+
+  <!-- HEADER -->
+  <header class="main-header">
+    <div class="container header-container">
+      <a class="logo" href="TrangchuCustomer.html">
+        <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+      </a>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="gioithieu.html">Giới thiệu</a></li>
+          <li><a href="dichvu.html">Dịch vụ</a></li>
+          <li><a href="TrangBlog.html">Blog</a></li>
+          <li><a href="datlich.html" class="active">Đặt lịch</a></li>
+          <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-right">
+        <form class="search-form">
+          <input type="text" placeholder="Tìm kiếm...">
+          <button type="submit">
+            <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="search" />
+          </button>
+        </form>
+
+        <div class="notification-wrapper" id="notificationWrapper">
+  <a href="#" class="notification" id="notificationBell">
+    <img src="https://i.postimg.cc/TP8K01px/notifications-24dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz24.png" alt="Thông báo" class="notification-icon">
+    <span class="badge">3</span>
   </a>
-</div>
-    <nav>
-      <a href="#">Giới thiệu</a>
-      <a href="#">Dịch vụ</a>
-      <a href="#">Blog</a>
-      <a href="#">Đặt lịch</a>
-      <a href="#">Tư vấn viên</a>
-    </nav>
-    <div class="user-info">
-  <div class="avatar-frame">
-    <img src="avatar.png" alt="Avatar" class="avatar-img">
-  </div>
-  <div class="user-details">
-    <strong>Nguyễn Bích M</strong><br>
-    <span>Khách Hàng</span>
-  </div>
-  <div class="dropdown-icon">
-    <img src="https://i.postimg.cc/VLQjfTbm/Screenshot-2025-06-05-001841.png" alt="Dropdown">
+  <div class="notification-box hidden" id="notificationBox">
+    <p>Bạn có 3 thông báo mới</p>
+    <ul>
+      <li><div class="notify-content">Kết quả xét nghiệm đã có</div></li>
+      <li><div class="notify-content">Lịch hẹn khám vào ngày mai</div></li>
+      <li><div class="notify-content">Ưu đãi giảm 10% đang chờ bạn</div></li>
+    </ul>
   </div>
 </div>
 
-<div class="search-bar">
- <form class="search-form" action="#" method="get">
-      <input type="text" name="q" placeholder="Tìm kiếm" />
-      <button type="submit"><span>&#128269;</span></button>
-    </form>
-</div>
 
+        <div class="user-info">
+          <img src="https://i.postimg.cc/vZVQXR5n/avatar-default.png" alt="Avatar" class="avatar">
+          <div class="user-details">
+            <span class="user-name">Nguyễn Bích M</span>
+            <span class="user-role">Khách Hàng</span>
+          </div>
+          <span class="user-dropdown">&#9662;</span>
+          <div class="user-menu hidden">
+            <ul>
+              <li><a href="thongtincanhan.html">Thông tin cá nhân</a></li>
+              <li><a href="#">Theo dõi chu kỳ</a></li>
+              <li><a href="Lichsudatlich.html">Lịch sử đặt lịch</a></li>
+              <li><a href="#">Kết quả xét nghiệm</a></li>
+              <li><a href="#">Đánh giá dịch vụ</a></li>
+              <li><a href="#">Nhắc uống thuốc</a></li>
+              <li><a href="datcauhoi.html">Đặt câu hỏi</a></li>
+              <li><a href="#">Cài đặt</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <section class="booking-section">
+  <!-- MAIN CONTENT -->
+  <main class="booking-main">
+    <section class="booking-container">
       <div class="booking-image">
-        <img src="https://i.postimg.cc/ncBtysq0/Screenshot-2025-06-05-000159.png" alt="Bác sĩ và dụng cụ">
-      </div>
+  <img src="https://i.postimg.cc/ncBtysq0/Screenshot-2025-06-05-000159.png" alt="Minh họa dịch vụ">
+</div>
+
       <div class="booking-form">
-        <h2>ĐẶT LỊCH DỊCH VỤ</h2>
-        <form>
-          <label>Họ và tên<span>*</span></label>
-          <input type="text" required>
+        <h2>Đặt Lịch Dịch Vụ</h2>
+        <form onsubmit="return handleBookingSubmit(event)">
+  <label>Họ và tên <span>*</span></label>
+  <input type="text" required id="hoten">
 
-          <label>Số điện thoại<span>*</span></label>
-          <input type="tel" required>
+  <label>Số điện thoại <span>*</span></label>
+  <input type="tel" required id="sdt">
 
-          <label>Dịch vụ<span>*</span></label>
-          <input type="text" required>
+  <label>Dịch vụ <span>*</span></label>
+  <select required id="dichvu">
+    <option value="">-- Chọn dịch vụ --</option>
+    <option value="Tư Vấn">Tư Vấn</option>
+    <option value="Xét Nghiệm">Xét Nghiệm</option>
+  </select>
 
-          <label>Ngày đặt lịch<span>*</span></label>
-          <input type="date" required>
+  <label>Ngày đặt lịch <span>*</span></label>
+  <input type="date" required id="ngay">
 
-          <label>Lý do</label>
-          <textarea rows="5"></textarea>
+  <label>Lý do</label>
+  <textarea rows="4" placeholder="Ghi chú thêm (nếu có)..." id="lydo"></textarea>
 
-          <button type="submit">ĐẶT LỊCH</button>
-        </form>
+  <button type="submit">Đặt Lịch Ngay</button>
+</form>
+
       </div>
     </section>
   </main>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const bell = document.getElementById("notificationBell");
+    const box = document.getElementById("notificationBox");
+    const wrapper = document.getElementById("notificationWrapper");
+
+    // Mở/đóng hộp thông báo khi nhấn chuông
+    bell.addEventListener("click", function (e) {
+      e.preventDefault();
+      box.classList.toggle("hidden");
+    });
+
+    // Ẩn hộp thông báo khi click ra ngoài
+    document.addEventListener("click", function (event) {
+      if (!wrapper.contains(event.target)) {
+        box.classList.add("hidden");
+      }
+    });
+  });
+</script>
+ <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdownToggle = document.querySelector('.user-dropdown');
+      const userMenu = document.querySelector('.user-menu');
+
+      if (dropdownToggle && userMenu) {
+        dropdownToggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          userMenu.classList.toggle('hidden');
+        });
+
+        // Click ngoài thì ẩn menu
+        document.addEventListener('click', function (e) {
+          if (!userMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
+            userMenu.classList.add('hidden');
+          }
+        });
+      }
+    });
+  </script>
+<script>
+  function handleBookingSubmit(event) {
+    event.preventDefault(); // Ngăn submit mặc định
+
+    // Lấy dữ liệu từ form
+    const ngay = document.getElementById("ngay").value;
+    const dichVu = document.getElementById("dichvu").value;
+    const lyDo = document.getElementById("lydo").value;
+    const hoTen = document.getElementById("hoten").value;
+    const sdt = document.getElementById("sdt").value;
+
+    // Kiểm tra dữ liệu
+    if (!ngay || !dichVu || !hoTen || !sdt) {
+      alert("Vui lòng điền đầy đủ thông tin bắt buộc.");
+      return false;
+    }
+
+    const lich = {
+      hoTen: hoTen,
+      sdt: sdt,
+      ngay: ngay,
+      dichVu: dichVu,
+      lyDo: lyDo,
+      trangThai: "Đang xử lý"
+    };
+
+    // Lưu vào localStorage
+    const danhSachLich = JSON.parse(localStorage.getItem("lichDat")) || [];
+    danhSachLich.push(lich);
+    localStorage.setItem("lichDat", JSON.stringify(danhSachLich));
+
+    // Thông báo và chuyển trang
+    alert("Đặt lịch thành công!");
+    window.location.href = "Thanhcongdatlich.html";
+    return false;
+  }
+</script>
+
+
+
 </body>
 </html>

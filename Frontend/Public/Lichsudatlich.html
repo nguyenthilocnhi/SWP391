@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lịch Sử Đặt Lịch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/Frontend/assets/css/lichsudatlich.css">
+</head>
+<body>
+
+   <!-- HEADER -->
+  <header class="main-header">
+    <div class="container header-container">
+      <a class="logo" href="TrangchuCustomer.html">
+        <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+      </a>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a href="gioithieu.html">Giới thiệu</a></li>
+          <li><a href="dichvu.html">Dịch vụ</a></li>
+          <li><a href="TrangBlog.html">Blog</a></li>
+          <li><a href="datlich.html" class="active">Đặt lịch</a></li>
+          <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-right">
+        <form class="search-form">
+          <input type="text" placeholder="Tìm kiếm...">
+          <button type="submit">
+            <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="search" />
+          </button>
+        </form>
+
+        <div class="notification-wrapper" id="notificationWrapper">
+  <a href="#" class="notification" id="notificationBell">
+    <img src="https://i.postimg.cc/TP8K01px/notifications-24dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz24.png" alt="Thông báo" class="notification-icon">
+    <span class="badge">3</span>
+  </a>
+  <div class="notification-box hidden" id="notificationBox">
+    <p>Bạn có 3 thông báo mới</p>
+    <ul>
+      <li><div class="notify-content">Kết quả xét nghiệm đã có</div></li>
+      <li><div class="notify-content">Lịch hẹn khám vào ngày mai</div></li>
+      <li><div class="notify-content">Ưu đãi giảm 10% đang chờ bạn</div></li>
+    </ul>
+  </div>
+</div>
+
+
+        <div class="user-info">
+          <img src="https://i.postimg.cc/vZVQXR5n/avatar-default.png" alt="Avatar" class="avatar">
+          <div class="user-details">
+            <span class="user-name">Nguyễn Bích M</span>
+            <span class="user-role">Khách Hàng</span>
+          </div>
+          <span class="user-dropdown">&#9662;</span>
+          <div class="user-menu hidden">
+            <ul>
+              <li><a href="thongtincanhan.html">Thông tin cá nhân</a></li>
+              <li><a href="#">Theo dõi chu kỳ</a></li>
+              <li><a href="#">Lịch sử đặt lịch</a></li>
+              <li><a href="#">Kết quả xét nghiệm</a></li>
+              <li><a href="#">Đánh giá dịch vụ</a></li>
+              <li><a href="#">Nhắc uống thuốc</a></li>
+              <li><a href="datcauhoi.html">Đặt câu hỏi</a></li>
+              <li><a href="#">Cài đặt</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!--MAIN-CONTAINER-->
+  <main class="history-main">
+    <div class="container">
+      <h2>Lịch Sử Đặt Lịch</h2>
+      <table class="history-table">
+        <thead>
+  <tr>
+    <th>Ngày</th>
+    <th>Dịch vụ</th>
+    <th>Lý do</th>
+    <th>Họ tên</th>
+    <th>SĐT</th>
+    <th>Trạng thái</th>
+    <th>Thao tác</th>
+  </tr>
+</thead>
+<tbody></tbody> 
+      </table>
+    </div>
+  </main>
+<!-- cho menu user xổ xuống -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdownToggle = document.querySelector('.user-dropdown');
+      const userMenu = document.querySelector('.user-menu');
+
+      if (dropdownToggle && userMenu) {
+        dropdownToggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          userMenu.classList.toggle('hidden');
+        });
+
+        // Click ngoài thì ẩn menu
+        document.addEventListener('click', function (e) {
+          if (!userMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
+            userMenu.classList.add('hidden');
+          }
+        });
+      }
+    });
+  </script>
+
+
+  <!-- JavaScript cập nhật thời gian "X phút trước" tự động -->
+  <script>
+    function timeAgo(dateString) {
+      const now = new Date();
+      const date = new Date(dateString);
+      const seconds = Math.floor((now - date) / 1000);
+
+      const intervals = [
+        { label: 'năm', seconds: 31536000 },
+        { label: 'tháng', seconds: 2592000 },
+        { label: 'ngày', seconds: 86400 },
+        { label: 'giờ', seconds: 3600 },
+        { label: 'phút', seconds: 60 },
+        { label: 'giây', seconds: 1 },
+      ];
+
+      for (const interval of intervals) {
+        const count = Math.floor(seconds / interval.seconds);
+        if (count >= 1) {
+          return `${count} ${interval.label} trước`;
+        }
+      }
+      return 'Vừa xong';
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const notifications = document.querySelectorAll('.notify-content');
+
+      notifications.forEach(content => {
+        const timeString = content.getAttribute('data-time');
+        const timeSpan = content.querySelector('.notify-time');
+
+        if (timeString && timeSpan) {
+          timeSpan.textContent = timeAgo(timeString);
+        }
+      });
+    });
+  </script>
+
+
+  <!-- gọi thông báo -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const notificationIcon = document.querySelector('.notification');
+      const notificationBox = document.querySelector('.notification-box');
+      const badge = document.querySelector('.badge');
+
+      if (notificationIcon && notificationBox) {
+        // Toggle hiển thị thông báo khi click chuông
+        notificationIcon.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation(); // Ngăn lan sự kiện click ra ngoài
+          notificationBox.classList.toggle('hidden');
+
+          // Tuỳ chọn: reset badge nếu cần
+          badge.innerText = '0';
+        });
+
+        // Click bên ngoài thì ẩn menu
+        document.addEventListener('click', function (e) {
+          const clickedOutside = !notificationBox.contains(e.target) && !notificationIcon.contains(e.target);
+          if (clickedOutside) {
+            notificationBox.classList.add('hidden');
+          }
+        });
+      }
+    });
+  </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const lichTableBody = document.querySelector(".history-table tbody");
+    const lichList = JSON.parse(localStorage.getItem("lichDat")) || [];
+
+    lichList.forEach(lich => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${lich.ngay}</td>
+        <td>${lich.dichVu}</td>
+        <td>${lich.lyDo}</td>
+        <td>${lich.hoTen || ''}</td>
+        <td>${lich.sdt || ''}</td>
+        <td><span class="status pending">${lich.trangThai}</span></td>
+        <td><button class="btn-view">Xem</button></td>
+      `;
+      lichTableBody.appendChild(row);
+    });
+  });
+</script>
+
+<!-- gọi footer -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
+</body>
+</html>
