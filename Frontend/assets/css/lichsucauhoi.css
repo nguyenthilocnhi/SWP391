@@ -1,147 +1,171 @@
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
+}
+
+body {
   font-family: 'Inter', sans-serif;
   background-color: #f8fafc;
   color: #1f2937;
 }
 
+.header-container {
+  background-color: #ffffff;
+  padding: 16px 40px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: sticky; 
+  top: 0;
+  z-index: 1000;
+}
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.main-nav a:hover {
+  color: #2563eb;
+}
+
 .history-container {
-  max-width: 800px;
-  margin: 60px auto;
+  max-width: 900px;
+  margin: 40px auto;
   padding: 0 20px;
 }
 
 h1 {
-  font-size: 28px;
-  color: #0f766e;
+  font-size: 24px;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+}
+
+.go-ask {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.ask-btn {
+  padding: 10px 18px;
+  background-color: #10b981;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.ask-btn:hover {
+  background-color: #059669;
+}
+
+.filter-bar {
+  margin-bottom: 30px;
+  text-align: right;
+}
+
+.filter-bar select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .question-card {
-  background-color: #ffffff;
-  padding: 20px 24px;
+  background: #ffffff;
+  padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 24px;
-  transition: transform 0.2s ease;
-}
-
-.question-card:hover {
-  transform: translateY(-3px);
-}
-
-.question-header {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
-.status {
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  color: white;
+.question-info {
+  flex: 1;
+  margin-right: 20px;
 }
 
-.status.completed {
-  background-color: #22c55e;
+.question-info h2 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #0f172a;
 }
 
-.status.pending {
-  background-color: #f59e0b;
-}
-
-.detail-link {
-  display: inline-block;
-  margin-top: 12px;
-  color: #0284c7;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.detail-link:hover {
-  text-decoration: underline;
-}
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f7fff7;
-}
-.container {
-  width: 90%;
-  max-width: 1100px;
-  margin: auto;
-}
-
-header {
-  background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  padding: 10px 40px;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo img {
-  height: 70px;
-}
-
-.main-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
-  padding: 0;
-  margin: 0;
-}
-
-.main-nav ul li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  font-size: 16px;
-  transition: color 0.3s ease;
-}
-
-.main-nav ul li a:hover {
-  color: #10b981;
-}
-
-/* Search form */
-.search-form {
-  display: flex;
-  align-items: center;
-}
-
-.search-form input {
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  outline: none;
+.question-info p {
+  margin-bottom: 6px;
   font-size: 14px;
 }
 
-.search-form button {
-  background: none;
+.view-btn {
+  background-color: #3b82f6;
+  color: white;
   border: none;
-  margin-left: 8px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.view-btn:hover {
+  background-color: #2563eb;
+}
+
+/* Popup overlay */
+.popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background-color: white;
+  padding: 25px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.popup h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.popup p {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.popup button {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
-.search-form button img {
-  width: 18px;
-  height: 18px;
+.popup button:hover {
+  background-color: #dc2626;
 }
-

@@ -73,26 +73,46 @@
   </main>
 
   <script>
-    document.getElementById("formQuestion").addEventListener("submit", function(e) {
-      e.preventDefault();
-      document.getElementById("successMessage").style.display = "block";
-      this.reset();
-      document.getElementById("nameField").style.display = "block";
-      document.getElementById("name").required = true;
-      document.getElementById("anonymousCheckbox").checked = false;
-    });
+  document.getElementById("formQuestion").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-    document.getElementById("anonymousCheckbox").addEventListener("change", function () {
-      const nameField = document.getElementById("nameField");
-      const nameInput = document.getElementById("name");
-      if (this.checked) {
-        nameField.style.display = "none";
-        nameInput.required = false;
-      } else {
-        nameField.style.display = "block";
-        nameInput.required = true;
-      }
-    });
-  </script>
+    // Hiện thông báo thành công
+    const successMessage = document.getElementById("successMessage");
+    successMessage.style.display = "block";
+
+    // Ẩn form
+    document.querySelector(".question-form").style.display = "none";
+
+    // Cuộn lên thông báo
+    successMessage.scrollIntoView({ behavior: "smooth" });
+
+    // Reset form (vẫn nên giữ để clear dữ liệu trước khi ẩn)
+    this.reset();
+    
+    // Reset trường ẩn danh và tên
+    document.getElementById("nameField").style.display = "block";
+    document.getElementById("name").required = true;
+    document.getElementById("anonymousCheckbox").checked = false;
+
+    // Tuỳ chọn: sau 10 giây hiện form lại (nếu muốn)
+    // setTimeout(() => {
+    //   document.querySelector(".question-form").style.display = "block";
+    //   successMessage.style.display = "none";
+    // }, 10000);
+  });
+
+  document.getElementById("anonymousCheckbox").addEventListener("change", function () {
+    const nameField = document.getElementById("nameField");
+    const nameInput = document.getElementById("name");
+    if (this.checked) {
+      nameField.style.display = "none";
+      nameInput.required = false;
+    } else {
+      nameField.style.display = "block";
+      nameInput.required = true;
+    }
+  });
+</script>
+
 </body>
 </html>

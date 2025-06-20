@@ -11,8 +11,8 @@
   <header>
     <div class="header-container">
       <div class="logo">
-        <a href="/Frontend/Public/Trangchu.html">
-          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+        <a href="Trangchu.html">
+          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" width="100" />
         </a>
       </div>
       <nav class="main-nav">
@@ -20,10 +20,8 @@
           <li><a href="gioithieu.html">Giới thiệu</a></li>
           <li><a href="dichvu.html">Dịch vụ</a></li>
           <li><a href="TrangBlog.html">Blog</a></li>
+          <li><a href="datlich.html">Đặt lịch</a></li>
           <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-          <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
-          <li><a href="dangky.html">Đăng ký</a></li>
-          <li><a href="lichsu.html">Lịch sử câu hỏi</a></li>
         </ul>
       </nav>
     </div>
@@ -46,35 +44,57 @@
     </div>
 
     <div class="question-list">
-      <div class="question-item" onclick="showDetail('detail1')">
-        <h2>Chu kỳ kinh nguyệt không đều phải làm sao?</h2>
-        <p><strong>Trạng thái:</strong> Đã trả lời</p>
-        <p><strong>Chuyên khoa:</strong> Phụ khoa</p>
-        <p><strong>Ngày gửi:</strong> 10/06/2025</p>
+      <div class="question-card">
+        <div class="question-info">
+          <h2>Chu kỳ kinh nguyệt không đều phải làm sao?</h2>
+          <p><strong>Trạng thái:</strong> Đã trả lời</p>
+          <p><strong>Chuyên khoa:</strong> Phụ khoa</p>
+          <p><strong>Ngày gửi:</strong> 10/06/2025</p>
+        </div>
+        <button class="view-btn" onclick="showPopup('popup1')">Xem chi tiết</button>
       </div>
-      <div class="question-item" onclick="showDetail('detail2')">
-        <h2>Ngứa vùng kín có phải nhiễm trùng không?</h2>
-        <p><strong>Trạng thái:</strong> Đang chờ trả lời</p>
-        <p><strong>Chuyên khoa:</strong> Nam khoa</p>
-        <p><strong>Ngày gửi:</strong> 18/06/2025</p>
+
+      <div class="question-card">
+        <div class="question-info">
+          <h2>Ngứa vùng kín có phải nhiễm trùng không?</h2>
+          <p><strong>Trạng thái:</strong> Đang chờ trả lời</p>
+          <p><strong>Chuyên khoa:</strong> Nam khoa</p>
+          <p><strong>Ngày gửi:</strong> 18/06/2025</p>
+        </div>
+        <button class="view-btn" onclick="showPopup('popup2')">Xem chi tiết</button>
       </div>
     </div>
   </main>
 
-  <!-- Chi tiết dạng popup -->
-  <div id="detail1" class="popup">
-    <h3>Chi tiết câu hỏi</h3>
-    <p><strong>Câu hỏi:</strong> Chu kỳ kinh nguyệt không đều phải làm sao?</p>
-    <p><strong>Trả lời:</strong> Bạn nên theo dõi chu kỳ thêm 2 tháng nữa, tránh căng thẳng và ăn uống đủ chất. Nếu không cải thiện, nên khám chuyên khoa.</p>
-    <button onclick="closePopup('detail1')">Đóng</button>
+  <!-- Popup Overlay -->
+  <div id="popup1" class="popup-overlay">
+    <div class="popup">
+      <h3>Chi tiết câu hỏi</h3>
+      <p><strong>Câu hỏi:</strong> Chu kỳ kinh nguyệt không đều phải làm sao?</p>
+      <p><strong>Trả lời:</strong> Bạn nên theo dõi chu kỳ thêm 2 tháng nữa, tránh căng thẳng và ăn uống đủ chất. Nếu không cải thiện, nên khám chuyên khoa.</p>
+      <button onclick="closePopup('popup1')">Đóng</button>
+    </div>
   </div>
-  <div id="detail2" class="popup">
-    <h3>Chi tiết câu hỏi</h3>
-    <p><strong>Câu hỏi:</strong> Ngứa vùng kín có phải nhiễm trùng không?</p>
-    <p><em>Hệ thống đang xử lý câu hỏi của bạn...</em></p>
-    <button onclick="closePopup('detail2')">Đóng</button>
+
+  <div id="popup2" class="popup-overlay">
+    <div class="popup">
+      <h3>Chi tiết câu hỏi</h3>
+      <p><strong>Câu hỏi:</strong> Ngứa vùng kín có phải nhiễm trùng không?</p>
+      <p><em>Hệ thống đang xử lý câu hỏi của bạn...</em></p>
+      <button onclick="closePopup('popup2')">Đóng</button>
+    </div>
   </div>
-<div id="footer-placeholder"></div>
+
+  <script>
+    function showPopup(id) {
+      document.getElementById(id).style.display = "flex";
+    }
+
+    function closePopup(id) {
+      document.getElementById(id).style.display = "none";
+    }
+  </script>
+  <div id="footer-placeholder"></div>
   <script>
     fetch('/Frontend/components/footer.html')
       .then(response => response.text())
@@ -82,8 +102,5 @@
         document.getElementById("footer-placeholder").innerHTML = data;
       });
   </script>
-
-
-  <script src="/Frontend/assets/js/lichsu.js"></script>
 </body>
 </html>
