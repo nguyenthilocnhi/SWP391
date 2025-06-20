@@ -1,0 +1,383 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dell\\source\\repos\\Web\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\servicebooking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\servicebooking.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\servicefeedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\servicefeedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\service.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\service.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\postdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\postdetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\contentposttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\contentposttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\consultationfeedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\consultationfeedback.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\dbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\dto\\updateuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\dto\\updateuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\consultationtype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\consultationtype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\faq.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\faq.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\services\\emailotp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\services\\emailotp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\models\\consultant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\models\\consultant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\jwt\\jwtsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\jwt\\jwtsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|c:\\users\\dell\\source\\repos\\web\\web\\web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{F5645C7E-9C9F-4213-A77F-4B1B26E1BFE0}|Web\\Web.csproj|solutionrelative:web\\web.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ServiceFeedback.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\ServiceFeedback.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\ServiceFeedback.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\ServiceFeedback.cs",
+              "RelativeToolTip": "Web\\Models\\ServiceFeedback.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T00:34:46.827Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ServiceBooking.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\ServiceBooking.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\ServiceBooking.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\ServiceBooking.cs",
+              "RelativeToolTip": "Web\\Models\\ServiceBooking.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwC8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T00:34:45.489Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ContentPostType.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\ContentPostType.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\ContentPostType.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\ContentPostType.cs",
+              "RelativeToolTip": "Web\\Models\\ContentPostType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T16:04:58.136Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PostDetail.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\PostDetail.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\PostDetail.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\PostDetail.cs",
+              "RelativeToolTip": "Web\\Models\\PostDetail.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T00:34:42.577Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Service.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\Service.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\Service.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\Service.cs",
+              "RelativeToolTip": "Web\\Models\\Service.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA2wBwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T16:01:38.794Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "dbcontext.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\dbcontext.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\dbcontext.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\dbcontext.cs",
+              "RelativeToolTip": "Web\\Models\\dbcontext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-18T02:10:30.632Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "Web\\Controllers\\UsersController.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "Web\\Controllers\\UsersController.cs",
+              "ViewState": "AgIAAIMBAAAAAAAAAAAowI4BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T05:00:26.827Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UpdateUser.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\DTO\\UpdateUser.cs",
+              "RelativeDocumentMoniker": "Web\\DTO\\UpdateUser.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\DTO\\UpdateUser.cs",
+              "RelativeToolTip": "Web\\DTO\\UpdateUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T00:21:43.27Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\User.cs",
+              "RelativeToolTip": "Web\\Models\\User.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T23:58:18.928Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ConsultationFeedback.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\ConsultationFeedback.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\ConsultationFeedback.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\ConsultationFeedback.cs",
+              "RelativeToolTip": "Web\\Models\\ConsultationFeedback.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T15:59:33.411Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ConsultationType.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\ConsultationType.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\ConsultationType.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\ConsultationType.cs",
+              "RelativeToolTip": "Web\\Models\\ConsultationType.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAuwCAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T16:05:01.111Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Faq.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\Faq.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\Faq.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\Faq.cs",
+              "RelativeToolTip": "Web\\Models\\Faq.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-18T02:13:25.631Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Post.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\Post.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\Post.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\Post.cs",
+              "RelativeToolTip": "Web\\Models\\Post.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T15:24:27.465Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Customer.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\Customer.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\Customer.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\Customer.cs",
+              "RelativeToolTip": "Web\\Models\\Customer.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-18T02:13:23.338Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Program.cs",
+              "RelativeDocumentMoniker": "Web\\Program.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Program.cs",
+              "RelativeToolTip": "Web\\Program.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAmwBQAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T01:05:46.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\appsettings.json",
+              "RelativeDocumentMoniker": "Web\\appsettings.json",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\appsettings.json",
+              "RelativeToolTip": "Web\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-03T15:46:28.295Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "EmailOTP.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Services\\EmailOTP.cs",
+              "RelativeDocumentMoniker": "Web\\Services\\EmailOTP.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Services\\EmailOTP.cs",
+              "RelativeToolTip": "Web\\Services\\EmailOTP.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-05T03:00:56.904Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "JwtSettings.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\JWT\\JwtSettings.cs",
+              "RelativeDocumentMoniker": "Web\\JWT\\JwtSettings.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\JWT\\JwtSettings.cs",
+              "RelativeToolTip": "Web\\JWT\\JwtSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T05:56:00.741Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Consultant.cs",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\Consultant.cs",
+              "RelativeDocumentMoniker": "Web\\Models\\Consultant.cs",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Models\\Consultant.cs",
+              "RelativeToolTip": "Web\\Models\\Consultant.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T15:59:31.595Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Web\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Web\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-04T04:52:03.111Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Web.csproj",
+              "DocumentMoniker": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Web.csproj",
+              "RelativeDocumentMoniker": "Web\\Web.csproj",
+              "ToolTip": "C:\\Users\\dell\\source\\repos\\Web\\Web\\Web.csproj",
+              "RelativeToolTip": "Web\\Web.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-04T05:44:29.46Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
