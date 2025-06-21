@@ -13,7 +13,7 @@
   <header>
     <div class="header-container">
       <div class="logo">
-        <a href="/Frontend/Public/Guest/Trangchu.html">
+        <a href="/Frontend/Public/Trangchu.html">
           <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
         </a>
       </div>
@@ -42,28 +42,78 @@
     <div class="intro-banner">
       <h1>KIẾN THỨC Y KHOA & CHIA SẺ KINH NGHIỆM</h1>
     </div>
-    <div id="blogList" class="blog-grid"></div>
 
-    <script>
-      fetch('Frontend/assets/data/TrangBlog.json')
-        .then(response => response.json())
-        .then(data => {
-          const list = document.getElementById('blogList');
-          data.forEach(post => {
-            const link = document.createElement('a');
-            link.href = `blogchitiet.html?slug=${post.slug}`;
-            link.className = 'blog-card';
-            link.innerHTML = `
-            <img src="${post.image}" alt="${post.title}">
-            <div class="blog-content">
-              <div class="blog-title">${post.title}</div>
-              <div class="blog-date">${post.date}</div>
-            </div>
-          `;
-            list.appendChild(link);
-          });
-        });
-    </script>
+    <section class="blog-grid">
+      <article class="blog-card">
+        <a href="blogchitiet_1.html">
+          <img src="https://i.postimg.cc/90x2yyHm/H-nh-tin-t-c-1.png" alt="Chu kì kinh nguyệt">
+          <div class="content">
+            <h2>Chu kì kinh nguyệt là gì?</h2>
+            <p>1 tháng trước</p>
+          </div>
+        </a>
+      </article>
+
+      <article class="blog-card">
+        <a href="blogchitiet_2.html">
+          <img src="https://i.postimg.cc/RVF44pwN/H-nh-tin-t-c-2.jpg" alt="HPV">
+          <div class="content">
+            <h2>Hướng dẫn đọc kết quả xét nghiệm HPV</h2>
+            <p>1 tháng trước</p>
+          </div>
+        </a>
+      </article>
+
+      <article class="blog-card">
+        <a href="blogchitiet_3.html">
+          <img src="https://i.postimg.cc/SNvqsLGV/H-nh-tin-t-c-3.jpg" alt="Bệnh phụ nữ">
+          <div class="content">
+            <h2>Các bệnh tình dục nữ là gì? Dấu hiệu bệnh</h2>
+            <p>1 tháng trước</p>
+          </div>
+        </a>
+      </article>
+
+      <article class="blog-card">
+        <a href="blogchitiet_4.html">
+          <img src="https://i.postimg.cc/tTkGHFT3/H-nh-tin-t-c-4.jpg" alt="Bệnh nam giới">
+          <div class="content">
+            <h2>Các bệnh tình dục nam là gì? Dấu hiệu bệnh</h2>
+            <p>1 tháng trước</p>
+          </div>
+        </a>
+      </article>
+
+      <article class="blog-card">
+        <a href="blogchitiet_5.html">
+          <img src="https://i.postimg.cc/YSB5GdLN/H-nh-tin-t-c-5.jpg" alt="Herpes">
+          <div class="content">
+            <h2>Bệnh Herpes lây qua đường nào?</h2>
+            <p>1 tháng trước</p>
+          </div>
+        </a>
+      </article>
+
+      <article class="blog-card">
+        <a href="blogchitiet_6.html">
+          <img src="https://i.postimg.cc/nc65g328/H-nh-tin-t-c-6.jpg" alt="HPV và thai sản">
+          <div class="content">
+            <h2>Nhiễm HPV có mang thai được không?</h2>
+            <p>1 tháng trước</p>
+          </div>
+        </a>
+      </article>
+
+      <article class="blog-card">
+        <a href="blogchitiet_7.html">
+          <img src="https://i.postimg.cc/cLwjSfkv/H-nh-tin-t-c-7.jpg" alt="Mãn kinh">
+          <div class="content">
+            <h2>Sinh lý nữ giới tuổi mãn kinh thay đổi thế nào?</h2>
+            <p>1 tháng trước</p>
+          </div>
+        </a>
+      </article>
+    </section>
 
     <div class="pagination">
       <span class="page active">1</span>
@@ -80,30 +130,6 @@
       .then(response => response.text())
       .then(data => {
         document.getElementById("footer-placeholder").innerHTML = data;
-      });
-  </script>
-
-
-  <script>
-    fetch('/Frontend/data/blog-data.json')
-      .then(response => response.json())
-      .then(data => {
-        const blogGrid = document.querySelector('.blog-grid');
-        blogGrid.innerHTML = '';
-
-        data.forEach(post => {
-          blogGrid.innerHTML += `
-          <article class="blog-card">
-            <a href="${post.slug}.html">
-              <img src="${post.image}" alt="${post.title}">
-              <div class="content">
-                <h2>${post.title}</h2>
-                <p>${post.time}</p>
-              </div>
-            </a>
-          </article>
-        `;
-        });
       });
   </script>
 
