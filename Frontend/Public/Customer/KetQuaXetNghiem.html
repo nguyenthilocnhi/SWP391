@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kết Quả Xét Nghiệm</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/Frontend/assets/css/ketquaxetnghiem.css">
+</head>
+<body>
+
+  <h2>Kết Quả Xét Nghiệm</h2>
+
+  <table class="result-table">
+  <thead>
+    <tr>
+      <th>STT</th>
+      <th>Họ tên</th>
+      <th>Loại xét nghiệm</th>
+      <th>Kết quả</th>
+      <th>Ngày xét nghiệm</th>
+      <th>Ngày trả kết quả</th> <!-- Thêm dòng này -->
+      <th>Ghi chú</th>
+    </tr>
+  </thead>
+  <tbody id="resultBody">
+    <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+  </tbody>
+</table>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const ketQuaList = JSON.parse(localStorage.getItem("ketQuaXetNghiem")) || [];
+
+      const tbody = document.getElementById("resultBody");
+      tbody.innerHTML = "";
+
+      if (ketQuaList.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Chưa có kết quả xét nghiệm.</td></tr>';
+        return;
+      }
+
+      ketQuaList.forEach(kq => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${kq.ngay}</td>
+          <td>${kq.loai}</td>
+          <td>${kq.ketQua}</td>
+          <td class="note">${kq.ghiChu || "-"}</td>
+          <td class="${kq.trangThai === 'Bình thường' ? 'status-normal' : 'status-warning'}">
+            ${kq.trangThai}
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    });
+    function renderKetQua(resultList) {
+  const tbody = document.getElementById("resultBody");
+  tbody.innerHTML = "";
+
+  resultList.forEach((item, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${item.hoTen}</td>
+      <td>${item.loai}</td>
+      <td>${item.ketQua}</td>
+      <td>${item.ngayXetNghiem}</td>
+      <td>${item.ngayTra}</td> <!-- Hiển thị ngày trả -->
+      <td>${item.ghiChu || ""}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+  </script>
+  
+
+</body>
+</html>
