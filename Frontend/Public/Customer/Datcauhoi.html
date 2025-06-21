@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Đặt Câu Hỏi</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/Frontend/assets/css/datcauhoi.css">
 </head>
+
 <body>
 
   <!-- Nút góc phải dẫn đến lịch sử -->
@@ -14,28 +16,28 @@
     <a href="Lichsucauhoi.html" class="history-icon" title="Xem lịch sử câu hỏi">📋</a>
   </div>
 
-  <main class="question-form-container"> 
+  <main class="question-form-container">
     <div class="logo">
-  <a href="TrangchuCustomer.html">
-    <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-  </a>
-</div>
+      <a href="/Frontend/Public/Guest/TrangchuCustomer.html">
+        <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+      </a>
+    </div>
     <h1>Gửi Câu Hỏi Tư Vấn Sức Khỏe</h1>
 
     <div class="alert-success" id="successMessage">✅ Câu hỏi của bạn đã được gửi thành công!</div>
 
     <form class="question-form" id="formQuestion">
       <div class="name-anonymous-row">
-  <div class="name-field" id="nameField">
-    <label for="name">Họ và tên</label>
-    <input type="text" id="name" name="name">
-  </div>
+        <div class="name-field" id="nameField">
+          <label for="name">Họ và tên</label>
+          <input type="text" id="name" name="name">
+        </div>
 
-  <div class="anonymous-toggle">
-    <input type="checkbox" id="anonymousCheckbox">
-    <label for="anonymousCheckbox">Gửi ẩn danh</label>
-  </div>
-</div>
+        <div class="anonymous-toggle">
+          <input type="checkbox" id="anonymousCheckbox">
+          <label for="anonymousCheckbox">Gửi ẩn danh</label>
+        </div>
+      </div>
 
 
       <label for="email">Email</label>
@@ -82,7 +84,7 @@
   </main>
 
   <script>
-    document.getElementById("formQuestion").addEventListener("submit", function(e) {
+    document.getElementById("formQuestion").addEventListener("submit", function (e) {
       e.preventDefault();
 
       const subject = document.getElementById("subject").value;
@@ -123,14 +125,15 @@
       }
     });
     const isAnonymous = document.getElementById("anonymousCheckbox").checked;
-const newQuestion = {
-  subject,
-  specialty,
-  status,
-  date: dateSent,
-  isAnonymous
-};
+    const newQuestion = {
+      subject,
+      specialty,
+      status,
+      date: dateSent,
+      isAnonymous
+    };
   </script>
 
 </body>
+
 </html>
