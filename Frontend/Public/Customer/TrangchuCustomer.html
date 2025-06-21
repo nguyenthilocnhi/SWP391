@@ -26,19 +26,23 @@
     </script>
 
     <!-- Gọi file header và khởi động JS sau khi chèn xong -->
-    <script src="/Frontend/assets/js/header_customer.js"></script>  <!-- Đảm bảo file JS được load trước -->
-    <script>
-      fetch('/Frontend/components/header_customer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById("header-placeholder").innerHTML = data;
+   <!-- GỌI HEADER -->
+<div id="header-placeholder"></div>
+<script>
+  fetch('/Frontend/components/header_customer.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("header-placeholder").innerHTML = data;
 
-          // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
-          if (typeof initHeader === 'function') {
-            initHeader();
-          }
-        });
-    </script>
+      // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+      if (typeof initHeader === 'function') {
+        initHeader();
+      }
+    });
+</script>
+<script src="/Frontend/assets/js/header_customer.js"></script>
+
+
 
   <!-- tạo 1 nhãn thông báo -->
    <div id="alert-box" class="alert-box hidden">
