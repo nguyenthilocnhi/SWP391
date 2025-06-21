@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đặt Lịch Xét Nghiệm</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f0fdf4; /* xanh nhạt */
+      margin: 0;
+      padding: 0;
+    }
+
+    .booking-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 16px;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.1); /* shadow xanh lá */
+      max-width: 500px;
+      width: 100%;
+      border: 2px solid #34D399; /* viền xanh lá */
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #059669; /* tiêu đề xanh lá đậm */
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 16px;
+      display: block;
+      color: #065f46; /* màu chữ label xanh đậm */
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #a7f3d0;
+      border-radius: 8px;
+      font-size: 14px;
+      background-color: #f0fdf4;
+      transition: border 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #34D399;
+    }
+
+    button {
+      margin-top: 24px;
+      width: 100%;
+      padding: 12px;
+      background-color: #10B981;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #059669;
+    }
+
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<section class="booking-section">
+  <div class="form-container">
+    <h2>Đặt Lịch Xét Nghiệm</h2>
+    <form onsubmit="return handleTestBooking(event)">
+      <label>Họ và tên <span>*</span></label>
+      <input type="text" id="hoten" required>
+
+      <label>Số điện thoại <span>*</span></label>
+      <input type="tel" id="sdt" required>
+
+      <label>Ngày xét nghiệm <span>*</span></label>
+      <input type="date" id="ngay" required>
+
+      <label>Giờ xét nghiệm <span>*</span></label>
+      <input type="time" id="gio" required>
+
+      <label>Loại xét nghiệm <span>*</span></label>
+      <select id="loaiXetNghiem" required>
+        <option value="">-- Chọn loại --</option>
+        <option value="HIV Ag/Ab combo (HIV test thế hệ 4)">Xét nghiệm HIV</option>
+        <option value="Giang mai (RPR/TPHA)">Xét nghiệm Giang Mai</option>
+        <option value="Lậu (PCR hoặc nhuộm soi)">Xét nghiệm Lậu</option>
+        <option value="Chlamydia(PCR)">Xét nghiệm PCR</option>
+        <option value="HPV">Xét nghiệm Cổ Tử Cung</option>
+        <option value="Virus Zika">Xét nghiệm Virus Zika</option>
+        <option value="Pap smear">Xét nghiệm Tế bào học cổ tử cung</option>
+        <option value="Sùi mào gà(HPV tuýp nguy cơ thấp)">Xét nghiệm Sùi Mào Gà</option>
+        <option value="Herpes Simplex Virus">Xét nghiệm HSV 1 & 2</option>
+        <option value="Hạ cam mềm">Xét nghiệm Chancroid</option>
+        <option value="Rận mu">Xét nghiệm Pubic lice</option>
+      </select>
+ HPV
+      <label>Ghi chú / Yêu cầu đặc biệt</label>
+      <textarea id="ghichu" rows="3" placeholder="(Không bắt buộc)"></textarea>
+
+      <button type="submit">Đặt lịch</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  // Tự động điền dữ liệu nếu có
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("hoten").value = localStorage.getItem("tempHoTen") || "";
+    document.getElementById("sdt").value = localStorage.getItem("tempSDT") || "";
+  });
+
+  function handleTestBooking(event) {
+    event.preventDefault();
+
+    const hoTen = document.getElementById("hoten").value;
+    const sdt = document.getElementById("sdt").value;
+    const ngay = document.getElementById("ngay").value;
+    const gio = document.getElementById("gio").value;
+    const loai = document.getElementById("loaiXetNghiem").value;
+    const ghiChu = document.getElementById("ghichu").value;
+
+    if (!hoTen || !sdt || !ngay || !gio || !loai) {
+      alert("Vui lòng điền đầy đủ thông tin bắt buộc.");
+      return false;
+    }
+
+    const lich = {
+      hoTen,
+      sdt,
+      ngay,
+      gio,
+      dichVu: "Xét Nghiệm",
+      loaiXetNghiem: loai,
+      lyDo: ghiChu,
+      trangThai: "Chờ xử lý"
+    };
+
+    const danhSach = JSON.parse(localStorage.getItem("lichDat")) || [];
+    danhSach.push(lich);
+    localStorage.setItem("lichDat", JSON.stringify(danhSach));
+
+    // Xoá dữ liệu tạm
+    localStorage.removeItem("tempHoTen");
+    localStorage.removeItem("tempSDT");
+
+    alert("Đặt lịch xét nghiệm thành công!");
+    window.location.href = "Thanhcongdatlich.html";
+  }
+</script>
+
+</body>
+</html>
