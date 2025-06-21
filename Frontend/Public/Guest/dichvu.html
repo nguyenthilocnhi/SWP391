@@ -8,23 +8,6 @@
   <link rel="stylesheet" href="/Frontend/assets/css/dichvu.css">
 
 </head>
-<script>
-  function filterTable() {
-    const filter = document.getElementById("filter").value;
-    const rows = document.querySelectorAll("table tbody tr");
-
-    rows.forEach(row => {
-      const type = row.cells[1].textContent.trim().toLowerCase();
-      if (filter === "all" ||
-        (filter === "tuvan" && type === "tư vấn") ||
-        (filter === "xetnghiem" && type === "xét nghiệm")) {
-        row.style.display = "";
-      } else {
-        row.style.display = "none";
-      }
-    });
-  }
-</script>
 
 <body>
   <header>
@@ -58,285 +41,37 @@
   <main>
     <div class="container">
       <h1>Dịch vụ tại trung tâm An Giới</h1>
+      
       <div class="filter-bar">
-        <label for="filter">Lọc theo loại dịch vụ:</label>
-        <select id="filter" onchange="filterTable()">
-          <option value="all">Tất cả</option>
-          <option value="tuvan">Tư vấn</option>
-          <option value="xetnghiem">Xét nghiệm</option>
+        <label for="filterLoai">Lọc loại dịch vụ:</label>
+        <select id="filterLoai">
+          <option value="">Tất cả</option>
+          <option value="Tư vấn">Tư vấn</option>
+          <option value="Xét nghiệm">Xét nghiệm</option>
         </select>
+
+        <input type="text" id="searchInput" placeholder="Tìm kiếm dịch vụ...">
       </div>
 
-      <table>
+      <table id="serviceTable">
         <thead>
           <tr>
             <th>STT</th>
-            <th>Loại dịch vụ</th>
+            <th>Loại</th>
             <th>Tên dịch vụ</th>
             <th>Mục đích</th>
-            <th>Thời gian thực hiện</th>
+            <th>Thời gian</th>
             <th>Chi phí</th>
             <th>Tình trạng</th>
-            <th>Mô tả</th>
+            <th>Thao tác</th>
           </tr>
         </thead>
-        <tbody>
-
-          <tr>
-            <td>1</td>
-            <td>Xét nghiệm</td>
-            <td>HIV Ag/Ab combo (HIV test thế hệ 4)</td>
-            <td>Phát hiện sớm HIV (sau 2 - 4 tuần)</td>
-            <td>1 - 3 giờ</td>
-            <td>250.000 - 400.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>2</td>
-            <td>Xét nghiệm</td>
-            <td>Xét nghiệm giang mai (RPR/TPHA)</td>
-            <td>Phát hiện bệnh giang mai</td>
-            <td>2 - 24 giờ</td>
-            <td>150.000 - 300.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>3</td>
-            <td>Xét nghiệm</td>
-            <td>Xét nghiệm lậu (PCR hoặc nhuộm soi)</td>
-            <td>Phát hiện vi khuẩn lậu</td>
-            <td>3 - 24 giờ</td>
-            <td>300.000 - 600.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>4</td>
-            <td>Xét nghiệm</td>
-            <td>Chlamydia (PCR)</td>
-            <td>Phát hiện nhiễm Chlamydia</td>
-            <td>1 - 2 ngày</td>
-            <td>450.000 - 800.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>5</td>
-            <td>Xét nghiệm</td>
-            <td>HPV (PCR định danh tuýp)</td>
-            <td>Phát hiện virus gây ung thư cổ tử cung/hậu môn/dương vật</td>
-            <td>2 - 5 ngày</td>
-            <td>700.000 - 1.500.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>6</td>
-            <td>Xét nghiệm</td>
-            <td>HBsAg, Anti-HBs</td>
-            <td>Kiểm tra viêm gan B </td>
-            <td>2 - 8 giờ</td>
-            <td>100.000 - 250.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>7</td>
-            <td>Xét nghiệm</td>
-            <td>HCV Ab</td>
-            <td>Kiểm tra viêm gan C</td>
-            <td>4 - 24 giờ</td>
-            <td>150.000 - 300.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>8</td>
-            <td>Xét nghiệm</td>
-            <td>Xét nghiệm HSV 1 & 2 (Herpes Simplex Virus)</td>
-            <td>Phát hiện mụn rộp sinh dục</td>
-            <td>1 - 2 ngày</td>
-            <td>300.000 - 700.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>9</td>
-            <td>Xét nghiệm</td>
-            <td>Pap smear (Tế bào học cổ tử cung)</td>
-            <td>Sàng lọc ung thư cổ tử cung</td>
-            <td>1 - 3 ngày</td>
-            <td>200.000 - 400.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>10</td>
-            <td>Xét nghiệm</td>
-            <td>Trichomonas vaginalis</td>
-            <td>Phát hiện trùng roi âm đạo</td>
-            <td>Vài giờ</td>
-            <td>670.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>11</td>
-            <td>Xét nghiệm</td>
-            <td>Sùi mào gà (HPV tuýp nguy cơ thấp)</td>
-            <td>Phát hiện virus gây u nhú sinh dục (mào gà)</td>
-            <td>2 - 5 ngày</td>
-            <td>500.000 - 1.000.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>12</td>
-            <td>Xét nghiệm</td>
-            <td>HPV định danh tuýp nguy cơ cao</td>
-            <td>Sàng lọc ung thư cổ tử cung, hậu môn, dương vật</td>
-            <td>3 - 7 ngày</td>
-            <td>900.000 - 1.800.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>13</td>
-            <td>Xét nghiệm</td>
-            <td>Chancroid (Hạ cam mềm)</td>
-            <td>Phát hiện vi khuẩn Haemophilus ducreyi gây loét sinh dục</td>
-            <td>2 - 4 ngày</td>
-            <td>500.000 - 900.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>14</td>
-            <td>Xét nghiệm</td>
-            <td>Rận mu (Pubic lice)</td>
-            <td>Phát hiện ký sinh trùng vùng mu qua soi hiển vi</td>
-            <td>1 - 2 giờ</td>
-            <td>100.000 - 300.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>15</td>
-            <td>Xét nghiệm</td>
-            <td>Virus Zika (PCR)</td>
-            <td>Phát hiện virus Zika có thể lây qua đường tình dục</td>
-            <td>3 - 7 ngày</td>
-            <td>800.000 - 1.400.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>16</td>
-            <td>Xét nghiệm</td>
-            <td>Mycoplasma genitalium</td>
-            <td>Phát hiện vi khuẩn gây viêm niệu đạo, viêm vùng chậu</td>
-            <td>1 - 3 ngày</td>
-            <td>600.000 - 1.000.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>17</td>
-            <td>Xét nghiệm</td>
-            <td>Ureaplasma urealyticum</td>
-            <td>Phát hiện vi khuẩn có thể gây vô sinh, viêm phụ khoa</td>
-            <td>1 - 3 ngày</td>
-            <td>400.000 - 700.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>18</td>
-            <td>Xét nghiệm</td>
-            <td>Multiplex PCR panel STI</td>
-            <td>Kiểm tra đồng thời nhiều STI như HPV, Chlamydia, HSV, Lậu...</td>
-            <td>2 - 5 ngày</td>
-            <td>1.200.000 - 2.000.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>19</td>
-            <td>Tư vấn</td>
-            <td>Tư vấn trước khi làm xét nghiệm STI</td>
-            <td>Hướng dẫn lựa chọn xét nghiệm phù hợp, đánh giá nguy cơ lây nhiễm</td>
-            <td>20 - 30 phút</td>
-            <td>100.000 - 200.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>20</td>
-            <td>Tư vấn</td>
-            <td>Tư vấn sau khi nhận kết quả xét nghiệm</td>
-            <td>Giải thích kết quả và hướng dẫn bước tiếp theo</td>
-            <td>15 - 30 phút</td>
-            <td>100.000 - 150.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>21</td>
-            <td>Tư vấn</td>
-            <td>Tư vấn xét nghiệm định kỳ</td>
-            <td>Gợi ý tần suất xét nghiệm phù hợp dựa trên hành vi tình dục</td>
-            <td>15 - 30 phút</td>
-            <td>100.000 - 150.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>22</td>
-            <td>Tư vấn</td>
-            <td>Tư vấn lựa chọn gói xét nghiệm phù hợp</td>
-            <td>Giải thích các loại xét nghiệm, combo test và lợi ích của từng loại</td>
-            <td>15 - 20 phút</td>
-            <td>100.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-          <tr>
-            <td>23</td>
-            <td>Tư vấn</td>
-            <td>Tư vấn cho cặp đôi trước QHTD không bao</td>
-            <td>Hướng dẫn xét nghiệm STI an toàn trước khi quan hệ không dùng bao cao su</td>
-            <td>30 phút</td>
-            <td>150.000 - 200.000</td>
-            <td>Có</td>
-            <td><a href="chitietdichvu.html">Chi tiết</a></td>
-          </tr>
-
-        </tbody>
+        <tbody></tbody>
       </table>
+
+      <div id="pagination"></div>
+
+      <script src="/Frontend/assets/js/dichvu.js"></script>
     </div>
   </main>
 
