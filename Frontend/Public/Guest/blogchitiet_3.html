@@ -12,31 +12,20 @@
 </head>
 
 <body>
-  <header>
-    <div class="header-container">
-      <div class="logo">
-        <a href="/Frontend/Public/Guest/Trangchu.html">
-          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-        </a>
-      </div>
-      <nav class="main-nav">
-        <ul>
-          <li><a href="gioithieu.html">Giới thiệu</a></li>
-          <li><a href="dichvu.html">Dịch vụ</a></li>
-          <li><a href="TrangBlog.html">Blog</a></li>
-          <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-          <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
-          <li><a href="dangky.html">Đăng ký</a></li>
-        </ul>
-      </nav>
-      <form class="search-form" action="#" method="get">
-        <input type="text" name="q" placeholder="Tìm kiếm..." />
-        <button type="submit">
-          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
-        </button>
-      </form>
-    </div>
-  </header>
+  <!-- gọi header -->
+  <div id="header-placeholder"> </div>
+  <script>
+    fetch('/Frontend/components/header_guest.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+
+        // Gọi hàm JS của header sau khi nội dung đã render
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
 
   <main>
     <a href="TrangBlog.html">
@@ -100,7 +89,7 @@
       </section>
 
       <p class="final-call">
-        🎯 <strong>Hành động sớm là bảo vệ sức khỏe lâu dài!</strong> Hãy <a href="/Frontend/Public/datlich.html">đặt
+        🎯 <strong>Hành động sớm là bảo vệ sức khỏe lâu dài!</strong> Hãy <a href="/Frontend/Public/Login/Trangdangnhap.html">đặt
           lịch khám</a> tại
         phòng khám ngay hôm nay.
       </p>

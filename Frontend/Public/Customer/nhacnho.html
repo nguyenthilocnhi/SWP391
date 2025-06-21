@@ -1,49 +1,53 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lịch Uống Tránh Thai</title>
   <link rel="stylesheet" href="/Frontend/assets/css/nhacnho.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-  <header class="main-header">
-  <div class="header-container">
-    <div class="logo">
-      <a href="/Frontend/Public/Customer/TrangchuCustomer.html">
-      <img src="https://i.postimg.cc/g2NJNPzk/Logo.png" alt="Logo An Giới" />
-    </div>
-    <nav class="nav-menu">
-      <a href="#">Giới thiệu</a>
-      <a href="#">Dịch vụ</a>
-      <a href="#">Blog</a>
-      <a href="#">Đặt lịch</a>
-      <a href="#">Tư vấn viên</a>
-    </nav>
-    <div class="user-section">
-  <img src="https://i.postimg.cc/SKWH4csZ/Avatar-pnj.jpg" alt="Avatar" class="avatar" />
-  <div class="user-dropdown">
-    <div class="user-info" onclick="toggleDropdown()">
-      <span class="user-name">Nguyễn Bích M</span>
-      <span class="user-role">Khách hàng ▾</span>
-    </div>
-    <div id="dropdown-menu" class="dropdown-menu hidden">
-      <a href="#">Thông tin cá nhân</a>
-      <a href="#">Theo dõi chu kỳ</a>
-      <a href="#">Lịch sử đặt lịch</a>
-      <a href="#">Kết quả xét nghiệm</a>
-      <a href="#">Lịch sử dịch vụ</a>
-      <a href="#">Nhắc uống thuốc</a>
-      <a href="#">Cài đặt</a>
-    </div>
-  </div>
-</div>
+  <!-- gọi header -->
+  <div id="header-placeholder"> </div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
 
-    </div>
+        // Gọi hàm JS của header sau khi nội dung đã render
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
+
+  <!-- Gọi file header và khởi động JS sau khi chèn xong -->
+  <!-- GỌI HEADER -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+
+        // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
+
+  <!-- tạo 1 nhãn thông báo -->
+  <div id="alert-box" class="alert-box hidden">
+    <p id="alert-message">Bạn có thông báo mới!</p>
+    <span id="alert-close">&times;</span>
   </div>
-</header>
 
   <main>
     <h1>LỊCH UỐNG TRÁNH THAI</h1>
@@ -89,32 +93,33 @@
     </div>
   </main>
 
- <footer class="main-footer">
-  <div class="footer-container">
-    <div class="footer-logo">
-      <img src="https://i.postimg.cc/Y2F9c0k7/logo-footer.png" alt="Logo Footer" />
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="https://i.postimg.cc/Y2F9c0k7/logo-footer.png" alt="Logo Footer" />
+      </div>
+      <div class="footer-info">
+        <strong>HOTLINE:</strong> 1900 8484<br>
+        Trung tâm Xét nghiệm & Chăm sóc sức khỏe giới tính – An Giới<br>
+        123 - 125 Đồng Văn Cống, TP Thủ Đức, TP HCM
+      </div>
     </div>
-    <div class="footer-info">
-      <strong>HOTLINE:</strong> 1900 8484<br>
-      Trung tâm Xét nghiệm & Chăm sóc sức khỏe giới tính – An Giới<br>
-      123 - 125 Đồng Văn Cống, TP Thủ Đức, TP HCM
-    </div>
-  </div>
-</footer>
-<script>
-  function toggleDropdown() {
-    const menu = document.getElementById("dropdown-menu");
-    menu.classList.toggle("hidden");
-  }
-
-  // Ẩn dropdown nếu click ra ngoài
-  window.addEventListener("click", function(e) {
-    const dropdown = document.getElementById("dropdown-menu");
-    if (!e.target.closest(".user-dropdown")) {
-      dropdown.classList.add("hidden");
+  </footer>
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById("dropdown-menu");
+      menu.classList.toggle("hidden");
     }
-  });
-</script>
+
+    // Ẩn dropdown nếu click ra ngoài
+    window.addEventListener("click", function (e) {
+      const dropdown = document.getElementById("dropdown-menu");
+      if (!e.target.closest(".user-dropdown")) {
+        dropdown.classList.add("hidden");
+      }
+    });
+  </script>
 
 </body>
+
 </html>

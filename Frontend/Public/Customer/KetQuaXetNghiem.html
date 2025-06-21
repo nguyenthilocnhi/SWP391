@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kết Quả Xét Nghiệm</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/Frontend/assets/css/ketquaxetnghiem.css">
 </head>
+
 <body>
 
   <h2>Kết Quả Xét Nghiệm</h2>
 
   <table class="result-table">
-  <thead>
-    <tr>
-      <th>STT</th>
-      <th>Họ tên</th>
-      <th>Loại xét nghiệm</th>
-      <th>Kết quả</th>
-      <th>Ngày xét nghiệm</th>
-      <th>Ngày trả kết quả</th> <!-- Thêm dòng này -->
-      <th>Ghi chú</th>
-    </tr>
-  </thead>
-  <tbody id="resultBody">
-    <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-  </tbody>
-</table>
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Họ tên</th>
+        <th>Loại xét nghiệm</th>
+        <th>Kết quả</th>
+        <th>Ngày xét nghiệm</th>
+        <th>Ngày trả kết quả</th> <!-- Thêm dòng này -->
+        <th>Ghi chú</th>
+      </tr>
+    </thead>
+    <tbody id="resultBody">
+      <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
+    </tbody>
+  </table>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -55,12 +57,12 @@
       });
     });
     function renderKetQua(resultList) {
-  const tbody = document.getElementById("resultBody");
-  tbody.innerHTML = "";
+      const tbody = document.getElementById("resultBody");
+      tbody.innerHTML = "";
 
-  resultList.forEach((item, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
+      resultList.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
       <td>${index + 1}</td>
       <td>${item.hoTen}</td>
       <td>${item.loai}</td>
@@ -69,12 +71,13 @@
       <td>${item.ngayTra}</td> <!-- Hiển thị ngày trả -->
       <td>${item.ghiChu || ""}</td>
     `;
-    tbody.appendChild(row);
-  });
-}
+        tbody.appendChild(row);
+      });
+    }
 
   </script>
-  
+
 
 </body>
+
 </html>

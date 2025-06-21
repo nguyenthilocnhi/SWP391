@@ -2,261 +2,208 @@
 <html lang="vi">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách Tư vấn viên | An Giới</title>
-    <link rel="stylesheet" href="/Frontend/assets/css/TuvanvienCustomer.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh sách Tư vấn viên | An Giới</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/TuvanvienCustomer.css" />
 </head>
-<header>
-    <div class="header-container">
-        <!-- logo -->
-        <div class="logo">
-            <a href="/Frontend/Public/Customer/TrangchuCustomer.html">
-                <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-            </a>
-        </div>
+<!-- gọi header -->
+<div id="header-placeholder"> </div>
+<script>
+  fetch('/Frontend/components/header_customer.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("header-placeholder").innerHTML = data;
 
-        <!-- Menu -->
-        <nav class="main-nav">
-            <ul>
-                <li><a href="gioithieu.html">Giới thiệu</a></li>
-                <li><a href="dichvu.html">Dịch vụ</a></li>
-                <li><a href="TrangBlog.html">Blog</a></li>
-                <li><a href="datlich.html">Đặt lịch</a></li>
-                <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-            </ul>
-        </nav>
+      // Gọi hàm JS của header sau khi nội dung đã render
+      if (typeof initHeader === 'function') {
+        initHeader();
+      }
+    });
+</script>
 
-        <!-- right header -->
-        <div class="header-right">
+<!-- Gọi file header và khởi động JS sau khi chèn xong -->
+<!-- GỌI HEADER -->
+<div id="header-placeholder"></div>
+<script>
+  fetch('/Frontend/components/header_customer.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("header-placeholder").innerHTML = data;
 
-            <!-- search box -->
-            <form class="search-form" action="#" method="get">
-                <input type="text" name="q" placeholder="Tìm kiếm..." />
-                <button type="submit">
-                    <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
-                </button>
-            </form>
+      // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+      if (typeof initHeader === 'function') {
+        initHeader();
+      }
+    });
+</script>
+<script src="/Frontend/assets/js/header_customer.js"></script>
 
-            <!-- notification bell -->
-            <div class="notification-wrapper">
-                <a href="#" class="notification">
-                    <img src="https://i.postimg.cc/TP8K01px/notifications-24dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz24.png"
-                        alt="Thông báo" class="notification-icon" />
-                    <span class="badge">3</span>
-                </a>
-
-                <div class="notification-box hidden">
-                    <p> Bạn có 3 thông báo mới</p>
-                    <ul>
-                        <li>
-                            <div class="notify-content" data-time="2025-06-19T21:30:00">
-                                Kết quả xét nghiệm đã có
-                                <span class="notify-time"></span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="notify-content" data-time="2025-06-19T21:30:00">
-                                Lịch hẹn khám vào ngày mai
-                                <span class="notify-time"></span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="notify-content" data-time="2025-06-19T21:30:00">
-                                Ưu đãi giảm 10% đang chờ bạn
-                                <span class="notify-time"></span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- user info  -->
-            <div class="user-info">
-                <img src="https://i.postimg.cc/vZVQXR5n/avatar-default.png" alt="Avatar" class="avatar" />
-                <div class="user-details">
-                    <span class="user-name">Nguyễn Bích M</span>
-                    <span class="user-role">Khách Hàng</span>
-                </div>
-                <span class="user-dropdown">&#9662;</span> <!-- Mũi tên ▼ -->
-
-                <div class="user-menu hidden">
-                    <ul>
-                        <li><a href="/Frontend/Public/Customer/Thongtincanhan.html">Thông tin cá nhân</a></li>
-                        <li><a href="#">Theo dõi chu kỳ</a></li>
-                        <li><a href="/Frontend/Public/Customer/Lichsudatlich.html">Lịch sử đặt lịch</a></li>
-                        <li><a href="/Frontend/Public/Customer/KetQuaXetNghiem.html">Kết quả xét nghiệm</a></li>
-                        <li><a href="#">Lịch sử dịch vụ và đánh giá</a></li>
-                        <li><a href="#">Nhắc uống thuốc tránh thai</a></li>
-                        <li><a href="/Frontend/Public/Customer/datcauhoi.html">Đặt câu hỏi</a></li>
-                        <li><a href="#">Cài đặt</a></li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</header>
+<!-- tạo 1 nhãn thông báo -->
+<div id="alert-box" class="alert-box hidden">
+  <p id="alert-message">Bạn có thông báo mới!</p>
+  <span id="alert-close">&times;</span>
+</div>
 
 <body>
-    <main class="container">
-        <h2 class="section-title">ĐỘI NGŨ TƯ VẤN VIÊN</h2>
-        <div class="advisor-grid" id="advisorGrid"></div>
-    </main>
+  <main class="container">
+    <h2 class="section-title">ĐỘI NGŨ TƯ VẤN VIÊN</h2>
+    <div class="advisor-grid" id="advisorGrid"></div>
+  </main>
 
-    <script>
-        fetch('/Frontend/assets/data/tuvanvien.json') // đường dẫn JSON
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('advisorGrid');
-                data.forEach(advisor => {
-                    const card = document.createElement('div');
-                    card.className = 'advisor-card';
-                    card.innerHTML = `
+  <script>
+    fetch('/Frontend/assets/data/tuvanvien.json') // đường dẫn JSON
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('advisorGrid');
+        data.forEach(advisor => {
+          const card = document.createElement('div');
+          card.className = 'advisor-card';
+          card.innerHTML = `
           <img src="${advisor.image}" alt="${advisor.name}" />
           <h3>${advisor.name}</h3>
           <p>${advisor.specialty}</p>
           <p><strong>Kinh nghiệm:</strong> ${advisor.experience}</p>
           <p>${advisor.education}</p>
         `;
-                    container.appendChild(card);
-                });
-            })
-            .catch(error => console.error('Lỗi load dữ liệu:', error));
-    </script>
+          container.appendChild(card);
+        });
+      })
+      .catch(error => console.error('Lỗi load dữ liệu:', error));
+  </script>
 
 </body>
 
 <div id="footer-placeholder"></div>
 <script>
-    fetch('/Frontend/components/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("footer-placeholder").innerHTML = data;
-        });
+  fetch('/Frontend/components/footer.html')
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("footer-placeholder").innerHTML = data;
+    });
 </script>
- <!-- nhãn thông báo -->
-   <script>
-      function showAlert(message) {
-        const alertBox = document.getElementById('alert-box');
-        const alertMessage = document.getElementById('alert-message');
-        const alertClose = document.getElementById('alert-close');
+<!-- nhãn thông báo -->
+<script>
+  function showAlert(message) {
+    const alertBox = document.getElementById('alert-box');
+    const alertMessage = document.getElementById('alert-message');
+    const alertClose = document.getElementById('alert-close');
 
-        alertMessage.textContent = message;
-        alertBox.classList.remove('hidden');
+    alertMessage.textContent = message;
+    alertBox.classList.remove('hidden');
 
-        // Tự động ẩn sau 5 giây
-        setTimeout(() => {
-          alertBox.classList.add('hidden');
-        }, 10000);
+    // Tự động ẩn sau 5 giây
+    setTimeout(() => {
+      alertBox.classList.add('hidden');
+    }, 10000);
 
-        // Ẩn khi click vào nút đóng
-        alertClose.addEventListener('click', () => {
-          alertBox.classList.add('hidden');
-        });
-      }
-
-      // Ví dụ: gọi thông báo mới
-      document.addEventListener("DOMContentLoaded", function () {
-        // Giả lập có thông báo mới
-        setTimeout(() => {
-          showAlert("🔔 Bạn có 3 thông báo mới!");
-        }, 1000); // sau 1 giây khi vào trang
-      });
-  </script>
-
-
-  <!-- cho menu user xổ xuống -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const dropdownToggle = document.querySelector('.user-dropdown');
-      const userMenu = document.querySelector('.user-menu');
-
-      if (dropdownToggle && userMenu) {
-        dropdownToggle.addEventListener('click', function (e) {
-          e.stopPropagation();
-          userMenu.classList.toggle('hidden');
-        });
-
-        // Click ngoài thì ẩn menu
-        document.addEventListener('click', function (e) {
-          if (!userMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
-            userMenu.classList.add('hidden');
-          }
-        });
-      }
+    // Ẩn khi click vào nút đóng
+    alertClose.addEventListener('click', () => {
+      alertBox.classList.add('hidden');
     });
-  </script>
+  }
+
+  // Ví dụ: gọi thông báo mới
+  document.addEventListener("DOMContentLoaded", function () {
+    // Giả lập có thông báo mới
+    setTimeout(() => {
+      showAlert("🔔 Bạn có 3 thông báo mới!");
+    }, 1000); // sau 1 giây khi vào trang
+  });
+</script>
 
 
-  <!-- JavaScript cập nhật thời gian "X phút trước" tự động -->
-  <script>
-    function timeAgo(dateString) {
-      const now = new Date();
-      const date = new Date(dateString);
-      const seconds = Math.floor((now - date) / 1000);
+<!-- cho menu user xổ xuống -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dropdownToggle = document.querySelector('.user-dropdown');
+    const userMenu = document.querySelector('.user-menu');
 
-      const intervals = [
-        { label: 'năm', seconds: 31536000 },
-        { label: 'tháng', seconds: 2592000 },
-        { label: 'ngày', seconds: 86400 },
-        { label: 'giờ', seconds: 3600 },
-        { label: 'phút', seconds: 60 },
-        { label: 'giây', seconds: 1 },
-      ];
+    if (dropdownToggle && userMenu) {
+      dropdownToggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        userMenu.classList.toggle('hidden');
+      });
 
-      for (const interval of intervals) {
-        const count = Math.floor(seconds / interval.seconds);
-        if (count >= 1) {
-          return `${count} ${interval.label} trước`;
+      // Click ngoài thì ẩn menu
+      document.addEventListener('click', function (e) {
+        if (!userMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
+          userMenu.classList.add('hidden');
         }
-      }
-      return 'Vừa xong';
+      });
     }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const notifications = document.querySelectorAll('.notify-content');
-
-      notifications.forEach(content => {
-        const timeString = content.getAttribute('data-time');
-        const timeSpan = content.querySelector('.notify-time');
-
-        if (timeString && timeSpan) {
-          timeSpan.textContent = timeAgo(timeString);
-        }
-      });
-    });
-  </script>
+  });
+</script>
 
 
-  <!-- gọi thông báo -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const notificationIcon = document.querySelector('.notification');
-      const notificationBox = document.querySelector('.notification-box');
-      const badge = document.querySelector('.badge');
+<!-- JavaScript cập nhật thời gian "X phút trước" tự động -->
+<script>
+  function timeAgo(dateString) {
+    const now = new Date();
+    const date = new Date(dateString);
+    const seconds = Math.floor((now - date) / 1000);
 
-      if (notificationIcon && notificationBox) {
-        // Toggle hiển thị thông báo khi click chuông
-        notificationIcon.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation(); // Ngăn lan sự kiện click ra ngoài
-          notificationBox.classList.toggle('hidden');
+    const intervals = [
+      { label: 'năm', seconds: 31536000 },
+      { label: 'tháng', seconds: 2592000 },
+      { label: 'ngày', seconds: 86400 },
+      { label: 'giờ', seconds: 3600 },
+      { label: 'phút', seconds: 60 },
+      { label: 'giây', seconds: 1 },
+    ];
 
-          // Tuỳ chọn: reset badge nếu cần
-          badge.innerText = '0';
-        });
+    for (const interval of intervals) {
+      const count = Math.floor(seconds / interval.seconds);
+      if (count >= 1) {
+        return `${count} ${interval.label} trước`;
+      }
+    }
+    return 'Vừa xong';
+  }
 
-        // Click bên ngoài thì ẩn menu
-        document.addEventListener('click', function (e) {
-          const clickedOutside = !notificationBox.contains(e.target) && !notificationIcon.contains(e.target);
-          if (clickedOutside) {
-            notificationBox.classList.add('hidden');
-          }
-        });
+  document.addEventListener("DOMContentLoaded", function () {
+    const notifications = document.querySelectorAll('.notify-content');
+
+    notifications.forEach(content => {
+      const timeString = content.getAttribute('data-time');
+      const timeSpan = content.querySelector('.notify-time');
+
+      if (timeString && timeSpan) {
+        timeSpan.textContent = timeAgo(timeString);
       }
     });
-  </script>
+  });
+</script>
+
+
+<!-- gọi thông báo -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const notificationIcon = document.querySelector('.notification');
+    const notificationBox = document.querySelector('.notification-box');
+    const badge = document.querySelector('.badge');
+
+    if (notificationIcon && notificationBox) {
+      // Toggle hiển thị thông báo khi click chuông
+      notificationIcon.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation(); // Ngăn lan sự kiện click ra ngoài
+        notificationBox.classList.toggle('hidden');
+
+        // Tuỳ chọn: reset badge nếu cần
+        badge.innerText = '0';
+      });
+
+      // Click bên ngoài thì ẩn menu
+      document.addEventListener('click', function (e) {
+        const clickedOutside = !notificationBox.contains(e.target) && !notificationIcon.contains(e.target);
+        if (clickedOutside) {
+          notificationBox.classList.add('hidden');
+        }
+      });
+    }
+  });
+</script>
 
 
 

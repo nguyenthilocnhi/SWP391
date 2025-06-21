@@ -1,154 +1,103 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Đặt Lịch Dịch Vụ</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/Frontend/assets/css/datlich.css">
 </head>
+
 <body>
 
- <header>
-    <div class="header-container">
-      <!-- logo -->
-      <div class="logo">
-        <a href="/Frontend/Public/Customer/TrangchuCustomer.html">
-          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-        </a>
-      </div>
+  <!-- gọi header -->
+  <div id="header-placeholder"> </div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
 
-      <!-- Menu -->
-      <nav class="main-nav">
-        <ul>
-          <li><a href="gioithieu.html">Giới thiệu</a></li>
-          <li><a href="dichvu.html">Dịch vụ</a></li>
-          <li><a href="TrangBlog.html">Blog</a></li>
-          <li><a href="datlich.html">Đặt lịch</a></li>
-          <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-        </ul>
-      </nav>
+        // Gọi hàm JS của header sau khi nội dung đã render
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
 
-      <!-- right header -->
-      <div class="header-right">
+  <!-- Gọi file header và khởi động JS sau khi chèn xong -->
+  <!-- GỌI HEADER -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
 
-        <!-- search box -->
-        <form class="search-form" action="#" method="get">
-          <input type="text" name="q" placeholder="Tìm kiếm..." />
-          <button type="submit">
-            <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
-          </button>
-        </form>
+        // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
 
-        <!-- notification bell -->
-        <div class="notification-wrapper">
-          <a href="#" class="notification">
-            <img src="https://i.postimg.cc/TP8K01px/notifications-24dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz24.png"
-              alt="Thông báo" class="notification-icon" />
-            <span class="badge">3</span>
-          </a>
-
-          <div class="notification-box hidden">
-            <p> Bạn có 3 thông báo mới</p>
-            <ul>
-              <li>
-                <div class="notify-content" data-time="2025-06-19T21:30:00">
-                  Kết quả xét nghiệm đã có
-                  <span class="notify-time"></span>
-                </div>
-              </li>
-              <li>
-                <div class="notify-content" data-time="2025-06-19T21:30:00">
-                  Lịch hẹn khám vào ngày mai
-                  <span class="notify-time"></span>
-                </div>
-              </li>
-              <li>
-                <div class="notify-content" data-time="2025-06-19T21:30:00">
-                  Ưu đãi giảm 10% đang chờ bạn
-                  <span class="notify-time"></span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- user info  -->
-        <div class="user-info">
-          <img src="https://i.postimg.cc/vZVQXR5n/avatar-default.png" alt="Avatar" class="avatar" />
-          <div class="user-details">
-            <span class="user-name">Nguyễn Bích M</span>
-            <span class="user-role">Khách Hàng</span>
-          </div>
-          <span class="user-dropdown">&#9662;</span> <!-- Mũi tên ▼ -->
-
-          <div class="user-menu hidden">
-            <ul>
-              <li><a href="/Frontend/Public/thongtincanhan.html">Thông tin cá nhân</a></li>
-              <li><a href="#">Theo dõi chu kỳ</a></li>
-              <li><a href="/Frontend/Public/Customer/Lichsudatlich.html">Lịch sử đặt lịch</a></li>
-              <li><a href="/Frontend/Public/Customer/KetQuaXetNghiem.html">Kết quả xét nghiệm</a></li>
-              <li><a href="#">Lịch sử dịch vụ và đánh giá</a></li>
-              <li><a href="#">Nhắc uống thuốc tránh thai</a></li>
-              <li><a href="/Frontend/Public/datcauhoi.html">Đặt câu hỏi</a></li>
-              <li><a href="#">Cài đặt</a></li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </header>
+  <!-- tạo 1 nhãn thông báo -->
+  <div id="alert-box" class="alert-box hidden">
+    <p id="alert-message">Bạn có thông báo mới!</p>
+    <span id="alert-close">&times;</span>
+  </div>
 
   <!-- MAIN CONTENT -->
   <main class="booking-main">
     <section class="booking-container">
       <div class="booking-image">
-  <img src="https://i.postimg.cc/mDwrMJHk/N-n.png" alt="Minh họa dịch vụ">
-</div>
+        <img src="https://i.postimg.cc/mDwrMJHk/N-n.png" alt="Minh họa dịch vụ">
+      </div>
 
       <div class="booking-form">
         <h2>Đặt Lịch Dịch Vụ</h2>
         <form onsubmit="return handleBookingSubmit(event)">
-  <label>Họ và tên <span>*</span></label>
-  <input type="text" required id="hoten">
+          <label>Họ và tên <span>*</span></label>
+          <input type="text" required id="hoten">
 
-  <label>Số điện thoại <span>*</span></label>
-  <input type="tel" required id="sdt">
+          <label>Số điện thoại <span>*</span></label>
+          <input type="tel" required id="sdt">
 
-  <label>Dịch vụ <span>*</span></label>
-  <select required id="dichvu">
-    <option value="">-- Chọn dịch vụ --</option>
-    <option value="Tư Vấn">Tư Vấn</option>
-    <option value="Xét Nghiệm">Xét Nghiệm</option>
-  </select>
-  <button type="submit">Tiếp tục</button>
-</form>
+          <label>Dịch vụ <span>*</span></label>
+          <select required id="dichvu">
+            <option value="">-- Chọn dịch vụ --</option>
+            <option value="Tư Vấn">Tư Vấn</option>
+            <option value="Xét Nghiệm">Xét Nghiệm</option>
+          </select>
+          <button type="submit">Tiếp tục</button>
+        </form>
 
       </div>
     </section>
   </main>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const bell = document.getElementById("notificationBell");
-    const box = document.getElementById("notificationBox");
-    const wrapper = document.getElementById("notificationWrapper");
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const bell = document.getElementById("notificationBell");
+      const box = document.getElementById("notificationBox");
+      const wrapper = document.getElementById("notificationWrapper");
 
-    // Mở/đóng hộp thông báo khi nhấn chuông
-    bell.addEventListener("click", function (e) {
-      e.preventDefault();
-      box.classList.toggle("hidden");
-    });
+      // Mở/đóng hộp thông báo khi nhấn chuông
+      bell.addEventListener("click", function (e) {
+        e.preventDefault();
+        box.classList.toggle("hidden");
+      });
 
-    // Ẩn hộp thông báo khi click ra ngoài
-    document.addEventListener("click", function (event) {
-      if (!wrapper.contains(event.target)) {
-        box.classList.add("hidden");
-      }
+      // Ẩn hộp thông báo khi click ra ngoài
+      document.addEventListener("click", function (event) {
+        if (!wrapper.contains(event.target)) {
+          box.classList.add("hidden");
+        }
+      });
     });
-  });
-</script>
- <script>
+  </script>
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
       const dropdownToggle = document.querySelector('.user-dropdown');
       const userMenu = document.querySelector('.user-menu');
@@ -168,53 +117,54 @@
       }
     });
   </script>
-<script>
-  function handleBookingSubmit(event) {
-    event.preventDefault(); // Ngăn form submit mặc định
+  <script>
+    function handleBookingSubmit(event) {
+      event.preventDefault(); // Ngăn form submit mặc định
 
-    const hoTen = document.getElementById("hoten").value.trim();
-    const sdt = document.getElementById("sdt").value.trim();
-    const dichVu = document.getElementById("dichvu").value;
+      const hoTen = document.getElementById("hoten").value.trim();
+      const sdt = document.getElementById("sdt").value.trim();
+      const dichVu = document.getElementById("dichvu").value;
 
-    if (!hoTen || !sdt || !dichVu) {
-      alert("Vui lòng điền đầy đủ thông tin bắt buộc.");
-      return false;
+      if (!hoTen || !sdt || !dichVu) {
+        alert("Vui lòng điền đầy đủ thông tin bắt buộc.");
+        return false;
+      }
+
+      // Nếu chọn Tư Vấn => Lưu dữ liệu tạm rồi chuyển sang trang đặt lịch tư vấn chi tiết
+      if (dichVu === "Tư Vấn") {
+        if (hoTen && sdt) {
+          localStorage.setItem("tempHoTen", hoTen);
+          localStorage.setItem("tempSDT", sdt);
+        }
+        window.location.href = "datlichTuvan.html";
+        return;
+      }
+      //Nếu chọn Xét Nghiệm
+      if (dichVu === "Xét Nghiệm") {
+        localStorage.setItem("tempHoTen", hoTen);
+        localStorage.setItem("tempSDT", sdt);
+        window.location.href = "datlichXetnghiem.html";
+        return;
+      }
+      // Nếu chọn dịch vụ khác (vd: Xét Nghiệm)
+      const lich = {
+        hoTen,
+        sdt,
+        dichVu,
+        trangThai: "Chờ xử lý"
+      };
+
+      const danhSachLich = JSON.parse(localStorage.getItem("lichDat")) || [];
+      danhSachLich.push(lich);
+      localStorage.setItem("lichDat", JSON.stringify(danhSachLich));
+
+      alert("Đặt lịch dịch vụ thành công!");
+      window.location.href = "Thanhcongdatlich.html"; // Trang xác nhận
     }
-
-    // Nếu chọn Tư Vấn => Lưu dữ liệu tạm rồi chuyển sang trang đặt lịch tư vấn chi tiết
-  if (dichVu === "Tư Vấn") {
-  if (hoTen && sdt) {
-    localStorage.setItem("tempHoTen", hoTen);
-    localStorage.setItem("tempSDT", sdt);
-  }
-  window.location.href = "datlichTuvan.html";
-  return;
-}
-//Nếu chọn Xét Nghiệm
-if (dichVu === "Xét Nghiệm") {
-  localStorage.setItem("tempHoTen", hoTen);
-  localStorage.setItem("tempSDT", sdt);
-  window.location.href = "datlichXetnghiem.html";
-  return;
-}
-    // Nếu chọn dịch vụ khác (vd: Xét Nghiệm)
-    const lich = {
-      hoTen,
-      sdt,
-      dichVu,
-      trangThai: "Chờ xử lý"
-    };
-
-    const danhSachLich = JSON.parse(localStorage.getItem("lichDat")) || [];
-    danhSachLich.push(lich);
-    localStorage.setItem("lichDat", JSON.stringify(danhSachLich));
-
-    alert("Đặt lịch dịch vụ thành công!");
-    window.location.href = "Thanhcongdatlich.html"; // Trang xác nhận
-  }
-</script>
+  </script>
 
 
 
 </body>
+
 </html>

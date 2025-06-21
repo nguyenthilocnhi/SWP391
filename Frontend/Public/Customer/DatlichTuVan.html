@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Đặt Lịch Tư Vấn</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -15,7 +16,7 @@
 
     header {
       background-color: #ffffff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       padding: 16px 40px;
       display: flex;
       align-items: center;
@@ -56,7 +57,9 @@
       color: #065f46;
     }
 
-    input, select, textarea {
+    input,
+    select,
+    textarea {
       width: 100%;
       padding: 10px;
       margin-top: 6px;
@@ -68,7 +71,9 @@
       transition: border 0.3s;
     }
 
-    input:focus, select:focus, textarea:focus {
+    input:focus,
+    select:focus,
+    textarea:focus {
       outline: none;
       border-color: #34D399;
     }
@@ -98,78 +103,80 @@
     }
   </style>
 </head>
+
 <body>
 
-<section class="booking-section">
-  <div class="form-container">
-    <h2>Đặt Lịch Tư Vấn</h2>
-    <form onsubmit="return handleConsultationSubmit(event)">
-      <label>Họ và tên <span>*</span></label>
-      <input type="text" id="hoten" required>
+  <section class="booking-section">
+    <div class="form-container">
+      <h2>Đặt Lịch Tư Vấn</h2>
+      <form onsubmit="return handleConsultationSubmit(event)">
+        <label>Họ và tên <span>*</span></label>
+        <input type="text" id="hoten" required>
 
-      <label>Số điện thoại <span>*</span></label>
-      <input type="tel" id="sdt" required>
+        <label>Số điện thoại <span>*</span></label>
+        <input type="tel" id="sdt" required>
 
-      <label>Ngày tư vấn <span>*</span></label>
-      <input type="date" id="ngay" required>
+        <label>Ngày tư vấn <span>*</span></label>
+        <input type="date" id="ngay" required>
 
-      <label>Giờ tư vấn <span>*</span></label>
-      <input type="time" id="gio" required>
+        <label>Giờ tư vấn <span>*</span></label>
+        <input type="time" id="gio" required>
 
-      <label>Hình thức tư vấn</label>
-      <select id="hinhThuc">
-        <option value="Trực tiếp">Trực tiếp</option>
-        <option value="Online">Online</option>
-      </select>
+        <label>Hình thức tư vấn</label>
+        <select id="hinhThuc">
+          <option value="Trực tiếp">Trực tiếp</option>
+          <option value="Online">Online</option>
+        </select>
 
-      <label>Ghi chú / Lý do</label>
-      <textarea id="ghichu" rows="3" placeholder="(Không bắt buộc)"></textarea>
+        <label>Ghi chú / Lý do</label>
+        <textarea id="ghichu" rows="3" placeholder="(Không bắt buộc)"></textarea>
 
-      <button type="submit">Đặt lịch</button>
-    </form>
-  </div>
-</section>
+        <button type="submit">Đặt lịch</button>
+      </form>
+    </div>
+  </section>
 
-<script>
-  // Tự động điền dữ liệu khi trang tải
-  document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("hoten").value = localStorage.getItem("tempHoTen") || "";
-    document.getElementById("sdt").value = localStorage.getItem("tempSDT") || "";
-  });
+  <script>
+    // Tự động điền dữ liệu khi trang tải
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("hoten").value = localStorage.getItem("tempHoTen") || "";
+      document.getElementById("sdt").value = localStorage.getItem("tempSDT") || "";
+    });
 
-  function handleConsultationSubmit(event) {
-    event.preventDefault();
+    function handleConsultationSubmit(event) {
+      event.preventDefault();
 
-    const hoTen = document.getElementById("hoten").value;
-    const sdt = document.getElementById("sdt").value;
-    const ngay = document.getElementById("ngay").value;
-    const gio = document.getElementById("gio").value;
-    const hinhThuc = document.getElementById("hinhThuc").value;
-    const ghiChu = document.getElementById("ghichu").value;
+      const hoTen = document.getElementById("hoten").value;
+      const sdt = document.getElementById("sdt").value;
+      const ngay = document.getElementById("ngay").value;
+      const gio = document.getElementById("gio").value;
+      const hinhThuc = document.getElementById("hinhThuc").value;
+      const ghiChu = document.getElementById("ghichu").value;
 
-    const lich = {
-      hoTen,
-      sdt,
-      ngay,
-      gio,
-      hinhThuc,
-      dichVu: "Tư Vấn",
-      lyDo: ghiChu,
-      trangThai: "Chờ xử lý"
-    };
+      const lich = {
+        hoTen,
+        sdt,
+        ngay,
+        gio,
+        hinhThuc,
+        dichVu: "Tư Vấn",
+        lyDo: ghiChu,
+        trangThai: "Chờ xử lý"
+      };
 
-    const danhSach = JSON.parse(localStorage.getItem("lichDat")) || [];
-    danhSach.push(lich);
-    localStorage.setItem("lichDat", JSON.stringify(danhSach));
+      const danhSach = JSON.parse(localStorage.getItem("lichDat")) || [];
+      danhSach.push(lich);
+      localStorage.setItem("lichDat", JSON.stringify(danhSach));
 
-    // Xoá dữ liệu tạm
-    localStorage.removeItem("tempHoTen");
-    localStorage.removeItem("tempSDT");
+      // Xoá dữ liệu tạm
+      localStorage.removeItem("tempHoTen");
+      localStorage.removeItem("tempSDT");
 
-    alert("Đặt lịch tư vấn thành công!");
-    window.location.href = "Thanhcongdatlich.html";
-  }
-</script>
+      alert("Đặt lịch tư vấn thành công!");
+      window.location.href = "Thanhcongdatlich.html";
+    }
+  </script>
 
 </body>
+
 </html>
