@@ -101,6 +101,13 @@
     </div>
   </header>
 
+  <!-- tạo 1 nhãn thông báo -->
+   <div id="alert-box" class="alert-box hidden">
+      <p id="alert-message">Bạn có thông báo mới!</p>
+      <span id="alert-close">&times;</span>
+    </div>
+
+
   <section class="hero">
     <img src="https://i.postimg.cc/x1V5ncWS/nh-n-n.png" alt="Ảnh nền">
   </section>
@@ -259,6 +266,37 @@
     </p>
 
   </section>
+
+  <!-- nhãn thông báo -->
+   <script>
+      function showAlert(message) {
+        const alertBox = document.getElementById('alert-box');
+        const alertMessage = document.getElementById('alert-message');
+        const alertClose = document.getElementById('alert-close');
+
+        alertMessage.textContent = message;
+        alertBox.classList.remove('hidden');
+
+        // Tự động ẩn sau 5 giây
+        setTimeout(() => {
+          alertBox.classList.add('hidden');
+        }, 10000);
+
+        // Ẩn khi click vào nút đóng
+        alertClose.addEventListener('click', () => {
+          alertBox.classList.add('hidden');
+        });
+      }
+
+      // Ví dụ: gọi thông báo mới
+      document.addEventListener("DOMContentLoaded", function () {
+        // Giả lập có thông báo mới
+        setTimeout(() => {
+          showAlert("🔔 Bạn có 3 thông báo mới!");
+        }, 1000); // sau 1 giây khi vào trang
+      });
+  </script>
+
 
   <!-- cho menu user xổ xuống -->
   <script>
