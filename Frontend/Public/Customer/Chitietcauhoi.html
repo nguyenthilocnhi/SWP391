@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chi tiết câu hỏi</title>
   <link rel="stylesheet" href="/Frontend/assets/css/chitietcauhoi.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 </head>
+
 <body>
   <header>
     <div class="header-container">
-      <a href="/Frontend/Public/Guest/TrangchuCustomer.html">
-        <img src="https://i.postimg.cc/g2NJNPzk/Logo.png" alt="Logo" />
+      <a href="/Frontend/Public/Customer/TrangchuCustomer.html"></a>
+      <img src="https://i.postimg.cc/g2NJNPzk/Logo.png" alt="Logo" />
       </a>
       <ul class="nav-menu">
         <li><a href="#">Giới thiệu</a></li>
@@ -20,7 +22,7 @@
         <li><a href="#">Đặt lịch</a></li>
         <li><a href="#">Tư vấn viên</a></li>
       </ul>
-        <form class="search-form" action="#" method="get">
+      <form class="search-form" action="#" method="get">
         <input type="text" name="q" placeholder="Tìm kiếm..." />
         <button type="submit">
           <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
@@ -57,25 +59,27 @@
           bao gồm cả bệnh lây truyền qua đường tình dục như HPV hoặc mụn rộp sinh dục.
         </p>
         <p>
-          <strong>Lời khuyên:</strong> Bạn nên thực hiện xét nghiệm sớm để biết chính xác nguyên nhân và điều trị kịp thời.
+          <strong>Lời khuyên:</strong> Bạn nên thực hiện xét nghiệm sớm để biết chính xác nguyên nhân và điều trị kịp
+          thời.
           Việc chậm trễ có thể khiến bệnh nặng thêm hoặc lây lan.
         </p>
       </div>
-     <div class="feedback-icons">
-      <img src="https://cdn-icons-png.flaticon.com/512/889/889140.png" alt="Hài lòng" />
-      <img src="https://cdn-icons-png.flaticon.com/512/889/889140.png" alt="Không hài lòng" class="icon-unlike" />
-</div>
+      <div class="feedback-icons">
+        <img src="https://cdn-icons-png.flaticon.com/512/889/889140.png" alt="Hài lòng" />
+        <img src="https://cdn-icons-png.flaticon.com/512/889/889140.png" alt="Không hài lòng" class="icon-unlike" />
+      </div>
 
     </div>
   </main>
 
-     <div id="footer-placeholder"></div>
-    <script>
-        fetch('/Frontend/components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("footer-placeholder").innerHTML = data;
-            });
-    </script>
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
 </body>
+
 </html>
