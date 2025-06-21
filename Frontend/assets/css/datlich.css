@@ -1,3 +1,4 @@
+
 body {
   font-family: 'Segoe UI', sans-serif;
   line-height: 1.6;
@@ -291,6 +292,86 @@ header {
     transform: translateY(0);
   }
 }
+/* Tiêu đề */
+h2 {
+  text-align: center;
+  color: #2f855a;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Bảng lịch sử */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+}
+
+.history-table th,
+.history-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  font-size: 15px;
+  color: #333;
+}
+
+/* Header bảng */
+.history-table th {
+  background-color: #f0fff4;
+  color: #2f855a;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Trạng thái */
+.status {
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status.completed {
+  background-color: #c6f6d5;
+  color: #22543d;
+  border: 1px solid #9ae6b4;
+}
+
+.status.pending {
+  background-color: #fefcbf;
+  color: #744210;
+  border: 1px solid #faf089;
+}
+
+/* Nút thao tác */
+.btn-view {
+  background-color: #38a169;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.btn-view:hover {
+  background-color: #2f855a;
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .history-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    border: 1px solid #eee;
+  }
+}
 
 /* booking section */
 body {
@@ -337,8 +418,8 @@ body {
 }
 
 .booking-image img {
-  max-width: 550px;
-  width: 300%;
+  max-width: 450px;
+  width: 200%;
   height: auto;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
