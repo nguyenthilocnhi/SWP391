@@ -135,5 +135,129 @@
             document.getElementById("footer-placeholder").innerHTML = data;
         });
 </script>
+ <!-- nhãn thông báo -->
+   <script>
+      function showAlert(message) {
+        const alertBox = document.getElementById('alert-box');
+        const alertMessage = document.getElementById('alert-message');
+        const alertClose = document.getElementById('alert-close');
+
+        alertMessage.textContent = message;
+        alertBox.classList.remove('hidden');
+
+        // Tự động ẩn sau 5 giây
+        setTimeout(() => {
+          alertBox.classList.add('hidden');
+        }, 10000);
+
+        // Ẩn khi click vào nút đóng
+        alertClose.addEventListener('click', () => {
+          alertBox.classList.add('hidden');
+        });
+      }
+
+      // Ví dụ: gọi thông báo mới
+      document.addEventListener("DOMContentLoaded", function () {
+        // Giả lập có thông báo mới
+        setTimeout(() => {
+          showAlert("🔔 Bạn có 3 thông báo mới!");
+        }, 1000); // sau 1 giây khi vào trang
+      });
+  </script>
+
+
+  <!-- cho menu user xổ xuống -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const dropdownToggle = document.querySelector('.user-dropdown');
+      const userMenu = document.querySelector('.user-menu');
+
+      if (dropdownToggle && userMenu) {
+        dropdownToggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          userMenu.classList.toggle('hidden');
+        });
+
+        // Click ngoài thì ẩn menu
+        document.addEventListener('click', function (e) {
+          if (!userMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
+            userMenu.classList.add('hidden');
+          }
+        });
+      }
+    });
+  </script>
+
+
+  <!-- JavaScript cập nhật thời gian "X phút trước" tự động -->
+  <script>
+    function timeAgo(dateString) {
+      const now = new Date();
+      const date = new Date(dateString);
+      const seconds = Math.floor((now - date) / 1000);
+
+      const intervals = [
+        { label: 'năm', seconds: 31536000 },
+        { label: 'tháng', seconds: 2592000 },
+        { label: 'ngày', seconds: 86400 },
+        { label: 'giờ', seconds: 3600 },
+        { label: 'phút', seconds: 60 },
+        { label: 'giây', seconds: 1 },
+      ];
+
+      for (const interval of intervals) {
+        const count = Math.floor(seconds / interval.seconds);
+        if (count >= 1) {
+          return `${count} ${interval.label} trước`;
+        }
+      }
+      return 'Vừa xong';
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const notifications = document.querySelectorAll('.notify-content');
+
+      notifications.forEach(content => {
+        const timeString = content.getAttribute('data-time');
+        const timeSpan = content.querySelector('.notify-time');
+
+        if (timeString && timeSpan) {
+          timeSpan.textContent = timeAgo(timeString);
+        }
+      });
+    });
+  </script>
+
+
+  <!-- gọi thông báo -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const notificationIcon = document.querySelector('.notification');
+      const notificationBox = document.querySelector('.notification-box');
+      const badge = document.querySelector('.badge');
+
+      if (notificationIcon && notificationBox) {
+        // Toggle hiển thị thông báo khi click chuông
+        notificationIcon.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation(); // Ngăn lan sự kiện click ra ngoài
+          notificationBox.classList.toggle('hidden');
+
+          // Tuỳ chọn: reset badge nếu cần
+          badge.innerText = '0';
+        });
+
+        // Click bên ngoài thì ẩn menu
+        document.addEventListener('click', function (e) {
+          const clickedOutside = !notificationBox.contains(e.target) && !notificationIcon.contains(e.target);
+          if (clickedOutside) {
+            notificationBox.classList.add('hidden');
+          }
+        });
+      }
+    });
+  </script>
+
+
 
 </html>
