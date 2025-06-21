@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chọn Loại Dịch Vụ</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/loaidichvu.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <img src="https://i.postimg.cc/g2NJNPzk/Logo.png" alt="Logo">
+        <span class="brand">AN GIỚI</span>
+      </div>
+      <h1>CHỌN LOẠI DỊCH VỤ</h1>
+    </header>
+
+    <main class="service-grid">
+      <div class="service-card" onclick="selectService('Tư vấn')">
+        <img src="https://i.postimg.cc/CxLyHgb6/t-v-n.jpg" alt="Tư vấn">
+        <h3>Tư vấn</h3>
+      </div>
+      <div class="service-card" onclick="selectService('Xét nghiệm')">
+        <img src="https://i.postimg.cc/kXHNwNS3/S.png" alt="Xét nghiệm">
+        <h3>Xét nghiệm</h3>
+      </div>
+    </main>
+
+    <footer class="custom-footer">
+      <p>© 2025 An Giới Health. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    function selectService(service) {
+      alert("Bạn đã chọn: " + service);
+      // Ví dụ chuyển trang:
+      // window.location.href = `dangky.html?loai=${encodeURIComponent(service)}`;
+    }
+  </script>
+</body>
+</html>

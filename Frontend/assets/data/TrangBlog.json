@@ -1,0 +1,51 @@
+[
+  {
+    "id": "1",
+    "title": "Chu kỳ kinh nguyệt là gì?",
+    "image": "https://i.postimg.cc/90x2yyHm/H-nh-tin-t-c-1.png",
+    "slug": "blog1",
+    "date": "1 tuần trước"
+  },
+  {
+    "id": "2",
+    "title": "Hướng dẫn đọc kết quả xét nghiệm HPV",
+    "image": "https://i.postimg.cc/RVF44pwN/H-nh-tin-t-c-2.jpg",
+    "slug": "blog2",
+    "date": "2 tuần trước"
+  },
+  {
+    "id": "3",
+    "title": "Các bệnh tình dục nữ là gì? Dấu hiệu bệnh",
+    "image": "https://i.postimg.cc/SNvqsLGV/H-nh-tin-t-c-3.jpg",
+    "slug": "blog3",
+    "date": "1 tháng trước"
+  },
+  {
+    "id": "4",
+    "title": "Các bệnh tình dục nam là gì? Dấu hiệu bệnh",
+    "image": "https://i.postimg.cc/tTkGHFT3/H-nh-tin-t-c-4.jpg",
+    "slug": "blog4",
+    "date": "1 tháng trước"
+  },
+  {
+    "id": "5",
+    "title": "Bệnh Herpes lây qua đường nào?",
+    "image": "https://i.postimg.cc/YSB5GdLN/H-nh-tin-t-c-5.jpg",
+    "slug": "blog5",
+    "date": "2 tháng trước"
+  },
+  {
+    "id": "6",
+    "title": "Nhiễm HPV có mang thai được không?",
+    "image": "https://i.postimg.cc/nc65g328/H-nh-tin-t-c-6.jpg",
+    "slug": "blog6",
+    "date": "2 tháng trước"
+  },
+  {
+    "id": "7",
+    "title": "Sinh lý nữ giới tuổi mãn kinh thay đổi thế nào?",
+    "image": "https://i.postimg.cc/cLwjSfkv/H-nh-tin-t-c-7.jpg",
+    "slug": "blog7",
+    "date": "2 tháng trước"
+  }
+]
