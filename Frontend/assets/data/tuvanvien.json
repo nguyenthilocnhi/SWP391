@@ -1,15 +1,15 @@
 [
   {
-    "Tên": "GS. Trương Thanh K",
-    "Hình": "https://i.postimg.cc/Y2QtdmMC/Tr-ng-Thanh.png",
-    "Chức vụ": "Trưởng khoa Sức khỏe sinh sản",
-    "Kinh nghiệm": "12 năm",
-    "Tốt nghiệp": "ĐH Y Dược TPHCM, 2005 – 2013"
+    "name": "GS. Trương Thanh K",
+    "image": "https://i.postimg.cc/Y2QtdmMC/Tr-ng-Thanh.png",
+    "specialty": "Trưởng khoa Sức khỏe sinh sản",
+    "experience": "12 năm",
+    "education": "ĐH Y Dược TPHCM, 2005 – 2013"
   },
   {
-    "Tên": "TS. Ngô Cẩm P",
-    "Hình": "https://i.postimg.cc/SNQHcXK5/Ng-C-m.png",
-    "Chức vụ": "Tư vấn chuyên khoa sinh lý nữ",
+    "name": "TS. Ngô Cẩm P",
+    "image": "https://i.postimg.cc/SNQHcXK5/Ng-C-m.png",
+    "specialty": "Tư vấn chuyên khoa sinh lý nữ",
     "experience": "7 năm",
     "education": "ĐH Y khoa Phạm Ngọc Thạch, 2010 – 2018"
   },

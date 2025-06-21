@@ -40,6 +40,26 @@
         <div class="advisor-grid" id="advisorGrid"></div>
     </main>
 
+    <script>
+        fetch('/Frontend/assets/data/tuvanvien.json') // đường dẫn JSON
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('advisorGrid');
+                data.forEach(advisor => {
+                    const card = document.createElement('div');
+                    card.className = 'advisor-card';
+                    card.innerHTML = `
+          <img src="${advisor.image}" alt="${advisor.name}" />
+          <h3>${advisor.name}</h3>
+          <p>${advisor.specialty}</p>
+          <p><strong>Kinh nghiệm:</strong> ${advisor.experience}</p>
+          <p>${advisor.education}</p>
+        `;
+                    container.appendChild(card);
+                });
+            })
+            .catch(error => console.error('Lỗi load dữ liệu:', error));
+    </script>
 
 </body>
 
