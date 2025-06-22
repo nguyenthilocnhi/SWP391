@@ -164,3 +164,17 @@ body.dark .avatar-clickable img {
 body.dark .avatar-overlay {
   background: #4ade80;
 }
+.logo-link {
+  display: inline-block;
+  margin: 10px 20px;
+}
+
+.logo {
+  height: 70px;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
