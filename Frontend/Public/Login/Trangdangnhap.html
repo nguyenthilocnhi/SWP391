@@ -29,33 +29,50 @@
   <div class="forgot-password">
     <a href="/Frontend/Public/Login/quenmatkhau.html">Quên mật khẩu?</a>
   </div>
-
   <button type="submit">Đăng nhập</button>
 
   <p class="signup-link">Chưa có tài khoản? <a href="/Frontend/Public/Login/dangky.html">Đăng ký ngay</a></p>
 </form>
-
+<label class="remember-me">
+  <input type="checkbox" id="rememberMe" /> Ghi nhớ đăng nhập
+</label>
     </div>
   </div>
   <script>
-  function handleLogin(event) {
-    event.preventDefault(); // Ngăn form reload trang
+ function handleLogin(event) {
+  event.preventDefault();
 
-    // Lấy giá trị từ input
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const remember = document.getElementById("rememberMe").checked;
 
-    // Kiểm tra đơn giản
-    if (email !== "" && password !== "") {
-      // Đăng nhập thành công -> lưu trạng thái + chuyển trang
-      localStorage.setItem("loggedIn", "true");
-      window.location.href = "/Frontend/Public/Customer/TrangchuCustomer.html";
+  if (email !== "" && password !== "") {
+    if (remember) {
+      localStorage.setItem("rememberedEmail", email);
     } else {
-      alert("Vui lòng nhập đầy đủ thông tin!");
+      localStorage.removeItem("rememberedEmail");
     }
 
-    return false;
+    localStorage.setItem("loggedIn", "true");
+    window.location.href = "/Frontend/Public/Customer/TrangchuCustomer.html";
+  } else {
+    alert("Vui lòng nhập đầy đủ thông tin!");
   }
+}
+const expireAt = Date.now() + 15 * 60 * 1000; // 15 phút
+localStorage.setItem("sessionExpire", expireAt);
+
+</script>
+<script>
+  // Khi tải trang đăng nhập
+  window.addEventListener("DOMContentLoaded", () => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) {
+      document.getElementById("email").value = savedEmail;
+      document.getElementById("rememberMe").checked = true;
+    }
+  });
+
 </script>
 
 

@@ -218,6 +218,16 @@
 </div>
   <!-- nhãn thông báo -->
   <script>
+
+    const expireAt = localStorage.getItem("sessionExpire");
+
+if (Date.now() > expireAt) {
+  localStorage.removeItem("loggedIn");
+  localStorage.removeItem("sessionExpire");
+  alert("Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại!");
+  window.location.href = "/Frontend/Public/Login/Trangdangnhap.html";
+}
+
     function showAlert(message) {
       const alertBox = document.getElementById('alert-box');
       const alertMessage = document.getElementById('alert-message');
