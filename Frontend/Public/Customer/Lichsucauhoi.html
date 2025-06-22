@@ -76,6 +76,9 @@
       <p><strong>Trạng thái:</strong> <span id="popupStatus"></span></p>
       <p><strong>Ngày gửi:</strong> <span id="popupDate"></span></p>
       <p><strong>Nội dung:</strong> <span id="popupMessage"></span></p>
+      <p><strong>Người gửi:</strong> <span id="popupName"></span></p>
+      <p><strong>Email:</strong> <span id="popupEmail"></span></p>
+
       <button onclick="closePopup()">Đóng</button>
     </div>
   </div>
@@ -108,6 +111,8 @@
 
     function showPopup(index) {
       const q = allQuestions[index];
+      document.getElementById("popupName").textContent = q.name || "Ẩn danh";
+      document.getElementById("popupEmail").textContent = q.email || "(Không có email)";
       document.getElementById("popupSubject").textContent = q.subject;
       document.getElementById("popupSpecialty").textContent = q.specialty;
       document.getElementById("popupStatus").textContent = q.status;
