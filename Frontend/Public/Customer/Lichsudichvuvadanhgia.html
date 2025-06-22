@@ -65,7 +65,9 @@
     </div>
   </div>
 </div>
-
+<div style="text-align: center; margin-top: 20px;">
+  <a href="danhgia.html" class="view-review-link">📄 Xem đánh giá đã gửi</a>
+</div>
   </div>
 
   <!-- FOOTER -->
@@ -77,6 +79,8 @@
         document.getElementById("footer-placeholder").innerHTML = html;
       });
   </script>
+
+
 
   <!-- SCRIPT: HIỂN THỊ LỊCH SỬ DỊCH VỤ -->
   <script>
@@ -100,14 +104,16 @@
       <td>${item.ghiChu || ""}</td>
       <td>
         <button onclick="xoa(${index})" class="delete-btn">Xóa</button>
-        ${item.trangThai === "Hoàn_tất" ? `<button onclick="moDanhGia('${item.ten}')" class="review-btn">Đánh giá</button>` : ""}
+        ${item.trangThai === "Hoàn_tất" ? `<a href="danhgia.html?ten=${encodeURIComponent(item.ten)}" class="review-btn">Đánh giá</a>
+` : ""}
       </td>
     `;
     tbody.appendChild(tr);
   });
 }
 
-
+  const data = JSON.parse(localStorage.getItem("lichSuDichVu")) || [];
+  renderTable();
 document.getElementById("statusFilter").addEventListener("change", function () {
   const selected = this.value;
   if (selected === "Tất cả") {
@@ -118,8 +124,6 @@ document.getElementById("statusFilter").addEventListener("change", function () {
   }
 });
 
-
-    const data = JSON.parse(localStorage.getItem("lichSuDichVu")) || [];
 
     function renderTable() {
       const tbody = document.getElementById("serviceBody");
@@ -185,6 +189,13 @@ function luuDanhGia() {
   localStorage.setItem("danhGiaDichVu", JSON.stringify(allReviews));
   alert("Cảm ơn bạn đã đánh giá!");
   dongDanhGia();
+}
+function xemDanhGia() {
+  const allReviews = JSON.parse(localStorage.getItem("danhGiaDichVu")) || [];
+  if (allReviews.length === 0) return alert("Chưa có đánh giá nào.");
+
+  let msg = allReviews.map(r => `👉 ${r.tenDichVu}\n- ${r.noiDung}\n(${r.thoiGian})`).join("\n\n");
+  alert(msg);
 }
 
   </script>

@@ -400,17 +400,16 @@ button.delete-btn:hover {
   font-size: 0.95rem;
 }
 .review-btn {
-  margin-left: 5px;
-  background: #3b82f6;
+  background-color: #3b82f6;
   color: white;
+  padding: 6px 12px;
   border: none;
-  padding: 5px 10px;
   border-radius: 4px;
+  text-decoration: none;
   cursor: pointer;
 }
-
 .review-btn:hover {
-  background: #2563eb;
+  background-color: #2563eb;
 }
 
 .modal {
@@ -467,4 +466,18 @@ button.delete-btn:hover {
 
 .hidden {
   display: none;
+}
+.view-review-link {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #22c55e;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.view-review-link:hover {
+  background-color: #16a34a;
 }

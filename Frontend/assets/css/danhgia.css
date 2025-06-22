@@ -1,0 +1,109 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0fdf4;
+  margin: 0;
+  padding: 0;
+}
+
+.review-container {
+  max-width: 700px;
+  margin: 50px auto;
+  background: white;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  border: 2px solid #a7f3d0;
+}
+
+h2 {
+  text-align: center;
+  color: #047857;
+  margin-bottom: 24px;
+}
+
+label {
+  display: block;
+  margin-top: 16px;
+  font-weight: 600;
+  color: #065f46;
+}
+
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.stars {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+  font-size: 28px;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.star.selected {
+  color: #facc15;
+  transform: scale(1.2);
+  transition: all 0.2s ease;
+}
+
+button {
+  background: #22c55e;
+  color: white;
+  padding: 14px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #16a34a;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 20px;
+  color: #047857;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.review-list {
+  margin-top: 40px;
+}
+
+.review-group {
+  margin-bottom: 24px;
+}
+
+.review-group h4 {
+  margin-bottom: 10px;
+  color: #047857;
+}
+
+.review-item {
+  background: #f0fdf4;
+  padding: 12px 16px;
+  border-left: 4px solid #22c55e;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.review-item p {
+  margin: 4px 0;
+}
