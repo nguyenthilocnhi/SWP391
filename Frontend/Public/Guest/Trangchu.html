@@ -123,31 +123,74 @@
       </div>
     </section>
 
-    <section class="offer-section">
-      <h2>Ưu đãi đặc biệt</h2>
-      <div class="offers">
-        <div class="offer-box">
-          <h4>Giảm 10%</h4>
-          <p>Cho dịch vụ tư vấn sức khỏe vị thành niên</p>
-          <button>Xem ưu đãi</button>
-        </div>
-        <div class="offer-box">
-          <h4>Giảm 100.000VND</h4>
-          <p>Cho dịch vụ tư vấn sức khỏe sinh sản</p>
-          <button>Xem ưu đãi</button>
-        </div>
-        <div class="offer-box">
-          <h4>Giảm 20%</h4>
-          <p>Cho dịch vụ xét nghiệm Giang Mai</p>
-          <button>Xem ưu đãi</button>
-        </div>
-        <div class="offer-box">
-          <h4>Giảm 50.000VND</h4>
-          <p>Cho khách đặt dịch vụ lần đầu tiên</p>
-          <button>Xem ưu đãi</button>
-        </div>
+   <section class="offer-section">
+  <h2>Ưu đãi đặc biệt</h2>
+
+  <div class="accordion-container">
+    <!-- Ưu đãi 1 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <h4>🎁 Giảm 10% - Tư vấn sức khỏe vị thành niên</h4>
+        <button class="toggle-btn">Xem ưu đãi</button>
       </div>
-    </section>
+      <div class="accordion-content">
+        <ul>
+          <li><strong>Thời gian áp dụng:</strong> 01/07/2025 - 31/07/2025</li>
+          <li><strong>Đối tượng:</strong> Khách hàng từ 13 đến 19 tuổi</li>
+          <li><strong>Dịch vụ áp dụng:</strong> Tư vấn tâm lý, giới tính, sức khỏe dậy thì</li>
+          <li><strong>Cách sử dụng:</strong> Tự động áp dụng khi đặt lịch</li>
+          <li><strong>Lưu ý:</strong> Không cộng dồn với các khuyến mãi khác</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Ưu đãi 2 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <h4>💰 Giảm 100.000VND - Tư vấn sức khỏe sinh sản</h4>
+        <button class="toggle-btn">Xem ưu đãi</button>
+      </div>
+      <div class="accordion-content">
+        <ul>
+          <li><strong>Thời gian áp dụng:</strong> 01/07/2025 - 31/08/2025</li>
+          <li><strong>Áp dụng:</strong> Cho khách hàng nữ từ 18 tuổi trở lên</li>
+          <li><strong>Dịch vụ áp dụng:</strong> Tư vấn sức khỏe sinh sản, tiền hôn nhân</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Ưu đãi 3 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <h4>🧪 Giảm 20% - Xét nghiệm Giang Mai</h4>
+        <button class="toggle-btn">Xem ưu đãi</button>
+      </div>
+      <div class="accordion-content">
+        <ul>
+          <li><strong>Thời gian áp dụng:</strong> 01/07 - 31/07/2025</li>
+          <li><strong>Áp dụng:</strong> Cho xét nghiệm Giang Mai lần đầu tiên</li>
+          <li><strong>Lưu ý:</strong> Không áp dụng cho khách có mã giảm giá khác</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Ưu đãi 4 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <h4>🎉 Giảm 50.000VND - Dành cho khách lần đầu</h4>
+        <button class="toggle-btn">Xem ưu đãi</button>
+      </div>
+      <div class="accordion-content">
+        <ul>
+          <li><strong>Áp dụng:</strong> Cho tất cả dịch vụ lần đầu đặt lịch</li>
+          <li><strong>Thời hạn:</strong> Không giới hạn đến khi có thông báo mới</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
     <section class="section testimonials">
       <h2>Cảm nhận từ khách hàng</h2>
@@ -195,6 +238,20 @@
         document.getElementById("footer-placeholder").innerHTML = data;
       });
   </script>
+
+
+<script>
+  document.querySelectorAll('.toggle-btn').forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.accordion-item');
+      item.classList.toggle('active');
+
+      // Đổi nội dung nút
+      btn.textContent = item.classList.contains('active') ? 'Thu gọn' : 'Xem ưu đãi';
+    });
+  });
+</script>
+
 </body>
 
 </html>
