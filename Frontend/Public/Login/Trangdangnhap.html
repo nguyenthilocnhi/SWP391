@@ -45,9 +45,10 @@
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    // Ví dụ kiểm tra đơn giản (bạn có thể thay bằng logic thật)
+    // Kiểm tra đơn giản
     if (email !== "" && password !== "") {
-      // Chuyển trang nếu hợp lệ
+      // Đăng nhập thành công -> lưu trạng thái + chuyển trang
+      localStorage.setItem("loggedIn", "true");
       window.location.href = "/Frontend/Public/Customer/TrangchuCustomer.html";
     } else {
       alert("Vui lòng nhập đầy đủ thông tin!");
@@ -56,6 +57,7 @@
     return false;
   }
 </script>
+
 
 </body>
 
