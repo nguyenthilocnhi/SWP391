@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theo dõi chu kỳ kinh nguyệt - An Giới</title>
+    <link rel="stylesheet" href="/Frontend/assets/css/theodoichuky.css">
+    <script defer src="/Frontend/assets/js/theodoichuky.js"></script>
+</head>
+
+<body>
+    <!-- gọi header -->
+    <div id="header-placeholder"> </div>
+    <script>
+        fetch('/Frontend/components/header_customer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-placeholder").innerHTML = data;
+
+                // Gọi hàm JS của header sau khi nội dung đã render
+                if (typeof initHeader === 'function') {
+                    initHeader();
+                }
+            });
+    </script>
+
+    <!-- Gọi file header và khởi động JS sau khi chèn xong -->
+    <!-- GỌI HEADER -->
+    <div id="header-placeholder"></div>
+    <script>
+        fetch('/Frontend/components/header_customer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-placeholder").innerHTML = data;
+
+                // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+                if (typeof initHeader === 'function') {
+                    initHeader();
+                }
+            });
+    </script>
+    <script src="/Frontend/assets/js/header_customer.js"></script>
+
+    <!-- tạo 1 nhãn thông báo -->
+    <div id="alert-box" class="alert-box hidden">
+        <p id="alert-message">Bạn có thông báo mới!</p>
+        <span id="alert-close">&times;</span>
+    </div>
+
+    <main class="container">
+
+        <section class="health-tips">
+            <h2>Hôm nay bạn thế nào</h2>
+            <label><input type="checkbox" id="today-period"> Hôm nay có kinh</label>
+            <div class="symptoms">
+                <label>Tâm trạng:
+                    <select id="mood">
+                        <option>Thoải mái</option>
+                        <option>Tâm trạng thất thường</option>
+                        <option>Nổi giận</option>
+                    </select>
+                </label>
+                <label>Khí hư:
+                    <select id="discharge">
+                        <option>Khô</option>
+                        <option>Ẩm</option>
+                        <option>Nhiều</option>
+                    </select>
+                </label>
+            </div>
+            <button id="save-today">Cập nhật</button>
+            <p id="health-advice">Vui lòng chọn trạng thái để nhận lời khuyên.</p>
+        </section>
+
+        <section class="cycle-calendar">
+            <div class="calendar-header">
+                <button id="prev-month">«</button>
+                <span id="month-label">Tháng 6 2025</span>
+                <button id="next-month">»</button>
+            </div>
+
+            <div id="calendar-grid" class="calendar-grid"></div>
+
+            <div class="calendar-legend">
+                <div><span class="icon icon-period"></span> Ngày hành kinh</div>
+                <div><span class="icon icon-safe"></span> Ngày an toàn</div>
+                <div><span class="icon icon-fertile"></span> Ngày nguy hiểm</div>
+            </div>
+        </section>
+
+        <section class="settings">
+            <h2>Cài đặt chu kỳ</h2>
+            <label>Độ dài kỳ kinh: <input type="number" id="period-length" value="5"> ngày</label>
+            <label>Độ dài chu kỳ: <input type="number" id="cycle-length" value="28"> ngày</label>
+            <button id="apply-settings">Áp dụng</button>
+        </section>
+
+        <section class="partner-link">
+            <h2>Liên kết với bạn đời</h2>
+            <input type="email" id="partner-email" placeholder="Nhập email bạn đời">
+            <button id="share-partner">Chia sẻ theo dõi</button>
+        </section>
+    </main>
+
+    <!-- gọi footer -->
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('/Frontend/components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            });
+    </script>
+
+    <script>
+        document.getElementById("header").innerHTML = await(await fetch("/Frontend/components/header_customer.html")).text();
+        document.getElementById("footer").innerHTML = await(await fetch("/Frontend/components/footer.html")).text();
+    </script>
+</body>
+
+</html>
