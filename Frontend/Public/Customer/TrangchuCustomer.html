@@ -252,24 +252,24 @@
 
   <!-- <script src="/Frontend/assets/js/header_customer.js"></script> -->
 
-<!-- POPUP NHẮC UỐNG THUỐC -->
-<div id="dailyPopup" class="popup hidden">
-  <div class="popup-content">
-    <p>💊 Đừng quên uống thuốc tránh thai hôm nay!</p>
-    <button onclick="closePopup()">Đã hiểu</button>
+  <!-- POPUP NHẮC UỐNG THUỐC -->
+  <div id="dailyPopup" class="popup hidden">
+    <div class="popup-content">
+      <p>💊 Đừng quên uống thuốc tránh thai hôm nay!</p>
+      <button onclick="closePopup()">Đã hiểu</button>
+    </div>
   </div>
-</div>
   <!-- nhãn thông báo -->
   <script>
 
     const expireAt = localStorage.getItem("sessionExpire");
 
-if (Date.now() > expireAt) {
-  localStorage.removeItem("loggedIn");
-  localStorage.removeItem("sessionExpire");
-  alert("Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại!");
-  window.location.href = "/Frontend/Public/Login/Trangdangnhap.html";
-}
+    if (Date.now() > expireAt) {
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("sessionExpire");
+      alert("Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại!");
+      window.location.href = "/Frontend/Public/Login/Trangdangnhap.html";
+    }
 
     function showAlert(message) {
       const alertBox = document.getElementById('alert-box');
@@ -300,31 +300,29 @@ if (Date.now() > expireAt) {
   </script>
 
 
-<script>
-  function showDailyPopupIfNeeded() {
-    const isLoggedIn = localStorage.getItem("loggedIn") === "true";
-    const today = new Date().toISOString().split('T')[0];
-    const lastShown = localStorage.getItem("popupShownDate");
+  <script>
+    function showDailyPopupIfNeeded() {
+      const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+      const today = new Date().toISOString().split('T')[0];
+      const lastShown = localStorage.getItem("popupShownDate");
 
-    if (isLoggedIn && lastShown !== today) {
-      document.getElementById("dailyPopup").classList.remove("hidden");
+      if (isLoggedIn && lastShown !== today) {
+        document.getElementById("dailyPopup").classList.remove("hidden");
+      }
     }
-  }
 
-  function closePopup() {
-    const today = new Date().toISOString().split('T')[0];
-    localStorage.setItem("popupShownDate", today);
-    document.getElementById("dailyPopup").classList.add("hidden");
-  }
+    function closePopup() {
+      const today = new Date().toISOString().split('T')[0];
+      localStorage.setItem("popupShownDate", today);
+      document.getElementById("dailyPopup").classList.add("hidden");
+    }
 
-  document.addEventListener("DOMContentLoaded", showDailyPopupIfNeeded);
-  if (localStorage.getItem("loggedIn") === "true") {
-  // hiện popup nhắc uống thuốc
-}
+    document.addEventListener("DOMContentLoaded", showDailyPopupIfNeeded);
+    if (localStorage.getItem("loggedIn") === "true") {
+      // hiện popup nhắc uống thuốc
+    }
 
-
-</script>
-
+<<<<<<< Updated upstream
 <script>
   document.querySelectorAll('.toggle-btn').forEach((btn, index) => {
     btn.addEventListener('click', () => {
@@ -337,6 +335,9 @@ if (Date.now() > expireAt) {
   });
 </script>
 
+=======
+  </script>
+>>>>>>> Stashed changes
 
   <!-- gọi footer -->
   <div id="footer-placeholder"></div>
