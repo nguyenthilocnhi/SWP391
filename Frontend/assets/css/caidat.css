@@ -178,3 +178,17 @@ body.dark .avatar-overlay {
 .logo:hover {
   transform: scale(1.05);
 }
+
+.logout-btn {
+  margin-top: 15px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #b71c1c;
+}

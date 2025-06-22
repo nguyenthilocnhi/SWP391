@@ -42,6 +42,8 @@
       <label><input type="checkbox" id="darkMode" /> Chế độ tối</label>
 
       <button type="submit">Lưu Cài Đặt</button>
+      <button type="button" onclick="logout()" class="logout-btn">Đăng xuất</button>
+
     </form>
 
     <div class="status-message" id="statusMsg"></div>
@@ -100,6 +102,18 @@
       }
     });
   </script>
+
+<!--LOG OUT-->
+  <script>
+  function logout() {
+    if (confirm("Bạn có chắc muốn đăng xuất không?")) {
+      localStorage.removeItem("loggedIn"); // Xoá trạng thái đăng nhập
+      localStorage.removeItem("sessionExpire"); // Nếu có dùng session
+      window.location.href = "/Frontend/Public/Login/Trangdangnhap.html"; // Chuyển về trang đăng nhập
+    }
+  }
+</script>
+
 </body>
 
 </html>
