@@ -1,125 +1,162 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trang Blog</title>
+  <title>Blog Sức Khỏe - An Giới</title>
   <link rel="stylesheet" href="/Frontend/assets/css/TrangBlog.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-  <!-- gọi header -->
-  <div id="header-placeholder"> </div>
+<!-- gọi header -->
+  <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_guest.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
 
-        // Gọi hàm JS của header sau khi nội dung đã render
-        if (typeof initHeader === 'function') {
-          initHeader();
-        }
+        // Kích hoạt lại các <script> bên trong file header_guest.html nếu có
+        const scripts = document.querySelectorAll('#header-placeholder script');
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
       });
   </script>
 
   <main class="blog-container">
-    <div class="intro-banner">
-      <h1>KIẾN THỨC Y KHOA & CHIA SẺ KINH NGHIỆM</h1>
-    </div>
-
-    <section class="blog-grid">
-      <article class="blog-card">
-        <a href="blogchitiet_1.html">
-          <img src="https://i.postimg.cc/90x2yyHm/H-nh-tin-t-c-1.png" alt="Chu kì kinh nguyệt">
-          <div class="content">
-            <h2>Chu kì kinh nguyệt là gì?</h2>
-            <p>1 tháng trước</p>
-          </div>
-        </a>
-      </article>
-
-      <article class="blog-card">
-        <a href="blogchitiet_2.html">
-          <img src="https://i.postimg.cc/RVF44pwN/H-nh-tin-t-c-2.jpg" alt="HPV">
-          <div class="content">
-            <h2>Hướng dẫn đọc kết quả xét nghiệm HPV</h2>
-            <p>1 tháng trước</p>
-          </div>
-        </a>
-      </article>
-
-      <article class="blog-card">
-        <a href="blogchitiet_3.html">
-          <img src="https://i.postimg.cc/SNvqsLGV/H-nh-tin-t-c-3.jpg" alt="Bệnh phụ nữ">
-          <div class="content">
-            <h2>Các bệnh tình dục nữ là gì? Dấu hiệu bệnh</h2>
-            <p>1 tháng trước</p>
-          </div>
-        </a>
-      </article>
-
-      <article class="blog-card">
-        <a href="blogchitiet_4.html">
-          <img src="https://i.postimg.cc/tTkGHFT3/H-nh-tin-t-c-4.jpg" alt="Bệnh nam giới">
-          <div class="content">
-            <h2>Các bệnh tình dục nam là gì? Dấu hiệu bệnh</h2>
-            <p>1 tháng trước</p>
-          </div>
-        </a>
-      </article>
-
-      <article class="blog-card">
-        <a href="blogchitiet_5.html">
-          <img src="https://i.postimg.cc/YSB5GdLN/H-nh-tin-t-c-5.jpg" alt="Herpes">
-          <div class="content">
-            <h2>Bệnh Herpes lây qua đường nào?</h2>
-            <p>1 tháng trước</p>
-          </div>
-        </a>
-      </article>
-
-      <article class="blog-card">
-        <a href="blogchitiet_6.html">
-          <img src="https://i.postimg.cc/nc65g328/H-nh-tin-t-c-6.jpg" alt="HPV và thai sản">
-          <div class="content">
-            <h2>Nhiễm HPV có mang thai được không?</h2>
-            <p>1 tháng trước</p>
-          </div>
-        </a>
-      </article>
-
-      <article class="blog-card">
-        <a href="blogchitiet_7.html">
-          <img src="https://i.postimg.cc/cLwjSfkv/H-nh-tin-t-c-7.jpg" alt="Mãn kinh">
-          <div class="content">
-            <h2>Sinh lý nữ giới tuổi mãn kinh thay đổi thế nào?</h2>
-            <p>1 tháng trước</p>
-          </div>
-        </a>
-      </article>
+    <section class="intro-banner">
+      <div class="overlay">
+        <h1>📚 KIẾN THỨC Y KHOA & CHIA SẺ KINH NGHIỆM</h1>
+        <p>Cập nhật thông tin sức khỏe từ các chuyên gia An Giới</p>
+      </div>
     </section>
 
-    <div class="pagination">
-      <span class="page active">1</span>
-      <span class="page">2</span>
-      <span class="page">...</span>
-      <span class="page">10</span>
-      <span class="page">&raquo;</span>
+    <!-- Tìm kiếm -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder=" Tìm kiếm bài viết..." />
     </div>
+
+    <section class="blog-grid" id="blogGrid">
+   
+
+      <!-- Dữ liệu blog sẽ được load ở đây -->
+    </section>
+ <div id="pagination" class="pagination"></div>
   </main>
 
+  <!-- FOOTER -->
   <div id="footer-placeholder"></div>
   <script>
     fetch('/Frontend/components/footer.html')
-      .then(response => response.text())
+      .then(res => res.text())
       .then(data => {
         document.getElementById("footer-placeholder").innerHTML = data;
       });
   </script>
 
-</body>
+  <!-- JS tải blog từ blogs.json -->
+  <script>
+  const blogGrid = document.getElementById('blogGrid');
+  const searchInput = document.getElementById('searchInput');
+  let blogData = [];
+  const POSTS_PER_PAGE = 8;
+  let currentPage = 1;
 
+  function createBlogCard(blog) {
+    return `
+      <article class="blog-card">
+        <a href="${blog.link}">
+          <img src="${blog.image}" alt="${blog.alt}" loading="lazy">
+          <div class="content">
+            <h2>${blog.title}</h2>
+            <p class="date">${blog.date}</p>
+          </div>
+        </a>
+      </article>
+    `;
+  }
+
+  function renderBlogs(data) {
+    if (data.length === 0) {
+      blogGrid.innerHTML = `<p style="text-align:center;">Không tìm thấy bài viết phù hợp.</p>`;
+    } else {
+      blogGrid.innerHTML = data.map(createBlogCard).join('');
+    }
+  }
+
+
+  function renderPagination(totalItems, currentPage) {
+  const totalPages = Math.ceil(totalItems / POSTS_PER_PAGE);
+  const pagination = document.getElementById('pagination');
+  pagination.innerHTML = '';
+
+  // Previous button
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = '←';
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.addEventListener('click', () => {
+    if (currentPage > 1) displayBlogsByPage(blogData, currentPage - 1);
+  });
+  pagination.appendChild(prevBtn);
+
+  // Page numbers
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    if (i === currentPage) btn.classList.add('active');
+    btn.addEventListener('click', () => displayBlogsByPage(blogData, i));
+    pagination.appendChild(btn);
+  }
+
+  // Next button
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = '→';
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.addEventListener('click', () => {
+    if (currentPage < totalPages) displayBlogsByPage(blogData, currentPage + 1);
+  });
+  pagination.appendChild(nextBtn);
+}
+
+
+  function displayBlogsByPage(data, page) {
+  currentPage = page;
+  const start = (page - 1) * POSTS_PER_PAGE;
+  const end = start + POSTS_PER_PAGE;
+  const paginatedData = data.slice(start, end);
+  renderBlogs(paginatedData);
+  renderPagination(data.length, page);
+}
+
+
+  function handleSearch() {
+  const keyword = searchInput.value.toLowerCase();
+  const filtered = blogData.filter(blog =>
+    blog.title.toLowerCase().includes(keyword) ||
+    blog.tags.some(tag => tag.toLowerCase().includes(keyword))
+  );
+  displayBlogsByPage(filtered, 1);
+}
+
+
+  fetch('/Frontend/assets/data/blogs.json')
+    .then(res => res.json())
+    .then(data => {
+      blogData = data;
+      console.log(blogData);
+      displayBlogsByPage(blogData, 1);
+
+    });
+
+  searchInput.addEventListener('input', handleSearch);
+</script>
+
+</body>
 </html>

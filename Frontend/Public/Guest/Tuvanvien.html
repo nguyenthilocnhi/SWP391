@@ -51,22 +51,34 @@
 
     // Render danh sách
     function renderAdvisors(list) {
-      const container = document.getElementById('advisorGrid');
-      container.innerHTML = '';
-      list.forEach(advisor => {
-        const card = document.createElement('div');
-        card.className = 'advisor-card';
-        card.innerHTML = `
-          <img src="${advisor.image}" alt="${advisor.name}" />
-          <h3>${advisor.name}</h3>
-          <p>${advisor.specialty}</p>
-          <p><strong>Kinh nghiệm:</strong> ${advisor.experience}</p>
-          <p>${advisor.education}</p>
-        `;
-        container.appendChild(card);
-      });
-    }
+  const container = document.getElementById('advisorGrid');
+  container.innerHTML = '';
 
+  list.forEach(advisor => {
+    const card = document.createElement('div');
+    card.className = 'advisor-card';
+
+    // Nếu có file chi tiết riêng thì gán thủ công
+    let detailLink = `/Frontend/Public/Guest/ChiTietTuvanvien.html?id=${advisor.id}`;
+    if (advisor.id === "K") {
+      detailLink = "/Frontend/Public/Guest/ChiTiet_K.html";
+    }
+    // Nếu tạo thêm file thủ công cho các ID khác, thêm tương tự ở đây:
+    if (advisor.id === "H") detailLink = "/Frontend/Public/Guest/ChiTiet_H.html";
+    // ...
+
+    card.innerHTML = `
+      <a href="${detailLink}" class="card-link">
+        <img src="${advisor.image}" alt="${advisor.name}" />
+        <h3>${advisor.name}</h3>
+        <p>${advisor.specialty}</p>
+        <p><strong>Kinh nghiệm:</strong> ${advisor.experience}</p>
+        <p>${advisor.education}</p>
+      </a>
+    `;
+    container.appendChild(card);
+  });
+}
     // Tìm kiếm
     document.addEventListener('DOMContentLoaded', () => {
       const searchForm = document.querySelector('.search-form');
