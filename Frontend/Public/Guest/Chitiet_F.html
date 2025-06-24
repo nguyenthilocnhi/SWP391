@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TS. Trần Văn F | An Giới Health</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/chitiettuvanvien.css" />
+</head>
+
+<body>
+  <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_guest.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        if (typeof initHeader === 'function') initHeader();
+      });
+  </script>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/Frontend/Public/Guest/Tuvanvien.html">← Danh sách Tư vấn viên</a>
+    </div>
+
+    <div class="profile-header">
+      <img src="https://i.postimg.cc/KvmC0ZJv/Tr-n-V-n.jpg" alt="TS. Trần Văn F" />
+      <div class="profile-info">
+        <h1>TS. Trần Văn F</h1>
+        <p><strong>Chức danh:</strong> Tư vấn sức khỏe sinh sản</p>
+        <p><strong>Kinh nghiệm:</strong> 5 năm</p>
+        <p><strong>Trường đào tạo:</strong> ĐH Y Dược Huế (2012 – 2020)</p>
+        <a href="#" class="btn-book">Đặt lịch hẹn</a>
+      </div>
+    </div>
+
+    <h2 class="section-title">Giới thiệu</h2>
+    <p>
+      TS. Trần Văn F là chuyên gia trẻ, năng động trong lĩnh vực tư vấn sức khỏe sinh sản, đặc biệt là các vấn đề liên quan đến khả năng sinh sản ở nam và nữ giới. Với kiến thức chuyên sâu và kỹ năng giao tiếp hiệu quả, anh đã giúp hàng trăm bệnh nhân cải thiện nhận thức và hành vi về sức khỏe sinh sản.
+    </p>
+    <p>
+      Sau khi hoàn thành chương trình bác sĩ đa khoa tại ĐH Y Dược Huế, TS. F tiếp tục học lên cao học và tham gia nghiên cứu chuyên sâu về tình trạng vô sinh – hiếm muộn tại các bệnh viện lớn. Anh được đánh giá cao bởi cách tiếp cận tư vấn toàn diện, vừa khoa học, vừa nhân văn.
+    </p>
+    <p>
+      Hiện TS. F đang công tác tại An Giới Health Center, nơi anh thực hiện vai trò tư vấn và hướng dẫn cá nhân hóa kế hoạch chăm sóc sinh sản cho từng khách hàng.
+    </p>
+
+    <h2 class="section-title">Chuyên môn tư vấn</h2>
+
+    <h3>Chứng chỉ</h3>
+    <ul class="custom-list">
+      <li>Chứng chỉ tư vấn sức khỏe sinh sản – ĐH Y Dược Huế, 2019</li>
+      <li>Khóa đào tạo quản lý sinh sản và kế hoạch hóa gia đình – UNFPA, 2020</li>
+      <li>Đào tạo chuyên sâu về tư vấn hiếm muộn – Trung tâm IVF Quốc gia, 2021</li>
+    </ul>
+
+    <h3>Bằng cấp</h3>
+    <ul class="custom-list">
+      <li>Bác sĩ Y khoa – ĐH Y Dược Huế, 2012 – 2020</li>
+      <li>Tiến sĩ Sức khỏe cộng đồng – ĐH Y tế Công cộng TP.HCM, 2020 – 2023</li>
+    </ul>
+
+    <h2 class="section-title">Thành tựu nổi bật</h2>
+    <ul class="custom-list">
+      <li>Thành viên nhóm nghiên cứu về sức khỏe sinh sản Việt Nam – Nhật Bản</li>
+      <li>Diễn giả chính tại Hội thảo "Nam giới và trách nhiệm kế hoạch hóa", 2022</li>
+      <li>Tham gia phát triển tài liệu hướng dẫn tư vấn sinh sản tại cộng đồng</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+      });
+  </script>
+</body>
+
+</html>

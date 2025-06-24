@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ThS. Lý Ngọc N | Tư vấn viên</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/chitiettuvanvien.css">
+</head>
+<body>
+  <!-- Gọi header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_guest.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+        if (typeof initHeader === 'function') initHeader();
+      });
+  </script>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/Frontend/Public/Guest/Tuvanvien.html">← Danh sách Tư vấn viên</a>
+    </div>
+
+    <div class="profile-header">
+      <img src="https://i.postimg.cc/Dw6G1cmw/L-Ng-c.jpg" alt="ThS. Lý Ngọc N" />
+      <div class="profile-info">
+        <h1>ThS. Lý Ngọc N</h1>
+        <p><strong>Chuyên môn:</strong> Tư vấn sức khỏe sinh sản</p>
+        <p><strong>Kinh nghiệm:</strong> 8 năm</p>
+        <p><strong>Trường đào tạo:</strong> ĐH Y Dược TPHCM (2009 – 2017)</p>
+        <a href="#" class="btn-book">Đặt lịch hẹn</a>
+      </div>
+    </div>
+
+    <h2 class="section-title">Giới thiệu</h2>
+    <p>
+      Thạc sĩ Lý Ngọc N là chuyên viên tư vấn sức khỏe sinh sản với gần một thập kỷ kinh nghiệm đồng hành cùng phụ nữ ở mọi lứa tuổi trong hành trình chăm sóc và bảo vệ sức khỏe sinh sản. Sau khi tốt nghiệp xuất sắc từ Đại học Y Dược TP.HCM, chị tiếp tục theo đuổi chương trình sau đại học với định hướng chuyên sâu về y tế dự phòng và giáo dục giới tính.
+    </p>
+    <p>
+      Với sự nhạy bén trong chuyên môn và lối tiếp cận linh hoạt, chị đã tư vấn thành công cho hàng ngàn trường hợp liên quan đến rối loạn kinh nguyệt, kế hoạch hóa gia đình, chăm sóc thai kỳ và hậu sản. Phong cách tư vấn gần gũi, tinh tế giúp chị được nhiều khách hàng tin tưởng và lựa chọn lâu dài.
+    </p>
+    <p>
+      Ngoài hoạt động tư vấn cá nhân, ThS. Lý Ngọc N còn tham gia điều phối các chương trình truyền thông sức khỏe cộng đồng và là giảng viên thỉnh giảng về chủ đề sức khỏe phụ nữ tại một số trường đại học tại TP.HCM.
+    </p>
+
+    <h2 class="section-title">Chuyên môn bác sĩ</h2>
+
+    <h3>Chứng chỉ</h3>
+    <ul class="custom-list">
+      <li>Chứng chỉ tư vấn sức khỏe sinh sản – ĐH Y Dược TPHCM, 2018</li>
+      <li>Khóa đào tạo chuyên sâu về kế hoạch hóa gia đình – Bộ Y tế, 2019</li>
+      <li>Chứng nhận đào tạo cộng đồng về sức khỏe giới tính – PATH Vietnam</li>
+    </ul>
+
+    <h3>Bằng cấp</h3>
+    <ul class="custom-list">
+      <li>Bác sĩ Y khoa – ĐH Y Dược TPHCM, 2009 – 2015</li>
+      <li>Thạc sĩ Y tế công cộng – Viện Vệ sinh Dịch tễ Trung ương, 2015 – 2017</li>
+    </ul>
+
+    <h2 class="section-title">Thành tựu nổi bật</h2>
+    <ul class="custom-list">
+      <li>Điều phối viên chương trình "Phụ nữ khỏe mạnh" tại TP.HCM (2021 – nay)</li>
+      <li>Diễn giả chương trình "Tư vấn sức khỏe học đường" – Đài truyền hình HTV</li>
+      <li>Nhận bằng khen từ Bộ Y tế vì đóng góp trong hoạt động chăm sóc sức khỏe sinh sản vùng nông thôn (2022)</li>
+    </ul>
+  </div>
+
+  <!-- Gọi footer -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
+</body>
+</html>
