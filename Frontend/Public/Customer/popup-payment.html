@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo payment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f0fdf4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .booking-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 16px;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.1);
+      max-width: 500px;
+      width: 100%;
+      border: 2px solid #34D399;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #059669;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 16px;
+      display: block;
+      color: #065f46;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #a7f3d0;
+      border-radius: 8px;
+      font-size: 14px;
+      background-color: #f0fdf4;
+      transition: border 0.3s;
+      box-sizing: border-box;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #34D399;
+    }
+
+    button {
+      margin-top: 24px;
+      width: 100%;
+      padding: 12px;
+      background-color: #10B981;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #059669;
+    }
+
+    /* Payment Popup Styles */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .popup-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 16px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      animation: popupSlideIn 0.3s ease-out;
+    }
+
+    @keyframes popupSlideIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    .popup-header {
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      padding: 20px 30px;
+      border-radius: 16px 16px 0 0;
+      position: relative;
+    }
+
+    .popup-header h3 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s;
+    }
+
+    .close-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .popup-content {
+      padding: 30px;
+    }
+
+    .booking-summary {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .booking-summary h4 {
+      color: #059669;
+      margin: 0 0 15px 0;
+      font-size: 16px;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      padding: 5px 0;
+    }
+
+    .summary-item:last-child {
+      border-top: 1px solid #bbf7d0;
+      padding-top: 10px;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #059669;
+    }
+
+    .payment-methods {
+      margin-bottom: 25px;
+    }
+
+    .payment-methods h4 {
+      color: #065f46;
+      margin-bottom: 15px;
+    }
+
+    .payment-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .payment-option {
+      border: 2px solid #d1fae5;
+      border-radius: 10px;
+      padding: 15px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: #f9fffe;
+    }
+
+    .payment-option:hover {
+      border-color: #34D399;
+      background: #ecfdf5;
+    }
+
+    .payment-option.selected {
+      border-color: #10B981;
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .payment-option .icon {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .payment-option .name {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .payment-form {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .payment-form.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      color: #065f46;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1fae5;
+      border-radius: 8px;
+      font-size: 14px;
+      background: #f9fffe;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+      border-color: #10B981;
+      outline: none;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 15px;
+    }
+
+    .security-note {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #0369a1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .security-note:before {
+      content: "🔒";
+    }
+
+    .popup-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .btn-cancel {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #d1fae5;
+      background: white;
+      color: #059669;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-cancel:hover {
+      background: #f0fdf4;
+      border-color: #10B981;
+    }
+
+    .btn-pay {
+      flex: 2;
+      padding: 12px;
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-pay:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-pay:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .spinner {
+      border: 3px solid #d1fae5;
+      border-top: 3px solid #10B981;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 40px;
+      color: #059669;
+    }
+
+    .success-message .icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 20px;
+      }
+      
+      .popup-container {
+        width: 95%;
+      }
+      
+      .popup-content {
+        padding: 20px;
+      }
+      
+      .payment-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .popup-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="booking-section">
+    <div class="form-container">
+      <h2>Đặt Lịch Xét Nghiệm</h2>
+      <form onsubmit="return handleTestBooking(event)">
+        <label>Họ và tên <span>*</span></label>
+        <input type="text" id="hoten" required>
+
+        <label>Số điện thoại <span>*</span></label>
+        <input type="tel" id="sdt" required>
+
+        <label>Ngày xét nghiệm <span>*</span></label>
+        <input type="date" id="ngay" required>
+
+        <label>Giờ xét nghiệm <span>*</span></label>
+        <input type="time" id="gio" required>
+
+        <label>Loại xét nghiệm <span>*</span></label>
+        <select id="loaiXetNghiem" required>
+          <option value="">-- Chọn loại --</option>
+          <option value="HIV Ag/Ab combo (HIV test thế hệ 4)" data-price="350000">Xét nghiệm HIV - 350.000đ</option>
+          <option value="Giang mai (RPR/TPHA)" data-price="280000">Xét nghiệm Giang Mai - 280.000đ</option>
+          <option value="Lậu (PCR hoặc nhuộm soi)" data-price="450000">Xét nghiệm Lậu - 450.000đ</option>
+          <option value="Chlamydia(PCR)" data-price="420000">Xét nghiệm PCR - 420.000đ</option>
+          <option value="HPV" data-price="680000">Xét nghiệm Cổ Tử Cung - 680.000đ</option>
+          <option value="Virus Zika" data-price="550000">Xét nghiệm Virus Zika - 550.000đ</option>
+          <option value="Pap smear" data-price="320000">Xét nghiệm Tế bào học cổ tử cung - 320.000đ</option>
+          <option value="Sùi mào gà(HPV tuýp nguy cơ thấp)" data-price="580000">Xét nghiệm Sùi Mào Gà - 580.000đ</option>
+          <option value="Herpes Simplex Virus" data-price="480000">Xét nghiệm HSV 1 & 2 - 480.000đ</option>
+          <option value="Hạ cam mềm" data-price="380000">Xét nghiệm Chancroid - 380.000đ</option>
+          <option value="Rận mu" data-price="250000">Xét nghiệm Pubic lice - 250.000đ</option>
+        </select>
+
+        <label>Ghi chú / Yêu cầu đặc biệt</label>
+        <textarea id="ghichu" rows="3" placeholder="(Không bắt buộc)"></textarea>
+
+        <button type="submit">Đặt lịch</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Payment Popup -->
+  <div class="popup-overlay" id="paymentPopup">
+    <div class="popup-container">
+      <div class="popup-header">
+        <h3>🏥 Thanh Toán Dịch Vụ Xét Nghiệm</h3>
+        <button class="close-btn" onclick="closePaymentPopup()">&times;</button>
+      </div>
+      
+      <div class="popup-content">
+        <div class="booking-summary">
+          <h4>📋 Thông Tin Đặt Lịch</h4>
+          <div class="summary-item">
+            <span>Họ tên:</span>
+            <span id="summary-name"></span>
+          </div>
+          <div class="summary-item">
+            <span>Ngày khám:</span>
+            <span id="summary-date"></span>
+          </div>
+          <div class="summary-item">
+            <span>Giờ khám:</span>
+            <span id="summary-time"></span>
+          </div>
+          <div class="summary-item">
+            <span>Loại xét nghiệm:</span>
+            <span id="summary-service"></span>
+          </div>
+          <div class="summary-item">
+            <span>Tổng chi phí:</span>
+            <span id="summary-total"></span>
+          </div>
+        </div>
+
+        <div class="payment-methods">
+          <h4>💳 Chọn Phương Thức Thanh Toán</h4>
+          <div class="payment-options">
+            <div class="payment-option" data-method="card">
+              <div class="icon">💳</div>
+              <div class="name">Thẻ tín dụng</div>
+            </div>
+            <div class="payment-option" data-method="momo">
+              <div class="icon">📱</div>
+              <div class="name">MoMo</div>
+            </div>
+            <div class="payment-option" data-method="banking">
+              <div class="icon">🏦</div>
+              <div class="name">Internet Banking</div>
+            </div>
+            <div class="payment-option" data-method="cash">
+              <div class="icon">💵</div>
+              <div class="name">Tiền mặt tại cơ sở</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-form" id="card-form">
+          <div class="form-group">
+            <label>Số thẻ</label>
+            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ngày hết hạn</label>
+              <input type="text" id="expiry" placeholder="MM/YY" maxlength="5">
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" id="cvv" placeholder="123" maxlength="4">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Tên trên thẻ</label>
+            <input type="text" id="cardName" placeholder="NGUYEN VAN A">
+          </div>
+        </div>
+
+        <div class="payment-form" id="momo-form">
+          <div class="form-group">
+            <label>Số điện thoại MoMo</label>
+            <input type="tel" id="momoPhone" placeholder="0901234567">
+          </div>
+          <p style="color: #6b7280; font-size: 14px; margin-top: 10px;">
+            💡 Bạn sẽ nhận được thông báo trên ứng dụng MoMo để xác nhận thanh toán.
+          </p>
+        </div>
+
+        <div class="payment-form" id="banking-form">
+          <div class="form-group">
+            <label>Chọn ngân hàng</label>
+            <select id="bankSelect">
+              <option value="">-- Chọn ngân hàng --</option>
+              <option value="vietcombank">Vietcombank</option>
+              <option value="techcombank">Techcombank</option>
+              <option value="bidv">BIDV</option>
+              <option value="vietinbank">VietinBank</option>
+              <option value="mb">MB Bank</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="payment-form active" id="cash-form">
+          <p style="color: #059669; font-size: 14px; line-height: 1.6;">
+            ✅ <strong>Thanh toán tại cơ sở y tế</strong><br>
+            Bạn có thể thanh toán bằng tiền mặt khi đến làm xét nghiệm. Vui lòng mang theo đủ số tiền và đến đúng giờ đã đặt.
+          </p>
+        </div>
+
+        <div class="security-note">
+          Thông tin thanh toán được mã hóa và bảo mật tuyệt đối
+        </div>
+
+        <div class="popup-actions" id="payment-actions">
+          <button class="btn-cancel" onclick="closePaymentPopup()">Hủy</button>
+          <button class="btn-pay" onclick="processPayment()">Xác Nhận Đặt Lịch</button>
+        </div>
+
+        <div class="loading" id="payment-loading">
+          <div class="spinner"></div>
+          <p>Đang xử lý thanh toán...</p>
+        </div>
+
+        <div class="success-message" id="payment-success">
+          <div class="icon">✅</div>
+          <h3>Đặt lịch thành công!</h3>
+          <p>Cảm ơn bạn đã đặt lịch. Chúng tôi sẽ gửi thông tin xác nhận qua SMS và email.</p>
+          <button class="btn-pay" onclick="closePaymentPopup(); window.location.reload();">Hoàn Tất</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let bookingData = {};
+
+    // Tự động điền dữ liệu nếu có
+    document.addEventListener("DOMContentLoaded", function () {
+      // Không sử dụng localStorage để tránh lỗi trong artifacts
+      
+      // Set minimum date to today
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("ngay").setAttribute('min', today);
+    });
+
+    function handleTestBooking(event) {
+      event.preventDefault();
+
+      const hoTen = document.getElementById("hoten").value;
+      const sdt = document.getElementById("sdt").value;
+      const ngay = document.getElementById("ngay").value;
+      const gio = document.getElementById("gio").value;
+      const loaiSelect = document.getElementById("loaiXetNghiem");
+      const loai = loaiSelect.value;
+      const price = loaiSelect.selectedOptions[0]?.getAttribute('data-price') || '0';
+      const ghiChu = document.getElementById("ghichu").value;
+
+      if (!hoTen || !sdt || !ngay || !gio || !loai) {
+        alert("Vui lòng điền đầy đủ thông tin bắt buộc.");
+        return false;
+      }
+
+      bookingData = {
+        hoTen,
+        sdt,
+        ngay,
+        gio,
+        loaiXetNghiem: loai,
+        price: parseInt(price),
+        ghiChu
+      };
+
+      showPaymentPopup();
+      return false;
+    }
+
+    function showPaymentPopup() {
+      // Fill summary information
+      document.getElementById("summary-name").textContent = bookingData.hoTen;
+      document.getElementById("summary-date").textContent = formatDate(bookingData.ngay);
+      document.getElementById("summary-time").textContent = bookingData.gio;
+      document.getElementById("summary-service").textContent = bookingData.loaiXetNghiem;
+      document.getElementById("summary-total").textContent = formatPrice(bookingData.price);
+
+      document.getElementById("paymentPopup").style.display = "block";
+      document.body.style.overflow = "hidden";
+    }
+
+    function closePaymentPopup() {
+      document.getElementById("paymentPopup").style.display = "none";
+      document.body.style.overflow = "auto";
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('vi-VN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    function formatPrice(price) {
+      return price.toLocaleString('vi-VN') + 'đ';
+    }
+
+    // Payment method selection
+    document.querySelectorAll('.payment-option').forEach(option => {
+      option.addEventListener('click', function() {
+        document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+        this.classList.add('selected');
+        
+        const method = this.getAttribute('data-method');
+        document.querySelectorAll('.payment-form').forEach(form => form.classList.remove('active'));
+        document.getElementById(method + '-form').classList.add('active');
+        
+        // Update button text based on payment method
+        const payButton = document.querySelector('.btn-pay');
+        if (method === 'cash') {
+          payButton.textContent = 'Xác Nhận Đặt Lịch';
+        } else {
+          payButton.textContent = 'Thanh Toán ' + formatPrice(bookingData.price);
+        }
+      });
+    });
+
+    // Format card number
+    document.getElementById('cardNumber').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+      e.target.value = value;
+    });
+
+    // Format expiry date
+    document.getElementById('expiry').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length >= 2) {
+        value = value.substring(0,2) + '/' + value.substring(2,4);
+      }
+      e.target.value = value;
+    });
+
+    // CVV only numbers
+    document.getElementById('cvv').addEventListener('input', function(e) {
+      e.target.value = e.target.value.replace(/\D/g, '');
+    });
+
+    function processPayment() {
+      const selectedMethod = document.querySelector('.payment-option.selected');
+      if (!selectedMethod) {
+        alert('Vui lòng chọn phương thức thanh toán!');
+        return;
+      }
+
+      const method = selectedMethod.getAttribute('data-method');
+      
+      // Basic validation based on payment method
+      if (method === 'card') {
+        const cardNumber = document.getElementById('cardNumber').value;
+        const expiry = document.getElementById('expiry').value;
+        const cvv = document.getElementById('cvv').value;
+        const cardName = document.getElementById('cardName').value;
+        
+        if (!cardNumber || !expiry || !cvv || !cardName) {
+          alert('Vui lòng điền đầy đủ thông tin thẻ!');
+          return;
+        }
+      } else if (method === 'momo') {
+        const momoPhone = document.getElementById('momoPhone').value;
+        if (!momoPhone) {
+          alert('Vui lòng nhập số điện thoại MoMo!');
+          return;
+        }
+      } else if (method === 'banking') {
+        const bankSelect = document.getElementById('bankSelect').value;
+        if (!bankSelect) {
+          alert('Vui lòng chọn ngân hàng!');
+          return;
+        }
+      }
+
+      // Show loading
+      document.getElementById('payment-actions').style.display = 'none';
+      document.getElementById('payment-loading').style.display = 'block';
+
+      // Simulate payment processing
+      setTimeout(() => {
+        document.getElementById('payment-loading').style.display = 'none';
+        document.getElementById('payment-success').style.display = 'block';
+        
+        // Here you would normally save the booking data
+        console.log('Booking saved:', { ...bookingData, paymentMethod: method });
+      }, 3000);
+    }
+
+    // Close popup when clicking outside
+    document.getElementById('paymentPopup').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closePaymentPopup();
+      }
+    });
+
+    // Prevent form submission on Enter key in popup
+    document.getElementById('paymentPopup').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') {
+        e.preventDefault();
+      }
+    });
+
+    
+  </script>
+
+  <script></script>
+
+</body>
+
+</html>
