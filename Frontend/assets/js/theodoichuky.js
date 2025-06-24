@@ -1,20 +1,17 @@
+const mainCalendar = document.getElementById('mainCalendar');
+const predictionCalendar = document.getElementById('predictionCalendar');
+const mainMonthYear = document.getElementById('mainMonthYear');
+const predictMonthYear = document.getElementById('predictMonthYear');
+const moodIcons = document.querySelectorAll(".mood-icon");
+const selectedMood = document.getElementById("selected-mood");
+const predictionText = document.getElementById('predictionText');
+
+let mainDate = new Date();
+let predictOffset = 1; // 1: tháng kế tiếp, 2: kế tiếp nữa, etc.
+let periodData = JSON.parse(localStorage.getItem("periodData") || "[]");
+
+//Hôm nay tâm trạng thế nào
 document.addEventListener("DOMContentLoaded", () => {
-    const moodIcons = document.querySelectorAll(".mood-icon");
-    const selectedMood = document.getElementById("selected-mood");
-    const calendarGrid = document.getElementById("calendar-grid");
-    const monthLabel = document.getElementById("month-label");
-    const periodLengthInput = document.getElementById("period-length");
-    const cycleLengthInput = document.getElementById("cycle-length");
-
-    let currentMonth = new Date().getMonth();
-    let currentYear = new Date().getFullYear();
-    let settings = {
-        periodLength: 5,
-        cycleLength: 28
-    };
-    let periodStartDate = new Date();
-
-    renderCalendar();
 
     moodIcons.forEach(icon => {
         icon.addEventListener("click", () => {
@@ -23,124 +20,285 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedMood.textContent = icon.dataset.mood;
         });
     });
+});
 
-    document.getElementById("save-today").addEventListener("click", () => {
-        alert("Trạng thái hôm nay đã được lưu!");
-    });
+//Lịch Chu Kì
+function formatDate(d) {
+    return d.toISOString().split('T')[0];
+}
 
-    document.getElementById("apply-settings").addEventListener("click", () => {
-        settings.periodLength = parseInt(periodLengthInput.value);
-        settings.cycleLength = parseInt(cycleLengthInput.value);
-        renderCalendar();
-    });
+function getAverageCycle() {
+    if (periodData.length < 2) return 28;
+    const sorted = periodData.map(d => new Date(d)).sort((a, b) => a - b);
+    let total = 0;
+    for (let i = 1; i < sorted.length; i++) {
+        total += (sorted[i] - sorted[i - 1]) / (1000 * 3600 * 24);
+    }
+    return Math.round(total / (sorted.length - 1));
+}
 
-    document.getElementById("prev-month").addEventListener("click", () => {
-        currentMonth--;
-        if (currentMonth < 0) {
-            currentMonth = 11;
-            currentYear--;
+function predictNextPeriod(n = 1) {
+    if (periodData.length === 0) return null;
+    const last = new Date(periodData[periodData.length - 1]);
+    const cycleLength = parseInt(localStorage.getItem("customCycleLength")) || getAverageCycle();
+    last.setDate(last.getDate() + cycleLength * n);
+    return last;
+}
+
+const nextPeriod = predictNextPeriod();
+predictionText.innerText = nextPeriod
+    ? `Dự đoán kỳ kinh tiếp theo: ${formatDate(nextPeriod)}`
+    : "";
+
+function changeMainMonth(offset) {
+    mainDate.setMonth(mainDate.getMonth() + offset);
+    renderMainCalendar();
+}
+
+function changePredictMonth(offset) {
+    predictOffset += offset;
+    if (predictOffset < 1) predictOffset = 1;
+    renderPredictCalendar();
+}
+// Cho phép người dùng chọn từng ngày kinh
+function getDayType(date, isPredict = false, offset = 1) {
+    const iso = formatDate(date);
+
+    if (!isPredict) {
+        if (periodData.includes(iso)) return "period";
+    } else {
+        const start = predictNextPeriod(offset);
+        const diff = Math.floor((date - start) / (1000 * 60 * 60 * 24));
+        if (diff === 0) return "period-predict";
+        if (diff === 14) return "ovulation-predict";
+        if (diff >= 12 && diff <= 16) return "fertile-predict";
+        if (diff > 16 && diff < 28) return "safe-predict";
+    }
+
+    return "";
+}
+
+//Lịch chu kì
+function renderMainCalendar() {
+    mainCalendar.innerHTML = "";
+    const year = mainDate.getFullYear();
+    const month = mainDate.getMonth();
+    mainMonthYear.textContent = `Tháng ${month + 1} / ${year}`;
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+        mainCalendar.appendChild(document.createElement("div"));
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const iso = formatDate(date);
+        const cell = document.createElement("div");
+        cell.className = "day";
+
+        //Hiện ngày hôm nay
+        if (formatDate(date) === formatDate(new Date())) {
+            cell.classList.add("today");
         }
-        renderCalendar();
-    });
 
-    document.getElementById("next-month").addEventListener("click", () => {
-        currentMonth++;
-        if (currentMonth > 11) {
-            currentMonth = 0;
-            currentYear++;
-        }
-        renderCalendar();
-    });
-
-    const calendar = document.getElementById('calendar');
-    const monthYear = document.getElementById('monthYear');
-    const prevMonth = document.getElementById('prevMonth');
-    const nextMonth = document.getElementById('nextMonth');
-
-    let currentDate = new Date();
-    let periodDates = JSON.parse(localStorage.getItem('periodDates')) || [];
-
-    function renderCalendar(date) {
-        calendar.innerHTML = '';
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        monthYear.textContent = `${month + 1}/${year}`;
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        for (let i = 0; i < firstDay; i++) {
-            calendar.appendChild(document.createElement('div'));
-        }
-
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayDiv = document.createElement('div');
-            dayDiv.className = 'day';
-            dayDiv.textContent = day;
-
-            const thisDate = new Date(year, month, day);
-            const isoDate = thisDate.toISOString().split('T')[0];
-
-            if (periodDates.includes(isoDate)) {
-                dayDiv.classList.add('period');
-                markFertileDays(thisDate, dayDiv);
+        // Cho phép ngườu dùng cho từng ngày 1 
+        cell.onclick = () => {
+            if (!periodData.includes(iso)) {
+                periodData.push(iso);
             } else {
-                const prediction = predictDayType(thisDate);
-                if (prediction) dayDiv.classList.add(prediction);
+                periodData = periodData.filter(d => d !== iso);
             }
+            localStorage.setItem("periodData", JSON.stringify(periodData));
+            renderMainCalendar();
+            renderPredictCalendar();
+        };
 
-            dayDiv.addEventListener('click', () => {
-                if (!periodDates.includes(isoDate)) {
-                    periodDates.push(isoDate);
-                } else {
-                    periodDates = periodDates.filter(d => d !== isoDate);
+        cell.textContent = day;
+
+        const type = getDayType(date, false);
+        if (type) cell.classList.add(type);
+
+        cell.onclick = () => {
+            if (!periodData.includes(iso)) {
+                periodData.push(iso);
+            } else {
+                periodData = periodData.filter(d => d !== iso);
+            }
+            localStorage.setItem("periodData", JSON.stringify(periodData));
+            renderMainCalendar();
+            renderPredictCalendar();
+        };
+
+        mainCalendar.appendChild(cell);
+    }
+}
+
+// Lịch dự đoán
+function renderPredictCalendar() {
+    predictionCalendar.innerHTML = "";
+    const start = predictNextPeriod(predictOffset);
+    if (!start) {
+        predictMonthYear.textContent = "Không có dự đoán";
+        return;
+    }
+
+    const year = start.getFullYear();
+    const month = start.getMonth();
+    predictMonthYear.textContent = `Tháng ${month + 1} / ${year}`;
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+        predictionCalendar.appendChild(document.createElement("div"));
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const cell = document.createElement("div");
+        cell.className = "day readonly";
+        cell.textContent = day;
+
+        const type = getDayType(date, true, predictOffset);
+        if (type) cell.classList.add(type);
+
+        predictionCalendar.appendChild(cell);
+    }
+}
+
+// Cài đặt chu kỳ
+document.getElementById("apply-settings").addEventListener("click", () => {
+    const periodLength = parseInt(document.getElementById("period-length").value);
+    const cycleLength = parseInt(document.getElementById("cycle-length").value);
+
+    if (isNaN(periodLength) || isNaN(cycleLength) || periodLength <= 0 || cycleLength <= 0) {
+        alert("Vui lòng nhập số hợp lệ cho độ dài chu kỳ và kỳ kinh.");
+        return;
+    }
+
+    localStorage.setItem("customPeriodLength", periodLength);
+    localStorage.setItem("customCycleLength", cycleLength);
+
+    alert("Đã cập nhật cài đặt chu kỳ.");
+    renderMainCalendar();
+    renderPredictCalendar();
+    renderCycleChart();
+});
+
+
+// Thống kê chu kì
+function renderCycleChart() {
+    const canvas = document.getElementById("cycleChart");
+    if (!canvas) return;
+
+    const rawDates = periodData.map(d => new Date(d)).sort((a, b) => a - b);
+    if (rawDates.length < 2) return;
+
+    const labels = [];
+    const cycleLengths = [];
+
+    for (let i = 1; i < rawDates.length; i++) {
+        const days = Math.round((rawDates[i] - rawDates[i - 1]) / (1000 * 60 * 60 * 24));
+        cycleLengths.push(days);
+        labels.push(rawDates[i].toLocaleDateString("vi-VN"));
+    }
+
+    const avg = cycleLengths.reduce((a, b) => a + b, 0) / cycleLengths.length;
+    const deviations = cycleLengths.map(x => Math.abs(x - avg));
+    const hasDeviation = deviations.some(d => d > 4);
+
+    const warningBox = document.getElementById("cycle-warning");
+    if (hasDeviation) {
+        warningBox.innerText = `⚠️ Chu kỳ kinh nguyệt của bạn có sai lệch so với trung bình. Vui lòng theo dõi thêm.`;
+    } else {
+        warningBox.innerText = "";
+    }
+
+    new Chart(canvas.getContext("2d"), {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Độ dài chu kỳ (ngày)",
+                data: cycleLengths,
+                borderColor: "#e91e63",
+                backgroundColor: "rgba(233, 30, 99, 0.1)",
+                fill: true,
+                tension: 0.4,
+                pointRadius: 5,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    suggestedMin: 20,
+                    suggestedMax: 40,
+                    title: {
+                        display: true,
+                        text: "Số ngày"
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: "Ngày bắt đầu kỳ"
+                    }
                 }
-                localStorage.setItem('periodDates', JSON.stringify(periodDates));
-                renderCalendar(currentDate);
-            });
-
-            calendar.appendChild(dayDiv);
+            },
+            plugins: {
+                legend: { display: false }
+            }
         }
-    }
+    });
+}
 
-    function markFertileDays(startDate, div) {
-        // Rụng trứng khoảng ngày thứ 14, dễ thụ thai ngày 12-16
-        const ovulationDate = new Date(startDate);
-        ovulationDate.setDate(ovulationDate.getDate() + 14);
-        const fertileWindow = [
-            new Date(startDate.getTime() + 12 * 86400000),
-            new Date(startDate.getTime() + 16 * 86400000),
-        ];
-    }
+renderMainCalendar();
+renderPredictCalendar();
+renderCycleChart();
 
-    function predictDayType(date) {
-        for (let d of periodDates) {
-            const pd = new Date(d);
-            const diff = Math.floor((date - pd) / (1000 * 3600 * 24));
-            if (diff >= 0 && diff <= 4) return 'period';
-            if (diff === 14) return 'ovulation';
-            if (diff >= 12 && diff <= 16) return 'fertile';
-            if (diff > 16 && diff < 28) return 'safe';
+
+//Liên kết bạn đời
+document.addEventListener("DOMContentLoaded", () => {
+    const shareBtn = document.getElementById("share-partner");
+
+    shareBtn.addEventListener("click", () => {
+        const email = document.getElementById("partner-email").value.trim();
+
+        if (!email || !validateEmail(email)) {
+            alert("Vui lòng nhập đúng định dạng email của bạn đời!");
+            return;
         }
-        return '';
-    }
 
-    prevMonth.addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendar(currentDate);
+        // Giả lập gửi lời mời
+        alert(`Đã gửi lời mời liên kết tới ${email}. Bạn đời cần kiểm tra email và xác nhận.`);
+
+        // Sau này bạn có thể thay đoạn dưới bằng lệnh gửi API thực tế
+        /*
+        fetch('/api/send-invite', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Đã gửi lời mời liên kết thành công!");
+            } else {
+                alert("Gửi lời mời thất bại. Vui lòng thử lại.");
+            }
+        })
+        .catch(err => {
+            alert("Lỗi kết nối máy chủ. Vui lòng thử lại sau.");
+        });
+        */
     });
 
-    nextMonth.addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendar(currentDate);
-    });
-
-    renderCalendar(currentDate);
-
-
-    function isSameDate(d1, d2) {
-        return d1.getDate() === d2.getDate() &&
-            d1.getMonth() === d2.getMonth() &&
-            d1.getFullYear() === d2.getFullYear();
+    function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
     }
 });
+
+
+

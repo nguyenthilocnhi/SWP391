@@ -1,3 +1,11 @@
+/*Header*/
+body {
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
 header {
     background-color: #ffffff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -290,211 +298,157 @@ header {
     }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: #f8fafc;
-    color: #1f2937;
-}
-
-section-title {
-    background-color: #7ed957;
-    padding: 12px 20px;
-    color: white;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    font-size: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.container {
-    max-width: 100%;
-    width: 100%;
-    margin: 30px auto;
-    padding: 0 40px;
-}
-
-section {
-    margin-bottom: 40px;
-}
-
 h1,
-h2 {
+h2,
+h3 {
+    text-align: center;
     color: #10b981;
 }
 
+/*Tâm trạng*/
+#mood-selector {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 12px 0;
+}
+
+.mood-icon {
+    font-size: 36px;
+    cursor: pointer;
+    padding: 14px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border 0.3s, background-color 0.3s;
+}
+
+.mood-icon:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.1);
+}
+
+.mood-icon.selected {
+    border: 2px solid #10b981;
+    background-color: #e6fff3;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+/*Lịch Chu kỳ*/
 .calendar-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
 }
 
-#calendar {
+.calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
-    margin-top: 10px;
+    margin-bottom: 30px;
 }
 
 .day {
-    padding: 15px;
+    padding: 10px;
     background: #f0f0f0;
+    text-align: center;
+    border-radius: 6px;
     cursor: pointer;
-    border-radius: 8px;
-    transition: 0.3s;
 }
 
-.day:hover {
-    background: #ddd;
+.day.readonly {
+    cursor: default;
 }
 
+.day.today {
+    border: 2px solid #10b981;
+    font-weight: bold;
+    background-color: #e6fff3;
+}
+
+.day.period.today {
+    background-color: #ff7171;
+    /* Màu ngày hành kinh */
+    color: white;
+    border: 2px solid #10b981;
+    /* Viền xanh của ngày hôm nay */
+}
+
+
+/* Màu chu kỳ thật */
 .period {
-    background-color: #ff6b6b !important;
+    background: #ff7171;
     color: white;
 }
 
 .fertile {
-    background-color: #a0e7e5 !important;
+    background: #fffd90;
 }
 
 .ovulation {
-    background-color: #00bcd4 !important;
+    background: #29d9dc;
     color: white;
 }
 
 .safe {
-    background-color: #d3d3d3 !important;
+    background: #40f69e;
 }
 
+/* Màu chu kỳ dự đoán */
+.period-predict {
+    background: #ffc1c1;
+}
+
+.fertile-predict {
+    background: #fffec9;
+}
+
+.ovulation-predict {
+    background: #90e5ef;
+}
+
+.safe-predict {
+    background: #aaffca;
+}
+
+/*Nút ghi chú màu*/
 .legend {
+    text-align: center;
     margin-top: 20px;
 }
 
-.legend .dot {
+.legend span {
     display: inline-block;
-    margin-right: 10px;
+    margin: 5px 10px;
     padding: 5px 10px;
     border-radius: 10px;
     font-size: 14px;
 }
 
-.mood-selector {
-    display: flex;
-    gap: 8px;
-    margin: 8px 0;
-}
-
-.mood-icon {
-    font-size: 24px;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 8px;
-    transition: background 0.2s;
-}
-
-.mood-icon.selected {
-    background: #d0f0ff;
-}
-
-button {
-    background: #ff5d8f;
+.legend .period {
+    background: #ff7171;
     color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 8px;
 }
 
-button:hover {
-    opacity: 0.9;
+.legend .fertile {
+    background: #fffd90;
 }
 
-/*liên kết bạn đời*/
-.partner-link {
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 8px;
+.legend .ovulation {
+    background: #29d9dc;
+    color: white;
+}
+
+.legend .safe {
+    background: #40f69e;
+}
+
+/* Cài đặt chu kỳ*/
+.settings {
     background: #f9f9f9;
-    max-width: 400px;
-    margin: 20px auto;
-}
-
-.partner-link h2 {
-    margin-bottom: 10px;
-    color: #10b981;
-}
-
-.partner-guide {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 15px;
-}
-
-.partner-link input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-
-.partner-link button {
-    padding: 8px 16px;
-    background-color: #10b981;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.partner-link button:hover {
-    background-color: #2c8e6d;
-}
-
-/*Footer*/
-footer.custom-footer {
-    margin-top: 4rem;
-    padding: 2rem;
-    background-color: #f3f4f6;
-    color: #374151;
-}
-
-.footer-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.footer-logo img {
-    height: 100px;
-}
-
-.footer-hotline {
-    text-align: right;
-}
-
-.footer-hotline strong {
-    font-size: 1.25rem;
-    color: #10b981;
-}
-
-.footer-info {
-    margin-top: 1rem;
-    font-size: 0.875rem;
-}
-
-hr {
-    margin: 20px 0;
-    border: none;
-    height: 1px;
-    background-color: #000;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
