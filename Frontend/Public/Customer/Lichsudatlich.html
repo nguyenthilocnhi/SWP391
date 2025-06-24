@@ -10,20 +10,6 @@
 </head>
 
 <body>
-  <!-- gọi header -->
-  <div id="header-placeholder"> </div>
-  <script>
-    fetch('/Frontend/components/header_customer.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("header-placeholder").innerHTML = data;
-
-        // Gọi hàm JS của header sau khi nội dung đã render
-        if (typeof initHeader === 'function') {
-          initHeader();
-        }
-      });
-  </script>
 
   <!-- Gọi file header và khởi động JS sau khi chèn xong -->
   <!-- GỌI HEADER -->

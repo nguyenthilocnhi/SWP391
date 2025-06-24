@@ -7,14 +7,19 @@
   <link rel="stylesheet" href="/Frontend/assets/css/lichsudichvu.css" />
 </head>
 <body>
-  <!-- HEADER -->
+<!-- Gọi file header và khởi động JS sau khi chèn xong -->
+  <!-- GỌI HEADER -->
   <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_customer.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("header-placeholder").innerHTML = html;
-        if (typeof initHeader === 'function') initHeader();
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+
+        // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
       });
   </script>
   <script src="/Frontend/assets/js/header_customer.js"></script>

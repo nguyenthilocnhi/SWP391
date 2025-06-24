@@ -7,20 +7,8 @@
   <title>Danh sách Tư vấn viên | An Giới</title>
   <link rel="stylesheet" href="/Frontend/assets/css/TuvanvienCustomer.css" />
 </head>
-<!-- gọi header -->
-<div id="header-placeholder"> </div>
-<script>
-  fetch('/Frontend/components/header_customer.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById("header-placeholder").innerHTML = data;
 
-      // Gọi hàm JS của header sau khi nội dung đã render
-      if (typeof initHeader === 'function') {
-        initHeader();
-      }
-    });
-</script>
+<body>
 
 <!-- Gọi file header và khởi động JS sau khi chèn xong -->
 <!-- GỌI HEADER -->
@@ -45,7 +33,7 @@
   <span id="alert-close">&times;</span>
 </div>
 
-<body>
+
   <main class="container">
     <h2 class="section-title">ĐỘI NGŨ TƯ VẤN VIÊN</h2>
     <div class="advisor-grid" id="advisorGrid"></div>

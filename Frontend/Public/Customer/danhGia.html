@@ -1,221 +1,131 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trung Tâm Sức Khỏe An Giới</title>
-  <link rel="stylesheet" href="/Frontend/assets/css/danhGia.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đánh Giá Dịch Vụ</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/danhgia.css" />
 </head>
-
 <body>
-  <!-- gọi header -->
-   <div id="header-placeholder"> </div>
-    <script>
-      fetch('/Frontend/components/header_customer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById("header-placeholder").innerHTML = data;
+  <div class="review-container">
+    <h2>Đánh Giá Dịch Vụ</h2>
 
-          // Gọi hàm JS của header sau khi nội dung đã render
-          if (typeof initHeader === 'function') {
-            initHeader();
-          }
-        });
-    </script>
+    <label for="dichVuSelect">Chọn Dịch Vụ:</label>
+    <select id="dichVuSelect">
+      <option value="">-- Chọn dịch vụ --</option>
+      <option value="Tư Vấn">Tư Vấn</option>
+      <option value="Xét Nghiệm">Xét Nghiệm</option>
+    </select>
 
-    <!-- Gọi file header và khởi động JS sau khi chèn xong -->
-    <script src="/Frontend/assets/js/header_customer.js"></script>  <!-- Đảm bảo file JS được load trước -->
-    <script>
-      fetch('/Frontend/components/header_customer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById("header-placeholder").innerHTML = data;
+    <label>Chấm sao:</label>
+    <div id="ratingStars" class="stars"></div>
 
-          // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
-          if (typeof initHeader === 'function') {
-            initHeader();
-          }
-        });
-    </script>
+    <label for="reviewText">Nội dung đánh giá:</label>
+    <textarea id="reviewText" rows="4" placeholder="Nhập đánh giá của bạn..."></textarea>
 
-  <!-- tạo 1 nhãn thông báo -->
-   <div id="alert-box" class="alert-box hidden">
-      <p id="alert-message">Bạn có thông báo mới!</p>
-      <span id="alert-close">&times;</span>
+    <button onclick="submitReview()">Gửi đánh giá</button>
+    <a class="back-link" href="Lichsudichvuvadanhgia.html">← Quay về lịch sử dịch vụ</a>
+
+    <div class="review-list" id="reviewList">
+      <h3>Đánh Giá Đã Gửi</h3>
     </div>
+  </div>
 
-
-    <main class="container">
-        <div class="title"><strong>Đánh Giá Dịch Vụ</strong></div>
-        
-        <div class="star-container">
-          <div class="star-rating">
-            <span class="star" data-value="1">&#9733;</span>
-            <span class="star" data-value="2">&#9733;</span>
-            <span class="star" data-value="3">&#9733;</span>
-            <span class="star" data-value="4">&#9733;</span>
-            <span class="star" data-value="5">&#9733;</span>
-          </div>
-
-          <p id="rating-value">Chưa có đánh giá</p>
-
-          <textarea
-            class="rating-textarea"
-            placeholder="Viết cảm nhận của bạn về dịch vụ..."
-            rows="4"
-          ></textarea>
-
-          <button class="submit-rating-btn">Gửi đánh giá</button>
-        </div>
-
-        
-
-    </main>
-
-    
-    <!-- phần đánh giá sao -->
-     <script>
-      // Xử lý chọn sao
-      const stars = document.querySelectorAll('.star');
-      const ratingValue = document.getElementById('rating-value');
-      let selectedRating = 0;
-
-      stars.forEach((star) => {
-        star.addEventListener('mouseover', () => {
-          const val = parseInt(star.getAttribute('data-value'));
-          highlightStars(val);
-        });
-
-        star.addEventListener('mouseout', () => {
-          highlightStars(selectedRating);
-        });
-
-        star.addEventListener('click', () => {
-          selectedRating = parseInt(star.getAttribute('data-value'));
-          ratingValue.textContent = `Bạn đánh giá ${selectedRating} sao`;
-        });
-      });
-
-      function highlightStars(rating) {
-        stars.forEach((s) => {
-          const val = parseInt(s.getAttribute('data-value'));
-          if (val <= rating) {
-            s.classList.add('selected');
-          } else {
-            s.classList.remove('selected');
-          }
-        });
-      }
-
-      // Gửi đánh giá
-      const submitBtn = document.querySelector('.submit-rating-btn');
-      const textarea = document.querySelector('.rating-textarea');
-
-      submitBtn.addEventListener('click', () => {
-        const reviewText = textarea.value.trim();
-
-        if (selectedRating === 0) {
-          alert('Vui lòng chọn số sao đánh giá.');
-          return;
-        }
-
-        if (reviewText === '') {
-          alert('Vui lòng viết nhận xét.');
-          return;
-        }
-
-        // In ra console (hoặc bạn có thể gửi lên server tại đây)
-        console.log(`Số sao: ${selectedRating}`);
-        console.log(`Nội dung: ${reviewText}`);
-
-        // Reset
-        textarea.value = '';
-        selectedRating = 0;
-        highlightStars(0);
-        ratingValue.textContent = 'Cảm ơn bạn đã đánh giá!';
-
-        // Thông báo nhẹ
-        alert('🎉 Đánh giá của bạn đã được ghi nhận!');
-      });
-    </script>
-
-   <!-- <script>
-    const stars = document.querySelectorAll('.star-rating .star');
-      const ratingText = document.getElementById('rating-value');
-      let selectedRating = 0;
-
-      stars.forEach((star, index) => {
-        const value = index + 1;
-
-        star.addEventListener('mouseover', () => {
-          highlightStars(value);
-        });
-
-        star.addEventListener('mouseout', () => {
-          highlightStars(selectedRating);
-        });
-
-        star.addEventListener('click', () => {
-          selectedRating = value;
-          ratingText.textContent = `Bạn đã đánh giá: ${value} sao`;
-        });
-      });
-
-      function highlightStars(rating) {
-        stars.forEach((star, index) => {
-          star.classList.toggle('hover', index < rating);
-          star.classList.toggle('selected', index < rating);
-        });
-      }
-
-   </script> -->
-
-  <!-- <script src="/Frontend/assets/js/header_customer.js"></script> -->
-
-<!-- nhãn thông báo -->
-   <script>
-      function showAlert(message) {
-        const alertBox = document.getElementById('alert-box');
-        const alertMessage = document.getElementById('alert-message');
-        const alertClose = document.getElementById('alert-close');
-
-        alertMessage.textContent = message;
-        alertBox.classList.remove('hidden');
-
-        // Tự động ẩn sau 5 giây
-        setTimeout(() => {
-          alertBox.classList.add('hidden');
-        }, 10000);
-
-        // Ẩn khi click vào nút đóng
-        alertClose.addEventListener('click', () => {
-          alertBox.classList.add('hidden');
-        });
-      }
-
-      // Ví dụ: gọi thông báo mới
-      document.addEventListener("DOMContentLoaded", function () {
-        // Giả lập có thông báo mới
-        setTimeout(() => {
-          showAlert("🔔 Bạn có 3 thông báo mới!");
-        }, 1000); // sau 1 giây khi vào trang
-      });
-   </script>
-
-
-
-
-  <!-- gọi footer -->
-  <div id="footer-placeholder"></div>
   <script>
-    fetch('/Frontend/components/footer.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("footer-placeholder").innerHTML = data;
+    const services = JSON.parse(localStorage.getItem("lichSuDichVu")) || [];
+    const reviews = JSON.parse(localStorage.getItem("danhGiaDichVu")) || [];
+
+    const dichVuSelect = document.getElementById("dichVuSelect");
+    const ratingStars = document.getElementById("ratingStars");
+    const reviewText = document.getElementById("reviewText");
+    const reviewList = document.getElementById("reviewList");
+
+    let selectedRating = 0;
+
+    function populateServiceDropdown() {
+      const completed = services.filter(s => s.trangThai === "Hoàn_tất");
+      completed.forEach(s => {
+        const option = document.createElement("option");
+        option.value = s.ten;
+        option.textContent = s.ten;
+        dichVuSelect.appendChild(option);
       });
+    }
+
+    function generateStars() {
+      for (let i = 1; i <= 5; i++) {
+        const star = document.createElement("span");
+        star.textContent = "★";
+        star.dataset.value = i;
+        star.classList.add("star");
+        star.onclick = () => {
+          selectedRating = i;
+          highlightStars(i);
+        };
+        ratingStars.appendChild(star);
+      }
+    }
+
+    function highlightStars(n) {
+      document.querySelectorAll(".star").forEach(star => {
+        star.classList.toggle("selected", star.dataset.value <= n);
+      });
+    }
+
+    function submitReview() {
+      const ten = dichVuSelect.value;
+      const noiDung = reviewText.value.trim();
+
+      if (!ten || !noiDung || selectedRating === 0) {
+        alert("Vui lòng chọn dịch vụ, chấm sao và nhập nội dung!");
+        return;
+      }
+
+      const review = {
+        tenDichVu: ten,
+        noiDung,
+        soSao: selectedRating,
+        thoiGian: new Date().toLocaleString()
+      };
+
+      reviews.push(review);
+      localStorage.setItem("danhGiaDichVu", JSON.stringify(reviews));
+      reviewText.value = "";
+      selectedRating = 0;
+      highlightStars(0);
+      renderReviews();
+    }
+
+    function renderReviews() {
+      const grouped = {};
+      reviews.forEach(r => {
+        if (!grouped[r.tenDichVu]) grouped[r.tenDichVu] = [];
+        grouped[r.tenDichVu].push(r);
+      });
+
+      reviewList.innerHTML = "<h3>Đánh Giá Đã Gửi</h3>";
+      for (const ten in grouped) {
+        const section = document.createElement("div");
+        section.classList.add("review-group");
+        section.innerHTML = `<h4>${ten}</h4>`;
+
+        grouped[ten].forEach(r => {
+          const item = document.createElement("div");
+          item.classList.add("review-item");
+          item.innerHTML = `
+            <p><strong>${r.soSao} ★</strong> - ${r.thoiGian}</p>
+            <p>${r.noiDung}</p>
+          `;
+          section.appendChild(item);
+        });
+
+        reviewList.appendChild(section);
+      }
+    }
+
+    populateServiceDropdown();
+    generateStars();
+    renderReviews();
   </script>
 </body>
-
 </html>
