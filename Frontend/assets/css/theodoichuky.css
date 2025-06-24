@@ -1,10 +1,3 @@
-body {
-    font-family: 'Segoe UI', sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f9f9f9;
-}
-
 header {
     background-color: #ffffff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
@@ -297,175 +290,173 @@ header {
     }
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    color: #1f2937;
+}
+
+section-title {
+    background-color: #7ed957;
+    padding: 12px 20px;
+    color: white;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    max-width: 100%;
+    width: 100%;
+    margin: 30px auto;
+    padding: 0 40px;
+}
+
+section {
+    margin-bottom: 40px;
+}
 
 h1,
 h2 {
     color: #10b981;
 }
 
-form {
+.calendar-controls {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.calendar-header button {
-  background: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #0088cc;
-}
-
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  text-align: center;
-}
-
-.calendar-grid .day {
-  background: #f1f1f1;
-  border-radius: 8px;
-  padding: 8px 0;
-  font-size: 14px;
-  position: relative;
-  aspect-ratio: 1 / 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.day .icon {
-  margin-top: 5px;
-  font-size: 18px;
-}
-
-.icon-period::before {
-  content: "\1F4A7"; /* 💧 */
-  color: red;
-}
-
-.icon-safe::before {
-  content: "\2705"; /* ✅ */
-  color: green;
-}
-
-.icon-fertile::before {
-  content: "\26A0"; /* ⚠ */
-  color: orange;
-}
-
-.calendar-legend {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-.calendar-legend div {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.settings, .health-tips, .partner-link {
-  margin-top: 30px;
-}
-
-.settings label,
-.health-tips label {
-  display: block;
-  margin: 10px 0;
-}
-
-input[type="number"],
-input[type="email"],
-select {
-  padding: 6px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  width: 100%;
-  max-width: 300px;
-}
-
-button {
-  background-color: #0088cc;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin-top: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #006699;
-}
-
-#health-advice {
-  margin-top: 10px;
-  font-style: italic;
-  background: #f0f8ff;
-  padding: 10px;
-  border-radius: 6px;
-}
-
-.symptoms {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.chart-section,
-.health-tips,
-.partner-link {
-    margin-bottom: 30px;
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 10px;
-}
-
-h2 {
-    color: #b03260;
-}
-
-
-.legend p {
-    font-size: 0.9em;
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
     margin-top: 10px;
 }
 
-.history-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-#historyList,
-#predictionList {
-    list-style: none;
-    padding-left: 0;
-}
-
-#cycleChart {
-    max-width: 100%;
-    background: #fff;
-    border: 1px solid #ddd;
+.day {
+    padding: 15px;
+    background: #f0f0f0;
+    cursor: pointer;
     border-radius: 8px;
-    padding: 10px;
+    transition: 0.3s;
+}
+
+.day:hover {
+    background: #ddd;
+}
+
+.period {
+    background-color: #ff6b6b !important;
+    color: white;
+}
+
+.fertile {
+    background-color: #a0e7e5 !important;
+}
+
+.ovulation {
+    background-color: #00bcd4 !important;
+    color: white;
+}
+
+.safe {
+    background-color: #d3d3d3 !important;
+}
+
+.legend {
+    margin-top: 20px;
+}
+
+.legend .dot {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.mood-selector {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.mood-icon {
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.mood-icon.selected {
+    background: #d0f0ff;
+}
+
+button {
+    background: #ff5d8f;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/*liên kết bạn đời*/
+.partner-link {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background: #f9f9f9;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.partner-link h2 {
+    margin-bottom: 10px;
+    color: #10b981;
+}
+
+.partner-guide {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.partner-link input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.partner-link button {
+    padding: 8px 16px;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.partner-link button:hover {
+    background-color: #2c8e6d;
 }
 
 /*Footer*/
@@ -499,4 +490,11 @@ footer.custom-footer {
 .footer-info {
     margin-top: 1rem;
     font-size: 0.875rem;
+}
+
+hr {
+    margin: 20px 0;
+    border: none;
+    height: 1px;
+    background-color: #000;
 }

@@ -3,120 +3,243 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Theo dõi chu kỳ kinh nguyệt - An Giới</title>
-    <link rel="stylesheet" href="/Frontend/assets/css/theodoichuky.css">
-    <script defer src="/Frontend/assets/js/theodoichuky.js"></script>
+    <title>Theo dõi chu kỳ kinh nguyệt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #fff9f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #e91e63;
+        }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        #calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .day {
+            padding: 10px;
+            background: #f0f0f0;
+            text-align: center;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Màu thật */
+        .period {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .fertile {
+            background: #a0e7e5;
+        }
+
+        .ovulation {
+            background: #00bcd4;
+            color: white;
+        }
+
+        .safe {
+            background: #d3d3d3;
+        }
+
+        /* Màu dự đoán (nhạt hơn) */
+        .period-predict {
+            background: #ffc1c1;
+        }
+
+        .fertile-predict {
+            background: #d7fafa;
+        }
+
+        .ovulation-predict {
+            background: #90e5ef;
+        }
+
+        .safe-predict {
+            background: #eee;
+        }
+
+        .legend {
+            margin-top: 20px;
+        }
+
+        .legend span {
+            display: inline-block;
+            margin: 5px 10px 5px 0;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .legend .period {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .legend .fertile {
+            background: #a0e7e5;
+        }
+
+        .legend .ovulation {
+            background: #00bcd4;
+            color: white;
+        }
+
+        .legend .safe {
+            background: #d3d3d3;
+        }
+
+        .legend .period-predict {
+            background: #ffc1c1;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- gọi header -->
-    <div id="header-placeholder"> </div>
-    <script>
-        fetch('/Frontend/components/header_customer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("header-placeholder").innerHTML = data;
 
-                // Gọi hàm JS của header sau khi nội dung đã render
-                if (typeof initHeader === 'function') {
-                    initHeader();
-                }
-            });
-    </script>
+    <h1>Theo dõi chu kỳ kinh nguyệt</h1>
 
-    <!-- Gọi file header và khởi động JS sau khi chèn xong -->
-    <!-- GỌI HEADER -->
-    <div id="header-placeholder"></div>
-    <script>
-        fetch('/Frontend/components/header_customer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("header-placeholder").innerHTML = data;
-
-                // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
-                if (typeof initHeader === 'function') {
-                    initHeader();
-                }
-            });
-    </script>
-    <script src="/Frontend/assets/js/header_customer.js"></script>
-
-    <!-- tạo 1 nhãn thông báo -->
-    <div id="alert-box" class="alert-box hidden">
-        <p id="alert-message">Bạn có thông báo mới!</p>
-        <span id="alert-close">&times;</span>
+    <div class="calendar-controls">
+        <button onclick="changeMonth(-1)">❮ Tháng trước</button>
+        <h2 id="monthYear"></h2>
+        <button onclick="changeMonth(1)">Tháng sau ❯</button>
     </div>
 
-    <main class="container">
+    <div id="calendar"></div>
 
-        <section class="health-tips">
-            <h2>Hôm nay bạn thế nào</h2>
-            <label><input type="checkbox" id="today-period"> Hôm nay có kinh</label>
-            <div class="symptoms">
-                <label>Tâm trạng:
-                    <select id="mood">
-                        <option>Thoải mái</option>
-                        <option>Tâm trạng thất thường</option>
-                        <option>Nổi giận</option>
-                    </select>
-                </label>
-                <label>Khí hư:
-                    <select id="discharge">
-                        <option>Khô</option>
-                        <option>Ẩm</option>
-                        <option>Nhiều</option>
-                    </select>
-                </label>
-            </div>
-            <button id="save-today">Cập nhật</button>
-            <p id="health-advice">Vui lòng chọn trạng thái để nhận lời khuyên.</p>
-        </section>
+    <div class="legend">
+        <span class="period">Ngày hành kinh</span>
+        <span class="fertile">Dễ thụ thai</span>
+        <span class="ovulation">Rụng trứng</span>
+        <span class="safe">An toàn</span>
+        <span class="period-predict">Chu kỳ dự đoán</span>
+    </div>
 
-        <section class="cycle-calendar">
-            <div class="calendar-header">
-                <button id="prev-month">«</button>
-                <span id="month-label">Tháng 6 2025</span>
-                <button id="next-month">»</button>
-            </div>
-
-            <div id="calendar-grid" class="calendar-grid"></div>
-
-            <div class="calendar-legend">
-                <div><span class="icon icon-period"></span> Ngày hành kinh</div>
-                <div><span class="icon icon-safe"></span> Ngày an toàn</div>
-                <div><span class="icon icon-fertile"></span> Ngày nguy hiểm</div>
-            </div>
-        </section>
-
-        <section class="settings">
-            <h2>Cài đặt chu kỳ</h2>
-            <label>Độ dài kỳ kinh: <input type="number" id="period-length" value="5"> ngày</label>
-            <label>Độ dài chu kỳ: <input type="number" id="cycle-length" value="28"> ngày</label>
-            <button id="apply-settings">Áp dụng</button>
-        </section>
-
-        <section class="partner-link">
-            <h2>Liên kết với bạn đời</h2>
-            <input type="email" id="partner-email" placeholder="Nhập email bạn đời">
-            <button id="share-partner">Chia sẻ theo dõi</button>
-        </section>
-    </main>
-
-    <!-- gọi footer -->
-    <div id="footer-placeholder"></div>
-    <script>
-        fetch('/Frontend/components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("footer-placeholder").innerHTML = data;
-            });
-    </script>
+    <div class="prediction" id="predictionText"></div>
 
     <script>
-        document.getElementById("header").innerHTML = await(await fetch("/Frontend/components/header_customer.html")).text();
-        document.getElementById("footer").innerHTML = await(await fetch("/Frontend/components/footer.html")).text();
+        const calendar = document.getElementById('calendar');
+        const monthYear = document.getElementById('monthYear');
+        const predictionText = document.getElementById('predictionText');
+
+        let currentDate = new Date();
+        let periodData = JSON.parse(localStorage.getItem("periodData") || "[]");
+
+        function formatDate(d) {
+            return d.toISOString().split('T')[0];
+        }
+
+        function changeMonth(offset) {
+            currentDate.setMonth(currentDate.getMonth() + offset);
+            renderCalendar();
+        }
+
+        function getAverageCycle() {
+            if (periodData.length < 2) return 28;
+            const sorted = periodData.map(d => new Date(d)).sort((a, b) => a - b);
+            let total = 0;
+            for (let i = 1; i < sorted.length; i++) {
+                total += (sorted[i] - sorted[i - 1]) / (1000 * 3600 * 24);
+            }
+            return Math.round(total / (sorted.length - 1));
+        }
+
+        function predictNextPeriod() {
+            if (periodData.length === 0) return null;
+            const lastPeriod = new Date(periodData[periodData.length - 1]);
+            const avg = getAverageCycle();
+            const nextPeriod = new Date(lastPeriod);
+            nextPeriod.setDate(nextPeriod.getDate() + avg);
+            return nextPeriod;
+        }
+
+        function renderCalendar() {
+            calendar.innerHTML = "";
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            monthYear.textContent = `Tháng ${month + 1} / ${year}`;
+
+            const nextPeriod = predictNextPeriod();
+            predictionText.innerText = nextPeriod
+                ? `Dự đoán kỳ kinh tiếp theo: ${formatDate(nextPeriod)}`
+                : "";
+
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement("div");
+                calendar.appendChild(empty);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const iso = formatDate(date);
+                const cell = document.createElement("div");
+                cell.className = "day";
+                cell.textContent = day;
+
+                const type = getDayType(date, nextPeriod);
+                if (type) {
+                    cell.classList.add(type);
+                }
+
+                cell.onclick = () => {
+                    if (!periodData.includes(iso)) {
+                        periodData.push(iso);
+                    } else {
+                        periodData = periodData.filter(d => d !== iso);
+                    }
+                    localStorage.setItem("periodData", JSON.stringify(periodData));
+                    renderCalendar();
+                };
+
+                calendar.appendChild(cell);
+            }
+        }
+
+        function getDayType(date, nextPeriod = null) {
+            // Dữ liệu thật
+            for (let pd of periodData) {
+                const start = new Date(pd);
+                const diff = Math.floor((date - start) / (1000 * 60 * 60 * 24));
+                if (diff >= 0 && diff <= 4) return "period";
+                if (diff === 14) return "ovulation";
+                if (diff >= 12 && diff <= 16) return "fertile";
+                if (diff > 16 && diff < 28) return "safe";
+            }
+
+            // Dự đoán (màu nhạt hơn)
+            if (nextPeriod) {
+                const diffNext = Math.floor((date - nextPeriod) / (1000 * 60 * 60 * 24));
+                if (diffNext >= 0 && diffNext <= 4) return "period-predict";
+                if (diffNext === 14) return "ovulation-predict";
+                if (diffNext >= 12 && diffNext <= 16) return "fertile-predict";
+                if (diffNext > 16 && diffNext < 28) return "safe-predict";
+            }
+
+            return "";
+        }
+
+        renderCalendar();
     </script>
+
 </body>
 
 </html>
