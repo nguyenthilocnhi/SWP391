@@ -1,4 +1,3 @@
-/*Header*/
 body {
     font-family: 'Segoe UI', sans-serif;
     line-height: 1.6;
@@ -298,132 +297,117 @@ header {
     }
 }
 
-h1,
-h2,
-h3 {
-    text-align: center;
-    color: #10b981;
-}
 
-/*Tâm trạng*/
-#mood-selector {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin: 12px 0;
-}
-
-.mood-icon {
-    font-size: 36px;
-    cursor: pointer;
-    padding: 14px;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    transition: transform 0.2s, border 0.3s, background-color 0.3s;
-}
-
-.mood-icon:hover {
-    background-color: #f0f0f0;
-    transform: scale(1.1);
-}
-
-.mood-icon.selected {
-    border: 2px solid #10b981;
-    background-color: #e6fff3;
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
-}
-
-/*Lịch Chu kỳ*/
+/* Calendar controls */
 .calendar-controls {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 15px;
     margin-bottom: 10px;
 }
 
+.calendar-controls button {
+    background-color: #10b981;
+    border: none;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.calendar-controls button:hover {
+    background-color: #0e956f;
+}
+
+/* Calendar */
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    margin-bottom: 30px;
+    gap: 6px;
+    margin-bottom: 25px;
+    user-select: none;
 }
 
 .day {
-    padding: 10px;
-    background: #f0f0f0;
+    padding: 10px 0;
     text-align: center;
     border-radius: 6px;
+    background: #f0f0f0;
     cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.day:hover {
+    background: #d1f7e3;
+    transform: scale(1.1);
 }
 
 .day.readonly {
     cursor: default;
+    background: #eaeaea;
+    color: #888;
+    transform: none !important;
 }
 
 .day.today {
     border: 2px solid #10b981;
-    font-weight: bold;
+    font-weight: 700;
     background-color: #e6fff3;
 }
 
-.day.period.today {
-    background-color: #ff7171;
-    /* Màu ngày hành kinh */
-    color: white;
-    border: 2px solid #10b981;
-    /* Viền xanh của ngày hôm nay */
-}
-
-
-/* Màu chu kỳ thật */
+/* Màu theo loại ngày */
 .period {
-    background: #ff7171;
+    background-color: #ff7171 !important;
     color: white;
 }
 
 .fertile {
-    background: #fffd90;
+    background-color: #fffd90 !important;
 }
 
 .ovulation {
-    background: #29d9dc;
+    background-color: #29d9dc !important;
     color: white;
 }
 
 .safe {
-    background: #40f69e;
+    background-color: #40f69e !important;
 }
 
-/* Màu chu kỳ dự đoán */
+/* Màu dự đoán */
 .period-predict {
-    background: #ffc1c1;
+    background-color: #ffc1c1 !important;
 }
 
 .fertile-predict {
-    background: #fffec9;
+    background-color: #fffec9 !important;
 }
 
 .ovulation-predict {
-    background: #90e5ef;
+    background-color: #90e5ef !important;
 }
 
 .safe-predict {
-    background: #aaffca;
+    background-color: #aaffca !important;
 }
 
-/*Nút ghi chú màu*/
+/* Legend */
 .legend {
     text-align: center;
-    margin-top: 20px;
+    margin-bottom: 25px;
 }
 
 .legend span {
     display: inline-block;
-    margin: 5px 10px;
-    padding: 5px 10px;
-    border-radius: 10px;
+    margin: 5px 12px;
+    padding: 5px 12px;
+    border-radius: 12px;
     font-size: 14px;
+    font-weight: 600;
+    user-select: none;
 }
 
 .legend .period {
@@ -444,11 +428,121 @@ h3 {
     background: #40f69e;
 }
 
-/* Cài đặt chu kỳ*/
-.settings {
+/* Settings */
+.settings-section {
     background: #f9f9f9;
-    padding: 16px;
-    border-radius: 12px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 18px 15px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 0.05);
+    text-align: center;
+}
+
+.settings-section label {
+    font-weight: 600;
+    margin-right: 15px;
+}
+
+.settings-section input {
+    width: 60px;
+    padding: 5px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Mood selector */
+#mood-selector {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin: 10px 0 20px;
+}
+
+.mood-icon {
+    font-size: 40px;
+    cursor: pointer;
+    padding: 14px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: border 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
+}
+
+.mood-icon:hover {
+    background-color: #e6fff3;
+    transform: scale(1.1);
+}
+
+.mood-icon.selected {
+    border-color: #10b981;
+    background-color: #ccffdf;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+/* Symptom Section */
+#symptom-list label {
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+#symptom-list input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.3);
+    vertical-align: middle;
+}
+
+#saveSymptomsBtn {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    margin-top: 15px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#saveSymptomsBtn:hover {
+    background-color: #0e956f;
+}
+
+.health-alert {
+    text-align: center;
+    margin-top: 12px;
+    font-weight: 700;
+    color: #d32f2f;
+}
+
+/* Warning Text */
+.warning-text {
+    text-align: center;
+    font-weight: 600;
+    color: #d84315;
+    margin-bottom: 15px;
+}
+
+/* Reminder */
+#reminderMessages {
+    font-size: 1.1rem;
+    line-height: 1.4;
+    padding: 10px 20px;
+    background: #e6fff3;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+}
+
+/* Suggestions */
+#suggestionsList {
+    max-width: 700px;
+    margin: 0 auto;
+    padding-left: 20px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+#suggestionsList li {
+    margin-bottom: 8px;
 }

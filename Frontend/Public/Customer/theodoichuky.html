@@ -46,66 +46,95 @@
         <span id="alert-close">&times;</span>
     </div>
 
-    <h1>THEO DÕI CHU KỲ KINH NGUYỆT</h1>
-    <label>Tâm trạng:</label>
-    <div id="mood-selector">
-        <span class="mood-icon" data-mood="Rất hạnh phúc">😄</span>
-        <span class="mood-icon" data-mood="Hạnh phúc">😊</span>
-        <span class="mood-icon" data-mood="Bình thường">😐</span>
-        <span class="mood-icon" data-mood="Không vui">😕</span>
-        <span class="mood-icon" data-mood="Phiền muộn">😢</span>
-    </div>
+    <main>
+        <section id="cycle-section" class="main-section">
+            <h1>THEO DÕI CHU KỲ KINH NGUYỆT</h1>
+            <div class="calendar-controls">
+                <button id="prevMainMonth">❮ Tháng trước</button>
+                <h2 id="mainMonthYear"></h2>
+                <button id="nextMainMonth">Tháng sau ❯</button>
+            </div>
+            <div id="mainCalendar" class="calendar"></div>
 
-    <p>Tâm trạng bạn chọn: <span id="selected-mood">Chưa chọn</span></p>
+            <div class="legend">
+                <span class="period">Ngày hành kinh</span>
+                <span class="fertile">Dễ thụ thai</span>
+                <span class="ovulation">Rụng trứng</span>
+                <span class="safe">An toàn</span>
+            </div>
 
-    <!-- LỊCH CHÍNH -->
-    <div class="calendar-controls">
-        <button onclick="changeMainMonth(-1)">❮ Tháng trước</button>
-        <h2 id="mainMonthYear"></h2>
-        <button onclick="changeMainMonth(1)">Tháng sau ❯</button>
-    </div>
-    <div id="mainCalendar" class="calendar"></div>
+            <h2>Dự Đoán Chu Kỳ</h2>
+            <div class="calendar-controls">
+                <button id="prevPredictMonth">❮ Tháng trước</button>
+                <h2 id="predictMonthYear"></h2>
+                <button id="nextPredictMonth">Tháng sau ❯</button>
+            </div>
+            <div id="predictionCalendar" class="calendar"></div>
+            <div class="prediction" id="predictionText"></div>
 
-    <!-- Ghi chú màu sắc -->
-    <div class="legend">
-        <span class="period">Ngày hành kinh</span>
-        <span class="fertile">Dễ thụ thai</span>
-        <span class="ovulation">Rụng trứng</span>
-        <span class="safe">An toàn</span>
-    </div>
+            <h2>Thống kê Chu Kỳ</h2>
+            <div id="cycle-warning" class="warning-text"></div>
+            <canvas id="cycleChart" height="100"></canvas>
 
-    <!--DỰ ĐOÁN -->
-    <h2>Dự Đoán Chu Kì</h2>
-    <div class="calendar-controls">
-        <button onclick="changePredictMonth(-1)">❮ Tháng trước</button>
-        <h2 id="predictMonthYear"></h2>
-        <button onclick="changePredictMonth(1)">Tháng sau ❯</button>
-    </div>
-    <div id="predictionCalendar" class="calendar"></div>
-    <div class="prediction" id="predictionText"></div>
+            <section class="settings-section">
+                <h2>Cài đặt chu kỳ</h2>
+                <label>Độ dài kỳ kinh: <input type="number" id="period-length" value="5" min="1" max="15">
+                    ngày</label><br>
+                <label>Độ dài chu kỳ: <input type="number" id="cycle-length" value="28" min="20" max="45">
+                    ngày</label><br>
+                <button id="apply-settings">Áp dụng</button>
+            </section>
 
-    <h2>Thống kê Chu Kỳ</h2>
-    <div id="cycle-warning" style="color: red; font-weight: bold; text-align: center;"></div>
-    <canvas id="cycleChart" height="100"></canvas>
+        </section>
 
+        <section id="mood-section" class="main-section">
+            <h2>Tâm trạng hôm nay</h2>
+            <div id="mood-selector">
+                <span class="mood-icon" data-mood="Rất hạnh phúc" title="Rất hạnh phúc">😄</span>
+                <span class="mood-icon" data-mood="Hạnh phúc" title="Hạnh phúc">😊</span>
+                <span class="mood-icon" data-mood="Bình thường" title="Bình thường">😐</span>
+                <span class="mood-icon" data-mood="Không vui" title="Không vui">😕</span>
+                <span class="mood-icon" data-mood="Phiền muộn" title="Phiền muộn">😢</span>
+            </div>
+            <p>Tâm trạng bạn chọn: <span id="selected-mood">Chưa chọn</span></p>
+        </section>
 
-    <section class="settings-section">
-        <h2>Cài đặt chu kỳ</h2>
-        <label>Độ dài kỳ kinh: <input type="number" id="period-length" value="5"> ngày</label>
-        <label>Độ dài chu kỳ: <input type="number" id="cycle-length" value="28"> ngày</label>
-        <button id="apply-settings">Áp dụng</button>
-    </section>
+        <section id="symptom-section" class="main-section">
+            <h2>Triệu chứng sức khỏe phụ khoa</h2>
+            <p>Chọn các triệu chứng bạn gặp phải hôm nay:</p>
+            <div id="symptom-list">
+                <label><input type="checkbox" value="Đau bụng dữ dội"> Đau bụng dữ dội</label><br />
+                <label><input type="checkbox" value="Khí hư bất thường"> Khí hư bất thường</label><br />
+                <label><input type="checkbox" value="Ngứa vùng kín"> Ngứa vùng kín</label><br />
+                <label><input type="checkbox" value="Chảy máu bất thường"> Chảy máu bất thường</label><br />
+                <label><input type="checkbox" value="Sốt, mệt mỏi"> Sốt, mệt mỏi</label><br />
+            </div>
+            <button id="saveSymptomsBtn">Lưu triệu chứng</button>
+            <div id="healthAlert" class="health-alert" style="display:none;">
+                <p id="alertMessage"></p>
+            </div>
+        </section>
 
-    <section class="partner-link">
-        <h2>Liên kết với bạn đời</h2>
-        <p class="partner-guide">
-            Nhập email của bạn đời để họ cùng theo dõi chu kỳ, nhận nhắc nhở và chăm sóc sức khỏe cùng bạn.
-            <br>
-            Lưu ý: Bạn đời sẽ nhận được email mời tham gia. Họ cần đồng ý xác nhận thì liên kết mới hoàn tất.
-        </p>
-        <input type="email" id="partner-email" placeholder="Nhập email bạn đời">
-        <button id="share-partner">Chia sẻ theo dõi</button>
-    </section>
+        <section id="stats-section" class="main-section">
+            <h2>Thống kê xu hướng triệu chứng</h2>
+            <canvas id="symptomChart" height="150"></canvas>
+        </section>
+
+        <section id="reminder-section" class="main-section">
+            <h2>Nhắc nhở cá nhân hóa</h2>
+            <div id="reminderMessages">
+                <!-- Nội dung nhắc nhở sẽ được cập nhật -->
+            </div>
+        </section>
+
+        <section id="suggest-section" class="main-section">
+            <h2>Gợi ý sản phẩm & dinh dưỡng theo chu kỳ</h2>
+            <ul id="suggestionsList">
+                <!-- Gợi ý sẽ được cập nhật -->
+            </ul>
+        </section>
+
+    </main>
 
     <!-- gọi footer -->
     <div id="footer-placeholder"></div>
@@ -116,8 +145,8 @@
                 document.getElementById("footer-placeholder").innerHTML = data;
             });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/Frontend/assets/js/theodoichuky.js"></script>
 </body>
 
