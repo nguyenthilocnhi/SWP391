@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cài Đặt Tài Khoản</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/caidat.css" />
+</head>
+
+<body>
+  <div class="settings-container">
+     <a href="TrangchuCustomer.html" class="logo-link">
+    <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Trang Chủ" class="logo" />
+  </a>
+    <h2>Cài Đặt Tài Khoản</h2>
+    <div class="avatar-wrapper">
+      <label for="avatarInput" class="avatar-clickable">
+        <img id="avatarPreview" src="https://i.postimg.cc/vZVQXR5n/avatar-default.png" alt="Avatar" />
+        <span class="avatar-overlay">🖋</span>
+      </label>
+      <input type="file" id="avatarInput" accept="image/*" hidden />
+    </div>
+
+
+    <form id="settingsForm">
+      <label for="name">Họ tên:</label>
+      <input type="text" id="name" placeholder="Nhập họ tên" />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Nhập email" />
+
+      <label for="password">Mật khẩu:</label>
+      <input type="password" id="password" placeholder="********" disabled />
+      <span class="change-password-link" onclick="location.href='doimatkhau.html'">Đổi mật khẩu?</span>
+
+      <label for="phone">Số điện thoại:</label>
+      <input type="tel" id="phone" placeholder="Nhập số điện thoại" />
+
+      <label><input type="checkbox" id="notifications" /> Nhận thông báo</label>
+      <label><input type="checkbox" id="twoFA" /> Bật xác thực hai lớp (2FA)</label>
+      <label><input type="checkbox" id="darkMode" /> Chế độ tối</label>
+
+      <button type="submit">Lưu Cài Đặt</button>
+      <button type="button" onclick="logout()" class="logout-btn">Đăng xuất</button>
+
+    </form>
+
+    <div class="status-message" id="statusMsg"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("settingsForm");
+    const statusMsg = document.getElementById("statusMsg");
+    const avatarInput = document.getElementById("avatarInput");
+    const avatarPreview = document.getElementById("avatarPreview");
+
+    window.onload = function () {
+      const settings = JSON.parse(localStorage.getItem("userSettings")) || {};
+      document.getElementById("name").value = settings.name || "";
+      document.getElementById("email").value = settings.email || "";
+      document.getElementById("password").value = settings.password || "";
+      document.getElementById("phone").value = settings.phone || "";
+      document.getElementById("notifications").checked = settings.notifications || false;
+      document.getElementById("twoFA").checked = settings.twoFA || false;
+      document.getElementById("darkMode").checked = settings.darkMode || false;
+      avatarPreview.src = settings.avatar || avatarPreview.src;
+
+      if (settings.darkMode) document.body.classList.add("dark");
+    };
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const settings = {
+        name: document.getElementById("name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        password: document.getElementById("password").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        notifications: document.getElementById("notifications").checked,
+        twoFA: document.getElementById("twoFA").checked,
+        darkMode: document.getElementById("darkMode").checked,
+        avatar: avatarPreview.src,
+        updatedAt: new Date().toISOString()
+      };
+
+      localStorage.setItem("userSettings", JSON.stringify(settings));
+      statusMsg.textContent = "Đã lưu cài đặt thành công!";
+      if (settings.darkMode) document.body.classList.add("dark");
+      else document.body.classList.remove("dark");
+
+      setTimeout(() => statusMsg.textContent = "", 3000);
+    });
+
+    avatarInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          avatarPreview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+
+<!--LOG OUT-->
+  <script>
+  function logout() {
+    if (confirm("Bạn có chắc muốn đăng xuất không?")) {
+      localStorage.removeItem("loggedIn"); // Xoá trạng thái đăng nhập
+      localStorage.removeItem("sessionExpire"); // Nếu có dùng session
+      window.location.href = "/Frontend/Public/Login/Trangdangnhap.html"; // Chuyển về trang đăng nhập
+    }
+  }
+</script>
+
+</body>
+
+</html>

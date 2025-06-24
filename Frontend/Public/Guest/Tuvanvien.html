@@ -9,31 +9,20 @@
 </head>
 
 <body>
-  <header>
-    <div class="header-container">
-      <div class="logo">
-        <a href="/Frontend/Public/TrangchuCustomer.html">
-          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-        </a>
-      </div>
-      <nav class="main-nav">
-        <ul>
-          <li><a href="gioithieu.html">Giới thiệu</a></li>
-          <li><a href="dichvu.html">Dịch vụ</a></li>
-          <li><a href="TrangBlog.html">Blog</a></li>
-          <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-          <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
-          <li><a href="dangky.html">Đăng ký</a></li>
-        </ul>
-      </nav>
-      <form class="search-form" action="#" method="get">
-        <input type="text" name="q" placeholder="Tìm kiếm..." />
-        <button type="submit">
-          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
-        </button>
-      </form>
-    </div>
-  </header>
+<!-- gọi header -->
+   <div id="header-placeholder"> </div>
+    <script>
+      fetch('/Frontend/components/header_guest.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById("header-placeholder").innerHTML = data;
+
+          // Gọi hàm JS của header sau khi nội dung đã render
+          if (typeof initHeader === 'function') {
+            initHeader();
+          }
+        });
+    </script>
 
   <main class="container">
     <h2 class="section-title">ĐỘI NGŨ TƯ VẤN VIÊN</h2>
@@ -62,22 +51,43 @@
 
     // Render danh sách
     function renderAdvisors(list) {
-      const container = document.getElementById('advisorGrid');
-      container.innerHTML = '';
-      list.forEach(advisor => {
-        const card = document.createElement('div');
-        card.className = 'advisor-card';
-        card.innerHTML = `
-          <img src="${advisor.image}" alt="${advisor.name}" />
-          <h3>${advisor.name}</h3>
-          <p>${advisor.specialty}</p>
-          <p><strong>Kinh nghiệm:</strong> ${advisor.experience}</p>
-          <p>${advisor.education}</p>
-        `;
-        container.appendChild(card);
-      });
-    }
+  const container = document.getElementById('advisorGrid');
+  container.innerHTML = '';
 
+  list.forEach(advisor => {
+    const card = document.createElement('div');
+    card.className = 'advisor-card';
+
+    // Nếu có file chi tiết riêng thì gán thủ công
+    let detailLink = `/Frontend/Public/Guest/ChiTietTuvanvien.html?id=${advisor.id}`;
+    if (advisor.id === "K") {
+      detailLink = "/Frontend/Public/Guest/ChiTiet_K.html";
+    }
+    // Nếu tạo thêm file thủ công cho các ID khác, thêm tương tự ở đây:
+    if (advisor.id === "H") detailLink = "/Frontend/Public/Guest/ChiTiet_H.html";
+    if (advisor.id === "N") detailLink = "/Frontend/Public/Guest/ChiTiet_N.html";
+    if (advisor.id === "T") detailLink = "/Frontend/Public/Guest/ChiTiet_T.html";
+    if (advisor.id === "F") detailLink = "/Frontend/Public/Guest/ChiTiet_F.html";
+    if (advisor.id === "A") detailLink = "/Frontend/Public/Guest/ChiTiet_A.html";
+    if (advisor.id === "D") detailLink = "/Frontend/Public/Guest/ChiTiet_D.html";
+    if (advisor.id === "B") detailLink = "/Frontend/Public/Guest/ChiTiet_B.html";
+    if (advisor.id === "M") detailLink = "/Frontend/Public/Guest/ChiTiet_M.html";
+    if (advisor.id === "O") detailLink = "/Frontend/Public/Guest/ChiTiet_O.html";
+    if (advisor.id === "V") detailLink = "/Frontend/Public/Guest/ChiTiet_V.html";
+    if (advisor.id === "L") detailLink = "/Frontend/Public/Guest/ChiTiet_L.html";
+
+    card.innerHTML = `
+      <a href="${detailLink}" class="card-link">
+        <img src="${advisor.image}" alt="${advisor.name}" />
+        <h3>${advisor.name}</h3>
+        <p>${advisor.specialty}</p>
+        <p><strong>Kinh nghiệm:</strong> ${advisor.experience}</p>
+        <p>${advisor.education}</p>
+      </a>
+    `;
+    container.appendChild(card);
+  });
+}
     // Tìm kiếm
     document.addEventListener('DOMContentLoaded', () => {
       const searchForm = document.querySelector('.search-form');

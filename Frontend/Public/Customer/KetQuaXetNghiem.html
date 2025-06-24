@@ -1,80 +1,86 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kết Quả Xét Nghiệm</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/Frontend/assets/css/ketquaxetnghiem.css">
+  <link rel="stylesheet" href="/Frontend/assets/css/ketquaxetnghiem.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 </head>
+
 <body>
+  <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+        if (typeof initHeader === 'function') initHeader();
+      });
+  </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
 
-  <h2>Kết Quả Xét Nghiệm</h2>
+  <main class="result-container">
+    <h2 class="page-title">📋 KẾT QUẢ XÉT NGHIỆM</h2>
 
-  <table class="result-table">
-  <thead>
-    <tr>
-      <th>STT</th>
-      <th>Họ tên</th>
-      <th>Loại xét nghiệm</th>
-      <th>Kết quả</th>
-      <th>Ngày xét nghiệm</th>
-      <th>Ngày trả kết quả</th> <!-- Thêm dòng này -->
-      <th>Ghi chú</th>
-    </tr>
-  </thead>
-  <tbody id="resultBody">
-    <!-- Dữ liệu sẽ được thêm bằng JavaScript -->
-  </tbody>
-</table>
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Họ tên</th>
+          <th>Loại xét nghiệm</th>
+          <th>Kết quả</th>
+          <th>Ngày xét nghiệm</th>
+          <th>Ngày trả kết quả</th>
+          <th>Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody id="resultBody">
+        <!-- Dữ liệu sẽ được render bằng JS -->
+      </tbody>
+    </table>
+
+    <p id="no-result" style="text-align: center; margin-top: 20px; color: gray;"></p>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const ketQuaList = JSON.parse(localStorage.getItem("ketQuaXetNghiem")) || [];
-
       const tbody = document.getElementById("resultBody");
-      tbody.innerHTML = "";
+      const noResult = document.getElementById("no-result");
 
       if (ketQuaList.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Chưa có kết quả xét nghiệm.</td></tr>';
+        noResult.textContent = "⚠️ Hiện chưa có kết quả xét nghiệm nào được lưu.";
         return;
       }
 
-      ketQuaList.forEach(kq => {
+      ketQuaList.forEach((item, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td>${kq.ngay}</td>
-          <td>${kq.loai}</td>
-          <td>${kq.ketQua}</td>
-          <td class="note">${kq.ghiChu || "-"}</td>
-          <td class="${kq.trangThai === 'Bình thường' ? 'status-normal' : 'status-warning'}">
-            ${kq.trangThai}
-          </td>
+          <td>${index + 1}</td>
+          <td>${item.hoTen}</td>
+          <td>${item.loai}</td>
+          <td>${item.ketQua}</td>
+          <td>${item.ngayXetNghiem}</td>
+          <td>${item.ngayTra}</td>
+          <td>${item.ghiChu || "-"}</td>
         `;
         tbody.appendChild(row);
       });
     });
-    function renderKetQua(resultList) {
-  const tbody = document.getElementById("resultBody");
-  tbody.innerHTML = "";
-
-  resultList.forEach((item, index) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${index + 1}</td>
-      <td>${item.hoTen}</td>
-      <td>${item.loai}</td>
-      <td>${item.ketQua}</td>
-      <td>${item.ngayXetNghiem}</td>
-      <td>${item.ngayTra}</td> <!-- Hiển thị ngày trả -->
-      <td>${item.ghiChu || ""}</td>
-    `;
-    tbody.appendChild(row);
-  });
-}
-
   </script>
-  
-
 </body>
+
 </html>

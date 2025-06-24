@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đổi Mật Khẩu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0fdf4;
+      margin: 0;
+      padding: 40px;
+    }
+
+    .change-password-container {
+      max-width: 450px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      border: 2px solid #a7f3d0;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #047857;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 18px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background: #22c55e;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .secondary-btn {
+      background: transparent;
+      color: #047857;
+      border: 1px dashed #047857;
+      margin-top: 10px;
+    }
+
+    .secondary-btn:hover {
+      background: #d1fae5;
+    }
+
+    .success-msg {
+      text-align: center;
+      color: #15803d;
+      margin-top: 16px;
+    }
+
+    .error-msg {
+      text-align: center;
+      color: #dc2626;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="change-password-container">
+    <h2>Đổi Mật Khẩu</h2>
+    <form id="changePasswordForm">
+      <label for="oldPassword">Mật khẩu cũ:</label>
+      <input type="password" id="oldPassword" required />
+
+      <label for="newPassword">Mật khẩu mới:</label>
+      <input type="password" id="newPassword" required />
+
+      <label for="confirmPassword">Xác nhận mật khẩu mới:</label>
+      <input type="password" id="confirmPassword" required />
+
+      <label for="otp">Mã xác thực OTP (gửi qua email):</label>
+      <input type="text" id="otp" required />
+
+      <button type="submit">Xác nhận đổi mật khẩu</button>
+      <button type="button" class="secondary-btn" id="resendOTPBtn">Gửi lại OTP</button>
+    </form>
+
+    <div id="message" class=""></div>
+  </div>
+
+  <script>
+    let generatedOTP = "";
+
+    function generateOTP() {
+      return Math.floor(100000 + Math.random() * 900000).toString(); // Tạo OTP 6 chữ số
+    }
+
+    function sendOTP() {
+      generatedOTP = generateOTP();
+      // Trong thực tế: gọi API gửi email
+      alert("Mã OTP mới của bạn là: " + generatedOTP); // Thay thế bằng gửi email thực tế
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      sendOTP(); // Gửi OTP khi mở trang
+
+      document.getElementById("resendOTPBtn").addEventListener("click", () => {
+        sendOTP();
+        document.getElementById("message").textContent = "Mã OTP mới đã được gửi!";
+        document.getElementById("message").className = "success-msg";
+      });
+
+      document.getElementById("changePasswordForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const oldPass = document.getElementById("oldPassword").value.trim();
+        const newPass = document.getElementById("newPassword").value.trim();
+        const confirmPass = document.getElementById("confirmPassword").value.trim();
+        const otpInput = document.getElementById("otp").value.trim();
+        const messageDiv = document.getElementById("message");
+
+        const user = JSON.parse(localStorage.getItem("userSettings")) || {};
+
+        if (oldPass !== user.password) {
+          messageDiv.textContent = "Mật khẩu cũ không đúng.";
+          messageDiv.className = "error-msg";
+          return;
+        }
+
+        if (newPass.length < 6) {
+          messageDiv.textContent = "Mật khẩu mới phải từ 6 ký tự.";
+          messageDiv.className = "error-msg";
+          return;
+        }
+
+        if (newPass !== confirmPass) {
+          messageDiv.textContent = "Xác nhận mật khẩu không khớp.";
+          messageDiv.className = "error-msg";
+          return;
+        }
+
+        if (otpInput !== generatedOTP) {
+          messageDiv.textContent = "Mã OTP không chính xác.";
+          messageDiv.className = "error-msg";
+          return;
+        }
+
+        // Đổi mật khẩu
+       messageDiv.textContent = "Mật khẩu đã được cập nhật thành công! Đang chuyển hướng...";
+messageDiv.className = "success-msg";
+document.getElementById("changePasswordForm").reset();
+
+// Chuyển hướng sau 2.5 giây
+setTimeout(() => {
+  window.location.href = "/Frontend/Public/Customer/Setting.html"; // Hoặc đường dẫn tương ứng trong dự án của bạn
+}, 2500);
+     });
+  });
+  </script>
+</body>
+</html>

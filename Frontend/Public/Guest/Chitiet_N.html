@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ThS. Lý Ngọc N | An Giới Health</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/chitiettuvanvien.css" />
+</head>
+
+<body>
+  <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_guest.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        if (typeof initHeader === 'function') initHeader();
+      });
+  </script>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/Frontend/Public/Guest/Tuvanvien.html">← Danh sách Tư vấn viên</a>
+    </div>
+
+    <div class="profile-header">
+      <img src="https://i.postimg.cc/Dw6G1cmw/L-Ng-c.jpg" alt="ThS. Lý Ngọc N" />
+      <div class="profile-info">
+        <h1>ThS. Lý Ngọc N</h1>
+        <p><strong>Chức danh:</strong> Tư vấn sức khỏe sinh sản</p>
+        <p><strong>Kinh nghiệm:</strong> 8 năm</p>
+        <p><strong>Trường đào tạo:</strong> ĐH Y Dược TPHCM (2009 – 2017)</p>
+        <a href="#" class="btn-book">Đặt lịch hẹn</a>
+      </div>
+    </div>
+
+    <h2 class="section-title">Giới thiệu</h2>
+    <p>
+      Thạc sĩ Lý Ngọc N là chuyên gia trong lĩnh vực tư vấn sức khỏe sinh sản với hơn 8 năm kinh nghiệm tại các bệnh viện chuyên khoa lớn ở TP.HCM. Với nền tảng học thuật vững chắc và khả năng kết nối tốt với bệnh nhân, cô luôn là lựa chọn đáng tin cậy cho các cặp đôi đang gặp khó khăn trong việc sinh sản.
+    </p>
+    <p>
+      Sau khi tốt nghiệp Bác sĩ Y khoa tại Đại học Y Dược TP.HCM, cô tiếp tục hoàn thành chương trình Thạc sĩ chuyên ngành Sản phụ khoa. Trong suốt sự nghiệp, cô tham gia nhiều chương trình khám sức khỏe cộng đồng, giáo dục sinh sản và tư vấn tiền hôn nhân cho giới trẻ.
+    </p>
+    <p>
+      Hiện tại, cô đang là tư vấn viên chính tại Trung tâm Y khoa An Giới, nơi cô hỗ trợ hàng trăm ca tư vấn mỗi năm về các vấn đề như hiếm muộn, vệ sinh sinh sản, và chăm sóc sức khỏe tiền thai kỳ.
+    </p>
+
+    <h2 class="section-title">Chuyên môn bác sĩ</h2>
+
+    <h3>Chứng chỉ</h3>
+    <ul class="custom-list">
+      <li>Chứng chỉ Tư vấn sức khỏe sinh sản toàn diện – Bộ Y tế cấp, 2019</li>
+      <li>Chứng nhận Đào tạo chăm sóc tiền sản – Đại học Mahidol (Thái Lan), 2020</li>
+      <li>Chứng chỉ đào tạo phòng ngừa bệnh lây qua đường tình dục – Viện Pasteur TP.HCM, 2021</li>
+    </ul>
+
+    <h3>Bằng cấp</h3>
+    <ul class="custom-list">
+      <li>ĐH Y Dược TP.HCM – Bác sĩ Y khoa, 2009 – 2015</li>
+      <li>Thạc sĩ Sản phụ khoa – ĐH Y Dược TP.HCM, 2015 – 2017</li>
+    </ul>
+
+    <h2 class="section-title">Thành tựu nổi bật</h2>
+    <ul class="custom-list">
+      <li>Giải Nhất cuộc thi Sáng kiến Chăm sóc Sức khỏe Phụ nữ 2020</li>
+      <li>Thành viên nhóm nghiên cứu cộng đồng về giáo dục giới tính</li>
+      <li>Khách mời chương trình "Khỏe & Đẹp" – VTV9, số tháng 4/2023</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+      });
+  </script>
+</body>
+
+</html>

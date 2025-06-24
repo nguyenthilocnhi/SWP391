@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,97 +8,45 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/Frontend/assets/css/lichsucauhoi.css" />
 </head>
+
 <body>
-  <header>
-    <div class="header-container">
-      <!-- logo -->
-      <div class="logo">
-        <a href="/Frontend/Public/Customer/TrangchuCustomer.html">
-          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-        </a>
-      </div>
+  <!-- gọi header -->
+  <div id="header-placeholder"> </div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
 
-      <!-- Menu -->
-      <nav class="main-nav">
-        <ul>
-          <li><a href="gioithieu.html">Giới thiệu</a></li>
-          <li><a href="dichvu.html">Dịch vụ</a></li>
-          <li><a href="TrangBlog.html">Blog</a></li>
-          <li><a href="/Frontend/Public/Customer/datlich.html">Đặt lịch</a></li>
-          <li><a href="/Frontend/Public/Customer/TuvanvienCustomer.html">Tư vấn viên</a></li>
-        </ul>
-      </nav>
+        // Gọi hàm JS của header sau khi nội dung đã render
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
 
-      <!-- right header -->
-      <div class="header-right">
+  <!-- Gọi file header và khởi động JS sau khi chèn xong -->
+  <!-- GỌI HEADER -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
 
-        <!-- search box -->
-        <form class="search-form" action="#" method="get">
-          <input type="text" name="q" placeholder="Tìm kiếm..." />
-          <button type="submit">
-            <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
-          </button>
-        </form>
+        // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
 
-        <!-- notification bell -->
-        <div class="notification-wrapper">
-          <a href="#" class="notification">
-            <img src="https://i.postimg.cc/TP8K01px/notifications-24dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz24.png"
-              alt="Thông báo" class="notification-icon" />
-            <span class="badge">3</span>
-          </a>
-
-          <div class="notification-box hidden">
-            <p> Bạn có 3 thông báo mới</p>
-            <ul>
-              <li>
-                <div class="notify-content" data-time="2025-06-19T21:30:00">
-                  Kết quả xét nghiệm đã có
-                  <span class="notify-time"></span>
-                </div>
-              </li>
-              <li>
-                <div class="notify-content" data-time="2025-06-19T21:30:00">
-                  Lịch hẹn khám vào ngày mai
-                  <span class="notify-time"></span>
-                </div>
-              </li>
-              <li>
-                <div class="notify-content" data-time="2025-06-19T21:30:00">
-                  Ưu đãi giảm 10% đang chờ bạn
-                  <span class="notify-time"></span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- user info  -->
-        <div class="user-info">
-          <img src="https://i.postimg.cc/vZVQXR5n/avatar-default.png" alt="Avatar" class="avatar" />
-          <div class="user-details">
-            <span class="user-name">Nguyễn Bích M</span>
-            <span class="user-role">Khách Hàng</span>
-          </div>
-          <span class="user-dropdown">&#9662;</span> <!-- Mũi tên ▼ -->
-
-          <div class="user-menu hidden">
-            <ul>
-              <li><a href="/Frontend/Public/Customer/Thongtincanhan.html">Thông tin cá nhân</a></li>
-              <li><a href="#">Theo dõi chu kỳ</a></li>
-              <li><a href="/Frontend/Public/Customer/Lichsudatlich.html">Lịch sử đặt lịch</a></li>
-              <li><a href="/Frontend/Public/Customer/KetQuaXetNghiem.html">Kết quả xét nghiệm</a></li>
-              <li><a href="#">Lịch sử dịch vụ và đánh giá</a></li>
-              <li><a href="#">Nhắc uống thuốc tránh thai</a></li>
-              <li><a href="/Frontend/Public/Customer/Datcauhoi.html">Đặt câu hỏi</a></li>
-              <li><a href="#">Cài đặt</a></li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </header>
+  <!-- tạo 1 nhãn thông báo -->
+  <div id="alert-box" class="alert-box hidden">
+    <p id="alert-message">Bạn có thông báo mới!</p>
+    <span id="alert-close">&times;</span>
+  </div>
 
 
   <main class="history-container">
@@ -127,6 +76,9 @@
       <p><strong>Trạng thái:</strong> <span id="popupStatus"></span></p>
       <p><strong>Ngày gửi:</strong> <span id="popupDate"></span></p>
       <p><strong>Nội dung:</strong> <span id="popupMessage"></span></p>
+      <p><strong>Người gửi:</strong> <span id="popupName"></span></p>
+      <p><strong>Email:</strong> <span id="popupEmail"></span></p>
+
       <button onclick="closePopup()">Đóng</button>
     </div>
   </div>
@@ -159,6 +111,8 @@
 
     function showPopup(index) {
       const q = allQuestions[index];
+      document.getElementById("popupName").textContent = q.name || "Ẩn danh";
+      document.getElementById("popupEmail").textContent = q.email || "(Không có email)";
       document.getElementById("popupSubject").textContent = q.subject;
       document.getElementById("popupSpecialty").textContent = q.specialty;
       document.getElementById("popupStatus").textContent = q.status;
@@ -187,34 +141,34 @@
         document.getElementById("footer-placeholder").innerHTML = html;
       });
   </script>
-   <!-- nhãn thông báo -->
-   <script>
-      function showAlert(message) {
-        const alertBox = document.getElementById('alert-box');
-        const alertMessage = document.getElementById('alert-message');
-        const alertClose = document.getElementById('alert-close');
+  <!-- nhãn thông báo -->
+  <script>
+    function showAlert(message) {
+      const alertBox = document.getElementById('alert-box');
+      const alertMessage = document.getElementById('alert-message');
+      const alertClose = document.getElementById('alert-close');
 
-        alertMessage.textContent = message;
-        alertBox.classList.remove('hidden');
+      alertMessage.textContent = message;
+      alertBox.classList.remove('hidden');
 
-        // Tự động ẩn sau 5 giây
-        setTimeout(() => {
-          alertBox.classList.add('hidden');
-        }, 10000);
+      // Tự động ẩn sau 5 giây
+      setTimeout(() => {
+        alertBox.classList.add('hidden');
+      }, 10000);
 
-        // Ẩn khi click vào nút đóng
-        alertClose.addEventListener('click', () => {
-          alertBox.classList.add('hidden');
-        });
-      }
-
-      // Ví dụ: gọi thông báo mới
-      document.addEventListener("DOMContentLoaded", function () {
-        // Giả lập có thông báo mới
-        setTimeout(() => {
-          showAlert("🔔 Bạn có 3 thông báo mới!");
-        }, 1000); // sau 1 giây khi vào trang
+      // Ẩn khi click vào nút đóng
+      alertClose.addEventListener('click', () => {
+        alertBox.classList.add('hidden');
       });
+    }
+
+    // Ví dụ: gọi thông báo mới
+    document.addEventListener("DOMContentLoaded", function () {
+      // Giả lập có thông báo mới
+      setTimeout(() => {
+        showAlert("🔔 Bạn có 3 thông báo mới!");
+      }, 1000); // sau 1 giây khi vào trang
+    });
   </script>
 
 
@@ -312,4 +266,5 @@
 
 
 </body>
+
 </html>

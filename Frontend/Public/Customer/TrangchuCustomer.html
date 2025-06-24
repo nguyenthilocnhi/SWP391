@@ -11,40 +11,42 @@
 
 <body>
   <!-- gọi header -->
-   <div id="header-placeholder"> </div>
-    <script>
-      fetch('/Frontend/components/header_customer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById("header-placeholder").innerHTML = data;
+  <div id="header-placeholder"> </div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
 
-          // Gọi hàm JS của header sau khi nội dung đã render
-          if (typeof initHeader === 'function') {
-            initHeader();
-          }
-        });
-    </script>
+        // Gọi hàm JS của header sau khi nội dung đã render
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
 
-    <!-- Gọi file header và khởi động JS sau khi chèn xong -->
-    <script src="/Frontend/assets/js/header_customer.js"></script>  <!-- Đảm bảo file JS được load trước -->
-    <script>
-      fetch('/Frontend/components/header_customer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById("header-placeholder").innerHTML = data;
+  <!-- Gọi file header và khởi động JS sau khi chèn xong -->
+  <!-- GỌI HEADER -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
 
-          // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
-          if (typeof initHeader === 'function') {
-            initHeader();
-          }
-        });
-    </script>
+        // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
 
   <!-- tạo 1 nhãn thông báo -->
-   <div id="alert-box" class="alert-box hidden">
-      <p id="alert-message">Bạn có thông báo mới!</p>
-      <span id="alert-close">&times;</span>
-    </div>
+  <div id="alert-box" class="alert-box hidden">
+    <p id="alert-message">Bạn có thông báo mới!</p>
+    <span id="alert-close">&times;</span>
+  </div>
 
 
   <section class="hero">
@@ -58,7 +60,7 @@
           <img src="https://i.postimg.cc/vZkwh7jd/labs-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
             alt="xét nghiệm" />
           <div>
-            <h3>2.000+</h3>
+            <h3>5.000+</h3>
             <p>Lượt xét nghiệm</p>
           </div>
         </div>
@@ -67,7 +69,7 @@
             alt="
             độ hài lòng" />
           <div>
-            <h3>96%</h3>
+            <h3>99.8%</h3>
             <p>Mức độ hài lòng</p>
           </div>
         </div>
@@ -76,7 +78,7 @@
           <img src="https://i.postimg.cc/8CvQ0JQf/support-agent-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
             alt="tư vấn" />
           <div>
-            <h3>1.500+</h3>
+            <h3>4.000+</h3>
             <p>Lượt tư vấn</p>
           </div>
         </div>
@@ -85,7 +87,7 @@
           <img src="https://i.postimg.cc/QtkLj2MX/groups-100dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz48.png"
             alt="số khách hàng" />
           <div>
-            <h3>50.000+</h3>
+            <h3>10.000+</h3>
             <p>Số lượng khách hàng/năm</p>
           </div>
         </div>
@@ -141,29 +143,72 @@
 
     <section class="offer-section">
       <h2>Ưu đãi đặc biệt</h2>
-      <div class="offers">
-        <div class="offer-box">
-          <h4>Giảm đến 10%</h4>
-          <p>Cho dịch vụ xét nghiệm HPV</p>
-          <button>Xem ưu đãi</button>
+
+      <div class="accordion-container">
+        <!-- Ưu đãi 1 -->
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <h4>🎁 Giảm 10% - Tư vấn sức khỏe vị thành niên</h4>
+            <button class="toggle-btn">Xem ưu đãi</button>
+          </div>
+          <div class="accordion-content">
+            <ul>
+              <li><strong>Thời gian áp dụng:</strong> 01/07/2025 - 31/07/2025</li>
+              <li><strong>Đối tượng:</strong> Khách hàng từ 13 đến 19 tuổi</li>
+              <li><strong>Dịch vụ áp dụng:</strong> Tư vấn tâm lý, giới tính, sức khỏe dậy thì</li>
+              <li><strong>Cách sử dụng:</strong> Tự động áp dụng khi đặt lịch</li>
+              <li><strong>Lưu ý:</strong> Không cộng dồn với các khuyến mãi khác</li>
+            </ul>
+          </div>
         </div>
-        <div class="offer-box">
-          <h4>Giảm 100.000VND</h4>
-          <p>Cho dịch vụ tư vấn sức khỏe sinh sản</p>
-          <button>Xem ưu đãi</button>
+
+        <!-- Ưu đãi 2 -->
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <h4>💰 Giảm 100.000VND - Tư vấn sức khỏe sinh sản</h4>
+            <button class="toggle-btn">Xem ưu đãi</button>
+          </div>
+          <div class="accordion-content">
+            <ul>
+              <li><strong>Thời gian áp dụng:</strong> 01/07/2025 - 31/08/2025</li>
+              <li><strong>Áp dụng:</strong> Cho khách hàng nữ từ 18 tuổi trở lên</li>
+              <li><strong>Dịch vụ áp dụng:</strong> Tư vấn sức khỏe sinh sản, tiền hôn nhân</li>
+            </ul>
+          </div>
         </div>
-        <div class="offer-box">
-          <h4>Giảm 20%</h4>
-          <p>Cho dịch vụ xét nghiệm Giang Mai</p>
-          <button>Xem ưu đãi</button>
+
+        <!-- Ưu đãi 3 -->
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <h4>🧪 Giảm 20% - Xét nghiệm Giang Mai</h4>
+            <button class="toggle-btn">Xem ưu đãi</button>
+          </div>
+          <div class="accordion-content">
+            <ul>
+              <li><strong>Thời gian áp dụng:</strong> 01/07 - 31/07/2025</li>
+              <li><strong>Áp dụng:</strong> Cho xét nghiệm Giang Mai lần đầu tiên</li>
+              <li><strong>Lưu ý:</strong> Không áp dụng cho khách có mã giảm giá khác</li>
+            </ul>
+          </div>
         </div>
-        <div class="offer-box">
-          <h4>Giảm 50.000VND</h4>
-          <p>Cho khách đặt dịch vụ lần đầu tiên</p>
-          <button>Xem ưu đãi</button>
+
+        <!-- Ưu đãi 4 -->
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <h4>🎉 Giảm 50.000VND - Dành cho khách lần đầu</h4>
+            <button class="toggle-btn">Xem ưu đãi</button>
+          </div>
+          <div class="accordion-content">
+            <ul>
+              <li><strong>Áp dụng:</strong> Cho tất cả dịch vụ lần đầu đặt lịch</li>
+              <li><strong>Thời hạn:</strong> Không giới hạn đến khi có thông báo mới</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
+
+
 
 
     <section class="section testimonials">
@@ -188,8 +233,7 @@
     <details>
       <summary>An Giới có làm việc vào cuối tuần/ngày lễ</summary>
       <div class="faq-answer">
-        Giờ hoạt động của An Giới là từ thứ Hai đến Chủ Nhật, từ 7:00 sáng đến 17:00 chiều. Đối với ngày lễ An Giới sẽ
-        có thông báo cụ thể.
+        Giờ hoạt động của An Giới là từ 7:00 sáng đến 17:00 chiều. Đối với ngày lễ An Giới sẽ có thông báo cụ thể.
       </div>
     </details>
 
@@ -201,53 +245,104 @@
       </div>
     </details>
     <p class="more-question">
-      Xem thêm các câu hỏi khác <a href="Cauhoithuonggap.html" target="_blank">tại đây</a>
+      Xem thêm các câu hỏi khác <a href="/Frontend/Public/Customer/Cauhoithuonggap.html">tại đây</a>
     </p>
 
   </section>
 
   <!-- <script src="/Frontend/assets/js/header_customer.js"></script> -->
 
-<!-- nhãn thông báo -->
-   <script>
-      function showAlert(message) {
-        const alertBox = document.getElementById('alert-box');
-        const alertMessage = document.getElementById('alert-message');
-        const alertClose = document.getElementById('alert-close');
+  <!-- POPUP NHẮC UỐNG THUỐC -->
+  <div id="dailyPopup" class="popup hidden">
+    <div class="popup-content">
+      <p>💊 Đừng quên uống thuốc tránh thai hôm nay!</p>
+      <button onclick="closePopup()">Đã hiểu</button>
+    </div>
+  </div>
+  <!-- nhãn thông báo -->
+  <script>
 
-        alertMessage.textContent = message;
-        alertBox.classList.remove('hidden');
+    const expireAt = localStorage.getItem("sessionExpire");
 
-        // Tự động ẩn sau 5 giây
-        setTimeout(() => {
-          alertBox.classList.add('hidden');
-        }, 10000);
+    if (Date.now() > expireAt) {
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("sessionExpire");
+      alert("Phiên làm việc đã hết hạn. Vui lòng đăng nhập lại!");
+      window.location.href = "/Frontend/Public/Login/Trangdangnhap.html";
+    }
 
-        // Ẩn khi click vào nút đóng
-        alertClose.addEventListener('click', () => {
-          alertBox.classList.add('hidden');
-        });
-      }
+    function showAlert(message) {
+      const alertBox = document.getElementById('alert-box');
+      const alertMessage = document.getElementById('alert-message');
+      const alertClose = document.getElementById('alert-close');
 
-      // Ví dụ: gọi thông báo mới
-      document.addEventListener("DOMContentLoaded", function () {
-        // Giả lập có thông báo mới
-        setTimeout(() => {
-          showAlert("🔔 Bạn có 3 thông báo mới!");
-        }, 1000); // sau 1 giây khi vào trang
+      alertMessage.textContent = message;
+      alertBox.classList.remove('hidden');
+
+      // Tự động ẩn sau 5 giây
+      setTimeout(() => {
+        alertBox.classList.add('hidden');
+      }, 10000);
+
+      // Ẩn khi click vào nút đóng
+      alertClose.addEventListener('click', () => {
+        alertBox.classList.add('hidden');
       });
-   </script>
+    }
 
+    // Ví dụ: gọi thông báo mới
+    document.addEventListener("DOMContentLoaded", function () {
+      // Giả lập có thông báo mới
+      setTimeout(() => {
+        showAlert("🔔 Bạn có 3 thông báo mới!");
+      }, 1000); // sau 1 giây khi vào trang
+    });
+  </script>
 
+  <script>
+    function showDailyPopupIfNeeded() {
+      const isLoggedIn = localStorage.getItem("loggedIn") === "true";
+      const today = new Date().toISOString().split('T')[0];
+      const lastShown = localStorage.getItem("popupShownDate");
 
+      if (isLoggedIn && lastShown !== today) {
+        document.getElementById("dailyPopup").classList.remove("hidden");
+      }
+    }
+
+    function closePopup() {
+      const today = new Date().toISOString().split('T')[0];
+      localStorage.setItem("popupShownDate", today);
+      document.getElementById("dailyPopup").classList.add("hidden");
+    }
+
+    document.addEventListener("DOMContentLoaded", showDailyPopupIfNeeded);
+    if (localStorage.getItem("loggedIn") === "true") {
+      // hiện popup nhắc uống thuốc
+    }
+  </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+  const toggleButtons = document.querySelectorAll('.toggle-btn');
+  
+  toggleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.closest('.accordion-item');
+          const isActive = item.classList.toggle('active');
+          btn.textContent = isActive ? 'Thu gọn' : 'Xem ưu đãi';
+        });
+  });
+});
+  </script>
 
   <!-- gọi footer -->
   <div id="footer-placeholder"></div>
   <script>
-    fetch('/Frontend/components/footer.html')
+  fetch('/Frontend/components/footer.html')
       .then(response => response.text())
       .then(data => {
-        document.getElementById("footer-placeholder").innerHTML = data;
+    document.getElementById("footer-placeholder").innerHTML = data;
       });
   </script>
 </body>

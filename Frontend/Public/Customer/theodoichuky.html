@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Theo dõi chu kỳ</title>
+    <link rel="stylesheet" href="/Frontend/assets/css/theodoichuky.css" />
+</head>
+
+<body>
+    <!-- gọi header -->
+    <div id="header-placeholder"> </div>
+    <script>
+        fetch('/Frontend/components/header_customer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-placeholder").innerHTML = data;
+
+                // Gọi hàm JS của header sau khi nội dung đã render
+                if (typeof initHeader === 'function') {
+                    initHeader();
+                }
+            });
+    </script>
+
+    <!-- Gọi file header và khởi động JS sau khi chèn xong -->
+    <!-- GỌI HEADER -->
+    <div id="header-placeholder"></div>
+    <script>
+        fetch('/Frontend/components/header_customer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-placeholder").innerHTML = data;
+
+                // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+                if (typeof initHeader === 'function') {
+                    initHeader();
+                }
+            });
+    </script>
+    <script src="/Frontend/assets/js/header_customer.js"></script>
+
+    <!-- tạo 1 nhãn thông báo -->
+    <div id="alert-box" class="alert-box hidden">
+        <p id="alert-message">Bạn có thông báo mới!</p>
+        <span id="alert-close">&times;</span>
+    </div>
+
+    <main>
+        <section id="cycle-section" class="main-section">
+            <h1>THEO DÕI CHU KỲ KINH NGUYỆT</h1>
+            <div class="calendar-controls">
+                <button id="prevMainMonth">❮ Tháng trước</button>
+                <h2 id="mainMonthYear"></h2>
+                <button id="nextMainMonth">Tháng sau ❯</button>
+            </div>
+            <div id="mainCalendar" class="calendar"></div>
+
+            <div class="legend">
+                <span class="period">Ngày hành kinh</span>
+                <span class="fertile">Dễ thụ thai</span>
+                <span class="ovulation">Rụng trứng</span>
+                <span class="safe">An toàn</span>
+            </div>
+
+            <h2>Dự Đoán Chu Kỳ</h2>
+            <div class="calendar-controls">
+                <button id="prevPredictMonth">❮ Tháng trước</button>
+                <h2 id="predictMonthYear"></h2>
+                <button id="nextPredictMonth">Tháng sau ❯</button>
+            </div>
+            <div id="predictionCalendar" class="calendar"></div>
+            <div class="prediction" id="predictionText"></div>
+
+            <h2>Thống kê Chu Kỳ</h2>
+            <div id="cycle-warning" class="warning-text"></div>
+            <canvas id="cycleChart" height="100"></canvas>
+
+            <section class="settings-section">
+                <h2>Cài đặt chu kỳ</h2>
+                <label>Độ dài kỳ kinh: <input type="number" id="period-length" value="5" min="1" max="15">
+                    ngày</label><br>
+                <label>Độ dài chu kỳ: <input type="number" id="cycle-length" value="28" min="20" max="45">
+                    ngày</label><br>
+                <button id="apply-settings">Áp dụng</button>
+            </section>
+
+        </section>
+
+        <section id="mood-section" class="main-section">
+            <h2>Tâm trạng hôm nay</h2>
+            <div id="mood-selector">
+                <span class="mood-icon" data-mood="Rất hạnh phúc" title="Rất hạnh phúc">😄</span>
+                <span class="mood-icon" data-mood="Hạnh phúc" title="Hạnh phúc">😊</span>
+                <span class="mood-icon" data-mood="Bình thường" title="Bình thường">😐</span>
+                <span class="mood-icon" data-mood="Không vui" title="Không vui">😕</span>
+                <span class="mood-icon" data-mood="Phiền muộn" title="Phiền muộn">😢</span>
+            </div>
+            <p>Tâm trạng bạn chọn: <span id="selected-mood">Chưa chọn</span></p>
+        </section>
+
+        <section id="symptom-section" class="main-section">
+            <h2>Triệu chứng sức khỏe phụ khoa</h2>
+            <p>Chọn các triệu chứng bạn gặp phải hôm nay:</p>
+            <div id="symptom-list">
+                <label><input type="checkbox" value="Đau bụng dữ dội"> Đau bụng dữ dội</label><br />
+                <label><input type="checkbox" value="Khí hư bất thường"> Khí hư bất thường</label><br />
+                <label><input type="checkbox" value="Ngứa vùng kín"> Ngứa vùng kín</label><br />
+                <label><input type="checkbox" value="Chảy máu bất thường"> Chảy máu bất thường</label><br />
+                <label><input type="checkbox" value="Sốt, mệt mỏi"> Sốt, mệt mỏi</label><br />
+            </div>
+            <button id="saveSymptomsBtn">Lưu triệu chứng</button>
+            <div id="healthAlert" class="health-alert" style="display:none;">
+                <p id="alertMessage"></p>
+            </div>
+        </section>
+
+        <section id="stats-section" class="main-section">
+            <h2>Thống kê xu hướng triệu chứng</h2>
+            <canvas id="symptomChart" height="150"></canvas>
+        </section>
+
+        <section id="reminder-section" class="main-section">
+            <h2>Nhắc nhở cá nhân hóa</h2>
+            <div id="reminderMessages">
+                <!-- Nội dung nhắc nhở sẽ được cập nhật -->
+            </div>
+        </section>
+
+        <section id="suggest-section" class="main-section">
+            <h2>Gợi ý sản phẩm & dinh dưỡng theo chu kỳ</h2>
+            <ul id="suggestionsList">
+                <!-- Gợi ý sẽ được cập nhật -->
+            </ul>
+        </section>
+
+    </main>
+
+    <!-- gọi footer -->
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('/Frontend/components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/Frontend/assets/js/theodoichuky.js"></script>
+</body>
+
+</html>

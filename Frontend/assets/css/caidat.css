@@ -1,0 +1,194 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #ecfdf5;
+  margin: 0;
+  padding: 40px;
+}
+
+.settings-container {
+  max-width: 520px;
+  margin: auto;
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid #86efac;
+}
+
+h2 {
+  text-align: center;
+  color: #065f46;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-top: 18px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+button {
+  margin-top: 24px;
+  padding: 12px;
+  width: 100%;
+  background: #22c55e;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #16a34a;
+}
+
+.status-message {
+  text-align: center;
+  color: #15803d;
+  margin-top: 16px;
+  font-weight: 500;
+}
+
+.change-password-link {
+  display: block;
+  margin-top: 8px;
+  text-align: right;
+  color: #047857;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.change-password-link:hover {
+  text-decoration: underline;
+}
+
+.avatar-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.avatar-section img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #22c55e;
+}
+
+.avatar-section input {
+  margin-top: 12px;
+}
+
+/* Dark mode */
+body.dark {
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+body.dark .settings-container {
+  background: #334155;
+  border-color: #4ade80;
+}
+
+body.dark input,
+body.dark label {
+  color: #f1f5f9;
+}
+
+body.dark input {
+  background: #475569;
+  border-color: #64748b;
+}
+
+body.dark .change-password-link {
+  color: #bbf7d0;
+}
+.avatar-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.avatar-clickable {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.avatar-clickable img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid #22c55e;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.avatar-clickable:hover img {
+  transform: scale(1.05);
+}
+
+.avatar-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #22c55e;
+  color: white;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  transform: translate(30%, 30%);
+  pointer-events: none;
+}
+
+/* Dark mode update */
+body.dark .avatar-clickable img {
+  border-color: #4ade80;
+}
+body.dark .avatar-overlay {
+  background: #4ade80;
+}
+.logo-link {
+  display: inline-block;
+  margin: 10px 20px;
+}
+
+.logo {
+  height: 70px;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.logout-btn {
+  margin-top: 15px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #b71c1c;
+}

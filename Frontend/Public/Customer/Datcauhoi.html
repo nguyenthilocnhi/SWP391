@@ -13,7 +13,7 @@
 
   <!-- Nút góc phải dẫn đến lịch sử -->
   <div class="corner-history">
-    <a href="Lichsucauhoi.html" class="history-icon" title="Xem lịch sử câu hỏi">📋</a>
+    <a href="/Frontend/Public/Customer/Lichsucauhoi.html" class="history-icon" title="Xem lịch sử câu hỏi">📋</a>
   </div>
 
   <main class="question-form-container">
@@ -84,55 +84,61 @@
   </main>
 
   <script>
-    document.getElementById("formQuestion").addEventListener("submit", function (e) {
-      e.preventDefault();
+  document.getElementById("formQuestion").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-      const subject = document.getElementById("subject").value;
-      const specialty = document.getElementById("specialty").value;
-      const now = new Date();
-      const dateSent = now.toLocaleDateString('vi-VN');
-      const status = "Đang chờ trả lời";
-
-      const newQuestion = {
-        subject: subject,
-        specialty: specialty,
-        status: status,
-        date: dateSent
-      };
-
-      let questions = JSON.parse(localStorage.getItem("questionHistory")) || [];
-      questions.push(newQuestion);
-      localStorage.setItem("questionHistory", JSON.stringify(questions));
-
-      document.getElementById("successMessage").style.display = "block";
-      this.reset();
-      document.getElementById("nameField").style.display = "block";
-      document.getElementById("name").required = true;
-      document.getElementById("anonymousCheckbox").checked = false;
-
-      document.getElementById("successMessage").scrollIntoView({ behavior: 'smooth' });
-    });
-
-    document.getElementById("anonymousCheckbox").addEventListener("change", function () {
-      const nameField = document.getElementById("nameField");
-      const nameInput = document.getElementById("name");
-      if (this.checked) {
-        nameField.style.display = "none";
-        nameInput.required = false;
-      } else {
-        nameField.style.display = "block";
-        nameInput.required = true;
-      }
-    });
+    const subject = document.getElementById("subject").value.trim();
+    const specialty = document.getElementById("specialty").value;
+    const message = document.getElementById("message").value.trim();
     const isAnonymous = document.getElementById("anonymousCheckbox").checked;
+    const name = isAnonymous ? "Ẩn danh" : document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const age = document.getElementById("age").value;
+    const gender = document.getElementById("gender").value;
+    const topic = document.getElementById("topic").value;
+    const dateSent = new Date().toLocaleDateString("vi-VN");
+
     const newQuestion = {
       subject,
       specialty,
-      status,
-      date: dateSent,
-      isAnonymous
+      message,
+      name,
+      email,
+      age,
+      gender,
+      topic,
+      isAnonymous,
+      status: "Đang chờ trả lời",
+      date: dateSent
     };
-  </script>
+
+    const questions = JSON.parse(localStorage.getItem("questionHistory")) || [];
+    questions.push(newQuestion);
+    localStorage.setItem("questionHistory", JSON.stringify(questions));
+
+    document.getElementById("successMessage").style.display = "block";
+    this.reset();
+    document.getElementById("nameField").style.display = "block";
+    document.getElementById("name").required = true;
+    document.getElementById("anonymousCheckbox").checked = false;
+
+    document.getElementById("successMessage").scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // ✅ Đặt ngoài form submit
+  document.getElementById("anonymousCheckbox").addEventListener("change", function () {
+    const nameField = document.getElementById("nameField");
+    const nameInput = document.getElementById("name");
+
+    if (this.checked) {
+      nameField.style.display = "none";
+      nameInput.required = false;
+    } else {
+      nameField.style.display = "block";
+      nameInput.required = true;
+    }
+  });
+</script>
 
 </body>
 

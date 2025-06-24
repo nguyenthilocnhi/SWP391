@@ -6,36 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Câu hỏi thường gặp</title>
     <link rel="stylesheet" href="/Frontend/assets/css/cauhoithuonggap.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 
 <body>
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <a href="/Frontend/Public/Guest/Trangchu.html">
-                    <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-                </a>
-            </div>
+    <!-- gọi header -->
+    <div id="header-placeholder"> </div>
+    <script>
+        fetch('/Frontend/components/header_guest.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-placeholder").innerHTML = data;
 
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="gioithieu.html">Giới thiệu</a></li>
-                    <li><a href="dichvu.html">Dịch vụ</a></li>
-                    <li><a href="TrangBlog.html">Blog</a></li>
-                    <li><a href="Tuvanvien.html">Tư vấn viên</a></li>
-                    <li><a href="Trangdangnhap.html">Đăng nhập</a></li>
-                    <li><a href="dangky.html">Đăng ký</a></li>
-                </ul>
-            </nav>
-
-            <form class="search-form" action="#" method="get">
-                <input type="text" name="q" placeholder="Tìm kiếm..." />
-                <button type="submit">
-                    <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
-                </button>
-            </form>
-        </div>
-    </header>
+                // Gọi hàm JS của header sau khi nội dung đã render
+                if (typeof initHeader === 'function') {
+                    initHeader();
+                }
+            });
+    </script>
 
     <section class="faq-container">
         <h2><span class="highlight">Câu Hỏi</span> Thường Gặp?</h2>
@@ -49,25 +37,16 @@
         <details>
             <summary>An Giới có làm việc vào cuối tuần/ngày lễ</summary>
             <div class="faq-answer">
-                Giờ hoạt động của An Giới là từ thứ Hai đến Chủ Nhật, từ 7:00 sáng đến 17:00 chiều. Đối với ngày lễ An
-                Giới sẽ
-                có thông báo cụ thể.
+                Giờ hoạt động của An Giới là từ 7:00 sáng đến 17:00 chiều. Đối với ngày lễ An
+                Giới sẽ có thông báo cụ thể.
             </div>
         </details>
 
         <details>
             <summary>Làm sao để xem được kết quả xét nghiệm</summary>
             <div class="faq-answer">
-                Kết quả xét nghiệm thường sẽ có sau 1 - 3 ngày, bạn có xem được kết quả tại phần kết quả xét nghiệm trên
-                hệ
-                thống.
-            </div>
-        </details>
-
-        <details>
-            <summary>Giờ làm việc của trung tâm như thế nào?</summary>
-            <div class="faq-answer">
-                Trung tâm làm việc từ 6:00 đến 21:00 từ thứ Hai đến Chủ nhật
+                Kết quả xét nghiệm sẽ tùy thuộc vào dich vụ xét nghiệm của bạn, bạn có kiểm tra tại "Kết quả xét nghiệm"
+                trên hệ thống.
             </div>
         </details>
 
@@ -75,21 +54,13 @@
             <summary>Trung tâm xét nghiệm những bệnh lây qua đường tình dục nào?</summary>
             <div class="faq-answer">
                 1. HIV
-
                 2. Giang mai (Syphilis)
-
                 3. Lậu (Gonorrhea)
-
                 4. Chlamydia
-
                 5. Viêm gan B (HBV) và Viêm gan C (HCV)
-
                 6. Herpes sinh dục (HSV-1, HSV-2)
-
                 7. HPV (Human Papillomavirus)
-
                 8. Nấm Candida, Trùng roi Trichomonas, Vi khuẩn Gardnerella
-
                 9. Xét nghiệm tổng quát vi sinh đường sinh dục
             </div>
         </details>

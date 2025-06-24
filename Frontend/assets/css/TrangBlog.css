@@ -1,13 +1,13 @@
+/* ==== RESET CƠ BẢN ==== */
 body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #f8fafc;
-  color: #1f2937;
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
 }
-
 header {
   background-color: #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   padding: 10px 40px;
   position: sticky;
   top: 0;
@@ -71,7 +71,7 @@ header {
 }
 
 .statistic-section {
-  background: #fff;
+
   padding: 40px 20px;
   display: flex;
   justify-content: center;
@@ -114,32 +114,51 @@ header {
   color: #555;
   font-size: 15px;
 }
-
+/* ==== BANNER INTRO ==== */
 .intro-banner {
+  background: url('/Frontend/assets/imgs/blog-banner.jpg') center/cover no-repeat;
+  padding: 80px 20px;
+  color: #fff;
   text-align: center;
-  background: #e8f0fe;
-  padding: 30px 10px;
+  position: relative;
+}
+
+.intro-banner .overlay {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  padding: 60px 20px;
+  border-radius: 10px;
 }
 
 .intro-banner h1 {
-  margin: 0;
-  font-size: 24px;
-  color: #1a237e;
+  font-size: 28px;
+  margin-bottom: 10px;
 }
 
-a {
-  text-decoration: none;
+.intro-banner p {
+  font-size: 16px;
 }
 
-a:hover {
-  text-decoration: none;
-}
-
-
-.blog-container {
-  max-width: 1200px;
+/* ==== SEARCH BAR ==== */
+.search-bar {
+  max-width: 600px;
   margin: 30px auto;
-  padding: 0 16px;
+  text-align: center;
+}
+
+.search-bar input {
+  width: 90%;
+  padding: 12px 18px;
+  border: 1px solid #d1d5db;
+  border-radius: 30px;
+  font-size: 16px;
+  outline: none;
+}
+
+/* ==== BLOG GRID CONTAINER ==== */
+.blog-container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .blog-grid {
@@ -148,105 +167,93 @@ a:hover {
   gap: 24px;
 }
 
+/* ==== BLOG CARD ==== */
 .blog-card {
-  background: #fff;
-  border-radius: 8px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .blog-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.blog-card a {
+  color: inherit;
+  text-decoration: none;
+  display: block;
 }
 
 .blog-card img {
   width: 100%;
   height: 180px;
   object-fit: cover;
+  display: block;
 }
 
 .blog-card .content {
   padding: 16px;
 }
 
-.blog-card h2 {
+.blog-card .content h2 {
   font-size: 18px;
-  margin: 0 0 8px;
-  color: #212121;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1f2937;
 }
 
+.blog-card .content .date {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 480px) {
+  .intro-banner h1 {
+    font-size: 20px;
+  }
+
+  .blog-card .content h2 {
+    font-size: 16px;
+  }
+
+  .blog-card img {
+    height: 160px;
+  }
+}
+/*==PAGINATION==*/
 .pagination {
-  margin: 40px 0;
   text-align: center;
+  margin-top: 30px;
 }
 
-.pagination .page {
-  display: inline-block;
-  margin: 0 6px;
+.pagination button {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
   padding: 8px 12px;
-  background: #eee;
-  border-radius: 4px;
+  margin: 0 4px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.pagination .active {
-  background: #007bff;
+.pagination button:hover {
+  background-color: #10b981;
   color: #fff;
+  border-color: #10b981;
+}
+
+.pagination button.active {
+  background-color: #10b981;
+  color: white;
   font-weight: bold;
 }
-
-footer.custom-footer {
-  margin-top: 4rem;
-  padding: 2rem;
-  background-color: #f3f4f6;
-  color: #374151;
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.footer-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer-logo img {
-  height: 100px;
-}
-
-.footer-hotline {
-  text-align: right;
-}
-
-.footer-hotline strong {
-  font-size: 1.25rem;
-  color: #10b981;
-}
-
-.footer-info {
-  margin-top: 1rem;
-  font-size: 0.875rem;
-}
-
-@media (max-width: 768px) {
-  .nav-menu {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .footer-top {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-  }
-
-  .highlight-box {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .offers {
-    flex-direction: column;
-    align-items: center;
-  }
-}

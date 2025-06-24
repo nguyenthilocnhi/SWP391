@@ -2,118 +2,147 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lịch Uống Tránh Thai</title>
   <link rel="stylesheet" href="/Frontend/assets/css/nhacnho.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
+
 <body>
+  <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+        if (typeof initHeader === 'function') initHeader();
+      });
+  </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
 
-  <header class="main-header">
-  <div class="header-container">
-    <div class="logo">
-      <a href="/Frontend/Public/Customer/TrangchuCustomer.html">
-      <img src="https://i.postimg.cc/g2NJNPzk/Logo.png" alt="Logo An Giới" />
-    </div>
-    <nav class="nav-menu">
-      <a href="#">Giới thiệu</a>
-      <a href="#">Dịch vụ</a>
-      <a href="#">Blog</a>
-      <a href="#">Đặt lịch</a>
-      <a href="#">Tư vấn viên</a>
-    </nav>
-    <div class="user-section">
-  <img src="https://i.postimg.cc/SKWH4csZ/Avatar-pnj.jpg" alt="Avatar" class="avatar" />
-  <div class="user-dropdown">
-    <div class="user-info" onclick="toggleDropdown()">
-      <span class="user-name">Nguyễn Bích M</span>
-      <span class="user-role">Khách hàng ▾</span>
-    </div>
-    <div id="dropdown-menu" class="dropdown-menu hidden">
-      <a href="#">Thông tin cá nhân</a>
-      <a href="#">Theo dõi chu kỳ</a>
-      <a href="#">Lịch sử đặt lịch</a>
-      <a href="#">Kết quả xét nghiệm</a>
-      <a href="#">Lịch sử dịch vụ</a>
-      <a href="#">Nhắc uống thuốc</a>
-      <a href="#">Cài đặt</a>
-    </div>
+  <!-- Alert Notification -->
+  <div id="alert-box" class="alert-box hidden">
+    <p id="alert-message">Bạn có thông báo mới!</p>
+    <span id="alert-close">&times;</span>
   </div>
-</div>
 
-    </div>
-  </div>
-</header>
+  <!-- Main Section -->
+  <main class="reminder-container">
+    <h1 class="title">LỊCH UỐNG TRÁNH THAI</h1>
+    <h2 class="subtitle">Tháng 3 - 2025</h2>
 
-  <main>
-    <h1>LỊCH UỐNG TRÁNH THAI</h1>
-    <h2>Tháng 3 - 2025</h2>
-    <div class="calendar">
-      <!-- 31 ngày -->
-      <div class="day check">01</div>
-      <div class="day check">02</div>
-      <div class="day check">03</div>
-      <div class="day x">04</div>
-      <div class="day check">05</div>
-      <div class="day check">06</div>
-      <div class="day check">07</div>
-      <div class="day x">08</div>
-      <div class="day check">09</div>
-      <div class="day check">10</div>
-      <div class="day check">11</div>
-      <div class="day check">12</div>
-      <div class="day check">13</div>
-      <div class="day x">14</div>
-      <div class="day check">15</div>
-      <div class="day check">16</div>
-      <div class="day x">17</div>
-      <div class="day check">18</div>
-      <div class="day check">19</div>
-      <div class="day check">20</div>
-      <div class="day x">21</div>
-      <div class="day check">22</div>
-      <div class="day check">23</div>
-      <div class="day x">24</div>
-      <div class="day check">25</div>
-      <div class="day check">26</div>
-      <div class="day check">27</div>
-      <div class="day x">28</div>
-      <div class="day check">29</div>
-      <div class="day check">30</div>
-      <div class="day check">31</div>
-    </div>
+    <div class="calendar" id="calendar"></div>
 
     <div class="legend">
       <p><span class="circle check"></span> Đã uống thuốc</p>
       <p><span class="circle x"></span> Chưa uống</p>
     </div>
+
+    <div class="summary" id="summaryBox"></div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button onclick="resetLich()" class="reset-btn">🔁 Đặt lại lịch</button>
+    </div>
+
+    <!-- Popup Nhắc Uống Thuốc -->
+<div id="dailyPopup" class="popup hidden">
+  <div class="popup-content">
+    <p>💊 Đừng quên uống thuốc tránh thai hôm nay!</p>
+    <button onclick="closePopup()">Đã hiểu</button>
+  </div>
+</div>
+
   </main>
 
- <footer class="main-footer">
-  <div class="footer-container">
-    <div class="footer-logo">
-      <img src="https://i.postimg.cc/Y2F9c0k7/logo-footer.png" alt="Logo Footer" />
-    </div>
-    <div class="footer-info">
-      <strong>HOTLINE:</strong> 1900 8484<br>
-      Trung tâm Xét nghiệm & Chăm sóc sức khỏe giới tính – An Giới<br>
-      123 - 125 Đồng Văn Cống, TP Thủ Đức, TP HCM
-    </div>
-  </div>
-</footer>
-<script>
-  function toggleDropdown() {
-    const menu = document.getElementById("dropdown-menu");
-    menu.classList.toggle("hidden");
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
+
+  <!-- Logic Calendar -->
+  <script>
+    const calendar = document.getElementById("calendar");
+    const summaryBox = document.getElementById("summaryBox");
+    const daysInMarch = 31;
+    let missedDays = JSON.parse(localStorage.getItem("missedDays")) || [4, 8, 14, 17, 21, 24, 28];
+
+    function renderCalendar() {
+      calendar.innerHTML = "";
+      for (let i = 1; i <= daysInMarch; i++) {
+        const div = document.createElement("div");
+        div.className = "day " + (missedDays.includes(i) ? "x" : "check");
+        div.textContent = i.toString().padStart(2, "0");
+        div.addEventListener("click", () => toggleDay(i));
+        calendar.appendChild(div);
+      }
+
+      const daUong = daysInMarch - missedDays.length;
+      const chuaUong = missedDays.length;
+      summaryBox.innerHTML = `
+        <p><strong>Đã uống:</strong> ${daUong} ngày</p>
+        <p><strong>Chưa uống:</strong> ${chuaUong} ngày</p>
+      `;
+    }
+
+    function toggleDay(day) {
+      const index = missedDays.indexOf(day);
+      if (index !== -1) {
+        missedDays.splice(index, 1);
+      } else {
+        missedDays.push(day);
+      }
+      localStorage.setItem("missedDays", JSON.stringify(missedDays));
+      renderCalendar();
+    }
+
+    function resetLich() {
+      if (confirm("Bạn có chắc muốn đặt lại lịch về mặc định không?")) {
+        missedDays = [4, 8, 14, 17, 21, 24, 28];
+        localStorage.setItem("missedDays", JSON.stringify(missedDays));
+        renderCalendar();
+      }
+    }
+
+    renderCalendar();
+  </script>
+
+  <!-- Dropdown logic -->
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById("dropdown-menu");
+      menu.classList.toggle("hidden");
+    }
+    window.addEventListener("click", function (e) {
+      const dropdown = document.getElementById("dropdown-menu");
+      if (!e.target.closest(".user-dropdown")) {
+        dropdown.classList.add("hidden");
+      }
+    });
+  </script>
+
+  <script>
+  function showDailyPopupIfNeeded() {
+    const today = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
+    const lastShown = localStorage.getItem('popupShownDate');
+
+    if (lastShown !== today) {
+      document.getElementById("dailyPopup").classList.remove("hidden");
+    }
   }
 
-  // Ẩn dropdown nếu click ra ngoài
-  window.addEventListener("click", function(e) {
-    const dropdown = document.getElementById("dropdown-menu");
-    if (!e.target.closest(".user-dropdown")) {
-      dropdown.classList.add("hidden");
-    }
-  });
+  function closePopup() {
+    const today = new Date().toISOString().split('T')[0];
+    localStorage.setItem('popupShownDate', today);
+    document.getElementById("dailyPopup").classList.add("hidden");
+  }
+
+  document.addEventListener("DOMContentLoaded", showDailyPopupIfNeeded);
 </script>
 
 </body>

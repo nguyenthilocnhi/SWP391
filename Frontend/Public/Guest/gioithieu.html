@@ -10,28 +10,28 @@
 
 <body>
   <!-- gọi header -->
-   <div id="header-placeholder"></div>
-    <script>
-      fetch('/Frontend/components/header_guest.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById("header-placeholder").innerHTML = data;
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_guest.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
 
-          // Kích hoạt lại các <script> bên trong file header_guest.html nếu có
-          const scripts = document.querySelectorAll('#header-placeholder script');
-          scripts.forEach(oldScript => {
-            const newScript = document.createElement('script');
-            if (oldScript.src) {
-              newScript.src = oldScript.src;
-            } else {
-              newScript.textContent = oldScript.textContent;
-            }
-            document.body.appendChild(newScript);
-          });
+        // Kích hoạt lại các <script> bên trong file header_guest.html nếu có
+        const scripts = document.querySelectorAll('#header-placeholder script');
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
         });
-    </script>
+      });
+  </script>
 
-    <!-- sau khi called header thị nhớ căng nd ở dưới dùng margin-top: 12px -->
+  <!-- sau khi called header thị nhớ căng nd ở dưới dùng margin-top: 12px -->
 
   <main class="container">
     <section class="intro">
@@ -74,11 +74,11 @@
           <p>Nâng cao chất lượng sống thông qua dịch vụ y tế toàn diện, bảo mật và không kỳ thị.</p>
         </div>
         <div class="box">
-          <h3>50+ Chuyên gia</h3>
+          <h3>30+ Chuyên gia</h3>
           <p>Đội ngũ bác sĩ, tư vấn viên và chuyên gia giàu kinh nghiệm.</p>
         </div>
         <div class="box">
-          <h3>10+ Dịch vụ</h3>
+          <h3>20+ Dịch vụ</h3>
           <p>Từ tư vấn tâm lý đến xét nghiệm STIs và sức khỏe sinh sản.</p>
         </div>
       </div>

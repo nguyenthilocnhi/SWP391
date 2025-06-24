@@ -42,7 +42,7 @@ function renderTable() {
       <td>${item.chiphi}</td>
       <td>${item.tinhtrang}</td>
       <td>
-        <a href="chitietdichvu.html">Chi tiết</a>
+        <a href="chitietdichvu_1.html">Chi tiết</a>
 
       </td>
     `;

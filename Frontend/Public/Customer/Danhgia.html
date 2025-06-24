@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Đánh Giá Dịch Vụ</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/danhgia.css" />
+</head>
+<body>
+  <div class="review-container">
+    <h2>Đánh Giá Dịch Vụ</h2>
+
+    <label for="dichVuSelect">Chọn Dịch Vụ:</label>
+    <select id="dichVuSelect">
+      <option value="">-- Chọn dịch vụ --</option>
+      <option value="Tư Vấn">Tư Vấn</option>
+      <option value="Xét Nghiệm">Xét Nghiệm</option>
+    </select>
+
+    <label>Chấm sao:</label>
+    <div id="ratingStars" class="stars"></div>
+
+    <label for="reviewText">Nội dung đánh giá:</label>
+    <textarea id="reviewText" rows="4" placeholder="Nhập đánh giá của bạn..."></textarea>
+
+    <button onclick="submitReview()">Gửi đánh giá</button>
+    <a class="back-link" href="Lichsudichvuvadanhgia.html">← Quay về lịch sử dịch vụ</a>
+
+    <div class="review-list" id="reviewList">
+      <h3>Đánh Giá Đã Gửi</h3>
+    </div>
+  </div>
+
+  <script>
+    const services = JSON.parse(localStorage.getItem("lichSuDichVu")) || [];
+    const reviews = JSON.parse(localStorage.getItem("danhGiaDichVu")) || [];
+
+    const dichVuSelect = document.getElementById("dichVuSelect");
+    const ratingStars = document.getElementById("ratingStars");
+    const reviewText = document.getElementById("reviewText");
+    const reviewList = document.getElementById("reviewList");
+
+    let selectedRating = 0;
+
+    function populateServiceDropdown() {
+      const completed = services.filter(s => s.trangThai === "Hoàn_tất");
+      completed.forEach(s => {
+        const option = document.createElement("option");
+        option.value = s.ten;
+        option.textContent = s.ten;
+        dichVuSelect.appendChild(option);
+      });
+    }
+
+    function generateStars() {
+      for (let i = 1; i <= 5; i++) {
+        const star = document.createElement("span");
+        star.textContent = "★";
+        star.dataset.value = i;
+        star.classList.add("star");
+        star.onclick = () => {
+          selectedRating = i;
+          highlightStars(i);
+        };
+        ratingStars.appendChild(star);
+      }
+    }
+
+    function highlightStars(n) {
+      document.querySelectorAll(".star").forEach(star => {
+        star.classList.toggle("selected", star.dataset.value <= n);
+      });
+    }
+
+    function submitReview() {
+      const ten = dichVuSelect.value;
+      const noiDung = reviewText.value.trim();
+
+      if (!ten || !noiDung || selectedRating === 0) {
+        alert("Vui lòng chọn dịch vụ, chấm sao và nhập nội dung!");
+        return;
+      }
+
+      const review = {
+        tenDichVu: ten,
+        noiDung,
+        soSao: selectedRating,
+        thoiGian: new Date().toLocaleString()
+      };
+
+      reviews.push(review);
+      localStorage.setItem("danhGiaDichVu", JSON.stringify(reviews));
+      reviewText.value = "";
+      selectedRating = 0;
+      highlightStars(0);
+      renderReviews();
+    }
+
+    function renderReviews() {
+      const grouped = {};
+      reviews.forEach(r => {
+        if (!grouped[r.tenDichVu]) grouped[r.tenDichVu] = [];
+        grouped[r.tenDichVu].push(r);
+      });
+
+      reviewList.innerHTML = "<h3>Đánh Giá Đã Gửi</h3>";
+      for (const ten in grouped) {
+        const section = document.createElement("div");
+        section.classList.add("review-group");
+        section.innerHTML = `<h4>${ten}</h4>`;
+
+        grouped[ten].forEach(r => {
+          const item = document.createElement("div");
+          item.classList.add("review-item");
+          item.innerHTML = `
+            <p><strong>${r.soSao} ★</strong> - ${r.thoiGian}</p>
+            <p>${r.noiDung}</p>
+          `;
+          section.appendChild(item);
+        });
+
+        reviewList.appendChild(section);
+      }
+    }
+
+    populateServiceDropdown();
+    generateStars();
+    renderReviews();
+  </script>
+</body>
+</html>
