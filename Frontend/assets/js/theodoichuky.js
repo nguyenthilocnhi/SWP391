@@ -9,6 +9,7 @@ const predictionText = document.getElementById('predictionText');
 let mainDate = new Date();
 let predictOffset = 1; // 1: tháng kế tiếp, 2: kế tiếp nữa, etc.
 let periodData = JSON.parse(localStorage.getItem("periodData") || "[]");
+let firstPredictionDate = localStorage.getItem("firstPeriodDateForPrediction");
 
 //Hôm nay tâm trạng thế nào
 document.addEventListener("DOMContentLoaded", () => {
@@ -38,12 +39,15 @@ function getAverageCycle() {
 }
 
 function predictNextPeriod(n = 1) {
-    if (periodData.length === 0) return null;
-    const last = new Date(periodData[periodData.length - 1]);
+    const baseDateStr = localStorage.getItem("firstPeriodDateForPrediction");
+    if (!baseDateStr) return null;
+
+    const baseDate = new Date(baseDateStr);
     const cycleLength = parseInt(localStorage.getItem("customCycleLength")) || getAverageCycle();
-    last.setDate(last.getDate() + cycleLength * n);
-    return last;
+    baseDate.setDate(baseDate.getDate() + cycleLength * (n - 1));
+    return baseDate;
 }
+
 
 const nextPeriod = predictNextPeriod();
 predictionText.innerText = nextPeriod
@@ -60,23 +64,51 @@ function changePredictMonth(offset) {
     if (predictOffset < 1) predictOffset = 1;
     renderPredictCalendar();
 }
-// Cho phép người dùng chọn từng ngày kinh
+// Hiển thị ngày rụng trứng, an toàn thụ thai
 function getDayType(date, isPredict = false, offset = 1) {
     const iso = formatDate(date);
+    const cycleLength = parseInt(localStorage.getItem("customCycleLength")) || getAverageCycle();
+    const periodLength = parseInt(localStorage.getItem("customPeriodLength")) || 5;
 
     if (!isPredict) {
+        // CHỈ tô đúng ngày mà người dùng đã chọn
         if (periodData.includes(iso)) return "period";
+
+        // Tính ngày rụng trứng, dễ thụ thai, an toàn dựa trên lần hành kinh gần nhất
+        if (periodData.length === 0) return "";
+
+        const sortedPeriods = periodData.map(d => new Date(d)).sort((a, b) => a - b);
+        let lastPeriod = null;
+        for (let i = sortedPeriods.length - 1; i >= 0; i--) {
+            if (sortedPeriods[i] <= date) {
+                lastPeriod = sortedPeriods[i];
+                break;
+            }
+        }
+        if (!lastPeriod) return "";
+
+        const diff = Math.floor((date - lastPeriod) / (1000 * 60 * 60 * 24));
+
+        if (diff === 14) return "ovulation";
+        if (diff >= 12 && diff <= 16) return "fertile";
+        if (diff > 16 && diff < cycleLength) return "safe";
+
+        return "";
     } else {
+        // DỰ ĐOÁN kỳ kinh → tô `periodLength` ngày liên tiếp
         const start = predictNextPeriod(offset);
+        if (!start) return "";
+
         const diff = Math.floor((date - start) / (1000 * 60 * 60 * 24));
-        if (diff === 0) return "period-predict";
+        if (diff >= 0 && diff < periodLength) return "period-predict";
         if (diff === 14) return "ovulation-predict";
         if (diff >= 12 && diff <= 16) return "fertile-predict";
-        if (diff > 16 && diff < 28) return "safe-predict";
-    }
+        if (diff > 16 && diff < cycleLength) return "safe-predict";
 
-    return "";
+        return "";
+    }
 }
+
 
 //Lịch chu kì
 function renderMainCalendar() {
@@ -97,38 +129,34 @@ function renderMainCalendar() {
         const cell = document.createElement("div");
         cell.className = "day";
 
-        //Hiện ngày hôm nay
         if (formatDate(date) === formatDate(new Date())) {
             cell.classList.add("today");
         }
 
-        // Cho phép ngườu dùng cho từng ngày 1 
-        cell.onclick = () => {
-            if (!periodData.includes(iso)) {
-                periodData.push(iso);
-            } else {
-                periodData = periodData.filter(d => d !== iso);
-            }
-            localStorage.setItem("periodData", JSON.stringify(periodData));
-            renderMainCalendar();
-            renderPredictCalendar();
-        };
-
-        cell.textContent = day;
-
         const type = getDayType(date, false);
         if (type) cell.classList.add(type);
 
+        cell.textContent = day;
+
         cell.onclick = () => {
             if (!periodData.includes(iso)) {
                 periodData.push(iso);
+                periodData.sort(); // để giữ đúng thứ tự
+
+                // Ghi ngày đầu tiên dùng cho dự đoán (nếu chưa có)
+                if (!localStorage.getItem("firstPeriodDateForPrediction")) {
+                    localStorage.setItem("firstPeriodDateForPrediction", iso);
+                }
             } else {
                 periodData = periodData.filter(d => d !== iso);
             }
+
             localStorage.setItem("periodData", JSON.stringify(periodData));
             renderMainCalendar();
             renderPredictCalendar();
+            renderCycleChart();
         };
+
 
         mainCalendar.appendChild(cell);
     }
@@ -156,7 +184,7 @@ function renderPredictCalendar() {
     for (let day = 1; day <= daysInMonth; day++) {
         const date = new Date(year, month, day);
         const cell = document.createElement("div");
-        cell.className = "day readonly";
+        cell.className = "day readonly"; // readonly để không click chọn
         cell.textContent = day;
 
         const type = getDayType(date, true, predictOffset);
