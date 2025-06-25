@@ -1,45 +1,41 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Danh sách Tư vấn viên | An Giới</title>
   <link rel="stylesheet" href="/Frontend/assets/css/tuvanvien.css" />
 </head>
 
 <body>
-<!-- gọi header -->
-   <div id="header-placeholder"> </div>
-    <script>
-      fetch('/Frontend/components/header_guest.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById("header-placeholder").innerHTML = data;
-
-          // Gọi hàm JS của header sau khi nội dung đã render
-          if (typeof initHeader === 'function') {
-            initHeader();
-          }
-        });
-    </script>
+  <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_guest.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        if (typeof initHeader === 'function') initHeader();
+      });
+  </script>
 
   <main class="container">
     <h2 class="section-title">ĐỘI NGŨ TƯ VẤN VIÊN</h2>
+
+    <form class="search-form">
+      <input type="text" name="q" placeholder="Tìm kiếm theo tên..." />
+    </form>
+
     <div class="advisor-grid" id="advisorGrid"></div>
   </main>
 
+  <!-- Footer -->
   <div id="footer-placeholder"></div>
-
   <script>
     let advisorData = [];
 
-    // Tải dữ liệu JSON
     fetch('/Frontend/assets/data/tuvanvien.json')
-      .then(response => {
-        if (!response.ok) throw new Error('Không tìm thấy file JSON');
-        return response.json();
-      })
+      .then(res => res.json())
       .then(data => {
         advisorData = data;
         renderAdvisors(advisorData);
@@ -49,46 +45,40 @@
         document.getElementById('advisorGrid').innerHTML = '<p style="color:red">Không thể tải dữ liệu tư vấn viên.</p>';
       });
 
-    // Render danh sách
     function renderAdvisors(list) {
-  const container = document.getElementById('advisorGrid');
-  container.innerHTML = '';
+      const container = document.getElementById('advisorGrid');
+      container.innerHTML = '';
+      list.forEach(advisor => {
+        const card = document.createElement('div');
+        card.className = 'advisor-card';
 
-  list.forEach(advisor => {
-    const card = document.createElement('div');
-    card.className = 'advisor-card';
+        let detailLink = `/Frontend/Public/Guest/ChiTietTuvanvien.html?id=${advisor.id}`;
+        if (advisor.id === "K") detailLink = "/Frontend/Public/Guest/ChiTiet_K.html";
+        if (advisor.id === "H") detailLink = "/Frontend/Public/Guest/ChiTiet_H.html";
+        if (advisor.id === "N") detailLink = "/Frontend/Public/Guest/ChiTiet_N.html";
+        if (advisor.id === "T") detailLink = "/Frontend/Public/Guest/ChiTiet_T.html";
+        if (advisor.id === "F") detailLink = "/Frontend/Public/Guest/ChiTiet_F.html";
+        if (advisor.id === "A") detailLink = "/Frontend/Public/Guest/ChiTiet_A.html";
+        if (advisor.id === "D") detailLink = "/Frontend/Public/Guest/ChiTiet_D.html";
+        if (advisor.id === "B") detailLink = "/Frontend/Public/Guest/ChiTiet_B.html";
+        if (advisor.id === "M") detailLink = "/Frontend/Public/Guest/ChiTiet_M.html";
+        if (advisor.id === "O") detailLink = "/Frontend/Public/Guest/ChiTiet_O.html";
+        if (advisor.id === "V") detailLink = "/Frontend/Public/Guest/ChiTiet_V.html";
+        if (advisor.id === "L") detailLink = "/Frontend/Public/Guest/ChiTiet_L.html";
 
-    // Nếu có file chi tiết riêng thì gán thủ công
-    let detailLink = `/Frontend/Public/Guest/ChiTietTuvanvien.html?id=${advisor.id}`;
-    if (advisor.id === "K") {
-      detailLink = "/Frontend/Public/Guest/ChiTiet_K.html";
+        card.innerHTML = `
+          <a href="${detailLink}" class="card-link">
+            <img src="${advisor.image}" alt="${advisor.name}" />
+            <h3>${advisor.name}</h3>
+            <p>${advisor.specialty}</p>
+            <p><strong>Kinh nghiệm:</strong> ${advisor.experience}</p>
+            <p>${advisor.education}</p>
+          </a>
+        `;
+        container.appendChild(card);
+      });
     }
-    // Nếu tạo thêm file thủ công cho các ID khác, thêm tương tự ở đây:
-    if (advisor.id === "H") detailLink = "/Frontend/Public/Guest/ChiTiet_H.html";
-    if (advisor.id === "N") detailLink = "/Frontend/Public/Guest/ChiTiet_N.html";
-    if (advisor.id === "T") detailLink = "/Frontend/Public/Guest/ChiTiet_T.html";
-    if (advisor.id === "F") detailLink = "/Frontend/Public/Guest/ChiTiet_F.html";
-    if (advisor.id === "A") detailLink = "/Frontend/Public/Guest/ChiTiet_A.html";
-    if (advisor.id === "D") detailLink = "/Frontend/Public/Guest/ChiTiet_D.html";
-    if (advisor.id === "B") detailLink = "/Frontend/Public/Guest/ChiTiet_B.html";
-    if (advisor.id === "M") detailLink = "/Frontend/Public/Guest/ChiTiet_M.html";
-    if (advisor.id === "O") detailLink = "/Frontend/Public/Guest/ChiTiet_O.html";
-    if (advisor.id === "V") detailLink = "/Frontend/Public/Guest/ChiTiet_V.html";
-    if (advisor.id === "L") detailLink = "/Frontend/Public/Guest/ChiTiet_L.html";
 
-    card.innerHTML = `
-      <a href="${detailLink}" class="card-link">
-        <img src="${advisor.image}" alt="${advisor.name}" />
-        <h3>${advisor.name}</h3>
-        <p>${advisor.specialty}</p>
-        <p><strong>Kinh nghiệm:</strong> ${advisor.experience}</p>
-        <p>${advisor.education}</p>
-      </a>
-    `;
-    container.appendChild(card);
-  });
-}
-    // Tìm kiếm
     document.addEventListener('DOMContentLoaded', () => {
       const searchForm = document.querySelector('.search-form');
       searchForm.addEventListener('submit', function (e) {
@@ -100,7 +90,6 @@
         renderAdvisors(filtered);
       });
 
-      // Footer
       fetch('/Frontend/components/footer.html')
         .then(res => res.text())
         .then(html => {
@@ -109,5 +98,4 @@
     });
   </script>
 </body>
-
 </html>

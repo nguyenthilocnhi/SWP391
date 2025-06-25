@@ -52,26 +52,205 @@ body {
 }
 /* ==== BANNER INTRO ==== */
 .intro-banner {
-  background: url('/Frontend/assets/imgs/blog-banner.jpg') center/cover no-repeat;
-  padding: 80px 20px;
-  color: #fff;
-  text-align: center;
   position: relative;
+  background: linear-gradient(135deg, #1fc8db, #2cb5a0);
+  padding: 60px 16px; /* ↓ Giảm từ 100px xuống 60px */
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  min-height: 220px; /* ↓ Giảm từ 300px xuống 220px */
+}
+
+.intro-banner::before {
+  content: "📚";
+  font-size: 120px; /* ↓ Nhỏ hơn để phù hợp nền gọn */
+  color: rgba(255, 255, 255, 0.08);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  pointer-events: none;
 }
 
 .intro-banner .overlay {
-  background: linear-gradient(135deg, #10b981, #34d399);
-  padding: 60px 20px;
-  border-radius: 10px;
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  text-align: center;
+  color: white;
+  padding: 0 10px; /* giảm lề trong */
 }
 
-.intro-banner h1 {
-  font-size: 28px;
+.intro-content h1 {
+  font-size: 28px; /* ↓ nhỏ hơn 1 chút */
+  font-weight: 800;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.6s ease forwards;
 }
 
-.intro-banner p {
+.intro-content p {
   font-size: 16px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.95);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.intro-content .emoji {
+  font-size: 34px;
+}
+
+@media (max-width: 600px) {
+  .intro-content h1 {
+    font-size: 20px;
+  }
+
+  .intro-content p {
+    font-size: 14px;
+  }
+
+  .intro-content .emoji {
+    font-size: 26px;
+  }
+
+  .intro-banner {
+    padding: 40px 12px;
+    min-height: 180px;
+  }
+
+  .intro-banner::before {
+    font-size: 80px;
+  }
+}
+.cta-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-outline {
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #ffffff;
+  color: #10b981;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+  background-color: #f0fdf4;
+  color: #059669;
+}
+
+.btn-outline {
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #f3f4f6;
+}
+/* === POPUP EMAIL === */
+/* ==== POPUP GỌN & HIỆN ĐẠI ==== */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.6); /* Slate semi dark */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.popup {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.popup h2 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.popup h2 .emoji {
+  font-size: 20px;
+}
+
+.popup input {
+  display: block;
+  margin: 0 auto 20px auto;
+  width: 80%;
+  max-width: 260px;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s ease;
+  box-sizing: border-box;
+}
+
+.popup input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.popup-actions button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #10b981;
+  color: white;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.popup-actions button:hover {
+  background-color: #059669;
 }
 
 /* ==== SEARCH BAR ==== */
@@ -89,7 +268,10 @@ body {
   font-size: 16px;
   outline: none;
 }
-
+.search-bar input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+}
 /* ==== BLOG GRID CONTAINER ==== */
 .blog-container {
   padding: 40px 20px;
