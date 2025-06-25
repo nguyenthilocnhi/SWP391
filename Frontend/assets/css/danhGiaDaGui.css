@@ -1,0 +1,315 @@
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9f9fb;
+  color: #1f2937;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* Container chính */
+.review-container {
+  max-width: 600px;
+  margin: 100px auto;
+  background-color: #ffffff;
+  padding: 32px 28px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Tiêu đề */
+.review-container h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 28px;
+  color: #0f766e;
+  font-weight: 700;
+}
+
+/* Nhãn và form */
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #374151;
+}
+
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  background-color: #fefefe;
+  transition: border 0.2s;
+}
+
+select:focus,
+textarea:focus {
+  border-color: #0f766e;
+  outline: none;
+}
+
+/* Ngôi sao */
+.stars {
+  display: flex;
+  gap: 8px;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.star {
+  cursor: pointer;
+  color: #d1d5db;
+  transition: color 0.3s;
+}
+
+.star.selected {
+  color: #facc15;
+}
+
+/* Nút gửi */
+button {
+  background-color: #0f766e;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+button:hover {
+  background-color: #115e59;
+}
+
+/* Liên kết */
+.back-link {
+  display: inline-block;
+  margin-top: 20px;
+  text-align: center;
+  color: #0f766e;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* Danh sách đánh giá */
+.review-group {
+  margin-top: 24px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+}
+
+.review-group h4 {
+  font-size: 18px;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.review-item {
+  background-color: #f0fdf4;
+  border-left: 4px solid #10b981;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.review-item p:first-child {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #065f46;
+}
+
+.review-item p:last-child {
+  color: #374151;
+}
+/* Thanh tìm kiếm */
+.search-bar {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 480px;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border 0.2s, box-shadow 0.2s;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+}
+/* Font và body */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f9f7;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+.review-container {
+  max-width: 800px;
+  margin: 100px auto 40px;
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+.review-container h2 {
+  font-size: 1.8rem;
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 20px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #388e3c;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* Tìm kiếm */
+#searchInput {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 24px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #cfd8dc;
+  font-size: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: #81c784;
+  box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.3);
+}
+
+/* Danh sách đánh giá */
+.review-item {
+  background: #e8f5e9;
+  border-left: 5px solid #43a047;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+.review-item p {
+  margin: 4px 0;
+  font-size: 15px;
+  color: #37474f;
+}
+
+.stars {
+  color: #ff9800;
+  font-weight: bold;
+}
+
+.time {
+  font-size: 0.85rem;
+  color: #607d8b;
+  font-weight: normal;
+}
+
+.delete-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #c62828;
+}
+
+/* Phân trang */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 8px 14px;
+  border: none;
+  background-color: #81c784;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.pagination button.active,
+.pagination button:hover {
+  background-color: #4caf50;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .review-container {
+    margin: 60px 16px 40px;
+    padding: 16px;
+  }
+
+  .review-item {
+    padding: 14px;
+  }
+
+  #searchInput {
+    font-size: 15px;
+    padding: 10px 14px;
+  }
+
+  .pagination button {
+    padding: 6px 10px;
+  }
+}

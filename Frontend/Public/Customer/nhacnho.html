@@ -9,19 +9,14 @@
 </head>
 
 <body>
-  <!-- Gọi file header và khởi động JS sau khi chèn xong -->
-  <!-- GỌI HEADER -->
+  <!-- Gọi header -->
   <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_customer.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
-
-        // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
-        if (typeof initHeader === 'function') {
-          initHeader();
-        }
+        if (typeof initHeader === 'function') initHeader();
       });
   </script>
   <script src="/Frontend/assets/js/header_customer.js"></script>
@@ -32,15 +27,28 @@
     <span id="alert-close">&times;</span>
   </div>
 
-  <!-- Main Section -->
   <main class="reminder-container">
     <h1 class="title">LỊCH UỐNG TRÁNH THAI</h1>
-    <h2 class="subtitle">Tháng 3 - 2025</h2>
 
-    <div class="calendar" id="calendar"></div>
+    <div class="calendar-header">
+      <button id="prevMonth" class="nav-btn">&larr; Tháng trước</button>
+      <h2 id="calendarTitle">2025 - Tháng 6</h2>
+      <button id="nextMonth" class="nav-btn">Tháng sau &rarr;</button>
+    </div>
+
+    <div class="calendar-grid">
+      <div class="day-name">CN</div>
+      <div class="day-name">T2</div>
+      <div class="day-name">T3</div>
+      <div class="day-name">T4</div>
+      <div class="day-name">T5</div>
+      <div class="day-name">T6</div>
+      <div class="day-name">T7</div>
+      <!-- Ngày sẽ được JS render vào đây -->
+    </div>
 
     <div class="legend">
-      <p><span class="circle check"></span> Đã uống thuốc</p>
+      <p><span class="circle check"></span> Đã uống</p>
       <p><span class="circle x"></span> Chưa uống</p>
     </div>
 
@@ -51,16 +59,15 @@
     </div>
 
     <!-- Popup Nhắc Uống Thuốc -->
-<div id="dailyPopup" class="popup hidden">
-  <div class="popup-content">
-    <p>💊 Đừng quên uống thuốc tránh thai hôm nay!</p>
-    <button onclick="closePopup()">Đã hiểu</button>
-  </div>
-</div>
-
+    <div id="dailyPopup" class="popup hidden">
+      <div class="popup-content">
+        <p>💊 Đừng quên uống thuốc tránh thai hôm nay!</p>
+        <button onclick="closePopup()">Đã hiểu</button>
+      </div>
+    </div>
   </main>
 
-  <!-- Footer -->
+  <!-- Gọi Footer -->
   <div id="footer-placeholder"></div>
   <script>
     fetch('/Frontend/components/footer.html')
@@ -70,85 +77,7 @@
       });
   </script>
 
-  <!-- Logic Calendar -->
-  <script>
-    const calendar = document.getElementById("calendar");
-    const summaryBox = document.getElementById("summaryBox");
-    const daysInMarch = 31;
-    let missedDays = JSON.parse(localStorage.getItem("missedDays")) || [4, 8, 14, 17, 21, 24, 28];
-
-    function renderCalendar() {
-      calendar.innerHTML = "";
-      for (let i = 1; i <= daysInMarch; i++) {
-        const div = document.createElement("div");
-        div.className = "day " + (missedDays.includes(i) ? "x" : "check");
-        div.textContent = i.toString().padStart(2, "0");
-        div.addEventListener("click", () => toggleDay(i));
-        calendar.appendChild(div);
-      }
-
-      const daUong = daysInMarch - missedDays.length;
-      const chuaUong = missedDays.length;
-      summaryBox.innerHTML = `
-        <p><strong>Đã uống:</strong> ${daUong} ngày</p>
-        <p><strong>Chưa uống:</strong> ${chuaUong} ngày</p>
-      `;
-    }
-
-    function toggleDay(day) {
-      const index = missedDays.indexOf(day);
-      if (index !== -1) {
-        missedDays.splice(index, 1);
-      } else {
-        missedDays.push(day);
-      }
-      localStorage.setItem("missedDays", JSON.stringify(missedDays));
-      renderCalendar();
-    }
-
-    function resetLich() {
-      if (confirm("Bạn có chắc muốn đặt lại lịch về mặc định không?")) {
-        missedDays = [4, 8, 14, 17, 21, 24, 28];
-        localStorage.setItem("missedDays", JSON.stringify(missedDays));
-        renderCalendar();
-      }
-    }
-
-    renderCalendar();
-  </script>
-
-  <!-- Dropdown logic -->
-  <script>
-    function toggleDropdown() {
-      const menu = document.getElementById("dropdown-menu");
-      menu.classList.toggle("hidden");
-    }
-    window.addEventListener("click", function (e) {
-      const dropdown = document.getElementById("dropdown-menu");
-      if (!e.target.closest(".user-dropdown")) {
-        dropdown.classList.add("hidden");
-      }
-    });
-  </script>
-
-  <script>
-  function showDailyPopupIfNeeded() {
-    const today = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
-    const lastShown = localStorage.getItem('popupShownDate');
-
-    if (lastShown !== today) {
-      document.getElementById("dailyPopup").classList.remove("hidden");
-    }
-  }
-
-  function closePopup() {
-    const today = new Date().toISOString().split('T')[0];
-    localStorage.setItem('popupShownDate', today);
-    document.getElementById("dailyPopup").classList.add("hidden");
-  }
-
-  document.addEventListener("DOMContentLoaded", showDailyPopupIfNeeded);
-</script>
-
+  <!-- JS calendar logic -->
+  <script src="/Frontend/assets/js/nhacnho.js"></script>
 </body>
 </html>

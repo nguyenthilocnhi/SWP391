@@ -10,34 +10,25 @@
 </head>
 
 <body>
-
-  <!-- Gọi file header và khởi động JS sau khi chèn xong -->
-  <!-- GỌI HEADER -->
   <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_customer.html')
-      .then(response => response.text())
+      .then(res => res.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
-
-        // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
-        if (typeof initHeader === 'function') {
-          initHeader();
-        }
+        if (typeof initHeader === 'function') initHeader();
       });
   </script>
   <script src="/Frontend/assets/js/header_customer.js"></script>
 
-  <!-- tạo 1 nhãn thông báo -->
   <div id="alert-box" class="alert-box hidden">
-    <p id="alert-message">Bạn có thông báo mới!</p>
-    <span id="alert-close">&times;</span>
+    <p id="alert-message"></p><span id="alert-close">&times;</span>
   </div>
 
   <main class="history-main">
     <div class="container">
       <h2>Lịch Sử Đặt Lịch</h2>
-      <div class="filter-bar" style="margin-bottom: 16px;">
+      <div class="filter-bar">
         <label>Trạng thái:
           <select id="filterStatus">
             <option value="">Tất cả</option>
@@ -50,235 +41,91 @@
       <table class="history-table">
         <thead>
           <tr>
-            <th>Ngày</th>
-            <th>Dịch vụ</th>
-            <th>Lý do</th>
-            <th>Họ tên</th>
-            <th>SĐT</th>
-            <th>Trạng thái</th>
-            <th>Thao tác</th>
+            <th>Ngày</th><th>Dịch vụ</th><th>Lý do</th><th>Họ tên</th><th>SĐT</th><th>Trạng thái</th><th>Thao tác</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
     </div>
+
     <div id="viewModal" class="modal hidden">
       <div class="modal-content">
-        <span class="close-button">&times;</span>
-        <h3>Chi Tiết Lịch Hẹn</h3>
-        <p><strong>Ngày:</strong> <span id="modal-ngay"></span></p>
-        <p><strong>Dịch vụ:</strong> <span id="modal-dichVu"></span></p>
-        <p><strong>Lý do:</strong> <span id="modal-lyDo"></span></p>
-        <p><strong>Họ tên:</strong> <span id="modal-hoTen"></span></p>
-        <p><strong>SĐT:</strong> <span id="modal-sdt"></span></p>
-        <p><strong>Trạng thái:</strong> <span id="modal-trangThai"></span></p>
+        <h3 class="modal-title">Chi Tiết Lịch Hẹn</h3>
+        <div class="modal-info">
+          <p><strong>Ngày:</strong> <span id="modal-ngay"></span></p>
+          <p><strong>Dịch vụ:</strong> <span id="modal-dichVu"></span></p>
+          <p><strong>Lý do:</strong> <span id="modal-lyDo"></span></p>
+          <p><strong>Họ tên:</strong> <span id="modal-hoTen"></span></p>
+          <p><strong>SĐT:</strong> <span id="modal-sdt"></span></p>
+          <p><strong>Trạng thái:</strong> <span id="modal-trangThai"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button class="close-button">ĐÓNG</button>
+        </div>
       </div>
     </div>
   </main>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const lichTableBody = document.querySelector(".history-table tbody");
-      const filterStatus = document.getElementById("filterStatus");
-      const lichList = JSON.parse(localStorage.getItem("lichDat")) || [];
-
-      function renderTable(filter = "") {
-        lichTableBody.innerHTML = "";
-        lichList.forEach((lich, index) => {
-          if (!filter || lich.trangThai === filter) {
-            const row = document.createElement("tr");
-            let lyDo = lich.lyDo || "";
-            if (lich.dichVu === "Tư Vấn" && lich.hinhThuc) lyDo += ` (Hình thức: ${lich.hinhThuc})`;
-            if (lich.dichVu === "Xét Nghiệm" && lich.loaiXetNghiem) lyDo += ` (Loại: ${lich.loaiXetNghiem})`;
-            row.innerHTML = `
-            <td>${lich.ngay}</td>
-            <td>${lich.dichVu}</td>
-            <td>${lyDo}</td>
-            <td>${lich.hoTen || ''}</td>
-            <td>${lich.sdt || ''}</td>
-            <td><span class="status pending">${lich.trangThai}</span></td>
-            <td>
-              <button class="btn-view" data-index="${index}">Xem</button>
-              <button class="btn-delete" data-index="${index}">Xóa</button>
-            </td>
-          `;
-            lichTableBody.appendChild(row);
-          }
-        });
-        bindButtons();
-      }
-
-      function bindButtons() {
-        document.querySelectorAll(".btn-view").forEach(btn => {
-          btn.addEventListener("click", function () {
-            const lich = lichList[this.dataset.index];
-            document.getElementById("modal-ngay").textContent = lich.ngay || "-";
-            document.getElementById("modal-dichVu").textContent = lich.dichVu || "-";
-            let lyDo = lich.lyDo || "-";
-            if (lich.dichVu === "Tư Vấn") lyDo += ` (Hình thức: ${lich.hinhThuc || 'Không rõ'})`;
-            else if (lich.dichVu === "Xét Nghiệm") lyDo += ` (Loại: ${lich.loaiXetNghiem || 'Không rõ'})`;
-            document.getElementById("modal-lyDo").textContent = lyDo;
-            document.getElementById("modal-hoTen").textContent = lich.hoTen || "-";
-            document.getElementById("modal-sdt").textContent = lich.sdt || "-";
-            document.getElementById("modal-trangThai").textContent = lich.trangThai || "-";
-            document.getElementById("viewModal").classList.remove("hidden");
-          });
-        });
-
-        document.querySelectorAll(".btn-delete").forEach(btn => {
-          btn.addEventListener("click", function () {
-            const index = this.dataset.index;
-            if (confirm("Bạn có chắc muốn xóa lịch này không?")) {
-              lichList.splice(index, 1);
-              localStorage.setItem("lichDat", JSON.stringify(lichList));
-              renderTable(filterStatus.value);
-            }
-          });
-        });
-      }
-
-      filterStatus.addEventListener("change", () => {
-        renderTable(filterStatus.value);
-      });
-
-      renderTable();
-    });
-  </script>
-
   <div id="footer-placeholder"></div>
   <script>
     fetch('/Frontend/components/footer.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("footer-placeholder").innerHTML = data;
-      });
+      .then(res => res.text())
+      .then(data => document.getElementById("footer-placeholder").innerHTML = data);
   </script>
-  <!-- nhãn thông báo -->
+
   <script>
     function showAlert(message) {
-      const alertBox = document.getElementById('alert-box');
-      const alertMessage = document.getElementById('alert-message');
-      const alertClose = document.getElementById('alert-close');
-
-      alertMessage.textContent = message;
-      alertBox.classList.remove('hidden');
-
-      // Tự động ẩn sau 5 giây
-      setTimeout(() => {
-        alertBox.classList.add('hidden');
-      }, 10000);
-
-      // Ẩn khi click vào nút đóng
-      alertClose.addEventListener('click', () => {
-        alertBox.classList.add('hidden');
-      });
+      const box = document.getElementById('alert-box');
+      document.getElementById('alert-message').textContent = message;
+      box.classList.remove('hidden');
+      setTimeout(() => box.classList.add('hidden'), 10000);
+      document.getElementById('alert-close').onclick = () => box.classList.add('hidden');
     }
-
-    // Ví dụ: gọi thông báo mới
-    document.addEventListener("DOMContentLoaded", function () {
-      // Giả lập có thông báo mới
-      setTimeout(() => {
-        showAlert("🔔 Bạn có 3 thông báo mới!");
-      }, 1000); // sau 1 giây khi vào trang
-    });
+    setTimeout(() => showAlert("🔔 Bạn có 3 thông báo mới!"), 1000);
   </script>
 
-
-  <!-- cho menu user xổ xuống -->
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const dropdownToggle = document.querySelector('.user-dropdown');
-      const userMenu = document.querySelector('.user-menu');
-
-      if (dropdownToggle && userMenu) {
-        dropdownToggle.addEventListener('click', function (e) {
-          e.stopPropagation();
-          userMenu.classList.toggle('hidden');
-        });
-
-        // Click ngoài thì ẩn menu
-        document.addEventListener('click', function (e) {
-          if (!userMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
-            userMenu.classList.add('hidden');
-          }
-        });
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggle = document.querySelector('.user-dropdown');
+      const menu = document.querySelector('.user-menu');
+      if (toggle && menu) {
+        toggle.onclick = e => { e.stopPropagation(); menu.classList.toggle('hidden'); };
+        document.onclick = e => {
+          if (!menu.contains(e.target) && !toggle.contains(e.target)) menu.classList.add('hidden');
+        };
       }
     });
   </script>
 
-
-  <!-- JavaScript cập nhật thời gian "X phút trước" tự động -->
   <script>
     function timeAgo(dateString) {
       const now = new Date();
       const date = new Date(dateString);
       const seconds = Math.floor((now - date) / 1000);
-
-      const intervals = [
-        { label: 'năm', seconds: 31536000 },
-        { label: 'tháng', seconds: 2592000 },
-        { label: 'ngày', seconds: 86400 },
-        { label: 'giờ', seconds: 3600 },
-        { label: 'phút', seconds: 60 },
-        { label: 'giây', seconds: 1 },
+      const units = [
+        { label: 'năm', s: 31536000 },
+        { label: 'tháng', s: 2592000 },
+        { label: 'ngày', s: 86400 },
+        { label: 'giờ', s: 3600 },
+        { label: 'phút', s: 60 },
+        { label: 'giây', s: 1 },
       ];
-
-      for (const interval of intervals) {
-        const count = Math.floor(seconds / interval.seconds);
-        if (count >= 1) {
-          return `${count} ${interval.label} trước`;
-        }
+      for (let u of units) {
+        const c = Math.floor(seconds / u.s);
+        if (c >= 1) return `${c} ${u.label} trước`;
       }
       return 'Vừa xong';
     }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const notifications = document.querySelectorAll('.notify-content');
-
-      notifications.forEach(content => {
-        const timeString = content.getAttribute('data-time');
-        const timeSpan = content.querySelector('.notify-time');
-
-        if (timeString && timeSpan) {
-          timeSpan.textContent = timeAgo(timeString);
-        }
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll('.notify-content').forEach(el => {
+        const t = el.getAttribute('data-time');
+        const span = el.querySelector('.notify-time');
+        if (t && span) span.textContent = timeAgo(t);
       });
     });
   </script>
 
-
-  <!-- gọi thông báo -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const notificationIcon = document.querySelector('.notification');
-      const notificationBox = document.querySelector('.notification-box');
-      const badge = document.querySelector('.badge');
-
-      if (notificationIcon && notificationBox) {
-        // Toggle hiển thị thông báo khi click chuông
-        notificationIcon.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation(); // Ngăn lan sự kiện click ra ngoài
-          notificationBox.classList.toggle('hidden');
-
-          // Tuỳ chọn: reset badge nếu cần
-          badge.innerText = '0';
-        });
-
-        // Click bên ngoài thì ẩn menu
-        document.addEventListener('click', function (e) {
-          const clickedOutside = !notificationBox.contains(e.target) && !notificationIcon.contains(e.target);
-          if (clickedOutside) {
-            notificationBox.classList.add('hidden');
-          }
-        });
-      }
-    });
-  </script>
-
-
-
-
+  <script src="/Frontend/assets/js/lichsudatlich.js"></script>
 </body>
 
 </html>
