@@ -33,6 +33,22 @@
     </div>
 
     <main class="content">
+        <section id="period-input-section" class="main-section">
+            <!-- XÓA PHẦN GHI NHẬN KỲ KINH NGUYỆT -->
+        </section>
+
+        <section id="mood-section" class="main-section">
+            <h2>Tâm trạng hôm nay</h2>
+            <div id="mood-selector">
+                <span class="mood-icon" data-mood="Rất hạnh phúc" title="Rất hạnh phúc">😄</span>
+                <span class="mood-icon" data-mood="Hạnh phúc" title="Hạnh phúc">😊</span>
+                <span class="mood-icon" data-mood="Bình thường" title="Bình thường">😐</span>
+                <span class="mood-icon" data-mood="Không vui" title="Không vui">😕</span>
+                <span class="mood-icon" data-mood="Phiền muộn" title="Phiền muộn">😢</span>
+            </div>
+            <p>Tâm trạng bạn chọn: <span id="selected-mood">Chưa chọn</span></p>
+        </section>
+
         <section id="cycle-section" class="main-section">
             <h1>THEO DÕI CHU KỲ KINH NGUYỆT</h1>
             <div class="calendar-controls">
@@ -63,26 +79,29 @@
             <canvas id="cycleChart" height="100"></canvas>
 
             <section class="settings-section">
-                <h2>Cài đặt chu kỳ</h2>
-                <label>Độ dài kỳ kinh: <input type="number" id="period-length" value="5" min="1" max="15">
-                    ngày</label><br>
-                <label>Độ dài chu kỳ: <input type="number" id="cycle-length" value="28" min="20" max="45">
-                    ngày</label><br>
-                <button id="apply-settings">Áp dụng</button>
+                <h2 style="margin-bottom: 10px;">Cài đặt chu kỳ của bạn</h2>
+                <div class="settings-card">
+                    <div class="settings-row">
+                        <label for="period-length">
+                            Độ dài kỳ kinh:
+                        </label>
+                        <input type="number" id="period-length" value="5" min="1" max="15">
+                        <span class="unit">ngày</span>
+                    </div>
+                    <div class="settings-row">
+                        <label for="cycle-length">
+                            Độ dài chu kỳ:
+                        </label>
+                        <input type="number" id="cycle-length" value="28" min="20" max="45">
+                        <span class="unit">ngày</span>
+                    </div>
+                    <button id="apply-settings" class="settings-btn">Áp dụng</button>
+                </div>
+                <div class="settings-desc">
+                    <small>Bạn có thể điều chỉnh thông số này bất cứ lúc nào để phù hợp với cơ thể của mình.</small>
+                </div>
             </section>
 
-        </section>
-
-        <section id="mood-section" class="main-section">
-            <h2>Tâm trạng hôm nay</h2>
-            <div id="mood-selector">
-                <span class="mood-icon" data-mood="Rất hạnh phúc" title="Rất hạnh phúc">😄</span>
-                <span class="mood-icon" data-mood="Hạnh phúc" title="Hạnh phúc">😊</span>
-                <span class="mood-icon" data-mood="Bình thường" title="Bình thường">😐</span>
-                <span class="mood-icon" data-mood="Không vui" title="Không vui">😕</span>
-                <span class="mood-icon" data-mood="Phiền muộn" title="Phiền muộn">😢</span>
-            </div>
-            <p>Tâm trạng bạn chọn: <span id="selected-mood">Chưa chọn</span></p>
         </section>
 
         <section id="symptom-section" class="main-section">

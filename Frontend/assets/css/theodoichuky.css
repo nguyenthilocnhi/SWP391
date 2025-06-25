@@ -59,6 +59,7 @@ body {
     align-items: center;
     gap: 15px;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .calendar-controls button {
@@ -80,18 +81,23 @@ body {
 .calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
-    margin-bottom: 25px;
+    gap: 1px;
+    margin-bottom: 12px;
     user-select: none;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 420px;
+    width: 100%;
 }
 
 .day {
-    padding: 10px 0;
+    padding: 3px 0;
     text-align: center;
     border-radius: 6px;
     background: #f0f0f0;
     cursor: pointer;
     transition: transform 0.2s ease;
+    font-size: 0.9em;
 }
 
 .day:hover {
@@ -133,19 +139,23 @@ body {
 
 /* Màu dự đoán */
 .period-predict {
-    background-color: #ffc1c1 !important;
+    background-color: #ffeaea !important;
+    color: #b94a4a;
 }
 
 .fertile-predict {
-    background-color: #fffec9 !important;
+    background-color: #fffde4 !important;
+    color: #b9a84a;
 }
 
 .ovulation-predict {
-    background-color: #90e5ef !important;
+    background-color: #e4faff !important;
+    color: #4ab9b9;
 }
 
 .safe-predict {
-    background-color: #aaffca !important;
+    background-color: #eafff3 !important;
+    color: #4ab97a;
 }
 
 /* Legend */
@@ -299,4 +309,73 @@ body {
 
 #suggestionsList li {
     margin-bottom: 8px;
+}
+
+.day-header {
+    background: #dbeafe;
+    color: #1e293b;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+.settings-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(16,185,129,0.08);
+    padding: 18px 24px 12px 24px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.settings-row label {
+    margin: 0;
+    min-width: 120px;
+    text-align: right;
+}
+.settings-row input[type="number"] {
+    width: 60px;
+    padding: 6px 8px;
+    border: 1px solid #b2dfdb;
+    border-radius: 6px;
+    font-size: 1.1em;
+    text-align: center;
+    outline: none;
+    transition: border 0.2s;
+}
+.settings-row input[type="number"]:focus {
+    border: 1.5px solid #10b981;
+    background: #e6fff3;
+}
+.settings-btn {
+    background: linear-gradient(90deg, #10b981 60%, #34d399 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 28px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.settings-btn:hover {
+    background: linear-gradient(90deg, #0e956f 60%, #10b981 100%);
+    box-shadow: 0 4px 16px rgba(16,185,129,0.15);
+}
+.settings-desc {
+    margin-top: 8px;
+    color: #888;
+    font-size: 0.98em;
+}
+.unit {
+    color: #10b981;
+    font-weight: 600;
+    margin-left: 2px;
 }
