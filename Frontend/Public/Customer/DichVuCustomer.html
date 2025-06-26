@@ -13,7 +13,7 @@
   <!-- gọi header -->
   <div id="header-placeholder"> </div>
   <script>
-    fetch('/Frontend/components/header_guest.html')
+    fetch('/Frontend/components/header_customer.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
@@ -24,6 +24,7 @@
         }
       });
   </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
   
   <main>
     <div class="container">

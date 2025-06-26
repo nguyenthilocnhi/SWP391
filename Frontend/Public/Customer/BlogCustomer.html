@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Sức Khỏe - An Giới</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/TrangBlog.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- gọi header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+
+        // Gọi hàm JS của header sau khi nội dung đã render
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
+
+  <main class="intro-container">
+    <section class="intro-banner">
+      <div class="overlay">
+        <div class="intro-content">
+          <h1><span class="emoji">📚</span> KIẾN THỨC Y KHOA & CHIA SẺ KINH NGHIỆM</h1>
+          <p>Cập nhật thông tin sức khỏe từ các chuyên gia An Giới</p>
+          <div class="cta-buttons">
+            <a href="#blogGrid" class="btn-primary scroll-to-posts">Xem bài viết mới</a>
+            <button class="btn-outline" id="subscribeBtn">Theo dõi blog</button>
+          </div>
+
+          <!-- POPUP THEO DÕI EMAIL -->
+          <div class="popup-overlay" id="popupOverlay">
+            <div class="popup">
+              <h2><span class="emoji">📩</span> Nhập email để theo dõi blog</h2>
+              <input type="email" placeholder="Nhập email của bạn..." id="emailInput" />
+              <div class="popup-actions">
+                <button id="submitEmail">Gửi</button>
+                <button id="closePopup">Đóng</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tìm kiếm -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder=" Tìm kiếm bài viết..." />
+    </div>
+
+    <section class="blog-grid" id="blogGrid">
+      <!-- Dữ liệu blog sẽ được load ở đây -->
+    </section>
+    <div id="pagination" class="pagination"></div>
+  </main>
+
+  <!-- FOOTER -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
+
+  <!-- JS tải blog từ blogs.json -->
+  <script>
+    const blogGrid = document.getElementById('blogGrid');
+    const searchInput = document.getElementById('searchInput');
+    let blogData = [];
+    const POSTS_PER_PAGE = 8;
+    let currentPage = 1;
+
+    function createBlogCard(blog) {
+      return `
+        <article class="blog-card">
+          <a href="${blog.link}">
+            <img src="${blog.image}" alt="${blog.alt}" loading="lazy">
+            <div class="content">
+              <h2>${blog.title}</h2>
+              <p class="date">${blog.date}</p>
+            </div>
+          </a>
+        </article>
+      `;
+    }
+
+    function renderBlogs(data) {
+      if (data.length === 0) {
+        blogGrid.innerHTML = `<p style="text-align:center;">Không tìm thấy bài viết phù hợp.</p>`;
+      } else {
+        blogGrid.innerHTML = data.map(createBlogCard).join('');
+      }
+    }
+
+    function renderPagination(totalItems, currentPage) {
+      const totalPages = Math.ceil(totalItems / POSTS_PER_PAGE);
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+
+      // Previous button
+      const prevBtn = document.createElement('button');
+      prevBtn.textContent = '←';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) displayBlogsByPage(blogData, currentPage - 1);
+      });
+      pagination.appendChild(prevBtn);
+
+      // Page numbers
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        if (i === currentPage) btn.classList.add('active');
+        btn.addEventListener('click', () => displayBlogsByPage(blogData, i));
+        pagination.appendChild(btn);
+      }
+
+      // Next button
+      const nextBtn = document.createElement('button');
+      nextBtn.textContent = '→';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.addEventListener('click', () => {
+        if (currentPage < totalPages) displayBlogsByPage(blogData, currentPage + 1);
+      });
+      pagination.appendChild(nextBtn);
+    }
+
+    function displayBlogsByPage(data, page) {
+      currentPage = page;
+      const start = (page - 1) * POSTS_PER_PAGE;
+      const end = start + POSTS_PER_PAGE;
+      const paginatedData = data.slice(start, end);
+      renderBlogs(paginatedData);
+      renderPagination(data.length, page);
+    }
+
+    function handleSearch() {
+      const keyword = searchInput.value.toLowerCase();
+      const filtered = blogData.filter(blog =>
+        blog.title.toLowerCase().includes(keyword) ||
+        blog.tags.some(tag => tag.toLowerCase().includes(keyword))
+      );
+      displayBlogsByPage(filtered, 1);
+    }
+
+    fetch('/Frontend/assets/data/blogs.json')
+      .then(res => res.json())
+      .then(data => {
+        // Chuyển đổi 'x ngày/tuần/tháng trước' thành số (days ago)
+        blogData = data.sort((a, b) => {
+          const aDays = convertToDays(a.date);
+          const bDays = convertToDays(b.date);
+          return aDays - bDays; // ngày ít hơn là mới hơn
+        });
+
+        displayBlogsByPage(blogData, 1);
+      });
+
+    function convertToDays(dateStr) {
+      if (!dateStr) return Infinity;
+
+      const lower = dateStr.toLowerCase();
+
+      if (lower.includes("ngày")) {
+        const num = parseInt(lower);
+        return isNaN(num) ? Infinity : num;
+      }
+
+      if (lower.includes("tuần")) {
+        const num = parseInt(lower);
+        return isNaN(num) ? Infinity : num * 7;
+      }
+
+      if (lower.includes("tháng")) {
+        const num = parseInt(lower);
+        return isNaN(num) ? Infinity : num * 30;
+      }
+
+      return Infinity;
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', handleSearch);
+
+    // Popup functionality
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    const popupOverlay = document.getElementById('popupOverlay');
+    const closePopup = document.getElementById('closePopup');
+    const submitEmail = document.getElementById('submitEmail');
+
+    subscribeBtn.addEventListener('click', () => {
+      popupOverlay.style.display = 'flex';
+    });
+
+    closePopup.addEventListener('click', () => {
+      popupOverlay.style.display = 'none';
+    });
+
+    submitEmail.addEventListener('click', () => {
+      const email = document.getElementById('emailInput').value;
+      if (email) {
+        alert('Cảm ơn bạn đã đăng ký theo dõi blog!');
+        popupOverlay.style.display = 'none';
+        document.getElementById('emailInput').value = '';
+      }
+    });
+
+    // Close popup when clicking outside
+    popupOverlay.addEventListener('click', (e) => {
+      if (e.target === popupOverlay) {
+        popupOverlay.style.display = 'none';
+      }
+    });
+
+    // Smooth scroll to blog grid
+    document.querySelector('.scroll-to-posts').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('blogGrid').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+
+</body>
+
+</html>

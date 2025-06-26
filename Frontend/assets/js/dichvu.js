@@ -22,7 +22,8 @@ function renderTable() {
         (loai === "" || item.loai.toLowerCase() === loai.toLowerCase()) &&
         (
             item.ten.toLowerCase().includes(keyword) ||
-            item.mucdich.toLowerCase().includes(keyword)
+            item.mucdich.toLowerCase().includes(keyword) ||
+            item.ma.toLowerCase().includes(keyword)
         )
     );
 
@@ -35,6 +36,7 @@ function renderTable() {
         const tr = document.createElement("tr");
         tr.innerHTML = `
       <td>${start + index + 1}</td>
+      <td>${item.ma}</td>
       <td>${item.loai}</td>
       <td>${item.ten}</td>
       <td>${item.mucdich}</td>
@@ -56,7 +58,50 @@ function renderPagination(totalRows) {
     const totalPages = Math.ceil(totalRows / rowsPerPage);
     pagination.innerHTML = "";
 
-    for (let i = 1; i <= totalPages; i++) {
+    // Nút Previous
+    if (totalPages > 1) {
+        const prevBtn = document.createElement("button");
+        prevBtn.innerHTML = "&laquo;";
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        };
+        prevBtn.title = "Trang trước";
+        pagination.appendChild(prevBtn);
+    }
+
+    // Hiển thị các nút trang
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    // Nút trang đầu nếu cần
+    if (startPage > 1) {
+        const firstBtn = document.createElement("button");
+        firstBtn.textContent = "1";
+        firstBtn.onclick = () => {
+            currentPage = 1;
+            renderTable();
+        };
+        pagination.appendChild(firstBtn);
+        
+        if (startPage > 2) {
+            const ellipsis = document.createElement("span");
+            ellipsis.textContent = "...";
+            ellipsis.style.cssText = "padding: 0 8px; color: #666; font-weight: bold;";
+            pagination.appendChild(ellipsis);
+        }
+    }
+
+    // Các nút trang chính
+    for (let i = startPage; i <= endPage; i++) {
         const btn = document.createElement("button");
         btn.textContent = i;
         btn.disabled = i === currentPage;
@@ -65,6 +110,47 @@ function renderPagination(totalRows) {
             renderTable();
         };
         pagination.appendChild(btn);
+    }
+
+    // Nút trang cuối nếu cần
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            const ellipsis = document.createElement("span");
+            ellipsis.textContent = "...";
+            ellipsis.style.cssText = "padding: 0 8px; color: #666; font-weight: bold;";
+            pagination.appendChild(ellipsis);
+        }
+        
+        const lastBtn = document.createElement("button");
+        lastBtn.textContent = totalPages;
+        lastBtn.onclick = () => {
+            currentPage = totalPages;
+            renderTable();
+        };
+        pagination.appendChild(lastBtn);
+    }
+
+    // Nút Next
+    if (totalPages > 1) {
+        const nextBtn = document.createElement("button");
+        nextBtn.innerHTML = "&raquo;";
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.onclick = () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        };
+        nextBtn.title = "Trang sau";
+        pagination.appendChild(nextBtn);
+    }
+
+    // Thông tin trang
+    if (totalPages > 0) {
+        const pageInfo = document.createElement("div");
+        pageInfo.style.cssText = "margin-top: 15px; text-align: center; color: #666; font-size: 14px;";
+        pageInfo.textContent = `Trang ${currentPage} của ${totalPages} (${totalRows} dịch vụ)`;
+        pagination.appendChild(pageInfo);
     }
 }
 

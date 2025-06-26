@@ -7,18 +7,20 @@
   <link rel="stylesheet" href="/Frontend/assets/css/blogchitiet.css">
 </head>
 <body>
-  <!-- Gọi header -->
+  <!-- gọi header -->
   <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_guest.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
-        if (typeof initHeader === 'function') initHeader();
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
       });
   </script>
 
-  <main>
+  <main class="main-content">
     <a href="TrangBlog.html">
       <div class="breadcrumb">Kiến thức y khoa & Xét nghiệm</div>
     </a>
@@ -29,52 +31,53 @@
     <section class="content">
       <img src="https://i.postimg.cc/7YRfy3YD/download-1.jpg" alt="Bổ sung sắt" class="main-image"/>
 
+      <h2>Sắt quan trọng như thế nào với phụ nữ?</h2>
       <p><strong>Sắt</strong> là khoáng chất thiết yếu giúp tạo hemoglobin – thành phần quan trọng trong hồng cầu, vận chuyển oxy đi khắp cơ thể. Phụ nữ, đặc biệt trong độ tuổi sinh sản và thai kỳ, có nguy cơ thiếu sắt cao do mất máu hoặc nhu cầu tăng.</p>
 
-      <h2>1. Dấu hiệu nhận biết thiếu sắt</h2>
-      <dt>
-        <dd>Mệt mỏi kéo dài, cảm giác yếu ớt.</dd>
-        <dd>Chóng mặt, đau đầu, khó tập trung.</dd>
-        <dd>Da xanh xao, móng tay giòn, dễ gãy.</dd>
-        <dd>Tim đập nhanh, thở dốc dù vận động nhẹ.</dd>
-      </dt>
+      <h2>Dấu hiệu nhận biết thiếu sắt</h2>
+      <ul>
+        <li>Mệt mỏi kéo dài, cảm giác yếu ớt.</li>
+        <li>Chóng mặt, đau đầu, khó tập trung.</li>
+        <li>Da xanh xao, móng tay giòn, dễ gãy.</li>
+        <li>Tim đập nhanh, thở dốc dù vận động nhẹ.</li>
+      </ul>
 
-      <h2>2. Ai cần bổ sung sắt?</h2>
-      <dt>
-        <dd>Phụ nữ có chu kỳ kinh nhiều.</dd>
-        <dd>Phụ nữ đang mang thai hoặc cho con bú.</dd>
-        <dd>Người ăn chay lâu dài, thiếu thịt đỏ trong khẩu phần.</dd>
-        <dd>Người có bệnh tiêu hóa gây kém hấp thu (viêm loét, celiac,...).</dd>
-      </dt>
+      <h2>Ai cần bổ sung sắt?</h2>
+      <ul>
+        <li>Phụ nữ có chu kỳ kinh nhiều.</li>
+        <li>Phụ nữ đang mang thai hoặc cho con bú.</li>
+        <li>Người ăn chay lâu dài, thiếu thịt đỏ trong khẩu phần.</li>
+        <li>Người có bệnh tiêu hóa gây kém hấp thu (viêm loét, celiac,...).</li>
+      </ul>
 
-      <h2>3. Nguồn thực phẩm giàu sắt</h2>
+      <h2>Nguồn thực phẩm giàu sắt</h2>
       <p>Bổ sung sắt tự nhiên qua bữa ăn là cách đơn giản và bền vững:</p>
-      <dt>
-        <dd><strong>Thịt đỏ:</strong> bò, cừu, gan động vật.</dd>
-        <dd><strong>Hải sản:</strong> nghêu, sò, cá hồi.</dd>
-        <dd><strong>Rau lá xanh:</strong> cải bó xôi, rau bina.</dd>
-        <dd><strong>Ngũ cốc nguyên cám, đậu, đậu lăng.</strong></dd>
-        <dd><strong>Trái cây khô:</strong> nho khô, mận.</dd>
-      </dt>
+      <ul>
+        <li><strong>Thịt đỏ:</strong> bò, cừu, gan động vật.</li>
+        <li><strong>Hải sản:</strong> nghêu, sò, cá hồi.</li>
+        <li><strong>Rau lá xanh:</strong> cải bó xôi, rau bina.</li>
+        <li><strong>Ngũ cốc nguyên cám, đậu, đậu lăng.</strong></li>
+        <li><strong>Trái cây khô:</strong> nho khô, mận.</li>
+      </ul>
 
       <div class="alert-box">
         💡 <strong>Mẹo hấp thu tốt hơn:</strong> Kết hợp thực phẩm giàu <strong>vitamin C</strong> như cam, quýt, dứa... trong bữa ăn giúp tăng hấp thu sắt từ thực vật.
       </div>
 
-      <h2>4. Bổ sung sắt bằng viên uống</h2>
+      <h2>Bổ sung sắt bằng viên uống</h2>
       <p>Trong trường hợp thiếu máu rõ rệt, bác sĩ có thể chỉ định viên sắt. Lưu ý:</p>
-      <dt>
-        <dd>Uống <strong>trước ăn 1 giờ hoặc sau ăn 2 giờ</strong> để hấp thu tốt.</dd>
-        <dd>Tránh dùng cùng sữa, canxi, trà hoặc cà phê.</dd>
-        <dd>Không tự ý tăng liều – có thể gây rối loạn tiêu hóa, táo bón.</dd>
-      </dt>
+      <ul>
+        <li>Uống <strong>trước ăn 1 giờ hoặc sau ăn 2 giờ</strong> để hấp thu tốt.</li>
+        <li>Tránh dùng cùng sữa, canxi, trà hoặc cà phê.</li>
+        <li>Không tự ý tăng liều – có thể gây rối loạn tiêu hóa, táo bón.</li>
+      </ul>
 
-      <h2>5. Tác dụng phụ thường gặp</h2>
-      <dt>
-        <dd>Buồn nôn, táo bón, đau bụng nhẹ.</dd>
-        <dd>Phân có màu đen – phản ứng bình thường.</dd>
-        <dd>Nếu quá khó chịu, nên tham khảo bác sĩ để đổi loại sắt phù hợp hơn.</dd>
-      </dt>
+      <h2>Tác dụng phụ thường gặp</h2>
+      <ul>
+        <li>Buồn nôn, táo bón, đau bụng nhẹ.</li>
+        <li>Phân có màu đen – phản ứng bình thường.</li>
+        <li>Nếu quá khó chịu, nên tham khảo bác sĩ để đổi loại sắt phù hợp hơn.</li>
+      </ul>
 
       <div class="alert-box">
         ⚠️ <strong>Lưu ý:</strong> Việc bổ sung sắt cần có chỉ định nếu dùng liều cao hoặc kéo dài. Không nên tự mua viên sắt khi chưa có xét nghiệm kiểm tra thiếu máu.
@@ -84,12 +87,11 @@
       <p>Thiếu sắt rất phổ biến ở phụ nữ nhưng hoàn toàn có thể phòng ngừa. Ăn uống đủ chất, xét nghiệm máu định kỳ và bổ sung hợp lý giúp duy trì sức khỏe và phòng ngừa thiếu máu hiệu quả.</p>
 
       <p class="final-call">
-        🎯 <strong>Bạn có dấu hiệu thiếu máu hoặc cần tư vấn dinh dưỡng?</strong> Hãy <a href="/Frontend/Public/Login/Trangdangnhap.html">đặt lịch khám</a> với chuyên gia để được hỗ trợ chính xác và an toàn nhất.
+        🎯 <strong>Đang có dấu hiệu thiếu máu?</strong> Hãy <a href="/Frontend/Public/Login/Trangdangnhap.html">đặt lịch khám</a> để được các chuyên gia hướng dẫn cụ thể cho trường hợp của bạn.
       </p>
     </section>
   </main>
 
-  <!-- Gọi footer -->
   <div id="footer-placeholder"></div>
   <script>
     fetch('/Frontend/components/footer.html')

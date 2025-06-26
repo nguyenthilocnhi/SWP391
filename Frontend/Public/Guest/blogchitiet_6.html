@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nhiễm HPV có mang thai được không? HPV có lây từ mẹ sang con không?</title>
-    <link rel="stylesheet" href="/Frontend/assets/css/blogchitiet_6.css">
+    <link rel="stylesheet" href="/Frontend/assets/css/blogchitiet.css">
 </head>
 
 <body>
@@ -16,34 +16,30 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById("header-placeholder").innerHTML = data;
-
-                // Gọi hàm JS của header sau khi nội dung đã render
                 if (typeof initHeader === 'function') {
                     initHeader();
                 }
             });
     </script>
 
-    <main>
+    <main class="main-content">
         <a href="TrangBlog.html">
             <div class="breadcrumb">Kiến thức y khoa & Xét nghiệm</div>
         </a>
-        <h1 class="main-title">Nhiễm HPV có mang thai được không? HPV có lây từ mẹ sang con không?</h1>
 
+        <h1 class="main-title">Nhiễm HPV có mang thai được không? HPV có lây từ mẹ sang con không?</h1>
+        <p class="date">Ngày đăng: 3 ngày trước</p>
 
         <section class="content">
-            <section class="content-child">
-                <h3 class="main-topic">🤰 Nhiễm HPV Có Mang Thai Được Không? HPV Có Lây Từ Mẹ Sang Con?</h3>
-                <p class="idea">
-                    Virus HPV (Human Papillomavirus) là một trong những tác nhân gây bệnh lây truyền qua đường tình dục
-                    phổ biến nhất hiện nay.
-                    Với hơn 100 chủng loại, trong đó một số có nguy cơ cao dẫn đến ung thư cổ tử cung. Nhiều phụ nữ thắc
-                    mắc:
-                    <strong>"Nếu nhiễm HPV, liệu có ảnh hưởng đến khả năng mang thai hay thai nhi không?"</strong> – đây
-                    là điều mà bạn nên hiểu rõ trước khi lập kế hoạch sinh con.
-                </p>
-            </section>
-            <div class="demo"></div>
+            <h2>🤰 Nhiễm HPV Có Mang Thai Được Không? HPV Có Lây Từ Mẹ Sang Con?</h2>
+            <p>
+                Virus HPV (Human Papillomavirus) là một trong những tác nhân gây bệnh lây truyền qua đường tình dục
+                phổ biến nhất hiện nay.
+                Với hơn 100 chủng loại, trong đó một số có nguy cơ cao dẫn đến ung thư cổ tử cung. Nhiều phụ nữ thắc
+                mắc:
+                <strong>"Nếu nhiễm HPV, liệu có ảnh hưởng đến khả năng mang thai hay thai nhi không?"</strong> – đây
+                là điều mà bạn nên hiểu rõ trước khi lập kế hoạch sinh con.
+            </p>
 
             <h2>Nhiễm HPV có mang thai được không?</h2>
             <p>
@@ -72,26 +68,25 @@
                     nhú thanh quản tái phát (RRP)</strong>, ảnh hưởng đến đường thở.
             </p>
 
-            <div class="box">
-                <dt>
-                <dd><strong>Nguy cơ lây truyền:</strong> Thường xảy ra nếu mẹ có sùi mào gà hoạt động tại thời điểm
-                    sinh.</dd>
-                <dd><strong>Biện pháp phòng ngừa:</strong> Bác sĩ có thể đề nghị sinh mổ nếu có tổn thương lớn ở
+            <h2>Nguy cơ lây truyền và biện pháp phòng ngừa</h2>
+            <ul>
+                <li><strong>Nguy cơ lây truyền:</strong> Thường xảy ra nếu mẹ có sùi mào gà hoạt động tại thời điểm
+                    sinh.</li>
+                <li><strong>Biện pháp phòng ngừa:</strong> Bác sĩ có thể đề nghị sinh mổ nếu có tổn thương lớn ở
                     vùng
-                    sinh dục để giảm nguy cơ lây nhiễm.</dd>
-                </dt>
-            </div>
+                    sinh dục để giảm nguy cơ lây nhiễm.</li>
+            </ul>
 
             <h2>Mang thai khi nhiễm HPV cần lưu ý gì?</h2>
-            <dt>
-            <dd>Thăm khám sản phụ khoa thường xuyên và theo dõi sát cổ tử cung (Pap smear hoặc xét nghiệm HPV DNA).
-            </dd>
-            <dd>Thông báo cho bác sĩ nếu bạn từng có kết quả bất thường hoặc điều trị sùi mào gà.</dd>
-            <dd>Không nên điều trị laser, đốt lạnh hoặc cắt bỏ tổn thương cổ tử cung trong thai kỳ trừ khi cần
-                thiết.
-            </dd>
-            <dd>Sau sinh, tiếp tục tầm soát và điều trị theo chỉ định để ngăn ngừa ung thư cổ tử cung.</dd>
-            </dt>
+            <ul>
+                <li>Thăm khám sản phụ khoa thường xuyên và theo dõi sát cổ tử cung (Pap smear hoặc xét nghiệm HPV DNA).
+                </li>
+                <li>Thông báo cho bác sĩ nếu bạn từng có kết quả bất thường hoặc điều trị sùi mào gà.</li>
+                <li>Không nên điều trị laser, đốt lạnh hoặc cắt bỏ tổn thương cổ tử cung trong thai kỳ trừ khi cần
+                    thiết.
+                </li>
+                <li>Sau sinh, tiếp tục tầm soát và điều trị theo chỉ định để ngăn ngừa ung thư cổ tử cung.</li>
+            </ul>
 
             <h2>HPV có ảnh hưởng đến thai nhi không?</h2>
             <p>
@@ -109,6 +104,7 @@
                     hoạch sinh sản an toàn</strong>.
             </div>
 
+            <h2>Kết luận</h2>
             <p>
                 💬 Hãy tham khảo ý kiến bác sĩ sản phụ khoa nếu bạn đang lên kế hoạch mang thai và từng có kết
                 quả HPV
@@ -119,13 +115,10 @@
             </p>
 
             <p class="final-call">
-                🎯 <strong>Hành động sớm là bảo vệ sức khỏe lâu dài!</strong> Hãy <a
-                    href="/Frontend/Public/Login/Trangdangnhap.html">đặt lịch khám</a>
-                tại
-                phòng khám ngay hôm nay.
+                🎯 <strong>Đang lên kế hoạch mang thai?</strong> Hãy <a
+                    href="/Frontend/Public/Login/Trangdangnhap.html">đặt lịch khám</a> để được các chuyên gia hướng dẫn cụ thể cho trường hợp của bạn.
             </p>
         </section>
-
     </main>
 
     <div id="footer-placeholder"></div>

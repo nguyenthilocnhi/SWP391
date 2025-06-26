@@ -15,7 +15,7 @@
   <!-- gọi header -->
   <div id="header-placeholder"> </div>
   <script>
-    fetch('/Frontend/components/header_guest.html')
+    fetch('/Frontend/components/header_customer.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
@@ -24,9 +24,10 @@
         }
       });
   </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
 
   <main class="main-content">
-    <a href="TrangBlog.html">
+    <a href="BlogCustomer.html">
       <div class="breadcrumb">Kiến thức y khoa & Xét nghiệm</div>
     </a>
 
@@ -82,7 +83,7 @@
       </p>
 
       <p class="final-call">
-        🎯 <strong>Hành động sớm là bảo vệ sức khỏe lâu dài!</strong> Hãy <a href="/Frontend/Public/Login/Trangdangnhap.html">đặt
+        🎯 <strong>Hành động sớm là bảo vệ sức khỏe lâu dài!</strong> Hãy <a href="/Frontend/Public/Customer/datlich.html">đặt
           lịch khám</a> để được các chuyên gia hướng dẫn cụ thể cho trường hợp của bạn.
       </p>
     </section>
@@ -98,4 +99,4 @@
   </script>
 </body>
 
-</html>
+</html> 

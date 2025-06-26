@@ -12,7 +12,7 @@
   <!-- gọi header -->
   <div id="header-placeholder"> </div>
   <script>
-    fetch('/Frontend/components/header_guest.html')
+    fetch('/Frontend/components/header_customer.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
@@ -21,9 +21,10 @@
         }
       });
   </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
 
   <main class="main-content">
-    <a href="TrangBlog.html">
+    <a href="BlogCustomer.html">
       <div class="breadcrumb">Kiến thức y khoa & Xét nghiệm</div>
     </a>
 
@@ -75,7 +76,7 @@
       <p>Hy vọng bài viết giúp bạn hiểu rõ hơn và chăm sóc bản thân tốt hơn mỗi ngày.</p>
 
       <p class="final-call">
-        🎯 <strong>Đang có vấn đề về chu kỳ kinh nguyệt?</strong> Hãy <a href="/Frontend/Public/Login/Trangdangnhap.html">đặt lịch tư vấn</a> để được các chuyên gia hướng dẫn cụ thể cho trường hợp của bạn.
+        🎯 <strong>Đang có vấn đề về chu kỳ kinh nguyệt?</strong> Hãy <a href="/Frontend/Public/Customer/datlich.html">đặt lịch tư vấn</a> để được các chuyên gia hướng dẫn cụ thể cho trường hợp của bạn.
       </p>
     </section>
   </main>
@@ -90,4 +91,4 @@
   </script>
 </body>
 
-</html>
+</html> 

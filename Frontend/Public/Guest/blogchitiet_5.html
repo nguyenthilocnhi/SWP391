@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bệnh Herpes lây qua đường nào?</title>
-    <link rel="stylesheet" href="/Frontend/assets/css/blogchitiet_5.css">
+    <link rel="stylesheet" href="/Frontend/assets/css/blogchitiet.css">
 </head>
 
 <body>
@@ -16,55 +16,49 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById("header-placeholder").innerHTML = data;
-
-                // Gọi hàm JS của header sau khi nội dung đã render
                 if (typeof initHeader === 'function') {
                     initHeader();
                 }
             });
     </script>
 
-    <main>
+    <main class="main-content">
         <a href="TrangBlog.html">
             <div class="breadcrumb">Kiến thức y khoa & Xét nghiệm</div>
         </a>
-        <h1 class="main-title">Bệnh Herpes lây qua đường nào?</h1>
 
+        <h1 class="main-title">Bệnh Herpes lây qua đường nào?</h1>
+        <p class="date">Ngày đăng: 1 tuần trước</p>
 
         <section class="content">
-            <section class="content-child">
-                <h3 class="main-topic">🔍 Bệnh Herpes Lây Qua Đường Nào? Những Con Đường Âm Thầm Gây Nguy Hiểm</h3>
-                <p class="idea">
-                    <strong>Herpes sinh dục</strong> là một trong những bệnh lây truyền qua đường tình dục (STIs) phổ
-                    biến, do virus herpes simplex (HSV) gây ra.
-                    Có hai tuýp virus chính: <strong>HSV-1</strong> thường gây Herpes miệng và <strong>HSV-2</strong>
-                    thường liên quan đến Herpes sinh dục – tuy nhiên cả hai đều có thể lây nhiễm chéo nếu không phòng
-                    ngừa đúng cách.
-                </p>
-            </section>
-            <div class="demo"></div>
+            <h2>🔍 Bệnh Herpes Lây Qua Đường Nào? Những Con Đường Âm Thầm Gây Nguy Hiểm</h2>
+            <p>
+                <strong>Herpes sinh dục</strong> là một trong những bệnh lây truyền qua đường tình dục (STIs) phổ
+                biến, do virus herpes simplex (HSV) gây ra.
+                Có hai tuýp virus chính: <strong>HSV-1</strong> thường gây Herpes miệng và <strong>HSV-2</strong>
+                thường liên quan đến Herpes sinh dục – tuy nhiên cả hai đều có thể lây nhiễm chéo nếu không phòng
+                ngừa đúng cách.
+            </p>
 
             <h2>Bệnh Herpes lây qua những đường nào?</h2>
-            <div class="box">
-                <dt>
-                <dd><strong>Quan hệ tình dục:</strong> Bao gồm cả đường âm đạo, hậu môn và đường miệng với người nhiễm
-                    HSV.</dd>
-                <dd><strong>Tiếp xúc da – da:</strong> Virus lây lan qua vùng da, niêm mạc có vết loét, kể cả khi không
-                    quan hệ xâm nhập.</dd>
-                <dd><strong>Hôn môi, quan hệ bằng miệng:</strong> Nếu người mang HSV có vết Herpes miệng (mụn nước, lở
-                    loét), virus có thể truyền sang cơ quan sinh dục và ngược lại.</dd>
-                <dd><strong>Dùng chung đồ cá nhân:</strong> Như khăn tắm, dao cạo, son môi… nếu tiếp xúc với dịch mủ
-                    chứa virus (hiếm gặp nhưng vẫn có khả năng).</dd>
-                <dd><strong>Lây từ mẹ sang con:</strong> Trong quá trình sinh thường nếu người mẹ có Herpes sinh dục
-                    đang hoạt động.</dd>
-                </dt>
-            </div>
+            <ul>
+                <li><strong>Quan hệ tình dục:</strong> Bao gồm cả đường âm đạo, hậu môn và đường miệng với người nhiễm
+                    HSV.</li>
+                <li><strong>Tiếp xúc da – da:</strong> Virus lây lan qua vùng da, niêm mạc có vết loét, kể cả khi không
+                    quan hệ xâm nhập.</li>
+                <li><strong>Hôn môi, quan hệ bằng miệng:</strong> Nếu người mang HSV có vết Herpes miệng (mụn nước, lở
+                    loét), virus có thể truyền sang cơ quan sinh dục và ngược lại.</li>
+                <li><strong>Dùng chung đồ cá nhân:</strong> Như khăn tắm, dao cạo, son môi… nếu tiếp xúc với dịch mủ
+                    chứa virus (hiếm gặp nhưng vẫn có khả năng).</li>
+                <li><strong>Lây từ mẹ sang con:</strong> Trong quá trình sinh thường nếu người mẹ có Herpes sinh dục
+                    đang hoạt động.</li>
+            </ul>
 
             <h2>Herpes có lây khi không có triệu chứng không?</h2>
             <p>
                 Có. Đây là điều khiến Herpes trở nên nguy hiểm – <strong>virus vẫn có thể lây lan ngay cả khi người mang
                     mầm bệnh không có dấu hiệu rõ ràng</strong>.
-                Điều này được gọi là “lây truyền không triệu chứng”.
+                Điều này được gọi là "lây truyền không triệu chứng".
             </p>
 
             <img src="https://i.postimg.cc/SNjR5c4m/Herpes.png" alt="Herpes" class="main-image" />
@@ -75,21 +69,22 @@
             </div>
 
             <h2>Làm sao để phòng ngừa Herpes hiệu quả?</h2>
-            <dt>
-            <dd>Luôn sử dụng bao cao su khi quan hệ, kể cả quan hệ bằng miệng</dd>
-            <dd>Tránh quan hệ khi bạn tình có dấu hiệu mụn nước, loét miệng hoặc vùng kín</dd>
-            <dd>Không dùng chung đồ cá nhân với người nghi nhiễm</dd>
-            <dd>Xét nghiệm định kỳ nếu có nhiều bạn tình</dd>
-            <dd>Phụ nữ mang thai nên xét nghiệm HSV để phòng ngừa lây sang thai nhi</dd>
-            </dt>
+            <ul>
+                <li>Luôn sử dụng bao cao su khi quan hệ, kể cả quan hệ bằng miệng</li>
+                <li>Tránh quan hệ khi bạn tình có dấu hiệu mụn nước, loét miệng hoặc vùng kín</li>
+                <li>Không dùng chung đồ cá nhân với người nghi nhiễm</li>
+                <li>Xét nghiệm định kỳ nếu có nhiều bạn tình</li>
+                <li>Phụ nữ mang thai nên xét nghiệm HSV để phòng ngừa lây sang thai nhi</li>
+            </ul>
 
             <h2>Khi nào nên đi khám?</h2>
-            <dt>
-            <dd>Khi xuất hiện mụn nước, lở loét vùng miệng hoặc vùng kín</dd>
-            <dd>Ngứa rát hoặc nóng ở vùng sinh dục trước khi mụn nước xuất hiện</dd>
-            <dd>Bạn tình có tiền sử Herpes hoặc triệu chứng nghi ngờ</dd>
-            </dt>
+            <ul>
+                <li>Khi xuất hiện mụn nước, lở loét vùng miệng hoặc vùng kín</li>
+                <li>Ngứa rát hoặc nóng ở vùng sinh dục trước khi mụn nước xuất hiện</li>
+                <li>Bạn tình có tiền sử Herpes hoặc triệu chứng nghi ngờ</li>
+            </ul>
 
+            <h2>Kết luận</h2>
             <p>
                 Herpes tuy không thể chữa khỏi hoàn toàn, nhưng có thể <strong>kiểm soát bằng thuốc kháng virus</strong>
                 và phòng ngừa lây lan hiệu quả.
@@ -102,16 +97,12 @@
             </div>
 
             <p class="final-call">
-                🎯 <strong>Hành động sớm là bảo vệ sức khỏe lâu dài!</strong> Hãy <a
-                    href="/Frontend/Public/Login/Trangdangnhap.html">đặt lịch khám</a> tại
-                phòng khám ngay hôm nay.
+                🎯 <strong>Đang có dấu hiệu nghi ngờ Herpes?</strong> Hãy <a
+                    href="/Frontend/Public/Login/Trangdangnhap.html">đặt lịch khám</a> để được các chuyên gia hướng dẫn cụ thể cho trường hợp của bạn.
             </p>
         </section>
-
-
-
-
     </main>
+
     <div id="footer-placeholder"></div>
     <script>
         fetch('/Frontend/components/footer.html')

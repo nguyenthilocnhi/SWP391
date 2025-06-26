@@ -159,3 +159,63 @@ footer.custom-footer {
   margin-top: 1rem;
   font-size: 0.875rem;
 }
+
+/* Pagination Styles */
+#pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 8px;
+}
+
+#pagination button {
+  padding: 10px 16px;
+  border: 2px solid #007BFF;
+  background-color: white;
+  color: #007BFF;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#pagination button:hover:not(:disabled) {
+  background-color: #007BFF;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+#pagination button:disabled {
+  background-color: #007BFF;
+  color: white;
+  cursor: default;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+#pagination button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+/* Responsive pagination */
+@media (max-width: 768px) {
+  #pagination {
+    gap: 4px;
+  }
+  
+  #pagination button {
+    padding: 8px 12px;
+    font-size: 12px;
+    min-width: 35px;
+    height: 35px;
+  }
+}
