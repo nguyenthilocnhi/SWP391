@@ -115,3 +115,81 @@ button[type="submit"]:hover {
 .signup-link a:hover {
   text-decoration: underline;
 }
+
+/* Remember me checkbox styling */
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.remember-me:hover {
+  color: #2e7d32;
+}
+
+.remember-me input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.remember-me input[type="checkbox"]:hover {
+  border-color: #66bb6a;
+  box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.1);
+}
+
+.remember-me input[type="checkbox"]:checked {
+  background-color: #43a047;
+  border-color: #43a047;
+  box-shadow: 0 0 0 2px rgba(67, 160, 71, 0.2);
+}
+
+.remember-me input[type="checkbox"]:checked::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.remember-me input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.3);
+}
+
+/* Animation for checkbox */
+.remember-me input[type="checkbox"]:checked {
+  animation: checkboxPop 0.2s ease;
+}
+
+@keyframes checkboxPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

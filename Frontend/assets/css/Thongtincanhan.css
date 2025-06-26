@@ -99,7 +99,8 @@ body {
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
   padding: 0.5rem;
   border: 1px solid #d1d5db;
   border-radius: 6px;

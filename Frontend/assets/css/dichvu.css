@@ -9,7 +9,6 @@ body {
   margin: 110px auto;
 }
 
-
 .nav a:hover,
 .nav a.active {
   color: #ffeb3b;
@@ -48,21 +47,100 @@ tbody tr:hover {
 }
 
 .filter-bar {
-  margin-bottom: 20px;
-  text-align: right;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  border: 1px solid #e0e0e0;
 }
 
 .filter-bar label {
-  margin-right: 8px;
-  font-weight: bold;
+  margin-right: 12px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .filter-bar select {
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  background-color: white;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.filter-bar select:hover {
+  border-color: #007BFF;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.15);
+}
+
+.filter-bar select:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.filter-bar input[type="text"] {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  background-color: white;
+  font-size: 14px;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+  min-width: 250px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-bar input[type="text"]:hover {
+  border-color: #007BFF;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.15);
+}
+
+.filter-bar input[type="text"]:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.filter-bar input[type="text"]::placeholder {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Responsive design for filter bar */
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 15px;
+  }
+  
+  .filter-bar label {
+    margin-bottom: 8px;
+  }
+  
+  .filter-bar select,
+  .filter-bar input[type="text"] {
+    min-width: auto;
+    width: 100%;
+  }
+}
 
 .main-title {
   text-align: center;
@@ -71,8 +149,6 @@ tbody tr:hover {
   margin-bottom: 10px;
   color: #2a7c2a;
 }
-
-
 
 .content {
   padding: 32px;
@@ -160,7 +236,7 @@ footer.custom-footer {
   font-size: 0.875rem;
 }
 
-/* Pagination Styles */
+/* Chuyển trang */
 #pagination {
   display: flex;
   justify-content: center;
@@ -206,7 +282,7 @@ footer.custom-footer {
   box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
 }
 
-/* Responsive pagination */
+/* Trả dữ liệu chuyển trang*/
 @media (max-width: 768px) {
   #pagination {
     gap: 4px;

@@ -47,7 +47,7 @@ body {
 }
 
 /* main content */
-.content{
+.content {
     margin-top: 110px;
 }
 
@@ -321,11 +321,12 @@ body {
 .settings-card {
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(16,185,129,0.08);
+    box-shadow: 0 2px 12px rgba(16, 185, 129, 0.08);
     padding: 18px 24px 12px 24px;
     display: inline-block;
     margin-bottom: 10px;
 }
+
 .settings-row {
     display: flex;
     align-items: center;
@@ -333,11 +334,13 @@ body {
     gap: 10px;
     margin-bottom: 14px;
 }
+
 .settings-row label {
     margin: 0;
     min-width: 120px;
     text-align: right;
 }
+
 .settings-row input[type="number"] {
     width: 60px;
     padding: 6px 8px;
@@ -348,10 +351,12 @@ body {
     outline: none;
     transition: border 0.2s;
 }
+
 .settings-row input[type="number"]:focus {
     border: 1.5px solid #10b981;
     background: #e6fff3;
 }
+
 .settings-btn {
     background: linear-gradient(90deg, #10b981 60%, #34d399 100%);
     color: #fff;
@@ -362,18 +367,21 @@ body {
     font-weight: 600;
     cursor: pointer;
     margin-top: 8px;
-    box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
     transition: background 0.2s, box-shadow 0.2s;
 }
+
 .settings-btn:hover {
     background: linear-gradient(90deg, #0e956f 60%, #10b981 100%);
-    box-shadow: 0 4px 16px rgba(16,185,129,0.15);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
 }
+
 .settings-desc {
     margin-top: 8px;
     color: #888;
     font-size: 0.98em;
 }
+
 .unit {
     color: #10b981;
     font-weight: 600;
