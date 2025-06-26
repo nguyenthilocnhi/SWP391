@@ -86,18 +86,18 @@ body {
     user-select: none;
     margin-left: auto;
     margin-right: auto;
-    max-width: 420px;
+    max-width: 600px;
     width: 100%;
 }
 
 .day {
-    padding: 3px 0;
+    padding: 10px 0;
     text-align: center;
     border-radius: 6px;
     background: #f0f0f0;
     cursor: pointer;
     transition: transform 0.2s ease;
-    font-size: 0.9em;
+    font-size: 1.15em;
 }
 
 .day:hover {
@@ -113,7 +113,7 @@ body {
 }
 
 .day.today {
-    border: 2px solid #10b981;
+    border: 2px solid #8df2b9;
     font-weight: 700;
     background-color: #e6fff3;
 }
@@ -125,16 +125,16 @@ body {
 }
 
 .fertile {
-    background-color: #fffd90 !important;
+    background-color: #fdf7a2 !important;
 }
 
 .ovulation {
-    background-color: #29d9dc !important;
-    color: white;
+    background-color: #b1ecfa !important;
+    color: black;
 }
 
 .safe {
-    background-color: #40f69e !important;
+    background-color: #c5fddd !important;
 }
 
 /* Màu dự đoán */
@@ -144,17 +144,17 @@ body {
 }
 
 .fertile-predict {
-    background-color: #fffde4 !important;
-    color: #b9a84a;
+    background-color: #fdf7a2 !important;
+    color: #c1c339;
 }
 
 .ovulation-predict {
-    background-color: #e4faff !important;
-    color: #4ab9b9;
+    background-color: #b1ecfa !important;
+    color: #4a8181;
 }
 
 .safe-predict {
-    background-color: #eafff3 !important;
+    background-color: #c5fddd !important;
     color: #4ab97a;
 }
 
@@ -238,7 +238,7 @@ body {
 }
 
 .mood-icon.selected {
-    border-color: #10b981;
+    border-color: #96f6d6;
     background-color: #ccffdf;
     box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
 }
@@ -289,26 +289,98 @@ body {
 }
 
 /* Reminder */
+#reminder-section {
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    margin-bottom: 8px;
+    margin-top: 4px;
+    position: static;
+    z-index: auto;
+}
+#reminder-section h2 {
+    color: #059669;
+    font-size: 1.08em;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: 0.1px;
+    text-shadow: none;
+}
 #reminderMessages {
-    font-size: 1.1rem;
-    line-height: 1.4;
-    padding: 10px 20px;
-    background: #e6fff3;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+    font-size: 1em;
+    line-height: 1.5;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    margin-bottom: 0;
+}
+#reminderMessages p {
+    margin-bottom: 6px;
+    position: static;
+    padding-left: 0;
+}
+@media (max-width: 600px) {
+    #reminder-section {
+        padding: 0;
+        border-radius: 0;
+    }
+    #reminder-section h2 {
+        font-size: 0.98em;
+    }
+    #reminderMessages {
+        font-size: 0.97em;
+        padding: 0;
+    }
 }
 
 /* Suggestions */
-#suggestionsList {
-    max-width: 700px;
-    margin: 0 auto;
-    padding-left: 20px;
-    font-size: 1.1rem;
-    line-height: 1.5;
+.suggest-highlight {
+    background: linear-gradient(90deg, #e6fff3 60%, #f0fff4 100%);
+    border: 2px solid #10b981;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+    padding: 12px 10px 8px 10px;
+    margin-bottom: 16px;
+    margin-top: 10px;
+    position: relative;
+    z-index: 1;
 }
-
+.suggest-highlight h2 {
+    color: #059669;
+    font-size: 1.08em;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: 0.2px;
+    text-shadow: none;
+}
+#suggestionsList {
+    list-style: none;
+    padding-left: 0;
+    font-size: 1em;
+}
 #suggestionsList li {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    padding-left: 0;
+    position: relative;
+}
+#suggestionsList li:before {
+    content: none;
+}
+@media (max-width: 600px) {
+    .suggest-highlight {
+        padding: 7px 2px 4px 2px;
+        border-radius: 7px;
+    }
+    .suggest-highlight h2 {
+        font-size: 0.98em;
+    }
+    #suggestionsList {
+        font-size: 0.97em;
+    }
 }
 
 .day-header {
@@ -386,4 +458,49 @@ body {
     color: #10b981;
     font-weight: 600;
     margin-left: 2px;
+}
+
+/* Triệu chứng sức khỏe phụ khoa - nhóm gọn hơn */
+.symptom-group {
+    background: #f7fdfb;
+    border-radius: 10px;
+    padding: 10px 10px 6px 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(16,185,129,0.04);
+}
+.symptom-title {
+    font-weight: 600;
+    font-size: 1em;
+    margin-bottom: 6px;
+    color: #10b981;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.symptom-list-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px 18px;
+}
+.symptom-group label {
+    display: block;
+    padding-left: 4px;
+    margin-bottom: 3px;
+    font-size: 0.98em;
+    cursor: pointer;
+    white-space: nowrap;
+}
+@media (max-width: 600px) {
+    .symptom-group {
+        padding: 8px 4px 4px 4px;
+    }
+    .symptom-title {
+        font-size: 0.97em;
+    }
+    .symptom-list-grid {
+        grid-template-columns: 1fr;
+    }
+    .symptom-group label {
+        font-size: 0.97em;
+    }
 }

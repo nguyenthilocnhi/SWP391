@@ -1,9 +1,5 @@
-// === BIẾN CHUNG ===
 const mainCalendar = document.getElementById('mainCalendar');
-const predictionCalendar = document.getElementById('predictionCalendar');
 const mainMonthYear = document.getElementById('mainMonthYear');
-const predictMonthYear = document.getElementById('predictMonthYear');
-const predictionText = document.getElementById('predictionText');
 const moodIcons = document.querySelectorAll(".mood-icon");
 const selectedMood = document.getElementById("selected-mood");
 const symptomList = document.getElementById('symptom-list');
@@ -16,7 +12,6 @@ const suggestionsList = document.getElementById('suggestionsList');
 const symptomChartCanvas = document.getElementById('symptomChart');
 
 let mainDate = new Date();
-let predictOffset = 1;
 let periodData = JSON.parse(localStorage.getItem("periodData") || "[]");
 let firstPredictionDate = localStorage.getItem("firstPeriodDateForPrediction") || null;
 
@@ -56,39 +51,55 @@ function predictNextPeriod(n = 1) {
 }
 
 // === HIỂN THỊ LỊCH CHÍNH ===
-function getDayType(date, isPredict = false, offset = 1) {
+function getDayType(date) {
     const iso = formatDate(date);
-    const cycleLength = parseInt(localStorage.getItem("customCycleLength")) || getAverageCycle();
+    const cycleLength = parseInt(localStorage.getItem("customCycleLength")) || 28;
     const periodLength = parseInt(localStorage.getItem("customPeriodLength")) || 5;
+    if (periodData.includes(iso)) return "period";
+    if (periodData.length === 0) return "";
 
-    if (!isPredict) {
-        if (periodData.includes(iso)) return "period";
-
-        if (periodData.length === 0) return "";
-        const sortedPeriods = periodData.map(d => parseDate(d)).sort((a, b) => a - b);
-        let lastPeriod = null;
-        for (let i = sortedPeriods.length - 1; i >= 0; i--) {
-            if (sortedPeriods[i] <= date) {
-                lastPeriod = sortedPeriods[i];
-                break;
-            }
-        }
-        if (!lastPeriod) return "";
-        const diff = Math.floor((date - lastPeriod) / (1000 * 60 * 60 * 24));
-        if (diff === 14) return "ovulation";
-        if (diff >= 12 && diff <= 16) return "fertile";
-        if (diff > 16 && diff < cycleLength) return "safe";
-    } else {
-        if (!firstPredictionDate) return "";
-        const baseDate = parseDate(firstPredictionDate);
-        const nextPeriodStart = new Date(baseDate);
-        nextPeriodStart.setDate(baseDate.getDate() + cycleLength * (offset - 1));
-        const diff = Math.floor((date - nextPeriodStart) / (1000 * 60 * 60 * 24));
-        if (diff >= 0 && diff < periodLength) return "period-predict";
-        if (diff === 14) return "ovulation-predict";
-        if (diff >= 12 && diff <= 16) return "fertile-predict";
-        if (diff > 16 && diff < cycleLength) return "safe-predict";
+    // Lấy ngày đầu kỳ kinh gần nhất (chuỗi liên tiếp cuối cùng)
+    function getLastPeriodStart() {
+        const ranges = getPeriodRanges();
+        if (ranges.length === 0) return null;
+        return ranges[ranges.length - 1].start;
     }
+    const lastPeriodStart = getLastPeriodStart();
+    if (!lastPeriodStart) return "";
+
+    // Dự đoán chu kỳ tiếp theo
+    const nextPeriodStart = new Date(lastPeriodStart);
+    nextPeriodStart.setDate(nextPeriodStart.getDate() + cycleLength);
+
+    // Ngày rụng trứng của chu kỳ tiếp theo
+    const ovulationDate = new Date(nextPeriodStart);
+    ovulationDate.setDate(ovulationDate.getDate() - 14);
+
+    // Giai đoạn dễ thụ thai: từ ovulationDate - 5 đến ovulationDate + 1
+    const fertileStart = new Date(ovulationDate);
+    fertileStart.setDate(fertileStart.getDate() - 5);
+    const fertileEnd = new Date(ovulationDate);
+    fertileEnd.setDate(fertileEnd.getDate() + 1);
+
+    // Kiểm tra các giai đoạn dự đoán
+    const diff = Math.floor((date - nextPeriodStart) / (1000 * 60 * 60 * 24));
+    if (diff >= 0 && diff < periodLength) return "period-predict";
+
+    if (formatDate(date) === formatDate(ovulationDate)) return "ovulation-predict";
+    if (date >= fertileStart && date <= fertileEnd) return "fertile-predict";
+
+    // Giai đoạn an toàn: trong chu kỳ dự đoán, không thuộc các giai đoạn trên
+    const diffFromNextStart = Math.floor((date - nextPeriodStart) / (1000 * 60 * 60 * 24));
+    if (diffFromNextStart >= 0 && diffFromNextStart < cycleLength &&
+        !(
+            (diffFromNextStart >= 0 && diffFromNextStart < periodLength) ||
+            (date >= fertileStart && date <= fertileEnd) ||
+            formatDate(date) === formatDate(ovulationDate)
+        )
+    ) {
+        return "safe-predict";
+    }
+
     return "";
 }
 
@@ -143,7 +154,7 @@ function renderCalendar(container, year, month, isPredict = false, offset = 1) {
         }
 
         // Phân loại ngày thực tế
-        const dayType = getDayType(date, isPredict, offset);
+        const dayType = getDayType(date);
         switch (dayType) {
             case "period": dayDiv.classList.add("period"); break;
             case "fertile": dayDiv.classList.add("fertile"); break;
@@ -178,7 +189,7 @@ function renderCalendar(container, year, month, isPredict = false, offset = 1) {
                     localStorage.removeItem("firstPeriodDateForPrediction");
                 }
                 renderMainCalendar();
-                renderPredictionCalendar(predictOffset);
+                updateCycleStats();
             });
         }
 
@@ -234,114 +245,6 @@ function getFirstPeriodStart() {
     return formatDate(ranges[0].start);
 }
 
-function renderPredictionCalendar(offset = 1) {
-    const ranges = getPeriodRanges();
-    const firstPeriodStart = getFirstPeriodStart();
-    if (!firstPeriodStart) {
-        predictionText.textContent = "Chưa có dữ liệu chu kỳ để dự đoán. Vui lòng nhập kỳ kinh đầu tiên.";
-        predictionCalendar.innerHTML = "";
-        predictMonthYear.textContent = "";
-        return;
-    }
-    // Tính trung bình chu kỳ và kỳ kinh
-    const avgCycle = getAverageCycleLength();
-    const avgPeriod = getAveragePeriodLength();
-    // Xác định tháng đang xem dựa trên offset (offset là số tháng chênh lệch so với tháng đầu tiên)
-    let baseDate = parseDate(firstPeriodStart);
-    baseDate.setMonth(baseDate.getMonth() + (offset - 1));
-    const y = baseDate.getFullYear();
-    const m = baseDate.getMonth();
-    predictMonthYear.textContent = `${y} - Tháng ${m + 1}`;
-
-    // Tìm ngày bắt đầu kỳ kinh dự đoán gần nhất trước hoặc trong tháng này
-    let lastRealPeriod = ranges[ranges.length - 1];
-    let firstPredict = new Date(lastRealPeriod.start);
-    while (firstPredict.getFullYear() < y || (firstPredict.getFullYear() === y && firstPredict.getMonth() < m)) {
-        firstPredict.setDate(firstPredict.getDate() + avgCycle);
-    }
-    if (firstPredict.getFullYear() > y || (firstPredict.getFullYear() === y && firstPredict.getMonth() > m)) {
-        firstPredict.setDate(firstPredict.getDate() - avgCycle);
-    }
-    // Dự đoán các kỳ kinh trong tháng này
-    let predictDates = {};
-    let predictStart = new Date(firstPredict);
-    while (predictStart.getFullYear() === y && predictStart.getMonth() === m) {
-        // Ngày hành kinh (dự đoán)
-        for (let i = 0; i < avgPeriod; i++) {
-            const d = new Date(predictStart);
-            d.setDate(predictStart.getDate() + i);
-            if (d.getMonth() === m && d.getFullYear() === y) {
-                const iso = formatDate(d);
-                if (!periodData.includes(iso)) {
-                    predictDates[iso] = 'period-predict';
-                }
-            }
-        }
-        // Ngày rụng trứng
-        const ovulationDay = new Date(predictStart);
-        ovulationDay.setDate(predictStart.getDate() - (avgCycle - 14));
-        if (ovulationDay.getMonth() === m && ovulationDay.getFullYear() === y)
-            predictDates[formatDate(ovulationDay)] = 'ovulation-predict';
-        // Ngày dễ thụ thai
-        const fertileStart = new Date(ovulationDay);
-        fertileStart.setDate(ovulationDay.getDate() - 5);
-        const fertileEnd = new Date(ovulationDay);
-        fertileEnd.setDate(ovulationDay.getDate() + 1);
-        for (let d = new Date(fertileStart); d <= fertileEnd; d.setDate(d.getDate() + 1)) {
-            if (d.getMonth() === m && d.getFullYear() === y)
-                predictDates[formatDate(new Date(d))] = 'fertile-predict';
-        }
-        // Ngày an toàn
-        for (let i = 1; i < avgCycle; i++) {
-            const d = new Date(predictStart);
-            d.setDate(predictStart.getDate() + i);
-            const f = formatDate(d);
-            if ((d.getMonth() === m && d.getFullYear() === y) && !predictDates[f]) predictDates[f] = 'safe-predict';
-        }
-        // Sang kỳ tiếp theo
-        predictStart.setDate(predictStart.getDate() + avgCycle);
-    }
-    // Render lịch dự đoán
-    predictionCalendar.innerHTML = "";
-    const firstDay = new Date(y, m, 1);
-    const lastDay = new Date(y, m + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    // Header: Thứ
-    const dayNames = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
-    dayNames.forEach((dn, idx) => {
-        const th = document.createElement('div');
-        th.classList.add('day', 'readonly');
-        th.textContent = dn;
-        predictionCalendar.appendChild(th);
-    });
-    // Tạo ô trống đầu tháng
-    const startWeekday = firstDay.getDay();
-    for (let i = 0; i < startWeekday; i++) {
-        const emptyDiv = document.createElement('div');
-        emptyDiv.classList.add('day', 'readonly');
-        predictionCalendar.appendChild(emptyDiv);
-    }
-    for (let d = 1; d <= daysInMonth; d++) {
-        const date = new Date(y, m, d);
-        const dayDiv = document.createElement('div');
-        dayDiv.classList.add('day');
-        dayDiv.textContent = d;
-        const dayType = predictDates[formatDate(date)];
-        if (dayType) dayDiv.classList.add(dayType);
-        predictionCalendar.appendChild(dayDiv);
-    }
-    // Hiển thị text dự đoán
-    let nextPredict = new Date(lastRealPeriod.start);
-    while (nextPredict.getFullYear() < y || (nextPredict.getFullYear() === y && nextPredict.getMonth() < m)) {
-        nextPredict.setDate(nextPredict.getDate() + avgCycle);
-    }
-    if (nextPredict.getFullYear() === y && nextPredict.getMonth() === m) {
-        predictionText.textContent = `Dự đoán kỳ kinh bắt đầu vào ngày ${formatDate(nextPredict)}`;
-    } else {
-        predictionText.textContent = '';
-    }
-}
-
 // === CẬP NHẬT DỮ LIỆU VÀ SETTINGS ===
 function applySettings() {
     const periodLengthInput = document.getElementById("period-length");
@@ -363,7 +266,7 @@ function applySettings() {
     alert("Cài đặt đã được cập nhật!");
 
     // Cập nhật lại lịch dự đoán
-    renderPredictionCalendar(predictOffset);
+    renderMainCalendar();
 }
 
 // === LƯU VÀ HIỂN THỊ TÂM TRẠNG ===
@@ -400,8 +303,12 @@ moodIcons.forEach(icon => {
             selectedMood.textContent = "Chưa chọn";
             moodIcons.forEach(ic => ic.classList.remove("selected"));
             renderMainCalendar();
+            updateReminders();
+            updateSuggestions();
         } else {
             saveMood(mood);
+            updateReminders();
+            updateSuggestions();
         }
     });
 });
@@ -411,8 +318,15 @@ saveSymptomsBtn.addEventListener('click', () => {
     const checkedSymptoms = Array.from(symptomList.querySelectorAll('input[type="checkbox"]:checked'))
         .map(cb => cb.value);
 
+    // Cho phép không chọn triệu chứng nào
     if (checkedSymptoms.length === 0) {
-        alert("Bạn chưa chọn triệu chứng nào.");
+        // Nếu không chọn triệu chứng nào, xóa dữ liệu triệu chứng ngày đó
+        localStorage.removeItem(`symptoms-${getTodayStr()}`);
+        healthAlert.style.display = "none";
+        alertMessage.textContent = "";
+        updateSymptomStats();
+        updateReminders();
+        updateSuggestions();
         return;
     }
 
@@ -511,13 +425,33 @@ function updateSymptomStats() {
     const currentMonth = today.getMonth();
     const currentYear = today.getFullYear();
 
-    // Đếm số ngày mỗi triệu chứng xuất hiện trong tháng
+    // Đếm số ngày mỗi triệu chứng xuất hiện trong tháng (danh sách mới)
     const symptomCountMap = {
-        "Đau bụng dữ dội": 0,
-        "Khí hư bất thường": 0,
-        "Ngứa vùng kín": 0,
-        "Chảy máu bất thường": 0,
-        "Sốt, mệt mỏi": 0
+        // Nhóm 1: Thể chất
+        "Đau bụng dưới": 0,
+        "Đau lưng": 0,
+        "Đau đầu hoặc đau nửa đầu": 0,
+        "Mệt mỏi": 0,
+        "Chóng mặt": 0,
+        "Đau ngực hoặc ngực căng tức": 0,
+        "Buồn nôn": 0,
+        "Khó ngủ": 0,
+        "Đau cơ nhẹ": 0,
+        // Nhóm 3: Da & cơ thể
+        "Mụn nổi nhiều": 0,
+        "Căng ngực": 0,
+        "Tăng cân nhẹ (do giữ nước)": 0,
+        "Phù nhẹ (mặt, tay chân)": 0,
+        // Nhóm 4: Tiêu hóa & ăn uống
+        "Đầy bụng, chướng bụng": 0,
+        "Táo bón": 0,
+        "Tiêu chảy": 0,
+        "Thèm ăn (đặc biệt đồ ngọt, mặn)": 0,
+        "Chán ăn": 0,
+        // Nhóm 5: Rụng trứng đặc trưng
+        "Đau bụng nhẹ một bên": 0,
+        "Tăng tiết dịch âm đạo": 0,
+        "Cảm giác đầy bụng nhẹ": 0
     };
 
     // Duyệt từng ngày trong tháng
@@ -605,6 +539,19 @@ function updateReminders() {
         messages.push("⚠️ Bạn có triệu chứng cần được chú ý. Vui lòng liên hệ bác sĩ khi cần.");
     }
 
+    // Thông điệp theo tâm trạng
+    const moodMessages = {
+        "Rất hạnh phúc": "Bạn đang rất vui vẻ! Hãy lan tỏa năng lượng tích cực này đến mọi người xung quanh nhé.",
+        "Hạnh phúc": "Một ngày tuyệt vời! Hãy tận hưởng và làm điều bạn yêu thích.",
+        "Bình thường": "Nếu có điều gì khiến bạn chưa vui, hãy thử thư giãn hoặc chia sẻ với bạn bè.",
+        "Không vui": "Bạn đang không vui. Hãy dành thời gian cho bản thân, nghỉ ngơi hoặc tâm sự với người thân.",
+        "Phiền muộn": "Bạn đang cảm thấy phiền muộn. Đừng ngần ngại tìm kiếm sự hỗ trợ từ người thân hoặc chuyên gia."
+    };
+    const mood = localStorage.getItem(`mood-${today}`);
+    if (mood && moodMessages[mood]) {
+        messages.push(moodMessages[mood]);
+    }
+
     if (messages.length === 0) {
         messages.push("Chúc bạn một ngày khỏe mạnh và vui vẻ!");
     }
@@ -615,33 +562,37 @@ function updateReminders() {
 // === GỢI Ý SẢN PHẨM & DINH DƯỠNG ===
 function updateSuggestions() {
     suggestionsList.innerHTML = "";
-    const cycleLength = parseInt(localStorage.getItem("customCycleLength")) || getAverageCycle();
-    const periodLength = parseInt(localStorage.getItem("customPeriodLength")) || 5;
-
-    const today = new Date();
-    const sortedPeriods = periodData.map(d => parseDate(d)).sort((a, b) => a - b);
-    let lastPeriod = null;
-    for (let i = sortedPeriods.length - 1; i >= 0; i--) {
-        if (sortedPeriods[i] <= today) {
-            lastPeriod = sortedPeriods[i];
-            break;
-        }
-    }
-    if (!lastPeriod) {
-        suggestionsList.innerHTML = "<li>Vui lòng nhập dữ liệu kỳ kinh để nhận gợi ý phù hợp.</li>";
-        return;
-    }
-    const daysSinceLastPeriod = Math.floor((today - lastPeriod) / (1000 * 60 * 60 * 24));
+    const today = getTodayStr();
+    const mood = localStorage.getItem(`mood-${today}`);
+    const symptoms = JSON.parse(localStorage.getItem(`symptoms-${today}`) || "[]");
 
     let suggestions = [];
 
-    if (daysSinceLastPeriod >= 0 && daysSinceLastPeriod < periodLength) {
-        suggestions.push("Sản phẩm gợi ý: Băng vệ sinh, thuốc giảm đau, trà thảo dược hỗ trợ.");
-        suggestions.push("Dinh dưỡng nên ưu tiên: Thực phẩm giàu sắt, nước lọc, rau xanh.");
-    } else if (daysSinceLastPeriod >= 12 && daysSinceLastPeriod <= 16) {
-        suggestions.push("Sản phẩm gợi ý: Thực phẩm bổ sung vitamin E, các loại hạt.");
-        suggestions.push("Dinh dưỡng nên ưu tiên: Trái cây tươi, các loại hạt, cá giàu omega-3.");
-    } else {
+    // Gợi ý theo triệu chứng
+    if (symptoms.includes("Đau bụng dữ dội")) {
+        suggestions.push("Sản phẩm gợi ý: Thuốc giảm đau, túi chườm ấm.");
+        suggestions.push("Dinh dưỡng: Ăn nhẹ, uống nhiều nước, tránh đồ cay nóng.");
+    }
+    if (symptoms.includes("Sốt, mệt mỏi")) {
+        suggestions.push("Sản phẩm gợi ý: Vitamin tổng hợp, nước điện giải.");
+        suggestions.push("Dinh dưỡng: Ăn nhiều rau xanh, trái cây, nghỉ ngơi nhiều.");
+    }
+    if (symptoms.includes("Khí hư bất thường") || symptoms.includes("Ngứa vùng kín")) {
+        suggestions.push("Sản phẩm gợi ý: Dung dịch vệ sinh dịu nhẹ, quần lót cotton.");
+        suggestions.push("Dinh dưỡng: Uống nhiều nước, bổ sung probiotic.");
+    }
+
+    // Gợi ý theo mood
+    if (mood === "Không vui" || mood === "Phiền muộn") {
+        suggestions.push("Sản phẩm gợi ý: Trà thảo dược thư giãn, tinh dầu thơm.");
+        suggestions.push("Dinh dưỡng: Sô-cô-la đen, các loại hạt, trái cây tươi.");
+    }
+    if (mood === "Rất hạnh phúc" || mood === "Hạnh phúc") {
+        suggestions.push("Hãy duy trì chế độ ăn cân bằng và vận động nhẹ nhàng để giữ vững năng lượng tích cực!");
+    }
+
+    // Nếu không có triệu chứng/mood đặc biệt, gợi ý chung
+    if (suggestions.length === 0) {
         suggestions.push("Sản phẩm gợi ý: Thực phẩm bổ sung cân bằng dinh dưỡng.");
         suggestions.push("Dinh dưỡng nên ưu tiên: Chế độ ăn đa dạng, nhiều rau củ quả.");
     }
@@ -695,7 +646,6 @@ setInterval(() => {
     if (nowTodayStr !== lastTodayStr) {
         lastTodayStr = nowTodayStr;
         renderMainCalendar();
-        renderPredictionCalendar(predictOffset);
     }
 }, 60 * 1000); // kiểm tra mỗi phút
 
@@ -708,7 +658,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     renderMainCalendar();
-    renderPredictionCalendar(predictOffset);
 
     // Cài đặt nút chuyển tháng
     document.getElementById('prevMainMonth').onclick = () => {
@@ -718,14 +667,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('nextMainMonth').onclick = () => {
         mainDate.setMonth(mainDate.getMonth() + 1);
         renderMainCalendar();
-    };
-    document.getElementById('prevPredictMonth').onclick = () => {
-        if (predictOffset > 1) predictOffset--;
-        renderPredictionCalendar(predictOffset);
-    };
-    document.getElementById('nextPredictMonth').onclick = () => {
-        predictOffset++;
-        renderPredictionCalendar(predictOffset);
     };
 
     // Cài đặt nút lưu cài đặt chu kỳ
