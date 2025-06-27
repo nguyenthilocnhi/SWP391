@@ -5,14 +5,12 @@ body {
     background-color: #f9f9f9;
 }
 
-
 /* phần nhãn thông báo */
 .alert-box {
     position: fixed;
     top: 95px;
     right: 20px;
     background-color: #10b981;
-    /* xanh lá thông báo */
     color: white;
     padding: 3px 20px;
     border-radius: 8px;
@@ -39,7 +37,6 @@ body {
         opacity: 0;
         transform: translateY(-10px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -50,7 +47,6 @@ body {
 .content {
     margin-top: 110px;
 }
-
 
 /* Calendar controls */
 .calendar-controls {
@@ -459,7 +455,6 @@ body {
     font-weight: 600;
     margin-left: 2px;
 }
-
 /* Triệu chứng sức khỏe phụ khoa - nhóm gọn hơn */
 .symptom-group {
     background: #f7fdfb;
