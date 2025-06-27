@@ -7,6 +7,26 @@ const searchInput = document.getElementById("searchInput");
 const filterLoai = document.getElementById("filterLoai");
 const pagination = document.getElementById("pagination");
 
+// Xác định trang hiện tại (Guest hay Customer)
+function getCurrentPage() {
+    const currentPath = window.location.pathname;
+    if (currentPath.includes('/Customer/')) {
+        return 'customer';
+    } else {
+        return 'guest';
+    }
+}
+
+// Lấy URL trang chi tiết phù hợp
+function getDetailUrl(serviceCode) {
+    const currentPage = getCurrentPage();
+    if (currentPage === 'customer') {
+        return `ChitietdichvuCustomer.html?ma=${serviceCode}`;
+    } else {
+        return `Chitietdichvu.html?ma=${serviceCode}`;
+    }
+}
+
 fetch("/Frontend/assets/data/dichvu.json")
     .then(res => res.json())
     .then(data => {
@@ -44,8 +64,7 @@ function renderTable() {
       <td>${item.chiphi}</td>
       <td>${item.tinhtrang}</td>
       <td>
-        <a href="chitietdichvu_1.html">Chi tiết</a>
-
+        <a href="${getDetailUrl(item.ma)}" class="detail-link">Chi tiết</a>
       </td>
     `;
         tbody.appendChild(tr);

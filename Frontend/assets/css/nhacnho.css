@@ -185,23 +185,30 @@ body {
 }
 
 /* NÚT RESET */
+/* NÚT RESET - ĐỒNG BỘ GIAO DIỆN */
 .reset-btn {
-  display: block;
-  margin: 0 auto;
-  margin-top: 10px;
-  background-color: #0f9d58;
-  color: white;
-  padding: 12px 26px;
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 20px;
+  background-color: #10b981;
+  color: #fff;
   font-size: 1rem;
+  font-weight: 600;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: background-color 0.25s ease, transform 0.15s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  font-family: 'Quicksand', sans-serif;
 }
 
 .reset-btn:hover {
-  background-color: #0a8754;
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+.reset-btn:active {
+  transform: scale(0.97);
 }
 
 /* POPUP */
@@ -250,6 +257,69 @@ body {
 .hidden {
   display: none;
 }
+/* NHẬP NGÀY BẮT ĐẦU */
+.start-date-section {
+  margin: 30px auto 10px;
+  text-align: center;
+  background-color: #e5f6f0;
+  padding: 16px 20px;
+  border-radius: 12px;
+  width: fit-content;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  font-size: 1rem;
+  color: #1f3a2c;
+}
+
+.start-date-section label {
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.start-date-section input[type="date"] {
+  padding: 8px 12px;
+  border: 2px solid #10b981;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #1f3a2c;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.start-date-section input[type="date"]:focus {
+  outline: none;
+  border-color: #059669;
+}
+
+.start-date-section button {
+  background-color: #10b981;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  margin-left: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.start-date-section button:hover {
+  background-color: #059669;
+}
+
+#packSuggestion {
+  text-align: center;
+  font-size: 1rem;
+  color: #0c5b44;
+  background: #e6f4ea;
+  border: 1px solid #a5d6a7;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 10px;
+}
+
 
 /* RESPONSIVE */
 @media (max-width: 600px) {
