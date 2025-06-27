@@ -16,6 +16,13 @@ function formatDate(d) {
     return `${year}-${month}-${day}`;
 }
 
+function formatDateVN(d) {
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
 function parseDate(str) {
     return new Date(str + "T00:00:00");
 }
@@ -40,62 +47,81 @@ function getDayType(date) {
     const iso = formatDate(date);
     const cycleLength = parseInt(localStorage.getItem("customCycleLength")) || 28;
     const periodLength = parseInt(localStorage.getItem("customPeriodLength")) || 5;
+    
+    // Kiểm tra ngày hành kinh thực tế
     if (periodData.includes(iso)) return "period";
     
     // Chỉ dự đoán khi có dữ liệu kỳ kinh thực tế
     if (periodData.length === 0) return "";
 
-    // Lấy ngày đầu kỳ kinh gần nhất
+    // Lấy các chu kỳ kinh nguyệt
     const ranges = getPeriodRanges();
     if (ranges.length === 0) return "";
-    
+
+    const today = new Date();
     const lastPeriodStart = ranges[ranges.length - 1].start;
-
-    // Dự đoán 3 chu kỳ tiếp theo
-    const nextPeriodStart1 = new Date(lastPeriodStart);
-    nextPeriodStart1.setDate(nextPeriodStart1.getDate() + cycleLength);
     
-    const nextPeriodStart2 = new Date(lastPeriodStart);
-    nextPeriodStart2.setDate(nextPeriodStart2.getDate() + cycleLength * 2);
+    // Tìm chu kỳ mà ngày này thuộc về
+    let targetPeriodStart = null;
+    let isCurrentCycle = false;
     
-    const nextPeriodStart3 = new Date(lastPeriodStart);
-    nextPeriodStart3.setDate(nextPeriodStart3.getDate() + cycleLength * 3);
-
-    // Kiểm tra ngày hiện tại có thuộc 1 trong 3 chu kỳ dự đoán không
-    let currentPeriodStart = null;
+    // Kiểm tra xem có thuộc chu kỳ hiện tại không
+    const currentCycleEnd = new Date(lastPeriodStart);
+    currentCycleEnd.setDate(currentCycleEnd.getDate() + cycleLength);
     
-    if (date >= nextPeriodStart1 && date < new Date(nextPeriodStart1.getTime() + cycleLength * 24 * 60 * 60 * 1000)) {
-        currentPeriodStart = nextPeriodStart1;
-    } else if (date >= nextPeriodStart2 && date < new Date(nextPeriodStart2.getTime() + cycleLength * 24 * 60 * 60 * 1000)) {
-        currentPeriodStart = nextPeriodStart2;
-    } else if (date >= nextPeriodStart3 && date < new Date(nextPeriodStart3.getTime() + cycleLength * 24 * 60 * 60 * 1000)) {
-        currentPeriodStart = nextPeriodStart3;
+    if (date >= lastPeriodStart && date < currentCycleEnd) {
+        targetPeriodStart = lastPeriodStart;
+        isCurrentCycle = true;
+    } else {
+        // Tìm trong các chu kỳ tiếp theo
+        for (let i = 1; i <= 6; i++) {
+            const nextPeriodStart = new Date(lastPeriodStart);
+            nextPeriodStart.setDate(nextPeriodStart.getDate() + cycleLength * i);
+            
+            const nextCycleEnd = new Date(nextPeriodStart);
+            nextCycleEnd.setDate(nextCycleEnd.getDate() + cycleLength);
+            
+            if (date >= nextPeriodStart && date < nextCycleEnd) {
+                targetPeriodStart = nextPeriodStart;
+                break;
+            }
+        }
     }
     
-    if (!currentPeriodStart) return "";
+    if (!targetPeriodStart) return "";
 
-    // Ngày rụng trứng của chu kỳ hiện tại
-    const ovulationDate = new Date(currentPeriodStart);
-    ovulationDate.setDate(ovulationDate.getDate() - 14);
+    // Tính toán các ngày quan trọng trong chu kỳ
+    const ovulationDate = new Date(targetPeriodStart);
+    ovulationDate.setDate(ovulationDate.getDate() + 14);
 
-    // Giai đoạn dễ thụ thai: từ ovulationDate - 5 đến ovulationDate + 1
+    // Giai đoạn dễ thụ thai: từ ovulationDate - 5 đến ovulationDate + 1 (6 ngày)
     const fertileStart = new Date(ovulationDate);
     fertileStart.setDate(fertileStart.getDate() - 5);
     const fertileEnd = new Date(ovulationDate);
     fertileEnd.setDate(fertileEnd.getDate() + 1);
 
     // Kiểm tra các giai đoạn dự đoán
-    const diff = Math.floor((date - currentPeriodStart) / (1000 * 60 * 60 * 24));
-    if (diff >= 0 && diff < periodLength) return "period-predict";
-
-    if (formatDate(date) === formatDate(ovulationDate)) return "ovulation-predict";
-    if (date >= fertileStart && date <= fertileEnd) return "fertile-predict";
+    const diff = Math.floor((date - targetPeriodStart) / (1000 * 60 * 60 * 24));
+    
+    // Ngày hành kinh dự đoán - CHỈ cho chu kỳ tiếp theo, không phải chu kỳ hiện tại
+    if (!isCurrentCycle && diff >= 0 && diff < periodLength) {
+        return "period-predict";
+    }
+    
+    // Ngày rụng trứng dự đoán
+    if (formatDate(date) === formatDate(ovulationDate)) {
+        return "ovulation-predict";
+    }
+    
+    // Giai đoạn dễ thụ thai
+    if (date >= fertileStart && date <= fertileEnd) {
+        return "fertile-predict";
+    }
 
     // Giai đoạn an toàn: trong chu kỳ dự đoán, không thuộc các giai đoạn trên
-    const diffFromCurrentStart = Math.floor((date - currentPeriodStart) / (1000 * 60 * 60 * 24));
-    if (diffFromCurrentStart >= 0 && diffFromCurrentStart < cycleLength &&
+    if (diff >= 0 && diff < cycleLength &&
         !(
-            (diffFromCurrentStart >= 0 && diffFromCurrentStart < periodLength) ||
+            (!isCurrentCycle && diff >= 0 && diff < periodLength) ||
             (date >= fertileStart && date <= fertileEnd) ||
             formatDate(date) === formatDate(ovulationDate)
         )
@@ -185,7 +211,11 @@ function renderCalendar(container, year, month) {
 function renderMainCalendar() {
     const y = mainDate.getFullYear();
     const m = mainDate.getMonth();
-    mainMonthYear.textContent = `${y} - Tháng ${m + 1}`;
+    const monthNames = [
+        'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+        'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+    ];
+    mainMonthYear.textContent = `${monthNames[m]} năm ${y}`;
     renderCalendar(mainCalendar, y, m);
 }
 
@@ -227,6 +257,7 @@ function saveMood(mood) {
         if (icon.dataset.mood === mood) icon.classList.add("selected");
     });
     renderMainCalendar();
+    updateReminders();
 }
 
 function loadMood() {
@@ -255,7 +286,6 @@ moodIcons.forEach(icon => {
             updateReminders();
         } else {
             saveMood(mood);
-            updateReminders();
         }
     });
 });
@@ -278,7 +308,7 @@ function updateCycleStats() {
         cycleLengths.push(Math.round((sorted[i] - sorted[i - 1]) / (1000 * 60 * 60 * 24)));
     }
 
-    const labels = sorted.slice(1).map(d => formatDate(d));
+    const labels = sorted.slice(1).map(d => formatDateVN(d));
     if (cycleChart) cycleChart.destroy();
     cycleChart = new Chart(cycleChartCtx, {
         type: 'line',
@@ -316,53 +346,55 @@ function updateReminders() {
     const cycleLength = parseInt(localStorage.getItem("customCycleLength")) || getAverageCycle();
     const periodLength = parseInt(localStorage.getItem("customPeriodLength")) || 5;
 
-    if (!periodData.length) {
-        reminderMessages.textContent = "Bạn chưa nhập dữ liệu kỳ kinh nào, vui lòng cập nhật để nhận nhắc nhở chính xác.";
-        return;
-    }
-    
-    const sortedPeriods = periodData.map(d => parseDate(d)).sort((a, b) => a - b);
-    let lastPeriod = null;
-    for (let i = sortedPeriods.length - 1; i >= 0; i--) {
-        if (sortedPeriods[i] <= new Date()) {
-            lastPeriod = sortedPeriods[i];
-            break;
-        }
-    }
-    if (!lastPeriod) {
-        reminderMessages.textContent = "Không tìm thấy dữ liệu kỳ kinh phù hợp để nhắc nhở.";
-        return;
-    }
-
-    const todayDate = new Date();
-    const daysSinceLastPeriod = Math.floor((todayDate - lastPeriod) / (1000 * 60 * 60 * 24));
-
     let messages = [];
 
-    // Nhắc ngày hành kinh
-    if (daysSinceLastPeriod >= 0 && daysSinceLastPeriod < periodLength) {
-        messages.push("Bạn đang trong kỳ hành kinh. Hãy chăm sóc sức khỏe và nghỉ ngơi hợp lý.");
-    }
-    // Nhắc ngày dễ thụ thai
-    if (daysSinceLastPeriod >= 12 && daysSinceLastPeriod <= 16) {
-        messages.push("Bạn đang trong giai đoạn dễ thụ thai. Hãy lưu ý nếu bạn có kế hoạch hoặc tránh thai.");
+    // Kiểm tra dữ liệu kỳ kinh
+    if (periodData.length) {
+        const sortedPeriods = periodData.map(d => parseDate(d)).sort((a, b) => a - b);
+        let lastPeriod = null;
+        for (let i = sortedPeriods.length - 1; i >= 0; i--) {
+            if (sortedPeriods[i] <= new Date()) {
+                lastPeriod = sortedPeriods[i];
+                break;
+            }
+        }
+        
+        if (lastPeriod) {
+            const todayDate = new Date();
+            const daysSinceLastPeriod = Math.floor((todayDate - lastPeriod) / (1000 * 60 * 60 * 24));
+
+            // Nhắc ngày hành kinh
+            if (daysSinceLastPeriod >= 0 && daysSinceLastPeriod < periodLength) {
+                const periodStartDate = formatDateVN(lastPeriod);
+                messages.push(`🩸 Bạn đang trong kỳ hành kinh (bắt đầu từ ${periodStartDate}). Hãy chăm sóc sức khỏe và nghỉ ngơi hợp lý.`);
+            }
+            // Nhắc ngày dễ thụ thai
+            if (daysSinceLastPeriod >= 12 && daysSinceLastPeriod <= 16) {
+                const ovulationDate = new Date(lastPeriod);
+                ovulationDate.setDate(ovulationDate.getDate() + 14);
+                const ovulationDateVN = formatDateVN(ovulationDate);
+                messages.push(`🌱 Bạn đang trong giai đoạn dễ thụ thai (rụng trứng dự kiến ${ovulationDateVN}). Hãy lưu ý nếu bạn có kế hoạch hoặc tránh thai.`);
+            }
+        }
     }
 
-    // Thông điệp theo tâm trạng
+    // Thông điệp theo tâm trạng - LUÔN hiển thị nếu có
     const moodMessages = {
-        "Rất hạnh phúc": "Bạn đang rất vui vẻ! Hãy lan tỏa năng lượng tích cực này đến mọi người xung quanh nhé.",
-        "Hạnh phúc": "Một ngày tuyệt vời! Hãy tận hưởng và làm điều bạn yêu thích.",
-        "Bình thường": "Nếu có điều gì khiến bạn chưa vui, hãy thử thư giãn hoặc chia sẻ với bạn bè.",
-        "Không vui": "Bạn đang không vui. Hãy dành thời gian cho bản thân, nghỉ ngơi hoặc tâm sự với người thân.",
-        "Phiền muộn": "Bạn đang cảm thấy phiền muộn. Đừng ngần ngại tìm kiếm sự hỗ trợ từ người thân hoặc chuyên gia."
+        "Rất hạnh phúc": "😄 Bạn đang rất vui vẻ! Hãy lan tỏa năng lượng tích cực này đến mọi người xung quanh nhé.",
+        "Hạnh phúc": "😊 Một ngày tuyệt vời! Hãy tận hưởng và làm điều bạn yêu thích.",
+        "Bình thường": "😐 Nếu có điều gì khiến bạn chưa vui, hãy thử thư giãn hoặc chia sẻ với bạn bè.",
+        "Không vui": "😕 Bạn đang không vui. Hãy dành thời gian cho bản thân, nghỉ ngơi hoặc tâm sự với người thân.",
+        "Phiền muộn": "😢 Bạn đang cảm thấy phiền muộn. Đừng ngần ngại tìm kiếm sự hỗ trợ từ người thân hoặc chuyên gia."
     };
     const mood = localStorage.getItem(`mood-${today}`);
     if (mood && moodMessages[mood]) {
         messages.push(moodMessages[mood]);
     }
 
+    // Thông điệp mặc định nếu không có thông điệp nào khác
     if (messages.length === 0) {
-        messages.push("Chúc bạn một ngày khỏe mạnh và vui vẻ!");
+        const todayVN = formatDateVN(new Date());
+        messages.push(`💝 Chúc bạn một ngày khỏe mạnh và vui vẻ! (${todayVN})`);
     }
 
     reminderMessages.innerHTML = messages.map(m => `<p>• ${m}</p>`).join("");
@@ -381,6 +413,12 @@ setInterval(() => {
 // === KHỞI ĐỘNG ===
 document.addEventListener('DOMContentLoaded', () => {
     renderMainCalendar();
+
+    // Hiển thị ngày hiện tại theo định dạng Việt Nam
+    const todayDateElement = document.getElementById('today-date');
+    if (todayDateElement) {
+        todayDateElement.textContent = formatDateVN(new Date());
+    }
 
     // Cài đặt nút chuyển tháng
     document.getElementById('prevMainMonth').onclick = () => {

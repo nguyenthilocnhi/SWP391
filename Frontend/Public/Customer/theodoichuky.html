@@ -38,7 +38,7 @@
         </section>
 
         <section id="mood-section" class="main-section">
-            <h2>Tâm trạng hôm nay</h2>
+            <h2>Tâm trạng hôm nay (<span id="today-date"></span>)</h2>
             <div id="mood-selector">
                 <span class="mood-icon" data-mood="Rất hạnh phúc" title="Rất hạnh phúc">😄</span>
                 <span class="mood-icon" data-mood="Hạnh phúc" title="Hạnh phúc">😊</span>
@@ -66,10 +66,11 @@
             <div id="mainCalendar" class="calendar"></div>
 
             <div class="legend">
+                <h3>Chú thích màu sắc:</h3>
                 <span class="period">Ngày hành kinh</span>
-                <span class="fertile">Dễ thụ thai</span>
-                <span class="ovulation">Rụng trứng</span>
-                <span class="safe">An toàn</span>
+                <span class="fertile-predict">Dễ thụ thai</span>
+                <span class="ovulation-predict">Rụng trứng</span>
+                <span class="safe-predict">An toàn</span>
             </div>
 
             <h2>Thống kê Chu Kỳ</h2>
@@ -83,14 +84,14 @@
                         <label for="period-length">
                             Độ dài kỳ kinh:
                         </label>
-                        <input type="number" id="period-length" value="5" min="1" max="15">
+                        <input type="number" id="period-length" value="5" min="1" max="15" title="Số ngày hành kinh trong một chu kỳ">
                         <span class="unit">ngày</span>
                     </div>
                     <div class="settings-row">
                         <label for="cycle-length">
                             Độ dài chu kỳ:
                         </label>
-                        <input type="number" id="cycle-length" value="28" min="20" max="45">
+                        <input type="number" id="cycle-length" value="28" min="20" max="45" title="Số ngày từ đầu kỳ kinh này đến đầu kỳ kinh tiếp theo">
                         <span class="unit">ngày</span>
                     </div>
                     <button id="apply-settings" class="settings-btn">Áp dụng</button>
