@@ -1,4 +1,4 @@
-namespace GenderHealthSystem
+namespace Web
 {
     public class WeatherForecast
     {
