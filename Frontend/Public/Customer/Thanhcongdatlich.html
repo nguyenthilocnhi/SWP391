@@ -10,27 +10,85 @@
       text-align: center;
       padding: 100px 20px;
     }
-    h1 {
+
+    h1, h2 {
       color: #2f855a;
       font-size: 32px;
     }
-    a {
-      margin-top: 20px;
-      display: inline-block;
+
+    a.button, button {
+      margin: 10px 6px;
       padding: 10px 20px;
       background: #38a169;
       color: white;
       border-radius: 6px;
       text-decoration: none;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
-    a:hover {
+
+    a.button:hover,
+    button:hover {
       background-color: #2f855a;
+    }
+
+    #linkMeetMessage {
+      margin-top: 20px;
+      background: #fefce8;
+      border: 1px solid #facc15;
+      padding: 20px;
+      border-radius: 8px;
+      color: #92400e;
+      font-size: 16px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn-wrapper {
+      margin-top: 12px;
     }
   </style>
 </head>
 <body>
-  <h1>🎉 Đặt lịch thành công!</h1>
-  <p>Chúng tôi sẽ liên hệ với bạn sớm nhất.</p>
-  <a href="/Frontend/Public/Customer/TrangchuCustomer.html">Về trang chủ</a>
+  <h2>🎉 Đặt lịch thành công!</h2>
+
+  <div id="linkMeetMessage"></div>
+
+  <a class="button" href="/Frontend/Public/Customer/TrangchuCustomer.html">Về trang chủ</a>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const link = localStorage.getItem("latestMeetLink");
+      const msgEl = document.getElementById("linkMeetMessage");
+
+      if (link) {
+        msgEl.innerHTML = `
+          💻 Bạn đã chọn hình thức tư vấn <strong>Online</strong>.<br>
+          Đây là link Google Meet của bạn: 
+          <div style="margin: 8px 0;"><a href="${link}" target="_blank" style="color: #d97706; font-weight: bold;">${link}</a></div>
+          <div class="btn-wrapper">
+            <button onclick="copyToClipboard('${link}')">📋 Sao chép link</button>
+            <button onclick="window.open('${link}', '_blank')">🚀 Mở Meet ngay</button>
+          </div>
+        `;
+      } else {
+        msgEl.textContent = "Cảm ơn bạn đã đặt lịch! Vui lòng đợi xác nhận.";
+      }
+
+      // Xoá sau khi hiển thị
+      localStorage.removeItem("latestMeetLink");
+    });
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert("✅ Link Meet đã được sao chép!");
+      }).catch(() => {
+        alert("❌ Không thể sao chép link.");
+      });
+    }
+  </script>
 </body>
 </html>

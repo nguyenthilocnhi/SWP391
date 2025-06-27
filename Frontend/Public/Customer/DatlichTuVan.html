@@ -136,46 +136,57 @@
     </div>
   </section>
 
-  <script>
-    // Tự động điền dữ liệu khi trang tải
-    document.addEventListener("DOMContentLoaded", function () {
-      document.getElementById("hoten").value = localStorage.getItem("tempHoTen") || "";
-      document.getElementById("sdt").value = localStorage.getItem("tempSDT") || "";
-    });
+ <script>
+  // Tự động điền dữ liệu khi trang tải
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("hoten").value = localStorage.getItem("tempHoTen") || "";
+    document.getElementById("sdt").value = localStorage.getItem("tempSDT") || "";
+  });
 
-    function handleConsultationSubmit(event) {
-      event.preventDefault();
+  function handleConsultationSubmit(event) {
+    event.preventDefault();
 
-      const hoTen = document.getElementById("hoten").value;
-      const sdt = document.getElementById("sdt").value;
-      const ngay = document.getElementById("ngay").value;
-      const gio = document.getElementById("gio").value;
-      const hinhThuc = document.getElementById("hinhThuc").value;
-      const ghiChu = document.getElementById("ghichu").value;
+    const hoTen = document.getElementById("hoten").value;
+    const sdt = document.getElementById("sdt").value;
+    const ngay = document.getElementById("ngay").value;
+    const gio = document.getElementById("gio").value;
+    const hinhThuc = document.getElementById("hinhThuc").value;
+    const ghiChu = document.getElementById("ghichu").value;
 
-      const lich = {
-        hoTen,
-        sdt,
-        ngay,
-        gio,
-        hinhThuc,
-        dichVu: "Tư Vấn",
-        lyDo: ghiChu,
-        trangThai: "Chờ xử lý"
-      };
-
-      const danhSach = JSON.parse(localStorage.getItem("lichDat")) || [];
-      danhSach.push(lich);
-      localStorage.setItem("lichDat", JSON.stringify(danhSach));
-
-      // Xoá dữ liệu tạm
-      localStorage.removeItem("tempHoTen");
-      localStorage.removeItem("tempSDT");
-
-      alert("Đặt lịch tư vấn thành công!");
-      window.location.href = "Thanhcongdatlich.html";
+    // 👉 Tạo link Google Meet nếu chọn "Online"
+    let googleMeetLink = "";
+    if (hinhThuc === "Online") {
+      const randomCode = Math.random().toString(36).substring(2, 12);
+      googleMeetLink = `https://meet.google.com/${randomCode.slice(0, 3)}-${randomCode.slice(3, 6)}-${randomCode.slice(6, 9)}`;
+      localStorage.setItem("latestMeetLink", googleMeetLink);
+    } else {
+      localStorage.removeItem("latestMeetLink");
     }
-  </script>
+
+    const lich = {
+      hoTen,
+      sdt,
+      ngay,
+      gio,
+      hinhThuc,
+      dichVu: "Tư Vấn",
+      lyDo: ghiChu,
+      trangThai: "Chờ xử lý"
+    };
+
+    const danhSach = JSON.parse(localStorage.getItem("lichDat")) || [];
+    danhSach.push(lich);
+    localStorage.setItem("lichDat", JSON.stringify(danhSach));
+
+    // Xoá dữ liệu tạm
+    localStorage.removeItem("tempHoTen");
+    localStorage.removeItem("tempSDT");
+
+    alert("Đặt lịch tư vấn thành công!");
+    window.location.href = "Thanhcongdatlich.html";
+  }
+</script>
+
 
 </body>
 
