@@ -10,19 +10,20 @@
 
 <body>
   <!-- gọi header -->
-  <div id="header-placeholder"> </div>
+  <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_customer.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
+
+        // Gọi hàm JS của header sau khi nội dung đã render
         if (typeof initHeader === 'function') {
           initHeader();
         }
       });
   </script>
   <script src="/Frontend/assets/js/header_customer.js"></script>
-
   <main class="main-content">
     <a href="BlogCustomer.html">
       <div class="breadcrumb">Kiến thức y khoa & Xét nghiệm</div>
@@ -36,7 +37,7 @@
       <p><strong>Chu kỳ kinh nguyệt</strong> là quá trình sinh lý tự nhiên của phụ nữ, điều khiển bởi hormone estrogen
         và progesterone. Mỗi chu kỳ, lớp nội mạc tử cung dày lên để chuẩn bị mang thai. Nếu không thụ tinh, lớp này sẽ
         bong ra dưới dạng máu kinh.</p>
-      
+
       <h2>Chu kỳ kinh nguyệt được tính như thế nào?</h2>
       <p>Chu kỳ được tính từ <strong>ngày đầu tiên có kinh</strong> đến <strong>ngày trước kỳ kinh tiếp theo</strong>.
       </p>
@@ -76,7 +77,9 @@
       <p>Hy vọng bài viết giúp bạn hiểu rõ hơn và chăm sóc bản thân tốt hơn mỗi ngày.</p>
 
       <p class="final-call">
-        🎯 <strong>Đang có vấn đề về chu kỳ kinh nguyệt?</strong> Hãy <a href="/Frontend/Public/Customer/datlich.html">đặt lịch tư vấn</a> để được các chuyên gia hướng dẫn cụ thể cho trường hợp của bạn.
+        🎯 <strong>Đang có vấn đề về chu kỳ kinh nguyệt?</strong> Hãy <a
+          href="/Frontend/Public/Customer/datlich.html">đặt lịch tư vấn</a> để được các chuyên gia hướng dẫn cụ thể cho
+        trường hợp của bạn.
       </p>
     </section>
   </main>
@@ -91,4 +94,4 @@
   </script>
 </body>
 
-</html> 
+</html>
