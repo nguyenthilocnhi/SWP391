@@ -62,26 +62,7 @@
       </div>
     </section>
   </main>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const bell = document.getElementById("notificationBell");
-      const box = document.getElementById("notificationBox");
-      const wrapper = document.getElementById("notificationWrapper");
-
-      // Mở/đóng hộp thông báo khi nhấn chuông
-      bell.addEventListener("click", function (e) {
-        e.preventDefault();
-        box.classList.toggle("hidden");
-      });
-
-      // Ẩn hộp thông báo khi click ra ngoài
-      document.addEventListener("click", function (event) {
-        if (!wrapper.contains(event.target)) {
-          box.classList.add("hidden");
-        }
-      });
-    });
-  </script>
+  
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const dropdownToggle = document.querySelector('.user-dropdown');
@@ -121,14 +102,14 @@
           localStorage.setItem("tempHoTen", hoTen);
           localStorage.setItem("tempSDT", sdt);
         }
-        window.location.href = "datlichTuvan.html";
+        window.location.href = "DatlichTuVan.html";
         return;
       }
       //Nếu chọn Xét Nghiệm
       if (dichVu === "Xét Nghiệm") {
         localStorage.setItem("tempHoTen", hoTen);
         localStorage.setItem("tempSDT", sdt);
-        window.location.href = "datlichXetnghiem.html";
+        window.location.href = "DatlichXetNghiem.html";
         return;
       }
       // Nếu chọn dịch vụ khác (vd: Xét Nghiệm)

@@ -7,6 +7,135 @@
   <title>Trung Tâm Sức Khỏe An Giới</title>
   <link rel="stylesheet" href="/Frontend/assets/css/TrangchuCustomer.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .apply-voucher-btn {
+      background-color: #005baa;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 15px;
+      transition: background-color 0.3s;
+    }
+
+    .apply-voucher-btn:hover {
+      background-color: #004080;
+    }
+
+    .apply-voucher-btn.applied {
+      background-color: #28a745;
+      cursor: not-allowed;
+    }
+
+    .apply-voucher-btn.applied:hover {
+      background-color: #28a745;
+    }
+
+    .cancel-voucher-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-left: 10px;
+      transition: background-color 0.3s;
+    }
+
+    .cancel-voucher-btn:hover {
+      background-color: #c82333;
+    }
+
+    .voucher-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #28a745;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .voucher-notification.show {
+      transform: translateX(0);
+    }
+
+    .active-voucher-display {
+      background-color: #e8f5e8;
+      border: 2px solid #28a745;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin: 20px auto;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .voucher-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .voucher-text {
+      flex: 1;
+      text-align: left;
+    }
+
+    .voucher-info span {
+      font-weight: bold;
+      color: #28a745;
+      font-size: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .voucher-info {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    .voucher-alert-box {
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #28a745;
+      color: #fff;
+      padding: 16px 32px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      z-index: 2000;
+      font-size: 16px;
+      min-width: 320px;
+      max-width: 90vw;
+      justify-content: center;
+      gap: 10px;
+    }
+    .voucher-alert-box.hidden {
+      display: none;
+    }
+    .voucher-alert-icon {
+      font-size: 22px;
+      margin-right: 8px;
+    }
+    .voucher-alert-close {
+      margin-left: 16px;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
@@ -34,6 +163,23 @@
     <span id="alert-close">&times;</span>
   </div>
 
+  <!-- Thông báo voucher kiểu alert-box -->
+  <div id="voucher-alert-box" class="voucher-alert-box hidden">
+    <span class="voucher-alert-icon">🔔</span>
+    <span id="voucher-alert-message">Voucher đã được áp dụng!</span>
+    <span id="voucher-alert-close" class="voucher-alert-close">&times;</span>
+  </div>
+
+  <!-- Hiển thị voucher đang áp dụng -->
+  <div id="active-voucher-display" class="active-voucher-display" style="display: none;">
+    <div class="voucher-info">
+      <div class="voucher-text">
+        <span id="active-voucher-text">Voucher đang áp dụng: </span>
+        <small style="color: #666; display: block; margin-top: 5px;">💡 Chỉ có thể áp dụng 1 voucher tại một thời điểm</small>
+      </div>
+      <button id="remove-active-voucher" class="cancel-voucher-btn">Hủy voucher</button>
+    </div>
+  </div>
 
   <section class="hero">
     <img src="https://i.postimg.cc/x1V5ncWS/nh-n-n.png" alt="Ảnh nền">
@@ -145,6 +291,8 @@
               <li><strong>Cách sử dụng:</strong> Tự động áp dụng khi đặt lịch</li>
               <li><strong>Lưu ý:</strong> Không cộng dồn với các khuyến mãi khác</li>
             </ul>
+            <small style="color: #666; display: block; margin-bottom: 10px;">⚠️ Chỉ có thể áp dụng 1 voucher tại một thời điểm</small>
+            <button class="apply-voucher-btn" data-voucher="TU_VAN_VI_THANH_NIEN_10" data-discount="10" data-type="percent">Áp dụng voucher</button>
           </div>
         </div>
 
@@ -160,6 +308,8 @@
               <li><strong>Áp dụng:</strong> Cho khách hàng nữ từ 18 tuổi trở lên</li>
               <li><strong>Dịch vụ áp dụng:</strong> Tư vấn sức khỏe sinh sản, tiền hôn nhân</li>
             </ul>
+            <small style="color: #666; display: block; margin-bottom: 10px;">⚠️ Chỉ có thể áp dụng 1 voucher tại một thời điểm</small>
+            <button class="apply-voucher-btn" data-voucher="TU_VAN_SINH_SAN_100K" data-discount="100000" data-type="fixed">Áp dụng voucher</button>
           </div>
         </div>
 
@@ -175,6 +325,8 @@
               <li><strong>Áp dụng:</strong> Cho xét nghiệm Giang Mai lần đầu tiên</li>
               <li><strong>Lưu ý:</strong> Không áp dụng cho khách có mã giảm giá khác</li>
             </ul>
+            <small style="color: #666; display: block; margin-bottom: 10px;">⚠️ Chỉ có thể áp dụng 1 voucher tại một thời điểm</small>
+            <button class="apply-voucher-btn" data-voucher="GIANG_MAI_20" data-discount="20" data-type="percent">Áp dụng voucher</button>
           </div>
         </div>
 
@@ -189,6 +341,8 @@
               <li><strong>Áp dụng:</strong> Cho tất cả dịch vụ lần đầu đặt lịch</li>
               <li><strong>Thời hạn:</strong> Không giới hạn đến khi có thông báo mới</li>
             </ul>
+            <small style="color: #666; display: block; margin-bottom: 10px;">⚠️ Chỉ có thể áp dụng 1 voucher tại một thời điểm</small>
+            <button class="apply-voucher-btn" data-voucher="KHACH_LAN_DAU_50K" data-discount="50000" data-type="fixed">Áp dụng voucher</button>
           </div>
         </div>
       </div>
@@ -276,8 +430,24 @@
       });
     }
 
+    // Hàm kiểm tra và xóa voucher đã sử dụng
+    function checkAndRemoveUsedVoucher() {
+      const activeVoucher = localStorage.getItem('activeVoucher');
+      if (activeVoucher) {
+        const voucher = JSON.parse(activeVoucher);
+        if (voucher.used) {
+          // Nếu voucher đã được sử dụng, xóa khỏi localStorage
+          localStorage.removeItem('activeVoucher');
+          console.log('Đã xóa voucher đã sử dụng');
+        }
+      }
+    }
+
     // Ví dụ: gọi thông báo mới
     document.addEventListener("DOMContentLoaded", function () {
+      // Kiểm tra và xóa voucher đã sử dụng
+      checkAndRemoveUsedVoucher();
+      
       // Giả lập có thông báo mới
       setTimeout(() => {
         showAlert("🔔 Bạn có 3 thông báo mới!");
@@ -319,6 +489,230 @@
           btn.textContent = isActive ? 'Thu gọn' : 'Xem ưu đãi';
         });
   });
+
+  // Xử lý voucher
+  const voucherButtons = document.querySelectorAll('.apply-voucher-btn');
+  
+  voucherButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const voucherCode = this.getAttribute('data-voucher');
+      const discount = this.getAttribute('data-discount');
+      const discountType = this.getAttribute('data-type');
+      
+      // Kiểm tra xem có voucher đang áp dụng không
+      const existingVoucher = localStorage.getItem('activeVoucher');
+      if (existingVoucher) {
+        const existingVoucherData = JSON.parse(existingVoucher);
+        if (existingVoucherData.code === voucherCode) {
+          showVoucherAlert('Voucher này đã được áp dụng!');
+          return;
+        } else {
+          // Hủy voucher cũ trước khi áp dụng voucher mới
+          if (confirm('Bạn đã có voucher đang áp dụng. Áp dụng voucher mới sẽ hủy voucher cũ. Bạn có muốn tiếp tục?')) {
+            // Hủy voucher cũ
+            localStorage.removeItem('activeVoucher');
+            
+            // Reset tất cả các nút voucher
+            const allVoucherBtns = document.querySelectorAll('.apply-voucher-btn');
+            allVoucherBtns.forEach(btn => {
+              btn.textContent = 'Áp dụng voucher';
+              btn.classList.remove('applied');
+              btn.disabled = false;
+            });
+            
+            // Xóa tất cả nút hủy voucher
+            const allCancelBtns = document.querySelectorAll('.cancel-voucher-btn');
+            allCancelBtns.forEach(btn => btn.remove());
+            
+            // Ẩn phần hiển thị voucher đang áp dụng
+            const activeVoucherDisplay = document.getElementById('active-voucher-display');
+            activeVoucherDisplay.style.display = 'none';
+          } else {
+            return; // Người dùng không muốn hủy voucher cũ
+          }
+        }
+      }
+      
+      // Lưu voucher mới vào localStorage
+      const voucher = {
+        code: voucherCode,
+        discount: discount,
+        type: discountType,
+        appliedAt: new Date().toISOString(),
+        used: false
+      };
+      
+      localStorage.setItem('activeVoucher', JSON.stringify(voucher));
+      
+      // Cập nhật trạng thái nút
+      this.textContent = 'Đã áp dụng';
+      this.classList.add('applied');
+      this.disabled = true;
+      
+      // Thêm nút hủy voucher
+      const cancelBtn = document.createElement('button');
+      cancelBtn.className = 'cancel-voucher-btn';
+      cancelBtn.textContent = 'Hủy voucher';
+      cancelBtn.onclick = function() {
+        if (confirm('Bạn có chắc muốn hủy voucher này?')) {
+          localStorage.removeItem('activeVoucher');
+          this.remove(); // Xóa nút hủy
+          btn.textContent = 'Áp dụng voucher';
+          btn.classList.remove('applied');
+          btn.disabled = false;
+          
+          // Ẩn phần hiển thị voucher đang áp dụng
+          const activeVoucherDisplay = document.getElementById('active-voucher-display');
+          activeVoucherDisplay.style.display = 'none';
+          
+          // Hiển thị thông báo hủy voucher
+          showVoucherAlert('Đã hủy voucher!');
+        }
+      };
+      this.parentNode.appendChild(cancelBtn);
+      
+      // Hiển thị phần voucher đang áp dụng
+      const activeVoucherDisplay = document.getElementById('active-voucher-display');
+      const activeVoucherText = document.getElementById('active-voucher-text');
+      const removeActiveVoucherBtn = document.getElementById('remove-active-voucher');
+      
+      let voucherDescription = "";
+      if (voucherCode === "TU_VAN_VI_THANH_NIEN_10") {
+        voucherDescription = "Giảm 10% - Tư vấn sức khỏe vị thành niên";
+      } else if (voucherCode === "TU_VAN_SINH_SAN_100K") {
+        voucherDescription = "Giảm 100.000 VNĐ - Tư vấn sức khỏe sinh sản";
+      } else if (voucherCode === "GIANG_MAI_20") {
+        voucherDescription = "Giảm 20% - Xét nghiệm Giang Mai";
+      } else if (voucherCode === "KHACH_LAN_DAU_50K") {
+        voucherDescription = "Giảm 50.000 VNĐ - Dành cho khách lần đầu";
+      }
+      
+      activeVoucherText.textContent = `Voucher đang áp dụng: ${voucherDescription}`;
+      activeVoucherDisplay.style.display = 'block';
+      
+      // Xử lý nút hủy voucher ở phần hiển thị
+      removeActiveVoucherBtn.onclick = function() {
+        if (confirm('Bạn có chắc muốn hủy voucher này?')) {
+          localStorage.removeItem('activeVoucher');
+          activeVoucherDisplay.style.display = 'none';
+          
+          // Reset tất cả các nút voucher
+          const allVoucherBtns = document.querySelectorAll('.apply-voucher-btn');
+          allVoucherBtns.forEach(btn => {
+            btn.textContent = 'Áp dụng voucher';
+            btn.classList.remove('applied');
+            btn.disabled = false;
+          });
+          
+          // Xóa tất cả nút hủy voucher
+          const allCancelBtns = document.querySelectorAll('.cancel-voucher-btn');
+          allCancelBtns.forEach(btn => btn.remove());
+          
+          // Hiển thị thông báo hủy voucher
+          showVoucherAlert('Đã hủy voucher!');
+        }
+      };
+      
+      // Hiển thị thông báo
+      const notification = document.getElementById('voucher-alert-box');
+      const message = document.getElementById('voucher-alert-message');
+      
+      if (existingVoucher) {
+        message.textContent = `Đã thay thế voucher cũ bằng voucher mới!`;
+      } else {
+        if (discountType === 'percent') {
+          message.textContent = `Đã áp dụng voucher giảm ${discount}%!`;
+        } else {
+          message.textContent = `Đã áp dụng voucher giảm ${parseInt(discount).toLocaleString('vi-VN')} VNĐ!`;
+        }
+      }
+      
+      notification.classList.add('show');
+      
+      // Ẩn thông báo sau 3 giây
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    });
+  });
+
+  // Kiểm tra voucher đã áp dụng khi load trang
+  const activeVoucher = localStorage.getItem('activeVoucher');
+  if (activeVoucher) {
+    const voucher = JSON.parse(activeVoucher);
+    const voucherBtn = document.querySelector(`[data-voucher="${voucher.code}"]`);
+    if (voucherBtn) {
+      voucherBtn.textContent = 'Đã áp dụng';
+      voucherBtn.classList.add('applied');
+      voucherBtn.disabled = true;
+      
+      // Thêm nút hủy voucher nếu chưa có
+      if (!voucherBtn.parentNode.querySelector('.cancel-voucher-btn')) {
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'cancel-voucher-btn';
+        cancelBtn.textContent = 'Hủy voucher';
+        cancelBtn.onclick = function() {
+          if (confirm('Bạn có chắc muốn hủy voucher này?')) {
+            localStorage.removeItem('activeVoucher');
+            this.remove(); // Xóa nút hủy
+            voucherBtn.textContent = 'Áp dụng voucher';
+            voucherBtn.classList.remove('applied');
+            voucherBtn.disabled = false;
+            
+            // Ẩn phần hiển thị voucher đang áp dụng
+            const activeVoucherDisplay = document.getElementById('active-voucher-display');
+            activeVoucherDisplay.style.display = 'none';
+            
+            // Hiển thị thông báo hủy voucher
+            showVoucherAlert('Đã hủy voucher!');
+          }
+        };
+        voucherBtn.parentNode.appendChild(cancelBtn);
+      }
+      
+      // Hiển thị phần voucher đang áp dụng
+      const activeVoucherDisplay = document.getElementById('active-voucher-display');
+      const activeVoucherText = document.getElementById('active-voucher-text');
+      const removeActiveVoucherBtn = document.getElementById('remove-active-voucher');
+      
+      let voucherDescription = "";
+      if (voucher.code === "TU_VAN_VI_THANH_NIEN_10") {
+        voucherDescription = "Giảm 10% - Tư vấn sức khỏe vị thành niên";
+      } else if (voucher.code === "TU_VAN_SINH_SAN_100K") {
+        voucherDescription = "Giảm 100.000 VNĐ - Tư vấn sức khỏe sinh sản";
+      } else if (voucher.code === "GIANG_MAI_20") {
+        voucherDescription = "Giảm 20% - Xét nghiệm Giang Mai";
+      } else if (voucher.code === "KHACH_LAN_DAU_50K") {
+        voucherDescription = "Giảm 50.000 VNĐ - Dành cho khách lần đầu";
+      }
+      
+      activeVoucherText.textContent = `Voucher đang áp dụng: ${voucherDescription}`;
+      activeVoucherDisplay.style.display = 'block';
+      
+      // Xử lý nút hủy voucher ở phần hiển thị
+      removeActiveVoucherBtn.onclick = function() {
+        if (confirm('Bạn có chắc muốn hủy voucher này?')) {
+          localStorage.removeItem('activeVoucher');
+          activeVoucherDisplay.style.display = 'none';
+          
+          // Reset tất cả các nút voucher
+          const allVoucherBtns = document.querySelectorAll('.apply-voucher-btn');
+          allVoucherBtns.forEach(btn => {
+            btn.textContent = 'Áp dụng voucher';
+            btn.classList.remove('applied');
+            btn.disabled = false;
+          });
+          
+          // Xóa tất cả nút hủy voucher
+          const allCancelBtns = document.querySelectorAll('.cancel-voucher-btn');
+          allCancelBtns.forEach(btn => btn.remove());
+          
+          // Hiển thị thông báo hủy voucher
+          showVoucherAlert('Đã hủy voucher!');
+        }
+      };
+    }
+  }
 });
   </script>
 
@@ -330,6 +724,26 @@
       .then(data => {
     document.getElementById("footer-placeholder").innerHTML = data;
       });
+  </script>
+
+  <!-- Hàm hiển thị thông báo voucher kiểu alert-box -->
+  <script>
+    function showVoucherAlert(message) {
+      const alertBox = document.getElementById('voucher-alert-box');
+      const alertMessage = document.getElementById('voucher-alert-message');
+      const alertClose = document.getElementById('voucher-alert-close');
+      alertMessage.textContent = message;
+      alertBox.classList.remove('hidden');
+      // Tự động ẩn sau 3 giây
+      if (alertBox._timeout) clearTimeout(alertBox._timeout);
+      alertBox._timeout = setTimeout(() => {
+        alertBox.classList.add('hidden');
+      }, 3000);
+      // Ẩn khi click vào nút đóng
+      alertClose.onclick = () => {
+        alertBox.classList.add('hidden');
+      };
+    }
   </script>
 </body>
 

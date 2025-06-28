@@ -7,62 +7,187 @@
   <title>Thanh Toán VNPAY</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f9f9f9;
+      font-family: 'Inter', Arial, sans-serif;
+      background: #f4f7fb;
       margin: 0;
       padding: 0;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
     }
-
     .payment-container {
-      background-color: white;
-      padding: 30px 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      max-width: 400px;
+      background: #fff;
+      padding: 36px 36px 28px 36px;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(26,60,255,0.10), 0 1.5px 6px rgba(0,0,0,0.04);
+      max-width: 430px;
       width: 100%;
+      margin: 0 auto;
+      text-align: center;
     }
-
     .payment-container h2 {
-      margin-bottom: 20px;
-      color: #005baa;
+      color: #1a3cff;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      font-weight: 700;
     }
-
     .qr-code {
-      margin: 20px 0;
+      margin: 18px 0 22px 0;
     }
-
     .qr-code img {
-      width: 220px;
-      height: 220px;
-      border: 1px solid #ccc;
+      width: 210px;
+      height: 210px;
+      border-radius: 12px;
+      border: 1.5px solid #e0e7ff;
+      background: #f8faff;
     }
-
     .info {
       font-size: 16px;
       margin-top: 10px;
       color: #333;
+      text-align: left;
     }
-
+    .payment-summary {
+      margin: 18px 0 10px 0;
+      font-size: 16px;
+      max-width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .payment-summary .row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .payment-summary .bold {
+      font-weight: 500;
+    }
+    .payment-summary .discount {
+      color: #00b386;
+      font-weight: 500;
+    }
+    .payment-summary .total {
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .payment-summary .final {
+      color: #1a3cff;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .booking-details {
+      background: #f8faff;
+      border-radius: 10px;
+      padding: 15px 18px;
+      margin: 18px 0 10px 0;
+      text-align: left;
+      font-size: 15px;
+      box-shadow: 0 1.5px 6px rgba(26,60,255,0.04);
+    }
+    .booking-details h3 {
+      color: #1a3cff;
+      font-size: 16px;
+      margin: 0 0 10px 0;
+      font-weight: 600;
+    }
+    .booking-details p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    .booking-details .label {
+      font-weight: bold;
+      color: #555;
+    }
     .note {
       color: #888;
       font-size: 13px;
       margin-top: 10px;
     }
-
     .btn-back {
       display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #005baa;
-      color: white;
+      margin-top: 18px;
+      padding: 10px 22px;
+      background: #1a3cff;
+      color: #fff;
       border: none;
+      border-radius: 7px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(26,60,255,0.08);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .btn-back:hover {
+      background: #0d1e6b;
+      box-shadow: 0 4px 16px rgba(26,60,255,0.13);
+    }
+    #btn-remove-voucher {
+      background: #dc3545;
+      margin-left: 10px;
+    }
+    #btn-remove-voucher:hover {
+      background: #b91c1c;
+    }
+    #btn-download-qr {
+      background: #00b386;
+    }
+    #btn-download-qr:hover {
+      background: #008060;
+    }
+    .dropdown-list {
+      padding: 8px 0;
+      box-shadow: 0 4px 16px rgba(26,60,255,0.10);
+    }
+    .dropdown-item {
+      padding: 10px 18px;
+      cursor: pointer;
+      font-size: 15px;
+      color: #222;
+      transition: background 0.2s;
       border-radius: 6px;
-      text-decoration: none;
+      margin: 2px 6px;
+    }
+    .dropdown-item:hover {
+      background: #f0f4ff;
+      color: #1a3cff;
+    }
+    #current-voucher-badge {
+      margin-left: 10px;
+      background: #e0e7ff;
+      color: #1a3cff;
+      border-radius: 16px;
+      padding: 4px 14px;
+      font-weight: 600;
+      font-size: 15px;
+      vertical-align: middle;
+      box-shadow: 0 1px 4px rgba(26,60,255,0.08);
+      border: 1px solid #c7d2fe;
+    }
+    @media (max-width: 600px) {
+      .payment-container {
+        padding: 16px 4vw 18px 4vw;
+        max-width: 98vw;
+      }
+      .qr-code img {
+        width: 140px;
+        height: 140px;
+      }
+      .payment-summary {
+        font-size: 15px;
+      }
+      .booking-details {
+        font-size: 13px;
+        padding: 10px 6px;
+      }
+      .btn-back {
+        font-size: 14px;
+        padding: 8px 12px;
+      }
+      #current-voucher-badge {
+        font-size: 13px;
+        padding: 3px 8px;
+      }
     }
   </style>
 </head>
@@ -75,8 +200,22 @@
       <img src="https://img.vietqr.io/image/970436-123456789-compact.png?amount=100000&addInfo=THANHTOAN" alt="QR VNPAY">
     </div>
     <div class="info">
-      <p><strong>Số tiền:</strong> 100.000 VNĐ</p>
-      <p><strong>Nội dung:</strong> THANHTOAN</p>
+      <p><strong>Số tiền:</strong> <span id="original-amount">100.000 VNĐ</span></p>
+      <p id="voucher-info" style="display: none;"><strong>Voucher:</strong> <span id="voucher-details"></span></p>
+      <p id="final-amount" style="display: none;"><strong>Số tiền sau giảm giá:</strong> <span id="discounted-amount"></span></p>
+      <p><strong>Nội dung:</strong> <span id="payment-content">THANHTOAN</span></p>
+      <small style="color: #666; font-style: italic;">💡 Chỉ có thể áp dụng 1 voucher tại một thời điểm</small>
+    </div>
+    <div class="booking-details">
+      <h3>Chi tiết lịch đặt</h3>
+      <p><span class="label">Ngày đặt:</span> <span id="booking-date">Ngày đặt chưa được cập nhật</span></p>
+      <p><span class="label">Giờ đặt:</span> <span id="booking-time">Giờ đặt chưa được cập nhật</span></p>
+      <p><span class="label">Dịch vụ:</span> <span id="booking-service">Dịch vụ chưa được cập nhật</span></p>
+      <p><span class="label">Hình thức:</span> <span id="booking-format">Hình thức chưa được cập nhật</span></p>
+      <p><span class="label">Loại tư vấn:</span> <span id="booking-consultation-type">Loại tư vấn chưa được cập nhật</span></p>
+      <p><span class="label">Lý do:</span> <span id="booking-reason">Lý do chưa được cập nhật</span></p>
+      <p><span class="label">Họ tên:</span> <span id="booking-name">Họ tên chưa được cập nhật</span></p>
+      <p><span class="label">SĐT:</span> <span id="booking-phone">SĐT chưa được cập nhật</span></p>
     </div>
     <div class="note" id="countdown-timer">
       Thời gian còn lại để thanh toán: <span id="timer">05:00</span>
@@ -84,12 +223,80 @@
     <button class="btn-back" id="btn-cancel" type="button">Hủy</button>
     <button class="btn-back" id="btn-download-qr" type="button" style="background-color: #28a745; margin-left: 10px;">Tải mã QR</button>
     <button class="btn-back" id="btn-paid" type="button" style="background-color: #007bff; margin-left: 10px;">Tôi đã thanh toán</button>
+    <button class="btn-back" id="btn-remove-voucher" type="button" style="background-color: #dc3545; margin-left: 10px; display: none;">Xóa voucher</button>
+
+    <!-- Nút dropdown chọn voucher + badge mã đang dùng -->
+    <div style="margin: 20px 0; text-align:center;">
+      <div class="dropdown" style="display:inline-block; position:relative;">
+        <button id="voucher-dropdown-btn" class="btn-back" style="background:#1a3cff; color:#fff; min-width:180px;">Chọn mã giảm giá ▼</button>
+        <span id="current-voucher-badge" style="display:none; margin-left:10px; background:#e0e7ff; color:#1a3cff; border-radius:16px; padding:4px 14px; font-weight:600; font-size:15px; vertical-align:middle;"></span>
+        <div id="voucher-dropdown-list" class="dropdown-list" style="display:none; position:absolute; left:0; top:110%; background:#fff; border:1px solid #e0e7ff; border-radius:8px; box-shadow:0 2px 8px rgba(26,60,255,0.08); min-width:220px; z-index:100;">
+          <div class="dropdown-item" data-code="TU_VAN_VI_THANH_NIEN_10">🎁 Giảm 10% - Tư vấn vị thành niên</div>
+          <div class="dropdown-item" data-code="TU_VAN_SINH_SAN_100K">💰 Giảm 100.000VND - Tư vấn sức khỏe sinh sản</div>
+          <div class="dropdown-item" data-code="GIANG_MAI_20">🧪 Giảm 20% - Xét nghiệm Giang Mai</div>
+          <div class="dropdown-item" data-code="KHACH_LAN_DAU_50K">🎉 Giảm 50.000VND - Dành cho khách lần đầu</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHẦN HIỂN THỊ TỔNG TIỀN -->
+    <div class="payment-summary">
+      <div class="row">
+        <span>Tổng tiền</span>
+        <span id="summary-original" class="bold"></span>
+      </div>
+      <div class="row" id="summary-discount-row" style="display:none;">
+        <span>Giảm giá</span>
+        <span id="summary-discount" class="discount"></span>
+      </div>
+      <div class="row total">
+        <span>Tổng tiền thanh toán</span>
+        <span id="summary-final" class="final"></span>
+      </div>
+    </div>
   </div>
 
   <script>
     // Lấy danh sách lịch đặt, lấy lịch cuối cùng (vừa đặt)
     const danhSach = JSON.parse(localStorage.getItem("lichDat")) || [];
     const lichMoiNhat = danhSach[danhSach.length - 1] || {};
+
+    // Cập nhật thông tin chi tiết lịch đặt
+    document.addEventListener('DOMContentLoaded', function() {
+      const bookingDate = document.getElementById('booking-date');
+      const bookingTime = document.getElementById('booking-time');
+      const bookingService = document.getElementById('booking-service');
+      const bookingFormat = document.getElementById('booking-format');
+      const bookingConsultationType = document.getElementById('booking-consultation-type');
+      const bookingReason = document.getElementById('booking-reason');
+      const bookingName = document.getElementById('booking-name');
+      const bookingPhone = document.getElementById('booking-phone');
+
+      if (lichMoiNhat) {
+        bookingDate.textContent = lichMoiNhat.ngay || "Chưa có thông tin";
+        bookingTime.textContent = lichMoiNhat.gio || "Chưa có thông tin";
+        
+        // Hiển thị dịch vụ và hình thức phù hợp
+        if (lichMoiNhat.dichVu === "Xét Nghiệm") {
+          bookingService.textContent = "Xét nghiệm";
+          bookingFormat.textContent = "Tại cơ sở";
+          bookingConsultationType.textContent = "Không áp dụng";
+        } else if (lichMoiNhat.dichVu === "Tư Vấn") {
+          bookingService.textContent = "Tư Vấn";
+          bookingFormat.textContent = lichMoiNhat.hinhThuc || "Không áp dụng";
+          bookingConsultationType.textContent = lichMoiNhat.loaiTuVan || "Chưa có thông tin";
+        } else {
+          bookingService.textContent = lichMoiNhat.loaiXetNghiem || lichMoiNhat.dichVu || "Chưa có thông tin";
+          bookingFormat.textContent = lichMoiNhat.hinhThuc || "Không áp dụng";
+          bookingConsultationType.textContent = "Không áp dụng";
+        }
+        
+        // Hiển thị lý do từ ghi chú của người dùng
+        bookingReason.textContent = lichMoiNhat.lyDo || "Không có ghi chú";
+        bookingName.textContent = lichMoiNhat.hoTen || "Chưa có thông tin";
+        bookingPhone.textContent = lichMoiNhat.sdt || "Chưa có thông tin";
+      }
+    });
 
     // Lấy số tiền và nội dung
     // Bảng giá giống bên DatlichXetNghiem.html
@@ -104,11 +311,84 @@
       "Sùi mào gà(HPV tuýp nguy cơ thấp)": 240000,
       "Herpes Simplex Virus": 200000,
       "Hạ cam mềm": 170000,
-      "Rận mu": 160000
+      "Rận mu": 160000,
+      "Tư Vấn Trực tiếp": 150000,
+      "Tư Vấn Online": 100000
     };
-    const loai = lichMoiNhat.loaiXetNghiem || "";
-    const soTien = bangGia[loai] || 100000;
+    
+    // Xác định loại dịch vụ và hình thức
+    const dichVu = lichMoiNhat.dichVu || "";
+    const hinhThuc = lichMoiNhat.hinhThuc || "";
+    const loaiXetNghiem = lichMoiNhat.loaiXetNghiem || "";
+    const loaiTuVan = lichMoiNhat.loaiTuVan || "";
+    
+    // Tính toán số tiền dựa trên dịch vụ và hình thức
+    let loai = "";
+    let soTien = 100000; // Giá mặc định
+    let noiDungThanhToan = "THANHTOAN"; // Nội dung mặc định
+    
+    if (dichVu === "Tư Vấn") {
+      if (hinhThuc === "Trực tiếp") {
+        loai = "Tư Vấn Trực tiếp";
+        soTien = bangGia["Tư Vấn Trực tiếp"];
+        noiDungThanhToan = loaiTuVan ? `${loaiTuVan} trực tiếp` : "Tư vấn sức khỏe trực tiếp";
+      } else if (hinhThuc === "Online") {
+        loai = "Tư Vấn Online";
+        soTien = bangGia["Tư Vấn Online"];
+        noiDungThanhToan = loaiTuVan ? `${loaiTuVan} online` : "Tư vấn sức khỏe online";
+      }
+    } else if (loaiXetNghiem) {
+      loai = loaiXetNghiem;
+      soTien = bangGia[loaiXetNghiem] || 100000;
+      noiDungThanhToan = `Xét nghiệm ${loaiXetNghiem}`;
+    }
+    
     const noiDung = loai ? `Thanh toán ${loai}` : "THANHTOAN";
+
+    // Kiểm tra và áp dụng voucher
+    const activeVoucher = localStorage.getItem('activeVoucher');
+    let soTienCuoi = soTien;
+    let voucherApplied = false;
+    let voucherDetails = "";
+
+    if (activeVoucher) {
+      const voucher = JSON.parse(activeVoucher);
+      
+      // Kiểm tra xem voucher có phù hợp với dịch vụ không
+      let canApplyVoucher = false;
+      
+      if (voucher.code === "TU_VAN_VI_THANH_NIEN_10" && dichVu === "Tư Vấn") {
+        canApplyVoucher = true;
+      } else if (voucher.code === "TU_VAN_SINH_SAN_100K" && dichVu === "Tư Vấn") {
+        canApplyVoucher = true;
+      } else if (voucher.code === "GIANG_MAI_20" && loaiXetNghiem === "Giang mai (RPR/TPHA)") {
+        canApplyVoucher = true;
+      } else if (voucher.code === "KHACH_LAN_DAU_50K") {
+        // Kiểm tra xem có phải lần đầu đặt lịch không
+        const lichSu = JSON.parse(localStorage.getItem("lichSuDatLich")) || [];
+        if (lichSu.length === 0) {
+          canApplyVoucher = true;
+        }
+      }
+      
+      if (canApplyVoucher && !voucher.used) {
+        voucherApplied = true;
+        
+        if (voucher.type === "percent") {
+          const discountAmount = Math.round(soTien * (parseInt(voucher.discount) / 100));
+          soTienCuoi = soTien - discountAmount;
+          voucherDetails = `Giảm ${voucher.discount}% (-${discountAmount.toLocaleString('vi-VN')} VNĐ)`;
+        } else if (voucher.type === "fixed") {
+          const discountAmount = parseInt(voucher.discount);
+          soTienCuoi = Math.max(0, soTien - discountAmount);
+          voucherDetails = `Giảm ${discountAmount.toLocaleString('vi-VN')} VNĐ`;
+        }
+        
+        // Đánh dấu voucher đã sử dụng
+        voucher.used = true;
+        localStorage.setItem('activeVoucher', JSON.stringify(voucher));
+      }
+    }
 
     // Hàm loại bỏ dấu tiếng Việt
     function removeVietnameseTones(str) {
@@ -126,14 +406,42 @@
     // Cập nhật số tiền và nội dung trên giao diện
     const infoPs = document.querySelectorAll('.info p');
     if (infoPs.length >= 2) {
-      infoPs[0].innerHTML = `<strong>Số tiền:</strong> ${soTien.toLocaleString('vi-VN')} VNĐ`;
+      infoPs[0].innerHTML = `<strong>Số tiền:</strong> <span id="original-amount">${soTien.toLocaleString('vi-VN')} VNĐ</span>`;
+      
+      // Hiển thị thông tin voucher nếu có
+      if (voucherApplied) {
+        const voucherInfo = document.getElementById('voucher-info');
+        const voucherDetailsSpan = document.getElementById('voucher-details');
+        const finalAmount = document.getElementById('final-amount');
+        const discountedAmount = document.getElementById('discounted-amount');
+        const removeVoucherBtn = document.getElementById('btn-remove-voucher');
+        
+        voucherDetailsSpan.textContent = voucherDetails;
+        discountedAmount.textContent = `${soTienCuoi.toLocaleString('vi-VN')} VNĐ`;
+        
+        voucherInfo.style.display = 'block';
+        finalAmount.style.display = 'block';
+        removeVoucherBtn.style.display = 'inline-block';
+      }
+      
+      const noiDungKhongDau = removeVietnameseTones(noiDungThanhToan);
       infoPs[1].innerHTML = `<strong>Nội dung:</strong> ${noiDungKhongDau}`;
     }
+
+    // Cập nhật nội dung thanh toán trong phần chi tiết
+    document.addEventListener('DOMContentLoaded', function() {
+      const paymentContent = document.getElementById('payment-content');
+      if (paymentContent) {
+        const noiDungKhongDau = removeVietnameseTones(noiDungThanhToan);
+        paymentContent.textContent = noiDungKhongDau;
+      }
+    });
 
     // Cập nhật QR code (nếu API cho phép truyền amount, info)
     const qrImg = document.querySelector('.qr-code img');
     if (qrImg) {
-      qrImg.src = `https://img.vietqr.io/image/970436-123456789-compact.png?amount=${soTien}&addInfo=${encodeURIComponent(noiDungKhongDau)}`;
+      const noiDungKhongDau = removeVietnameseTones(noiDungThanhToan);
+      qrImg.src = `https://img.vietqr.io/image/970436-123456789-compact.png?amount=${soTienCuoi}&addInfo=${encodeURIComponent(noiDungKhongDau)}`;
     }
 
     // Đếm ngược 5 phút
@@ -193,9 +501,152 @@
         localStorage.setItem("lichSuDatLich", JSON.stringify(lichSu));
       }
 
+      // Đánh dấu voucher đã được sử dụng sau khi thanh toán thành công
+      const activeVoucher = localStorage.getItem('activeVoucher');
+      if (activeVoucher) {
+        const voucher = JSON.parse(activeVoucher);
+        voucher.used = true;
+        localStorage.setItem('activeVoucher', JSON.stringify(voucher));
+      }
+
       alert('Thanh toán thành công!');
       window.location.href = 'Thanhcongdatlich.html';
     };
+
+    // Xử lý nút xóa voucher
+    document.getElementById('btn-remove-voucher').onclick = function() {
+      if (confirm('Bạn có chắc muốn xóa voucher này?')) {
+        localStorage.removeItem('activeVoucher');
+
+        // Ẩn các dòng voucher
+        document.getElementById('voucher-info').style.display = 'none';
+        document.getElementById('final-amount').style.display = 'none';
+        this.style.display = 'none';
+
+        // Lấy lại thông tin booking
+        const danhSach = JSON.parse(localStorage.getItem("lichDat")) || [];
+        const lichMoiNhat = danhSach[danhSach.length - 1] || {};
+
+        // Bảng giá
+        const bangGia = {
+          "HIV Ag/Ab combo (HIV test thế hệ 4)": 200000,
+          "Giang mai (RPR/TPHA)": 180000,
+          "Lậu (PCR hoặc nhuộm soi)": 220000,
+          "Chlamydia(PCR)": 210000,
+          "HPV": 250000,
+          "Virus Zika": 230000,
+          "Pap smear": 190000,
+          "Sùi mào gà(HPV tuýp nguy cơ thấp)": 240000,
+          "Herpes Simplex Virus": 200000,
+          "Hạ cam mềm": 170000,
+          "Rận mu": 160000,
+          "Tư Vấn Trực tiếp": 150000,
+          "Tư Vấn Online": 100000
+        };
+
+        let soTien = 100000;
+        let noiDungThanhToan = "THANHTOAN";
+        let dichVu = lichMoiNhat.dichVu || "";
+        let hinhThuc = lichMoiNhat.hinhThuc || "";
+        let loaiXetNghiem = lichMoiNhat.loaiXetNghiem || "";
+        let loaiTuVan = lichMoiNhat.loaiTuVan || "";
+
+        if (dichVu === "Tư Vấn") {
+          if (hinhThuc === "Trực tiếp") {
+            soTien = bangGia["Tư Vấn Trực tiếp"];
+            noiDungThanhToan = loaiTuVan ? `${loaiTuVan} trực tiếp` : "Tư vấn sức khỏe trực tiếp";
+          } else if (hinhThuc === "Online") {
+            soTien = bangGia["Tư Vấn Online"];
+            noiDungThanhToan = loaiTuVan ? `${loaiTuVan} online` : "Tư vấn sức khỏe online";
+          }
+        } else if (loaiXetNghiem) {
+          soTien = bangGia[loaiXetNghiem] || 100000;
+          noiDungThanhToan = `Xét nghiệm ${loaiXetNghiem}`;
+        }
+
+        // Cập nhật số tiền và nội dung
+        document.getElementById('original-amount').textContent = soTien.toLocaleString('vi-VN') + " VNĐ";
+        document.getElementById('payment-content').textContent = removeVietnameseTones(noiDungThanhToan);
+
+        // Cập nhật QR code
+        const qrImg = document.querySelector('.qr-code img');
+        if (qrImg) {
+          qrImg.src = `https://img.vietqr.io/image/970436-123456789-compact.png?amount=${soTien}&addInfo=${encodeURIComponent(removeVietnameseTones(noiDungThanhToan))}`;
+        }
+      }
+    };
+
+    // Dropdown voucher
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn = document.getElementById('voucher-dropdown-btn');
+      const list = document.getElementById('voucher-dropdown-list');
+      btn.onclick = function(e) {
+        e.stopPropagation();
+        list.style.display = (list.style.display === 'block') ? 'none' : 'block';
+      };
+      document.body.addEventListener('click', function() {
+        list.style.display = 'none';
+      });
+      document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.onclick = function(e) {
+          e.stopPropagation();
+          const code = this.dataset.code;
+          const voucherMap = {
+            "TU_VAN_VI_THANH_NIEN_10": {label: "🎁 Giảm 10% - Tư vấn vị thành niên", discount: 10, type: "percent"},
+            "TU_VAN_SINH_SAN_100K": {label: "💰 Giảm 100.000VND - Tư vấn sức khỏe sinh sản", discount: 100000, type: "fixed"},
+            "GIANG_MAI_20": {label: "🧪 Giảm 20% - Xét nghiệm Giang Mai", discount: 20, type: "percent"},
+            "KHACH_LAN_DAU_50K": {label: "🎉 Giảm 50.000VND - Dành cho khách lần đầu", discount: 50000, type: "fixed"}
+          };
+          const v = voucherMap[code];
+          if (!v) return;
+          localStorage.setItem('activeVoucher', JSON.stringify({
+            code: code,
+            discount: v.discount,
+            type: v.type,
+            appliedAt: new Date().toISOString(),
+            used: false
+          }));
+          list.style.display = 'none';
+          location.reload();
+        };
+      });
+    });
+
+    // Hiển thị badge mã giảm giá đang dùng cạnh nút dropdown
+    document.addEventListener('DOMContentLoaded', function() {
+      const badge = document.getElementById('current-voucher-badge');
+      const voucherMap = {
+        "TU_VAN_VI_THANH_NIEN_10": "🎁 Giảm 10% - Tư vấn vị thành niên",
+        "TU_VAN_SINH_SAN_100K": "💰 Giảm 100.000VND - Tư vấn sức khỏe sinh sản",
+        "GIANG_MAI_20": "🧪 Giảm 20% - Xét nghiệm Giang Mai",
+        "KHACH_LAN_DAU_50K": "🎉 Giảm 50.000VND - Dành cho khách lần đầu"
+      };
+      const v = localStorage.getItem('activeVoucher');
+      if (v) {
+        const code = JSON.parse(v).code;
+        badge.textContent = voucherMap[code] || code;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+    });
+
+    // Cập nhật tổng tiền, giảm giá, tổng tiền thanh toán
+    document.addEventListener('DOMContentLoaded', function() {
+      const summaryOriginal = document.getElementById('summary-original');
+      const summaryDiscount = document.getElementById('summary-discount');
+      const summaryFinal = document.getElementById('summary-final');
+
+      if (voucherApplied) {
+        summaryOriginal.textContent = soTien.toLocaleString('vi-VN');
+        summaryDiscount.textContent = `-${(soTien - soTienCuoi).toLocaleString('vi-VN')}`;
+        summaryFinal.textContent = soTienCuoi.toLocaleString('vi-VN');
+      } else {
+        summaryOriginal.textContent = soTien.toLocaleString('vi-VN');
+        summaryDiscount.textContent = '';
+        summaryFinal.textContent = soTien.toLocaleString('vi-VN');
+      }
+    });
   </script>
 </body>
 

@@ -107,8 +107,9 @@
         <label>Số điện thoại <span>*</span></label>
         <input type="tel" id="sdt" required>
 
-        <label>Ngày xét nghiệm <span>*</span></label>
+        <label>Ngày tháng năm <span>*</span></label>
         <input type="date" id="ngay" required>
+        <div id="selectedDateDisplay" style="margin-top: 5px; color: #10B981; font-size: 14px; font-weight: 500;"></div>
 
         <label>Giờ xét nghiệm <span>*</span></label>
         <input type="time" id="gio" required>
@@ -140,24 +141,70 @@
   <script>
     // Tự động điền dữ liệu nếu có
     document.addEventListener("DOMContentLoaded", function () {
-      document.getElementById("hoten").value = localStorage.getItem("tempHoTen") || "";
-      document.getElementById("sdt").value = localStorage.getItem("tempSDT") || "";
+      const tempHoTen = localStorage.getItem("tempHoTen");
+      const tempSDT = localStorage.getItem("tempSDT");
+      
+      if (tempHoTen) {
+        document.getElementById("hoten").value = tempHoTen;
+      }
+      if (tempSDT) {
+        document.getElementById("sdt").value = tempSDT;
+      }
+      
+      // Giới hạn ngày chỉ cho phép chọn từ hiện tại trở đi (tương lai)
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("ngay").setAttribute("min", today);
+      
+      // Thêm event listener để hiển thị ngày đã chọn
+      const ngayInput = document.getElementById("ngay");
+      const dateDisplay = document.getElementById("selectedDateDisplay");
+      
+      ngayInput.addEventListener("change", function() {
+        if (this.value) {
+          const formattedDate = formatDate(this.value);
+          dateDisplay.textContent = `Ngày đã chọn: ${formattedDate}`;
+        } else {
+          dateDisplay.textContent = "";
+        }
+      });
     });
+
+    // Hàm chuyển đổi ngày sang định dạng dd/mm/yyyy
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear(); // Lấy đầy đủ 4 chữ số năm
+      return `${day}/${month}/${year}`;
+    }
 
     function handleTestBooking(event) {
       event.preventDefault();
 
       const hoTen = document.getElementById("hoten").value;
       const sdt = document.getElementById("sdt").value;
-      const ngay = document.getElementById("ngay").value;
+      const ngayInput = document.getElementById("ngay").value;
       const gio = document.getElementById("gio").value;
       const loai = document.getElementById("loaiXetNghiem").value;
       const ghiChu = document.getElementById("ghichu").value;
 
-      if (!hoTen || !sdt || !ngay || !gio || !loai) {
+      if (!hoTen || !sdt || !ngayInput || !gio || !loai) {
         alert("Vui lòng điền đầy đủ thông tin bắt buộc.");
         return false;
       }
+
+      // Kiểm tra ngày đã chọn có phải là ngày trong quá khứ không
+      const selectedDate = new Date(ngayInput);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Đặt giờ về 00:00:00 để so sánh chỉ ngày
+      
+      if (selectedDate < today) {
+        alert("Không thể đặt lịch cho ngày trong quá khứ. Vui lòng chọn ngày từ hôm nay trở đi.");
+        return false;
+      }
+
+      // Chuyển đổi ngày sang định dạng dd/mm/yyyy
+      const ngay = formatDate(ngayInput);
 
       const lich = {
         hoTen,

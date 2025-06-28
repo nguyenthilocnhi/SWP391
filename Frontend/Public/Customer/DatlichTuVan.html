@@ -118,6 +118,7 @@
 
         <label>Ngày tư vấn <span>*</span></label>
         <input type="date" id="ngay" required>
+        <div id="selectedDateDisplay" style="margin-top: 5px; color: #10B981; font-size: 14px; font-weight: 500;"></div>
 
         <label>Giờ tư vấn <span>*</span></label>
         <input type="time" id="gio" required>
@@ -126,6 +127,19 @@
         <select id="hinhThuc">
           <option value="Trực tiếp">Trực tiếp</option>
           <option value="Online">Online</option>
+        </select>
+
+        <label>Loại tư vấn <span>*</span></label>
+        <select id="loaiTuVan" required>
+          <option value="">-- Chọn loại tư vấn --</option>
+          <option value="Tư vấn trước khi làm xét nghiệm STI">Tư vấn trước khi làm xét nghiệm STI</option>
+          <option value="Tư vấn sau khi nhận kết quả xét nghiệm">Tư vấn sau khi nhận kết quả xét nghiệm</option>
+          <option value="Tư vấn xét nghiệm định kỳ">Tư vấn xét nghiệm định kỳ</option>
+          <option value="Tư vấn lựa chọn gói xét nghiệm phù hợp">Tư vấn lựa chọn gói xét nghiệm phù hợp</option>
+          <option value="Tư vấn cho cặp đôi trước QHTD không bao">Tư vấn cho cặp đôi trước QHTD không bao</option>
+          <option value="Tư vấn sức khỏe sinh sản">Tư vấn sức khỏe sinh sản</option>
+          <option value="Tư vấn tình dục an toàn">Tư vấn tình dục an toàn</option>
+          <option value="Tư vấn dậy thì và sức khỏe giới tính cho thanh thiếu niên">Tư vấn dậy thì và sức khỏe giới tính cho thanh thiếu niên</option>
         </select>
 
         <label>Ghi chú / Lý do</label>
@@ -141,17 +155,57 @@
   document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("hoten").value = localStorage.getItem("tempHoTen") || "";
     document.getElementById("sdt").value = localStorage.getItem("tempSDT") || "";
+    
+    // Giới hạn ngày chỉ cho phép chọn từ hiện tại trở đi (tương lai)
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById("ngay").setAttribute("min", today);
+    
+    // Thêm event listener để hiển thị ngày đã chọn
+    const ngayInput = document.getElementById("ngay");
+    const dateDisplay = document.getElementById("selectedDateDisplay");
+    
+    ngayInput.addEventListener("change", function() {
+      if (this.value) {
+        const formattedDate = formatDate(this.value);
+        dateDisplay.textContent = `Ngày đã chọn: ${formattedDate}`;
+      } else {
+        dateDisplay.textContent = "";
+      }
+    });
   });
+
+  // Hàm chuyển đổi ngày sang định dạng dd/mm/yyyy
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
 
   function handleConsultationSubmit(event) {
     event.preventDefault();
 
     const hoTen = document.getElementById("hoten").value;
     const sdt = document.getElementById("sdt").value;
-    const ngay = document.getElementById("ngay").value;
+    const ngayInput = document.getElementById("ngay").value;
     const gio = document.getElementById("gio").value;
     const hinhThuc = document.getElementById("hinhThuc").value;
+    const loaiTuVan = document.getElementById("loaiTuVan").value;
     const ghiChu = document.getElementById("ghichu").value;
+
+    // Kiểm tra ngày đã chọn có phải là ngày trong quá khứ không
+    const selectedDate = new Date(ngayInput);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Đặt giờ về 00:00:00 để so sánh chỉ ngày
+    
+    if (selectedDate < today) {
+      alert("Không thể đặt lịch cho ngày trong quá khứ. Vui lòng chọn ngày từ hôm nay trở đi.");
+      return false;
+    }
+
+    // Chuyển đổi ngày sang định dạng dd/mm/yyyy
+    const ngay = formatDate(ngayInput);
 
     // 👉 Tạo link Google Meet nếu chọn "Online"
     let googleMeetLink = "";
@@ -169,6 +223,7 @@
       ngay,
       gio,
       hinhThuc,
+      loaiTuVan,
       dichVu: "Tư Vấn",
       lyDo: ghiChu,
       trangThai: "Chờ xử lý"
@@ -182,11 +237,9 @@
     localStorage.removeItem("tempHoTen");
     localStorage.removeItem("tempSDT");
 
-    alert("Đặt lịch tư vấn thành công!");
-    window.location.href = "Thanhcongdatlich.html";
+    window.location.href = "popup-payment.html";
   }
 </script>
-
 
 </body>
 
