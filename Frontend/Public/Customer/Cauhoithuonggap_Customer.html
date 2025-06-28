@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Câu hỏi thường gặp</title>
+    <link rel="stylesheet" href="/Frontend/assets/css/cauhoithuonggap.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- Gọi file header và khởi động JS sau khi chèn xong -->
+    <!-- GỌI HEADER -->
+    <div id="header-placeholder"></div>
+    <script>
+        fetch('/Frontend/components/header_customer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-placeholder").innerHTML = data;
+
+                // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+                if (typeof initHeader === 'function') {
+                    initHeader();
+                }
+            });
+    </script>
+    <script src="/Frontend/assets/js/header_customer.js"></script>
+
+    <!-- tạo 1 nhãn thông báo -->
+    <div id="alert-box" class="alert-box hidden">
+        <p id="alert-message">Bạn có thông báo mới!</p>
+        <span id="alert-close">&times;</span>
+    </div>
+
+    <section class="faq-container">
+        <h2><span class="highlight">Câu Hỏi</span> Thường Gặp?</h2>
+
+        <details>
+            <summary>Có những dịch vụ nào tại An Giới</summary>
+            <div class="faq-answer">
+                Tại An Giới bạn có thể sử dụng dịch vụ xét nghiệm STIs và dịch vụ tư vấn sức khỏe giới tính.
+        </details>
+
+        <details>
+            <summary>An Giới có làm việc vào cuối tuần/ngày lễ</summary>
+            <div class="faq-answer">
+                Giờ hoạt động của An Giới là từ 7:00 sáng đến 17:00 chiều. Đối với ngày lễ An
+                Giới sẽ có thông báo cụ thể.
+            </div>
+        </details>
+
+        <details>
+            <summary>Làm sao để xem được kết quả xét nghiệm</summary>
+            <div class="faq-answer">
+                Kết quả xét nghiệm sẽ tùy thuộc vào dich vụ xét nghiệm của bạn, bạn có kiểm tra tại "Kết quả xét nghiệm"
+                trên hệ thống.
+            </div>
+        </details>
+
+        <details>
+            <summary>Trung tâm xét nghiệm những bệnh lây qua đường tình dục nào?</summary>
+            <div class="faq-answer">
+                1. HIV
+                2. Giang mai (Syphilis)
+                3. Lậu (Gonorrhea)
+                4. Chlamydia
+                5. Viêm gan B (HBV) và Viêm gan C (HCV)
+                6. Herpes sinh dục (HSV-1, HSV-2)
+                7. HPV (Human Papillomavirus)
+                8. Nấm Candida, Trùng roi Trichomonas, Vi khuẩn Gardnerella
+                9. Xét nghiệm tổng quát vi sinh đường sinh dục
+            </div>
+        </details>
+
+        <details>
+            <summary>Tôi có cần mang theo giấy tờ gì khi đến xét nghiệm</summary>
+            <div class="faq-answer">
+                Không cần. Bạn chỉ cần xác minh thông tin đặt lịch với nhân viên tại trung tâm.
+            </div>
+        </details>
+
+        <details>
+            <summary>Bao lâu sau quan hệ không an toàn thì nên đi xét nghiệm?</summary>
+            <div class="faq-answer">
+                Tùy từng loại bệnh, nhưng thường từ 2 tuần đến 3 tháng. Trung tâm sẽ tư vấn thời điểm xét nghiệm phù hợp
+                nhất.
+            </div>
+        </details>
+
+        <details>
+            <summary>Tôi chưa đủ 18 tuổi, có được khám sức khỏe tình dục riêng không?</summary>
+            <div class="faq-answer">
+                Có. Trung tâm hỗ trợ tư vấn và khám riêng tư cho vị thành niên, theo đúng quy định pháp luật.
+            </div>
+        </details>
+
+        <details>
+            <summary>Chi phí khám và xét nghiệm tại trung tâm là bao nhiêu?</summary>
+            <div class="faq-answer">
+                Mức phí linh hoạt theo từng dịch vụ. Trung tâm có bảng giá rõ ràng tại mục "Dịch vụ".
+            </div>
+        </details>
+
+        <details>
+            <summary>Có thể hẹn tư vấn riêng mà không cần xét nghiệm không?</summary>
+            <div class="faq-answer">
+                Có. Bạn chỉ cần đặt lịch tư vấn tại "Đặt dịch vụ"
+            </div>
+        </details>
+
+        <details>
+            <summary>Trung tâm có giải thích rõ ý nghĩa kết quả xét nghiệm cho tôi không?</summary>
+            <div class="faq-answer">
+                Có. Kết quả sẽ được ghi rõ ràng kèm theo lời khuyên của bác sĩ thực hiện xét nghiệm.
+            </div>
+        </details>
+
+    </section>
+
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('/Frontend/components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-placeholder").innerHTML = data;
+            });
+    </script>
+
+</body>
+
+</html>
