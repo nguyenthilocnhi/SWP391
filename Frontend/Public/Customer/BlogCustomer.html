@@ -154,7 +154,7 @@
       displayBlogsByPage(filtered, 1);
     }
 
-    fetch('/Frontend/assets/data/blogs.json')
+    fetch('/Frontend/assets/data/blogsCustomer.json')
       .then(res => res.json())
       .then(data => {
         // Chuyển đổi 'x ngày/tuần/tháng trước' thành số (days ago)
