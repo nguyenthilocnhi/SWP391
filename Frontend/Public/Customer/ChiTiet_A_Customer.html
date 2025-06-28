@@ -4,21 +4,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ThS. Lê Nhã B | An Giới Health</title>
+  <title>TS. Lý Minh A | An Giới Health</title>
   <link rel="stylesheet" href="/Frontend/assets/css/chitiettuvanvien.css" />
 </head>
 
 <body>
-  <!-- Header -->
+  <!-- gọi header -->
   <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_customer.html')
-      .then(res => res.text())
+      .then(response => response.text())
       .then(data => {
-        document.getElementById('header-placeholder').innerHTML = data;
-        if (typeof initHeader === 'function') initHeader();
+        document.getElementById("header-placeholder").innerHTML = data;
+
+        // Kích hoạt lại các <script> bên trong file header_customer.html nếu có
+        const scripts = document.querySelectorAll('#header-placeholder script');
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
       });
   </script>
+
+  <!-- sau khi called header thị nhớ căng nd ở dưới dùng margin-top: 12px -->
 
   <div class="container">
     <div class="breadcrumb">
@@ -26,47 +39,52 @@
     </div>
 
     <div class="profile-header">
-      <img src="https://i.postimg.cc/fWf637Mm/L-Nh.png" alt="ThS. Lê Nhã B" />
+      <img src="https://i.postimg.cc/RZ5fjtnp/L-Minh.png" alt="TS. Lý Minh A" />
       <div class="profile-info">
-        <h1>ThS. Lê Nhã B</h1>
-        <p><strong>Chức danh:</strong> Tư vấn sinh lý nam</p>
-        <p><strong>Kinh nghiệm:</strong> 7 năm</p>
-        <p><strong>Trường đào tạo:</strong> ĐH Y Dược Huế (2010 – 2018)</p>
-        <a href="/Frontend/Public/Customer/datlich.html" class="btn-book">Đặt lịch hẹn</a>
+        <h1>TS. Lý Minh A</h1>
+        <p><strong>Chức danh:</strong> Tư vấn chuyên khoa sinh lý nam</p>
+        <p><strong>Kinh nghiệm:</strong> 8 năm</p>
+        <p><strong>Trường đào tạo:</strong> ĐH Y Dược TPHCM (2009 – 2017)</p>
       </div>
     </div>
 
     <h2 class="section-title">Giới thiệu</h2>
     <p>
-      Thạc sĩ Lê Nhã B là một chuyên gia uy tín trong lĩnh vực tư vấn sinh lý nam, với kinh nghiệm lâm sàng và tư vấn thực tế hơn 7 năm tại các trung tâm sức khỏe lớn. Anh được biết đến với phong cách tư vấn thẳng thắn, cởi mở nhưng vẫn khoa học và mang tính giáo dục cao.
+      TS. Lý Minh A là chuyên gia trong lĩnh vực sinh lý nam giới và nội tiết nam, với gần một thập kỷ kinh nghiệm trong
+      nghiên cứu, điều trị và tư vấn. Anh nổi bật với khả năng kết hợp giữa kiến thức y học hiện đại và phương pháp tiếp
+      cận tâm lý cá nhân hóa để hỗ trợ bệnh nhân hiệu quả.
     </p>
     <p>
-      Sau khi tốt nghiệp Đại học Y Dược Huế, ThS. B đã tham gia chương trình đào tạo chuyên sâu về nam khoa tại Singapore và Nhật Bản, tập trung vào các vấn đề rối loạn sinh lý, suy giảm nội tiết tố nam và sức khỏe sinh sản nam giới trong độ tuổi từ 18–45.
+      Sau khi tốt nghiệp Bác sĩ Y khoa tại ĐH Y Dược TP.HCM, TS. A đã học chuyên sâu về nam khoa và nội tiết nam tại các
+      cơ sở đào tạo quốc tế, trong đó có các chương trình trao đổi học thuật tại Hàn Quốc và Đức. Anh đặc biệt quan tâm
+      đến các vấn đề như rối loạn cương, hormone nam, mãn dục nam và vô sinh.
     </p>
     <p>
-      Hiện tại, anh công tác tại An Giới Health Center với vai trò chuyên viên tư vấn chính trong lĩnh vực sinh lý nam và sức khỏe giới tính nam giới, đặc biệt là các chương trình phục hồi sinh lý sau stress, áp lực công việc hoặc thay đổi nội tiết.
+      Hiện nay, TS. A là một trong những chuyên gia chính tại An Giới Health Center, nơi anh tham gia tư vấn, lên kế
+      hoạch điều trị cho bệnh nhân và tham gia vào các dự án giáo dục cộng đồng về sức khỏe sinh lý nam giới.
     </p>
 
     <h2 class="section-title">Chuyên môn tư vấn</h2>
 
     <h3>Chứng chỉ</h3>
     <ul class="custom-list">
-      <li>Chứng chỉ chuyên sâu về Nam khoa – Trường ĐH Quốc gia Singapore, 2019</li>
-      <li>Khóa học Nội tiết tố nam – Đại học Tokyo, Nhật Bản, 2021</li>
-      <li>Chứng chỉ Tư vấn tâm lý nam giới trẻ – Tổ chức UNFPA Việt Nam, 2020</li>
+      <li>Chứng chỉ Nam khoa lâm sàng – ĐH Y Dược TP.HCM, 2016</li>
+      <li>Đào tạo Nội tiết nam – Đại học Ulsan (Hàn Quốc), 2018</li>
+      <li>Chứng chỉ tư vấn điều trị mãn dục nam – Hiệp hội Nội tiết châu Á, 2019</li>
     </ul>
 
     <h3>Bằng cấp</h3>
     <ul class="custom-list">
-      <li>Bác sĩ đa khoa – ĐH Y Dược Huế, 2010 – 2016</li>
-      <li>Thạc sĩ Y học giới tính nam – Học viện Y học Quốc gia, 2016 – 2018</li>
+      <li>Bác sĩ Y khoa – ĐH Y Dược TP.HCM, 2009 – 2015</li>
+      <li>Thạc sĩ Y học nam khoa – Viện Y học Việt – Đức, 2015 – 2017</li>
+      <li>Tiến sĩ Y học nội tiết – Viện Y học TP.HCM, 2018 – 2022</li>
     </ul>
 
     <h2 class="section-title">Thành tựu nổi bật</h2>
     <ul class="custom-list">
-      <li>Chuyên gia đồng hành trong chương trình "Hiểu đúng về nam giới" của Đài Truyền hình Việt Nam</li>
-      <li>Tác giả sách "Bí mật sinh lý nam tuổi 30+" – tái bản lần 2 năm 2023</li>
-      <li>Được mời làm chuyên gia khách mời tại hơn 20 hội thảo y học giới tính tại Việt Nam & Singapore</li>
+      <li>Thành viên chính của nhóm nghiên cứu "Nội tiết và sinh lý nam giới Việt Nam"</li>
+      <li>Đại diện Việt Nam tại Diễn đàn Nội tiết châu Á – 2022</li>
+      <li>Giảng viên chuyên đề "Chăm sóc sinh lý nam toàn diện" – ĐH Y khoa Phạm Ngọc Thạch</li>
     </ul>
   </div>
 
@@ -160,11 +178,11 @@
     }
 
     // Chờ header load xong rồi khởi tạo các chức năng
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       // Đợi một chút để header load xong
       setTimeout(initHeaderFunctions, 100);
     });
   </script>
 </body>
 
-</html> 
+</html>

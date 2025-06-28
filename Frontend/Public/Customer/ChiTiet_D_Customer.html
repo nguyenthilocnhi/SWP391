@@ -9,16 +9,29 @@
 </head>
 
 <body>
-  <!-- Header -->
+  <!-- gọi header -->
   <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_customer.html')
-      .then(res => res.text())
+      .then(response => response.text())
       .then(data => {
-        document.getElementById('header-placeholder').innerHTML = data;
-        if (typeof initHeader === 'function') initHeader();
+        document.getElementById("header-placeholder").innerHTML = data;
+
+        // Kích hoạt lại các <script> bên trong file header_customer.html nếu có
+        const scripts = document.querySelectorAll('#header-placeholder script');
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
       });
   </script>
+
+  <!-- sau khi called header thị nhớ căng nd ở dưới dùng margin-top: 12px -->
 
   <div class="container">
     <div class="breadcrumb">
@@ -32,19 +45,23 @@
         <p><strong>Chức danh:</strong> Tư vấn sinh lý vị thành niên</p>
         <p><strong>Kinh nghiệm:</strong> 5 năm</p>
         <p><strong>Trường đào tạo:</strong> ĐH Y Cần Thơ (2012 – 2020)</p>
-        <a href="/Frontend/Public/Customer/datlich.html" class="btn-book">Đặt lịch hẹn</a>
       </div>
     </div>
 
     <h2 class="section-title">Giới thiệu</h2>
     <p>
-      Thạc sĩ Nguyễn Minh D là chuyên gia tư vấn sinh lý vị thành niên với hơn 5 năm kinh nghiệm trong lĩnh vực giáo dục giới tính và tư vấn tâm lý cho thanh thiếu niên. Anh được biết đến với phong cách tư vấn gần gũi, thân thiện và phù hợp với lứa tuổi vị thành niên.
+      Thạc sĩ Nguyễn Minh D là chuyên gia tư vấn sinh lý vị thành niên với hơn 5 năm kinh nghiệm trong lĩnh vực giáo dục
+      giới tính và tư vấn tâm lý cho thanh thiếu niên. Anh được biết đến với phong cách tư vấn gần gũi, thân thiện và
+      phù hợp với lứa tuổi vị thành niên.
     </p>
     <p>
-      Sau khi tốt nghiệp Đại học Y Cần Thơ, ThS. D đã tham gia các chương trình đào tạo chuyên sâu về tâm lý học vị thành niên và giáo dục giới tính tại các tổ chức quốc tế, tập trung vào việc hỗ trợ thanh thiếu niên trong giai đoạn dậy thì và phát triển tâm sinh lý.
+      Sau khi tốt nghiệp Đại học Y Cần Thơ, ThS. D đã tham gia các chương trình đào tạo chuyên sâu về tâm lý học vị
+      thành niên và giáo dục giới tính tại các tổ chức quốc tế, tập trung vào việc hỗ trợ thanh thiếu niên trong giai
+      đoạn dậy thì và phát triển tâm sinh lý.
     </p>
     <p>
-      Hiện tại, anh công tác tại An Giới Health Center với vai trò chuyên viên tư vấn chính trong lĩnh vực sinh lý vị thành niên, đặc biệt là các chương trình giáo dục sức khỏe học đường và tư vấn tâm lý cho thanh thiếu niên.
+      Hiện tại, anh công tác tại An Giới Health Center với vai trò chuyên viên tư vấn chính trong lĩnh vực sinh lý vị
+      thành niên, đặc biệt là các chương trình giáo dục sức khỏe học đường và tư vấn tâm lý cho thanh thiếu niên.
     </p>
 
     <h2 class="section-title">Chuyên môn tư vấn</h2>
@@ -160,11 +177,11 @@
     }
 
     // Chờ header load xong rồi khởi tạo các chức năng
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       // Đợi một chút để header load xong
       setTimeout(initHeaderFunctions, 100);
     });
   </script>
 </body>
 
-</html> 
+</html>

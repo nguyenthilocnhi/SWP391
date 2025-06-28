@@ -4,21 +4,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ThS. Phạm Thị M | An Giới Health</title>
+  <title>ThS. Lê Nhã B | An Giới Health</title>
   <link rel="stylesheet" href="/Frontend/assets/css/chitiettuvanvien.css" />
 </head>
 
 <body>
-  <!-- Header -->
+  <!-- gọi header -->
   <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_customer.html')
-      .then(res => res.text())
+      .then(response => response.text())
       .then(data => {
-        document.getElementById('header-placeholder').innerHTML = data;
-        if (typeof initHeader === 'function') initHeader();
+        document.getElementById("header-placeholder").innerHTML = data;
+
+        // Kích hoạt lại các <script> bên trong file header_customer.html nếu có
+        const scripts = document.querySelectorAll('#header-placeholder script');
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
       });
   </script>
+
+  <!-- sau khi called header thị nhớ căng nd ở dưới dùng margin-top: 12px -->
 
   <div class="container">
     <div class="breadcrumb">
@@ -26,47 +39,46 @@
     </div>
 
     <div class="profile-header">
-      <img src="https://i.postimg.cc/Kz4qs1Kw/Nguy-n-Minh.jpg" alt="ThS. Phạm Thị M" />
+      <img src="https://i.postimg.cc/fWf637Mm/L-Nh.png" alt="ThS. Lê Nhã B" />
       <div class="profile-info">
-        <h1>ThS. Phạm Thị M</h1>
-        <p><strong>Chức danh:</strong> Tư vấn dinh dưỡng</p>
-        <p><strong>Kinh nghiệm:</strong> 6 năm</p>
-        <p><strong>Trường đào tạo:</strong> ĐH Y Dược TP.HCM (2012 – 2018)</p>
-        <a href="/Frontend/Public/Customer/datlich.html" class="btn-book">Đặt lịch hẹn</a>
+        <h1>ThS. Lê Nhã B</h1>
+        <p><strong>Chức danh:</strong> Tư vấn sinh lý nam</p>
+        <p><strong>Kinh nghiệm:</strong> 7 năm</p>
+        <p><strong>Trường đào tạo:</strong> ĐH Y Dược Huế (2010 – 2018)</p>
       </div>
     </div>
 
     <h2 class="section-title">Giới thiệu</h2>
     <p>
-      Thạc sĩ Phạm Thị M là chuyên gia tư vấn dinh dưỡng với hơn 6 năm kinh nghiệm trong lĩnh vực dinh dưỡng học và tư vấn chế độ ăn uống. Chị được biết đến với chuyên môn sâu về dinh dưỡng cho các đối tượng khác nhau và tư vấn chế độ ăn uống khoa học.
+      Thạc sĩ Lê Nhã B là một chuyên gia uy tín trong lĩnh vực tư vấn sinh lý nam, với kinh nghiệm lâm sàng và tư vấn thực tế hơn 7 năm tại các trung tâm sức khỏe lớn. Anh được biết đến với phong cách tư vấn thẳng thắn, cởi mở nhưng vẫn khoa học và mang tính giáo dục cao.
     </p>
     <p>
-      Sau khi tốt nghiệp Đại học Y Dược TP.HCM, ThS. M đã tham gia các chương trình đào tạo chuyên sâu về dinh dưỡng học và tư vấn dinh dưỡng tại các tổ chức quốc tế, tập trung vào việc tư vấn chế độ ăn uống cho các đối tượng khác nhau.
+      Sau khi tốt nghiệp Đại học Y Dược Huế, ThS. B đã tham gia chương trình đào tạo chuyên sâu về nam khoa tại Singapore và Nhật Bản, tập trung vào các vấn đề rối loạn sinh lý, suy giảm nội tiết tố nam và sức khỏe sinh sản nam giới trong độ tuổi từ 18–45.
     </p>
     <p>
-      Hiện tại, chị công tác tại An Giới Health Center với vai trò chuyên viên tư vấn chính trong lĩnh vực dinh dưỡng, đặc biệt là các chương trình tư vấn chế độ ăn uống và dinh dưỡng cho sức khỏe.
+      Hiện tại, anh công tác tại An Giới Health Center với vai trò chuyên viên tư vấn chính trong lĩnh vực sinh lý nam và sức khỏe giới tính nam giới, đặc biệt là các chương trình phục hồi sinh lý sau stress, áp lực công việc hoặc thay đổi nội tiết.
     </p>
 
     <h2 class="section-title">Chuyên môn tư vấn</h2>
 
     <h3>Chứng chỉ</h3>
     <ul class="custom-list">
-      <li>Chứng chỉ Dinh dưỡng học – ĐH Y Dược TP.HCM, 2018</li>
-      <li>Khóa học Tư vấn dinh dưỡng lâm sàng – Viện Dinh dưỡng Quốc gia, 2019</li>
-      <li>Chứng chỉ Dinh dưỡng thể thao – Học viện Y học thể thao, 2020</li>
+      <li>Chứng chỉ chuyên sâu về Nam khoa – Trường ĐH Quốc gia Singapore, 2019</li>
+      <li>Khóa học Nội tiết tố nam – Đại học Tokyo, Nhật Bản, 2021</li>
+      <li>Chứng chỉ Tư vấn tâm lý nam giới trẻ – Tổ chức UNFPA Việt Nam, 2020</li>
     </ul>
 
     <h3>Bằng cấp</h3>
     <ul class="custom-list">
-      <li>Bác sĩ đa khoa – ĐH Y Dược TP.HCM, 2012 – 2018</li>
-      <li>Thạc sĩ Dinh dưỡng học – ĐH Y Dược TP.HCM, 2018 – 2020</li>
+      <li>Bác sĩ đa khoa – ĐH Y Dược Huế, 2010 – 2016</li>
+      <li>Thạc sĩ Y học giới tính nam – Học viện Y học Quốc gia, 2016 – 2018</li>
     </ul>
 
     <h2 class="section-title">Thành tựu nổi bật</h2>
     <ul class="custom-list">
-      <li>Thành viên Ban chuyên môn Hội Dinh dưỡng Việt Nam</li>
-      <li>Diễn giả các hội thảo về dinh dưỡng tại các tỉnh miền Nam</li>
-      <li>Tác giả nhiều bài báo khoa học về dinh dưỡng học</li>
+      <li>Chuyên gia đồng hành trong chương trình "Hiểu đúng về nam giới" của Đài Truyền hình Việt Nam</li>
+      <li>Tác giả sách "Bí mật sinh lý nam tuổi 30+" – tái bản lần 2 năm 2023</li>
+      <li>Được mời làm chuyên gia khách mời tại hơn 20 hội thảo y học giới tính tại Việt Nam & Singapore</li>
     </ul>
   </div>
 

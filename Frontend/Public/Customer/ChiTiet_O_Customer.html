@@ -9,16 +9,29 @@
 </head>
 
 <body>
-  <!-- Header -->
+  <!-- gọi header -->
   <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_customer.html')
-      .then(res => res.text())
+      .then(response => response.text())
       .then(data => {
-        document.getElementById('header-placeholder').innerHTML = data;
-        if (typeof initHeader === 'function') initHeader();
+        document.getElementById("header-placeholder").innerHTML = data;
+
+        // Kích hoạt lại các <script> bên trong file header_customer.html nếu có
+        const scripts = document.querySelectorAll('#header-placeholder script');
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
       });
   </script>
+
+  <!-- sau khi called header thị nhớ căng nd ở dưới dùng margin-top: 12px -->
 
   <div class="container">
     <div class="breadcrumb">
@@ -38,13 +51,18 @@
 
     <h2 class="section-title">Giới thiệu</h2>
     <p>
-      Thạc sĩ Trần Văn O là chuyên gia tư vấn sức khỏe nam giới với hơn 9 năm kinh nghiệm trong lĩnh vực nam khoa và tư vấn sức khỏe sinh sản nam. Anh được biết đến với chuyên môn sâu về các vấn đề sức khỏe nam giới và tư vấn tâm lý cho nam giới.
+      Thạc sĩ Trần Văn O là chuyên gia tư vấn sức khỏe nam giới với hơn 9 năm kinh nghiệm trong lĩnh vực nam khoa và tư
+      vấn sức khỏe sinh sản nam. Anh được biết đến với chuyên môn sâu về các vấn đề sức khỏe nam giới và tư vấn tâm lý
+      cho nam giới.
     </p>
     <p>
-      Sau khi tốt nghiệp Đại học Y Dược TP.HCM, ThS. O đã tham gia các chương trình đào tạo chuyên sâu về nam khoa và tư vấn sức khỏe nam giới tại các bệnh viện lớn, tập trung vào việc tư vấn và chăm sóc sức khỏe cho nam giới ở mọi lứa tuổi.
+      Sau khi tốt nghiệp Đại học Y Dược TP.HCM, ThS. O đã tham gia các chương trình đào tạo chuyên sâu về nam khoa và tư
+      vấn sức khỏe nam giới tại các bệnh viện lớn, tập trung vào việc tư vấn và chăm sóc sức khỏe cho nam giới ở mọi lứa
+      tuổi.
     </p>
     <p>
-      Hiện tại, anh công tác tại An Giới Health Center với vai trò chuyên viên tư vấn chính trong lĩnh vực sức khỏe nam giới, đặc biệt là các chương trình tư vấn sức khỏe sinh sản nam và chăm sóc sức khỏe nam giới.
+      Hiện tại, anh công tác tại An Giới Health Center với vai trò chuyên viên tư vấn chính trong lĩnh vực sức khỏe nam
+      giới, đặc biệt là các chương trình tư vấn sức khỏe sinh sản nam và chăm sóc sức khỏe nam giới.
     </p>
 
     <h2 class="section-title">Chuyên môn tư vấn</h2>
@@ -81,4 +99,4 @@
   </script>
 </body>
 
-</html> 
+</html>
