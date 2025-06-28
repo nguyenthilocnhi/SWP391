@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kết quả tìm kiếm | An Giới Health</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/timkiem.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_guest.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        if (typeof initHeader === 'function') initHeader();
+      });
+  </script>
+
+  <main class="container">
+    <div class="search-header">
+      <h1>Kết quả tìm kiếm</h1>
+      <p id="search-info">Đang tìm kiếm...</p>
+    </div>
+
+    <div class="search-results" id="searchResults">
+      <!-- Kết quả tìm kiếm sẽ được hiển thị ở đây -->
+    </div>
+
+    <div class="no-results hidden" id="noResults">
+      <div class="no-results-content">
+        <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Không tìm thấy" />
+        <h3>Không tìm thấy kết quả</h3>
+        <p>Thử tìm kiếm với từ khóa khác hoặc kiểm tra lại chính tả</p>
+        <div class="suggestions">
+          <h4>Gợi ý tìm kiếm:</h4>
+          <ul>
+            <li><a href="/Frontend/Public/Guest/dichvu.html">Dịch vụ xét nghiệm</a></li>
+            <li><a href="/Frontend/Public/Guest/Tuvanvien.html">Tư vấn viên</a></li>
+            <li><a href="/Frontend/Public/Guest/TrangBlog.html">Blog sức khỏe</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+      });
+  </script>
+
+  <script>
+    // Dữ liệu tìm kiếm cho customer
+    const searchData = {
+      services: [
+        {
+          title: "Xét nghiệm máu",
+          description: "Xét nghiệm máu tổng quát, kiểm tra sức khỏe cơ bản",
+          category: "dịch vụ",
+          url: "/Frontend/Public/Customer/DichVuCustomer.html"
+        },
+        {
+          title: "Xét nghiệm nước tiểu",
+          description: "Kiểm tra chức năng thận và đường tiết niệu",
+          category: "dịch vụ",
+          url: "/Frontend/Public/Customer/DichVuCustomer.html"
+        },
+        {
+          title: "Tư vấn sức khỏe sinh sản",
+          description: "Tư vấn chuyên sâu về sức khỏe sinh sản cho nam và nữ",
+          category: "dịch vụ",
+          url: "/Frontend/Public/Customer/DichVuCustomer.html"
+        },
+        {
+          title: "Tư vấn tâm lý",
+          description: "Tư vấn tâm lý cho thanh thiếu niên và người trưởng thành",
+          category: "dịch vụ",
+          url: "/Frontend/Public/Customer/DichVuCustomer.html"
+        }
+      ],
+      advisors: [
+        {
+          title: "TS. Lý Minh A",
+          description: "Tư vấn chuyên khoa sinh lý nam",
+          category: "tư vấn viên",
+          url: "/Frontend/Public/Guest/ChiTiet_A.html"
+        },
+        {
+          title: "ThS. Lê Nhã B",
+          description: "Tư vấn sinh lý nam",
+          category: "tư vấn viên",
+          url: "/Frontend/Public/Guest/ChiTiet_B.html"
+        },
+        {
+          title: "TS. Ngô Cẩm H",
+          description: "Tư vấn chuyên khoa sinh lý nữ",
+          category: "tư vấn viên",
+          url: "/Frontend/Public/Guest/ChiTiet_H.html"
+        },
+        {
+          title: "ThS. Lý Ngọc N",
+          description: "Tư vấn sức khỏe sinh sản",
+          category: "tư vấn viên",
+          url: "/Frontend/Public/Guest/ChiTiet_N.html"
+        }
+      ],
+      blogs: [
+        {
+          title: "Sức khỏe sinh sản tuổi vị thành niên",
+          description: "Hướng dẫn chăm sóc sức khỏe sinh sản cho thanh thiếu niên",
+          category: "blog",
+          url: "/Frontend/Public/Customer/BlogCustomer.html"
+        },
+        {
+          title: "Dinh dưỡng cho sức khỏe sinh lý",
+          description: "Chế độ dinh dưỡng tốt cho sức khỏe sinh lý nam và nữ",
+          category: "blog",
+          url: "/Frontend/Public/Customer/BlogCustomer.html"
+        },
+        {
+          title: "Tâm lý tuổi dậy thì",
+          description: "Những thay đổi tâm lý và cách ứng phó trong tuổi dậy thì",
+          category: "blog",
+          url: "/Frontend/Public/Customer/BlogCustomer.html"
+        }
+      ],
+      appointments: [
+        {
+          title: "Đặt lịch tư vấn",
+          description: "Đặt lịch tư vấn với các chuyên gia sức khỏe",
+          category: "đặt lịch",
+          url: "/Frontend/Public/Customer/datlich.html"
+        },
+        {
+          title: "Đặt lịch xét nghiệm",
+          description: "Đặt lịch xét nghiệm các loại xét nghiệm cần thiết",
+          category: "đặt lịch",
+          url: "/Frontend/Public/Customer/datlich.html"
+        }
+      ]
+    };
+
+    // Hàm tìm kiếm
+    function performSearch(query) {
+      const allData = [
+        ...searchData.services,
+        ...searchData.advisors,
+        ...searchData.blogs,
+        ...searchData.appointments
+      ];
+
+      const results = allData.filter(item => {
+        const searchText = `${item.title} ${item.description} ${item.category}`.toLowerCase();
+        return searchText.includes(query.toLowerCase());
+      });
+
+      return results;
+    }
+
+    // Hàm hiển thị kết quả
+    function displayResults(results, query) {
+      const searchInfo = document.getElementById('search-info');
+      const searchResults = document.getElementById('searchResults');
+      const noResults = document.getElementById('noResults');
+
+      searchInfo.textContent = `Tìm thấy ${results.length} kết quả cho "${query}"`;
+
+      if (results.length === 0) {
+        searchResults.classList.add('hidden');
+        noResults.classList.remove('hidden');
+        return;
+      }
+
+      noResults.classList.add('hidden');
+      searchResults.classList.remove('hidden');
+
+      searchResults.innerHTML = results.map(item => `
+        <div class="result-item">
+          <div class="result-content">
+            <h3><a href="${item.url}">${item.title}</a></h3>
+            <p>${item.description}</p>
+            <span class="category">${item.category}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Xử lý tìm kiếm khi trang load
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q');
+
+      if (query) {
+        const results = performSearch(query);
+        displayResults(results, query);
+      } else {
+        document.getElementById('search-info').textContent = 'Vui lòng nhập từ khóa tìm kiếm';
+        document.getElementById('noResults').classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html> 

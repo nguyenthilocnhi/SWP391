@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +20,7 @@
         if (typeof initHeader === 'function') initHeader();
       });
   </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
 
   <main class="container">
     <div class="search-header">
@@ -195,7 +197,7 @@
     }
 
     // Xử lý tìm kiếm khi trang load
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const urlParams = new URLSearchParams(window.location.search);
       const query = urlParams.get('q');
 
@@ -209,4 +211,5 @@
     });
   </script>
 </body>
-</html> 
+
+</html>
