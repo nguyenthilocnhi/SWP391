@@ -1,4 +1,3 @@
-// Bản đồ chuyên khoa
 const specialtyMap = {
   phukhoa: "Phụ khoa",
   sanphukhoa: "Sản phụ khoa",
@@ -10,6 +9,8 @@ const specialtyMap = {
 };
 
 let allQuestions = [];
+let deletedQuestion = null;
+let undoTimeout = null;
 
 function renderQuestions(filter = 'all') {
   const container = document.getElementById("questionList");
@@ -26,7 +27,10 @@ function renderQuestions(filter = 'all') {
         <p><strong>Chuyên khoa:</strong> ${specialtyMap[q.specialty] || q.specialty}</p>
         <p><strong>Ngày gửi:</strong> ${q.date}</p>
       </div>
-      <button class="view-btn" onclick="showPopup(${index})">Xem chi tiết</button>
+      <div class="question-actions">
+        <button class="view-btn" onclick="showPopup(${index})">Xem chi tiết</button>
+        <button class="delete-btn" onclick="deleteQuestion(${index})">🗑 Xóa</button>
+      </div>
     `;
     container.appendChild(card);
   });
@@ -48,9 +52,86 @@ function closePopup() {
   document.getElementById("popupDetail").style.display = "none";
 }
 
+function deleteQuestion(index) {
+  if (!confirm("Bạn có chắc muốn xóa câu hỏi này?")) return;
+
+  deletedQuestion = {
+    data: allQuestions[index],
+    index: index
+  };
+
+  allQuestions.splice(index, 1);
+  localStorage.setItem("questionHistory", JSON.stringify(allQuestions));
+  renderQuestions(document.getElementById("status").value);
+
+  showUndoAlert("❌ Câu hỏi đã bị xóa.");
+
+  clearTimeout(undoTimeout);
+  undoTimeout = setTimeout(() => {
+    deletedQuestion = null;
+  }, 10000);
+}
+
+function undoDelete() {
+  if (deletedQuestion) {
+    allQuestions.splice(deletedQuestion.index, 0, deletedQuestion.data);
+    localStorage.setItem("questionHistory", JSON.stringify(allQuestions));
+    renderQuestions(document.getElementById("status").value);
+    deletedQuestion = null;
+    showAlert("✅ Đã khôi phục câu hỏi.");
+  }
+}
+
 function filterQuestions() {
   const value = document.getElementById("status").value;
   renderQuestions(value);
+}
+
+function showAlert(message) {
+  const alertBox = document.getElementById('alert-box');
+  const alertMessage = document.getElementById('alert-message');
+  const alertClose = document.getElementById('alert-close');
+  const undoBtn = document.getElementById('undo-btn');
+
+  alertMessage.textContent = message;
+  undoBtn.classList.add('hidden');
+  alertBox.classList.remove('hidden');
+
+  alertClose.onclick = () => {
+    alertBox.classList.add('hidden');
+  };
+
+  setTimeout(() => {
+    alertBox.classList.add('hidden');
+  }, 5000);
+}
+
+function showUndoAlert(message) {
+  const alertBox = document.getElementById('alert-box');
+  const alertMessage = document.getElementById('alert-message');
+  const undoBtn = document.getElementById('undo-btn');
+  const alertClose = document.getElementById('alert-close');
+
+  alertMessage.textContent = message;
+  undoBtn.classList.remove('hidden');
+  alertBox.classList.remove('hidden');
+
+  undoBtn.onclick = () => {
+    undoDelete();
+    alertBox.classList.add('hidden');
+    undoBtn.classList.add('hidden');
+  };
+
+  alertClose.onclick = () => {
+    alertBox.classList.add('hidden');
+    undoBtn.classList.add('hidden');
+  };
+
+  setTimeout(() => {
+    alertBox.classList.add('hidden');
+    undoBtn.classList.add('hidden');
+    deletedQuestion = null;
+  }, 10000);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
