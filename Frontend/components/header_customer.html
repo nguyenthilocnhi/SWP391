@@ -1,123 +1,95 @@
-<!DOCTYPE html>
-<html lang="vi">
+<link rel="stylesheet" href="/Frontend/assets/css/header_customer.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header_customer</title>
-    <link rel="stylesheet" href="/Frontend/assets/css/header_customer.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-</head>
-
-<body>
-  <header>
-    <div class="header-container">
-      <!-- logo -->
-      <div class="logo">
-        <a href="/Frontend/Public/Customer/TrangchuCustomer.html">
-          <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
-        </a>
-      </div>
-
-      <!-- Menu -->
-      <nav class="main-nav">
-        <ul>
-          <li><a href="/Frontend/Public/Customer/GioiThieu.html">Giới thiệu</a></li>
-          <li><a href="/Frontend/Public/Customer/DichVuCustomer.html">Dịch vụ</a></li>
-          <li><a href="/Frontend/Public/Customer/BlogCustomer.html">Blog</a></li>
-          <li><a href="/Frontend/Public/Customer/datlich.html">Đặt lịch</a></li>
-          <li><a href="/Frontend/Public/Customer/TuvanvienCustomer.html">Tư vấn viên</a></li>
-        </ul>
-      </nav>
-
-      <!-- right header -->
-      <div class="header-right">
-
-        <!-- search box -->
-        <form class="search-form" action="/Frontend/Public/Login/timkiem.html" method="get">
-          <input type="text" name="q" placeholder="Tìm kiếm..." required />
-          <button type="submit">
-            <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
-          </button>
-        </form>
-
-        <!-- notification bell -->
-        <div class="notification-wrapper">
-          <a href="#" class="notification">
-            <img src="https://i.postimg.cc/TP8K01px/notifications-24dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz24.png"
-              alt="Thông báo" class="notification-icon" />
-            <span class="badge">3</span>
-          </a>
-
-          <div class="notification-box hidden">
-            <p> Bạn có 3 thông báo mới</p>
-            <ul>
-              <li>
-                <div class="notify-content" data-time="2025-06-19T21:30:00">
-                  Kết quả xét nghiệm đã có
-                  <span class="notify-time"></span>
-                </div>
-              </li>
-              <li>
-                <div class="notify-content" data-time="2025-06-19T21:30:00">
-                  Lịch hẹn khám vào ngày mai
-                  <span class="notify-time"></span>
-                </div>
-              </li>
-              <li>
-                <div class="notify-content" data-time="2025-06-19T21:30:00">
-                  Ưu đãi giảm 10% đang chờ bạn
-                  <span class="notify-time"></span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- user info  -->
-        <div class="user-info">
-          <img src="https://i.postimg.cc/vZVQXR5n/avatar-default.png" alt="Avatar" class="avatar" />
-          <div class="user-details">
-            <span class="user-name">Nguyễn Bích M</span>
-            <span class="user-role">Khách Hàng</span>
-          </div>
-          <span class="user-dropdown">&#9662;</span> <!-- Mũi tên ▼ -->
-
-          <div class="user-menu hidden">
-            <ul>
-              <li><a href="/Frontend/Public/Customer/Thongtincanhan.html">Thông tin cá nhân</a></li>
-              <li><a href="/Frontend/Public/Customer/theodoichuky.html">Theo dõi chu kỳ</a></li>
-              <li><a href="/Frontend/Public/Customer/Lichsudatlich.html">Lịch sử đặt lịch</a></li>
-              <li><a href="/Frontend/Public/Customer/KetQuaXetNghiem.html">Kết quả xét nghiệm</a></li>
-              <li><a href="/Frontend/Public/Customer/LichsudichvuVadanhgia.html">Lịch sử dịch vụ và đánh giá</a></li>
-              <li><a href="/Frontend/Public/Customer/nhacnho.html">Nhắc uống thuốc tránh thai</a></li>
-              <li><a href="/Frontend/Public/Customer/Datcauhoi.html">Đặt câu hỏi</a></li>
-              <li><a href="/Frontend/Public/Customer/Setting.html">Cài đặt</a></li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
+<header>
+  <div class="header-container">
+    <!-- logo -->
+    <div class="logo">
+      <a href="/Frontend/Public/Customer/TrangchuCustomer.html">
+        <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
+      </a>
     </div>
-  </header>
 
-    <!-- <script src="/Frontend/assets/js/header_customer.js"></script> -->
+    <!-- Menu -->
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/Frontend/Public/Customer/GioiThieu.html">Giới thiệu</a></li>
+        <li><a href="/Frontend/Public/Customer/DichVuCustomer.html">Dịch vụ</a></li>
+        <li><a href="/Frontend/Public/Customer/BlogCustomer.html">Blog</a></li>
+        <li><a href="/Frontend/Public/Customer/datlich.html">Đặt lịch</a></li>
+        <li><a href="/Frontend/Public/Customer/TuvanvienCustomer.html">Tư vấn viên</a></li>
+      </ul>
+    </nav>
 
+    <!-- right header -->
+    <div class="header-right">
 
-  <!-- cho menu user xổ xuống -->
-  <!-- <script>
-    
-  </script> -->
+      <!-- search box -->
+      <form class="search-form" action="/Frontend/Public/Customer/timkiem.html" method="get">
+        <input type="text" name="q" placeholder="Tìm kiếm..." required />
+        <button type="submit">
+          <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />
+        </button>
+      </form>
 
+      <!-- notification bell -->
+      <div class="notification-wrapper">
+        <a href="#" class="notification">
+          <img src="https://i.postimg.cc/TP8K01px/notifications-24dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz24.png"
+            alt="Thông báo" class="notification-icon" />
+          <span class="badge">3</span>
+        </a>
 
-  <!-- JavaScript cập nhật thời gian "X phút trước" tự động -->
-  <!-- <script>
-    
-  </script> -->
+        <div class="notification-box hidden">
+          <p> Bạn có 3 thông báo mới</p>
+          <ul>
+            <li>
+              <div class="notify-content" data-time="2025-06-19T21:30:00">
+                Kết quả xét nghiệm đã có
+                <span class="notify-time"></span>
+              </div>
+            </li>
+            <li>
+              <div class="notify-content" data-time="2025-06-19T21:30:00">
+                Lịch hẹn khám vào ngày mai
+                <span class="notify-time"></span>
+              </div>
+            </li>
+            <li>
+              <div class="notify-content" data-time="2025-06-19T21:30:00">
+                Ưu đãi giảm 10% đang chờ bạn
+                <span class="notify-time"></span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
 
+      <!-- user info  -->
+      <div class="user-info">
+        <img src="https://i.postimg.cc/vZVQXR5n/avatar-default.png" alt="Avatar" class="avatar" />
+        <div class="user-details">
+          <span class="user-name">Nguyễn Bích M</span>
+          <span class="user-role">Khách Hàng</span>
+        </div>
+        <span class="user-dropdown">&#9662;</span> <!-- Mũi tên ▼ -->
 
-  <!-- gọi thông báo -->
-  <!-- <script>
-    
-  </script> -->
-</body>
+        <div class="user-menu hidden">
+          <ul>
+            <li><a href="/Frontend/Public/Customer/Thongtincanhan.html">Thông tin cá nhân</a></li>
+            <li><a href="/Frontend/Public/Customer/theodoichuky.html">Theo dõi chu kỳ</a></li>
+            <li><a href="/Frontend/Public/Customer/Lichsudatlich.html">Lịch sử đặt lịch</a></li>
+            <li><a href="/Frontend/Public/Customer/KetQuaXetNghiem.html">Kết quả xét nghiệm</a></li>
+            <li><a href="/Frontend/Public/Customer/LichsudichvuVadanhgia.html">Lịch sử dịch vụ và đánh giá</a></li>
+            <li><a href="/Frontend/Public/Customer/nhacnho.html">Nhắc uống thuốc tránh thai</a></li>
+            <li><a href="/Frontend/Public/Customer/Datcauhoi.html">Đặt câu hỏi</a></li>
+            <li><a href="/Frontend/Public/Customer/Setting.html">Cài đặt</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<script src="/Frontend/assets/js/header_customer.js"></script> 

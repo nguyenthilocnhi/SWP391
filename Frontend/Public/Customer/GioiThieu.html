@@ -9,7 +9,9 @@
 </head>
 
 <body>
-  <!-- gọi header -->
+ 
+  <!-- Gọi file header và khởi động JS sau khi chèn xong -->
+  <!-- GỌI HEADER -->
   <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_customer.html')
@@ -17,21 +19,24 @@
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
 
-        // Kích hoạt lại các <script> bên trong file header_customer.html nếu có
-        const scripts = document.querySelectorAll('#header-placeholder script');
-        scripts.forEach(oldScript => {
-          const newScript = document.createElement('script');
-          if (oldScript.src) {
-            newScript.src = oldScript.src;
-          } else {
-            newScript.textContent = oldScript.textContent;
-          }
-          document.body.appendChild(newScript);
-        });
+        // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
       });
   </script>
+  <script src="/Frontend/assets/js/header_customer.js"></script>
 
-  <!-- sau khi called header thị nhớ căng nd ở dưới dùng margin-top: 12px -->
+  <!-- tạo 1 nhãn thông báo -->
+  <div id="alert-box" class="alert-box hidden">
+    <p id="alert-message">Bạn có thông báo mới!</p>
+    <span id="alert-close">&times;</span>
+  </div>
+
+
+  <section class="hero">
+    <img src="https://i.postimg.cc/x1V5ncWS/nh-n-n.png" alt="Ảnh nền">
+  </section>
 
   <main class="container">
     <section class="intro">
