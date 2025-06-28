@@ -2,12 +2,13 @@ body {
   font-family: 'Inter', sans-serif;
   background-color: #f8fafc;
   margin: 0;
+  padding-top: 20px;
   color: #1f2937;
 }
 
 .container {
   max-width: 1200px;
-  margin: auto;
+  margin: 100px auto 0;
   padding: 40px 20px;
 }
 
@@ -81,5 +82,19 @@ body {
 @media (max-width: 600px) {
   .search-form input {
     width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: 90px auto 0;
+    padding: 20px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: 80px auto 0;
+    padding: 15px 10px;
   }
 }

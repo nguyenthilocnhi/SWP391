@@ -12,7 +12,7 @@
   <!-- Header -->
   <div id="header-placeholder"></div>
   <script>
-    fetch('/Frontend/components/header_guest.html')
+    fetch('/Frontend/components/header_customer.html')
       .then(res => res.text())
       .then(data => {
         document.getElementById('header-placeholder').innerHTML = data;
@@ -22,7 +22,7 @@
 
   <div class="container">
     <div class="breadcrumb">
-      <a href="/Frontend/Public/Guest/Tuvanvien.html">Danh sách Tư vấn viên</a>
+      <a href="/Frontend/Public/Customer/TuvanvienCustomer.html">Danh sách Tư vấn viên</a>
     </div>
 
     <div class="profile-header">
@@ -32,7 +32,7 @@
         <p><strong>Chức danh:</strong> Tư vấn chuyên khoa sinh lý nam</p>
         <p><strong>Kinh nghiệm:</strong> 8 năm</p>
         <p><strong>Trường đào tạo:</strong> ĐH Y Dược TPHCM (2009 – 2017)</p>
-        <a href="/Frontend/Public/Login/Trangdangnhap.html" class="btn-book">Đặt lịch hẹn</a>
+        <a href="/Frontend/Public/Customer/datlich.html" class="btn-book">Đặt lịch hẹn</a>
       </div>
     </div>
 
@@ -80,6 +80,92 @@
         document.getElementById('footer-placeholder').innerHTML = data;
       });
   </script>
+
+  <!-- JavaScript cho dropdown và thông báo -->
+  <script>
+    // Hàm xử lý định dạng thời gian
+    function timeAgo(dateString) {
+      const now = new Date();
+      const date = new Date(dateString);
+      const seconds = Math.floor((now - date) / 1000);
+
+      const intervals = [
+        { label: 'năm', seconds: 31536000 },
+        { label: 'tháng', seconds: 2592000 },
+        { label: 'ngày', seconds: 86400 },
+        { label: 'giờ', seconds: 3600 },
+        { label: 'phút', seconds: 60 },
+        { label: 'giây', seconds: 1 },
+      ];
+
+      for (const interval of intervals) {
+        const count = Math.floor(seconds / interval.seconds);
+        if (count >= 1) {
+          return `${count} ${interval.label} trước`;
+        }
+      }
+      return 'Vừa xong';
+    }
+
+    // Khởi tạo dropdown và thông báo sau khi header được load
+    function initHeaderFunctions() {
+      // Dropdown menu người dùng
+      const dropdownToggle = document.querySelector('.user-dropdown');
+      const userMenu = document.querySelector('.user-menu');
+
+      if (dropdownToggle && userMenu) {
+        dropdownToggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          userMenu.classList.toggle('hidden');
+        });
+
+        // Click ngoài thì ẩn menu
+        document.addEventListener('click', function (e) {
+          if (!userMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
+            userMenu.classList.add('hidden');
+          }
+        });
+      }
+
+      // Cập nhật thời gian thông báo
+      const notifications = document.querySelectorAll('.notify-content');
+      notifications.forEach(content => {
+        const timeString = content.getAttribute('data-time');
+        const timeSpan = content.querySelector('.notify-time');
+        if (timeString && timeSpan) {
+          timeSpan.textContent = timeAgo(timeString);
+        }
+      });
+
+      // Thông báo khi click chuông
+      const notificationIcon = document.querySelector('.notification');
+      const notificationBox = document.querySelector('.notification-box');
+      const badge = document.querySelector('.badge');
+
+      if (notificationIcon && notificationBox) {
+        notificationIcon.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          notificationBox.classList.toggle('hidden');
+          if (badge) badge.innerText = '0';
+        });
+
+        // Click bên ngoài thì ẩn thông báo
+        document.addEventListener('click', function (e) {
+          const clickedOutside = !notificationBox.contains(e.target) && !notificationIcon.contains(e.target);
+          if (clickedOutside) {
+            notificationBox.classList.add('hidden');
+          }
+        });
+      }
+    }
+
+    // Chờ header load xong rồi khởi tạo các chức năng
+    document.addEventListener('DOMContentLoaded', function() {
+      // Đợi một chút để header load xong
+      setTimeout(initHeaderFunctions, 100);
+    });
+  </script>
 </body>
 
-</html>
+</html> 

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ThS. Trần Văn O | An Giới Health</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/chitiettuvanvien.css" />
+</head>
+
+<body>
+  <!-- Header -->
+  <div id="header-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/header_customer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+        if (typeof initHeader === 'function') initHeader();
+      });
+  </script>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/Frontend/Public/Customer/TuvanvienCustomer.html">Danh sách Tư vấn viên</a>
+    </div>
+
+    <div class="profile-header">
+      <img src="https://i.postimg.cc/Kz4qs1Kw/Nguy-n-Minh.jpg" alt="ThS. Trần Văn O" />
+      <div class="profile-info">
+        <h1>ThS. Trần Văn O</h1>
+        <p><strong>Chức danh:</strong> Tư vấn sức khỏe nam giới</p>
+        <p><strong>Kinh nghiệm:</strong> 9 năm</p>
+        <p><strong>Trường đào tạo:</strong> ĐH Y Dược TP.HCM (2009 – 2015)</p>
+        <a href="/Frontend/Public/Customer/datlich.html" class="btn-book">Đặt lịch hẹn</a>
+      </div>
+    </div>
+
+    <h2 class="section-title">Giới thiệu</h2>
+    <p>
+      Thạc sĩ Trần Văn O là chuyên gia tư vấn sức khỏe nam giới với hơn 9 năm kinh nghiệm trong lĩnh vực nam khoa và tư vấn sức khỏe sinh sản nam. Anh được biết đến với chuyên môn sâu về các vấn đề sức khỏe nam giới và tư vấn tâm lý cho nam giới.
+    </p>
+    <p>
+      Sau khi tốt nghiệp Đại học Y Dược TP.HCM, ThS. O đã tham gia các chương trình đào tạo chuyên sâu về nam khoa và tư vấn sức khỏe nam giới tại các bệnh viện lớn, tập trung vào việc tư vấn và chăm sóc sức khỏe cho nam giới ở mọi lứa tuổi.
+    </p>
+    <p>
+      Hiện tại, anh công tác tại An Giới Health Center với vai trò chuyên viên tư vấn chính trong lĩnh vực sức khỏe nam giới, đặc biệt là các chương trình tư vấn sức khỏe sinh sản nam và chăm sóc sức khỏe nam giới.
+    </p>
+
+    <h2 class="section-title">Chuyên môn tư vấn</h2>
+
+    <h3>Chứng chỉ</h3>
+    <ul class="custom-list">
+      <li>Chứng chỉ Nam khoa – ĐH Y Dược TP.HCM, 2015</li>
+      <li>Khóa học Tư vấn sức khỏe sinh sản nam – Bộ Y tế, 2016</li>
+      <li>Chứng chỉ Tư vấn tâm lý nam giới – Hội Nam học Việt Nam, 2017</li>
+    </ul>
+
+    <h3>Bằng cấp</h3>
+    <ul class="custom-list">
+      <li>Bác sĩ đa khoa – ĐH Y Dược TP.HCM, 2009 – 2015</li>
+      <li>Thạc sĩ Nam khoa – ĐH Y Dược TP.HCM, 2015 – 2017</li>
+    </ul>
+
+    <h2 class="section-title">Thành tựu nổi bật</h2>
+    <ul class="custom-list">
+      <li>Thành viên Ban chuyên môn Hội Nam học Việt Nam</li>
+      <li>Diễn giả các hội thảo về sức khỏe nam giới tại các tỉnh miền Nam</li>
+      <li>Tác giả nhiều bài báo khoa học về nam khoa</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('footer-placeholder').innerHTML = data;
+      });
+  </script>
+</body>
+
+</html> 

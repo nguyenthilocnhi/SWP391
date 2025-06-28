@@ -47,12 +47,18 @@
         data.forEach(advisor => {
           const card = document.createElement('div');
           card.className = 'advisor-card';
+          
+          // Tạo link đến trang chi tiết dựa trên ID
+          let detailLink = `/Frontend/Public/Guest/ChiTiet_${advisor.id}.html`;
+          
           card.innerHTML = `
-          <img src="${advisor.image}" alt="${advisor.name}" />
-          <h3>${advisor.name}</h3>
-          <p>${advisor.specialty}</p>
-          <p><strong>Kinh nghiệm:</strong> ${advisor.experience}</p>
-          <p>${advisor.education}</p>
+          <a href="${detailLink}" class="advisor-link">
+            <img src="${advisor.image}" alt="${advisor.name}" />
+            <h3>${advisor.name}</h3>
+            <p>${advisor.specialty}</p>
+            <p><strong>Kinh nghiệm:</strong> ${advisor.experience}</p>
+            <p>${advisor.education}</p>
+          </a>
         `;
           container.appendChild(card);
         });
