@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>U xơ tử cung có nguy hiểm không?</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/blogchitiet.css">
+</head>
+<body>
+  <!-- gọi header -->
+  <div id="header-placeholder"> </div>
+  <script>
+    fetch('/Frontend/components/header_guest.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("header-placeholder").innerHTML = data;
+        if (typeof initHeader === 'function') {
+          initHeader();
+        }
+      });
+  </script>
+
+  <main class="main-content">
+    <a href="TrangBlog.html">
+      <div class="breadcrumb">Kiến thức y khoa & Xét nghiệm</div>
+    </a>
+
+    <h1 class="main-title">U xơ tử cung có nguy hiểm không?</h1>
+    <p class="date">Ngày đăng: 1 tuần trước</p>
+
+    <section class="content">
+      <h2>U xơ tử cung là gì?</h2>
+      <p>U xơ tử cung là những khối u lành tính phát triển từ cơ tử cung. Bệnh khá phổ biến ở phụ nữ trong độ tuổi sinh sản, đặc biệt từ <strong>30–50 tuổi</strong>. Mặc dù đa số u xơ không nguy hiểm, nhưng một số trường hợp có thể gây biến chứng ảnh hưởng sức khỏe.</p>
+
+      <h2>Triệu chứng thường gặp</h2>
+      <ul>
+        <li>Rối loạn kinh nguyệt, ra máu nhiều hoặc kéo dài</li>
+        <li>Đau vùng bụng dưới hoặc đau khi quan hệ</li>
+        <li>Cảm giác nặng bụng, đầy hơi</li>
+        <li>Tiểu nhiều lần do u chèn ép bàng quang</li>
+      </ul>
+
+      <h2>U xơ tử cung có nguy hiểm không?</h2>
+      <p>U xơ thường lành tính, tuy nhiên nếu không theo dõi và xử lý kịp thời, có thể gây ra các biến chứng như:</p>
+      <ul>
+        <li>Thiếu máu do chảy máu kéo dài</li>
+        <li>Vô sinh hoặc khó thụ thai</li>
+        <li>Sảy thai hoặc sinh non ở phụ nữ mang thai</li>
+        <li>U xoắn hoặc hoại tử nếu không được can thiệp sớm</li>
+      </ul>
+
+      <img src="https://i.postimg.cc/155h92Y1/images.jpg" alt="U xơ tử cung" class="main-image">
+      
+      <div class="alert-box">
+        <strong>Lưu ý:</strong> Dù là khối u lành, nhưng u xơ tử cung vẫn cần được <strong>theo dõi định kỳ</strong> để phát hiện các biến chứng sớm và can thiệp kịp thời.
+      </div>
+
+      <h2>Điều trị và theo dõi</h2>
+      <p>Việc điều trị tùy thuộc vào kích thước, vị trí u và tình trạng sức khỏe của người bệnh:</p>
+      <ul>
+        <li><strong>Theo dõi định kỳ:</strong> Với u nhỏ và không triệu chứng</li>
+        <li><strong>Dùng thuốc nội tiết:</strong> Giảm kích thước và triệu chứng</li>
+        <li><strong>Phẫu thuật bóc tách u xơ hoặc cắt tử cung:</strong> Trong trường hợp nặng</li>
+      </ul>
+
+      <h2>Kết luận</h2>
+      <p>U xơ tử cung là bệnh phổ biến và thường lành tính, nhưng cần được theo dõi và điều trị đúng cách để tránh các biến chứng.</p>
+
+      <p class="final-call">
+        🎯 <strong>Đang có dấu hiệu rối loạn kinh nguyệt hoặc đau bụng?</strong> Hãy <a href="/Frontend/Public/Login/Trangdangnhap.html">đặt lịch khám</a> để được các chuyên gia hướng dẫn cụ thể cho trường hợp của bạn.
+      </p>
+    </section>
+  </main>
+
+  <div id="footer-placeholder"></div>
+  <script>
+    fetch('/Frontend/components/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
+      });
+  </script>
+</body>
+</html>

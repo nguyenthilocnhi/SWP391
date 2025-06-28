@@ -24,11 +24,14 @@
     </div>
 
     <form id="settingsForm">
-      <label for="name">Họ tên:</label>
-      <input type="text" id="name" placeholder="Nhập họ tên" />
+     <!-- Họ tên: KHÔNG cho sửa -->
+<label for="name">Họ tên:</label>
+<input type="text" id="name" placeholder="Nhập họ tên" disabled />
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" placeholder="Nhập email" />
+<!-- Email: CHO phép nhập -->
+<label for="email">Email:</label>
+<input type="email" id="email" placeholder="Nhập email" disabled />
+
 
       <label for="password">Mật khẩu:</label>
       <input type="password" id="password" placeholder="********" disabled />

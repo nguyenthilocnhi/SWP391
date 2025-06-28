@@ -15,7 +15,7 @@
   <!-- gọi header -->
   <div id="header-placeholder"> </div>
   <script>
-    fetch('/Frontend/components/header_customer.html')
+    fetch('/Frontend/components/header_guest.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
@@ -24,10 +24,9 @@
         }
       });
   </script>
-  <script src="/Frontend/assets/js/header_customer.js"></script>
 
   <main class="main-content">
-    <a href="BlogCustomer.html">
+    <a href="/Frontend/Public/Customer/BlogCustomer.html">
       <div class="breadcrumb">Kiến thức y khoa & Xét nghiệm</div>
     </a>
 
@@ -99,4 +98,4 @@
   </script>
 </body>
 
-</html> 
+</html>
