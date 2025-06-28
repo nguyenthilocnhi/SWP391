@@ -320,6 +320,32 @@ body {
   border-radius: 10px;
 }
 
+.day.check {
+  background-color: #38a169; /* xanh lá - đã uống */
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.day.x {
+  background-color: #e53e3e; /* đỏ - chưa uống */
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+}
+.day.today.check {
+  background-color: #38a169; /* xanh lá cho hôm nay đã uống */
+  color: white;
+  border: 3px solid #2f855a;
+  font-weight: bold;
+  box-shadow: 0 0 5px #38a169;
+}
+.day {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* RESPONSIVE */
 @media (max-width: 600px) {
