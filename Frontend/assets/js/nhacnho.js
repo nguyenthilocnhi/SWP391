@@ -1,5 +1,3 @@
-// nhacnho.js - Lịch uống tránh thai có lưu ngày bắt đầu & trạng thái uống
-
 const calendarGrid = document.querySelector(".calendar-grid");
 const title = document.getElementById("calendarTitle");
 const prevBtn = document.getElementById("prevMonth");
@@ -10,22 +8,26 @@ let today = new Date();
 let currentMonth = today.getMonth();
 let currentYear = today.getFullYear();
 
-// ==== Ngày bắt đầu uống ====
 function getStartDate() {
   const dateStr = localStorage.getItem("startDate");
   return dateStr ? new Date(dateStr) : null;
 }
 
+function getPillCycle() {
+  return parseInt(localStorage.getItem("pillCycle") || "28");
+}
+
 function saveStartDate() {
   const input = document.getElementById("startDate").value;
+  const cycle = document.getElementById("pillCycle").value;
   if (!input) return alert("Vui lòng chọn ngày bắt đầu!");
   localStorage.setItem("startDate", input);
-  alert("Đã lưu ngày bắt đầu: " + input);
+  localStorage.setItem("pillCycle", cycle);
+  alert(`Đã lưu ngày bắt đầu và chu kỳ ${cycle} ngày.`);
   document.getElementById("startDateWrapper").classList.add("hidden");
   renderCalendar();
 }
 
-// ==== Key localStorage theo tháng-năm ====
 function getKey() {
   return `missedDays_${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}`;
 }
@@ -46,7 +48,6 @@ function getWeekday(year, month, day) {
   return new Date(year, month, day).getDay();
 }
 
-// ==== Vẽ lịch ====
 function renderCalendar() {
   title.textContent = `${currentYear} - Tháng ${currentMonth + 1}`;
   calendarGrid.innerHTML = '';
@@ -55,6 +56,7 @@ function renderCalendar() {
   const totalDays = daysInMonth(currentMonth, currentYear);
   const firstDayOffset = getWeekday(currentYear, currentMonth, 1);
   const startDate = getStartDate();
+  const cycleLength = getPillCycle();
 
   const weekdays = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
   weekdays.forEach(day => {
@@ -65,8 +67,7 @@ function renderCalendar() {
   });
 
   for (let i = 0; i < firstDayOffset; i++) {
-    const empty = document.createElement("div");
-    calendarGrid.appendChild(empty);
+    calendarGrid.appendChild(document.createElement("div"));
   }
 
   for (let day = 1; day <= totalDays; day++) {
@@ -78,43 +79,77 @@ function renderCalendar() {
     const isToday = dateObj.toDateString() === today.toDateString();
     div.dataset.date = dateObj.toISOString().split('T')[0];
 
-    if (startDate && dateObj >= startDate && dateObj <= today && !localStorage.getItem(getKey())) {
-      div.classList.add("x");
-      missedDays.push(day);
-    } else {
-      if (missedDays.includes(day)) {
-        div.classList.add("x");
-      } else if (missedDays.length > 0) {
-        div.classList.add("check");
-      }
+    let isInCycle = false;
+    if (startDate && dateObj >= startDate) {
+      const diffDays = Math.floor((dateObj - startDate) / (1000 * 60 * 60 * 24));
+      isInCycle = (diffDays % cycleLength) < cycleLength;
     }
 
-    if (isToday) div.classList.add("today");
+    if (isInCycle) {
+      if (
+        currentYear > today.getFullYear() ||
+        (currentYear === today.getFullYear() && currentMonth > today.getMonth())
+      ) {
+        // Tháng sau → mặc định là chưa uống
+        if (!missedDays.includes(day)) missedDays.push(day);
+        div.classList.add("x");
+      } else {
+        if (missedDays.includes(day)) {
+          div.classList.add("x");
+        } else {
+          div.classList.add("check");
+        }
 
-    div.addEventListener("click", () => {
-      const index = missedDays.indexOf(day);
-      if (index !== -1) missedDays.splice(index, 1);
-      else missedDays.push(day);
-      saveMissedDays(missedDays);
-      renderCalendar();
-    });
+        div.addEventListener("click", () => {
+          const index = missedDays.indexOf(day);
+          if (index !== -1) missedDays.splice(index, 1);
+          else missedDays.push(day);
+          saveMissedDays(missedDays);
+          renderCalendar();
+        });
+      }
+
+      if (isToday) div.classList.add("today");
+    } else {
+      div.style.opacity = "0.2";
+      div.style.pointerEvents = "none";
+    }
 
     calendarGrid.appendChild(div);
   }
 
+  saveMissedDays(missedDays);
+
   const drank = totalDays - missedDays.length;
   const missed = missedDays.length;
   summaryBox.innerHTML = `
-    <p><strong>\u0110\u00e3 uống:</strong> ${drank} ngày</p>
+    <p><strong>Đã uống:</strong> ${drank} ngày</p>
     <p><strong>Chưa uống:</strong> ${missed} ngày</p>
   `;
-
-  if (!localStorage.getItem(getKey()) && missedDays.length > 0) {
-    saveMissedDays(missedDays);
-  }
 }
 
-// ==== Reset lịch ====
+function suggestNextPack() {
+  const startDate = getStartDate();
+  if (!startDate) return;
+  const cycleLength = getPillCycle();
+
+  const now = new Date();
+  const diffInDays = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
+  const currentCycle = Math.floor(diffInDays / cycleLength) + 1;
+
+  const currentPackStart = new Date(startDate);
+  currentPackStart.setDate(startDate.getDate() + (currentCycle - 1) * cycleLength);
+
+  const nextPackStart = new Date(currentPackStart);
+  nextPackStart.setDate(currentPackStart.getDate() + cycleLength);
+
+  const message = `
+    📦 Vỉ hiện tại: Vỉ số ${currentCycle} (từ ${formatDate(currentPackStart)})
+    <br>📅 Bạn nên bắt đầu vỉ mới vào: <strong>${formatDate(nextPackStart)}</strong>
+  `;
+  document.getElementById("packSuggestion").innerHTML = message;
+}
+
 function resetLich() {
   if (confirm("Bạn có chắc muốn đặt lại toàn bộ lịch không?")) {
     const totalDays = daysInMonth(currentMonth, currentYear);
@@ -124,7 +159,6 @@ function resetLich() {
   }
 }
 
-// ==== Điều hướng tháng ====
 prevBtn.addEventListener("click", () => {
   currentMonth--;
   if (currentMonth < 0) {
@@ -143,9 +177,9 @@ nextBtn.addEventListener("click", () => {
   renderCalendar();
 });
 
-// ==== Khi load trang ====
 document.addEventListener("DOMContentLoaded", () => {
   const savedStart = localStorage.getItem("startDate");
+  const savedCycle = localStorage.getItem("pillCycle");
   const startDateWrapper = document.getElementById("startDateWrapper");
 
   if (!savedStart && startDateWrapper) {
@@ -156,27 +190,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("startDate").value = savedStart;
   }
 
+  if (savedCycle && document.getElementById("pillCycle")) {
+    document.getElementById("pillCycle").value = savedCycle;
+  }
+
   renderCalendar();
   suggestNextPack();
 });
-function suggestNextPack() {
-  const startDate = getStartDate();
-  if (!startDate) return;
 
-  const now = new Date();
-  const diffInDays = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));
-  const currentCycle = Math.floor(diffInDays / 28) + 1;
-  const nextPackStart = new Date(startDate);
-  nextPackStart.setDate(startDate.getDate() + 28 * currentCycle);
-
-  const message = `
-    📦 Vỉ hiện tại: Vỉ số ${currentCycle} (từ ${formatDate(new Date(startDate.getTime() + 28 * (currentCycle - 1) * 24 * 60 * 60 * 1000))})
-    <br>📅 Bạn nên bắt đầu vỉ mới vào: <strong>${formatDate(nextPackStart)}</strong>
-  `;
-  document.getElementById("packSuggestion").innerHTML = message;
-}
-
-// Định dạng ngày dd/mm/yyyy
 function formatDate(date) {
   return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
     .toString().padStart(2, '0')}/${date.getFullYear()}`;

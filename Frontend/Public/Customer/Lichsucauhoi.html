@@ -11,30 +11,26 @@
 
 <body>
 
-  <!-- Gọi file header và khởi động JS sau khi chèn xong -->
-  <!-- GỌI HEADER -->
-  <div id="header-placeholder"></div>
+  <!-- Header -->
+ <div id="header-placeholder"></div>
   <script>
     fetch('/Frontend/components/header_customer.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById("header-placeholder").innerHTML = data;
-
-        // Gọi lại hàm JS xử lý header sau khi DOM đã có phần header
-        if (typeof initHeader === 'function') {
-          initHeader();
-        }
+        if (typeof initHeader === 'function') initHeader();
       });
   </script>
   <script src="/Frontend/assets/js/header_customer.js"></script>
 
-  <!-- tạo 1 nhãn thông báo -->
+  <!-- Alert Notification -->
   <div id="alert-box" class="alert-box hidden">
-    <p id="alert-message">Bạn có thông báo mới!</p>
-    <span id="alert-close">&times;</span>
-  </div>
+  <p id="alert-message">Bạn có thông báo mới!</p>
+  <button id="undo-btn" class="undo-btn hidden">Hoàn tác</button>
+  <span id="alert-close">&times;</span>
+</div>
 
-
+  <!-- Nội dung chính -->
   <main class="history-container">
     <div class="go-ask">
       <a href="datcauhoi.html" class="ask-btn">➕ Gửi câu hỏi mới</a>
@@ -54,6 +50,7 @@
     <div class="question-list" id="questionList"></div>
   </main>
 
+  <!-- Popup chi tiết câu hỏi -->
   <div id="popupDetail" class="popup-overlay" style="display: none;">
     <div class="popup">
       <h3>Chi tiết câu hỏi</h3>
@@ -69,187 +66,17 @@
     </div>
   </div>
 
-  <div id="footer-placeholder"></div>
-
+  <!-- Footer -->
+   <div id="footer-placeholder"></div>
   <script>
-    let allQuestions = [];
-
-    function renderQuestions(filter = 'all') {
-      const container = document.getElementById("questionList");
-      container.innerHTML = "";
-      const filtered = allQuestions.filter(q => filter === "all" || q.status === filter);
-
-      filtered.forEach((q, index) => {
-        const card = document.createElement("div");
-        card.className = "question-card";
-        card.innerHTML = `
-          <div class="question-info">
-            <h2>${q.subject}</h2>
-            <p><strong>Trạng thái:</strong> ${q.status}</p>
-            <p><strong>Chuyên khoa:</strong> ${q.specialty}</p>
-            <p><strong>Ngày gửi:</strong> ${q.date}</p>
-          </div>
-          <button class="view-btn" onclick="showPopup(${index})">Xem chi tiết</button>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function showPopup(index) {
-      const q = allQuestions[index];
-      document.getElementById("popupName").textContent = q.name || "Ẩn danh";
-      document.getElementById("popupEmail").textContent = q.email || "(Không có email)";
-      document.getElementById("popupSubject").textContent = q.subject;
-      document.getElementById("popupSpecialty").textContent = q.specialty;
-      document.getElementById("popupStatus").textContent = q.status;
-      document.getElementById("popupDate").textContent = q.date;
-      document.getElementById("popupMessage").textContent = q.message || "(Không có nội dung chi tiết)";
-      document.getElementById("popupDetail").style.display = "flex";
-    }
-
-    function closePopup() {
-      document.getElementById("popupDetail").style.display = "none";
-    }
-
-    function filterQuestions() {
-      const value = document.getElementById("status").value;
-      renderQuestions(value);
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      allQuestions = JSON.parse(localStorage.getItem("questionHistory")) || [];
-      renderQuestions();
-    });
-
     fetch('/Frontend/components/footer.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("footer-placeholder").innerHTML = html;
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("footer-placeholder").innerHTML = data;
       });
   </script>
-  <!-- nhãn thông báo -->
-  <script>
-    function showAlert(message) {
-      const alertBox = document.getElementById('alert-box');
-      const alertMessage = document.getElementById('alert-message');
-      const alertClose = document.getElementById('alert-close');
-
-      alertMessage.textContent = message;
-      alertBox.classList.remove('hidden');
-
-      // Tự động ẩn sau 5 giây
-      setTimeout(() => {
-        alertBox.classList.add('hidden');
-      }, 10000);
-
-      // Ẩn khi click vào nút đóng
-      alertClose.addEventListener('click', () => {
-        alertBox.classList.add('hidden');
-      });
-    }
-
-    // Ví dụ: gọi thông báo mới
-    document.addEventListener("DOMContentLoaded", function () {
-      // Giả lập có thông báo mới
-      setTimeout(() => {
-        showAlert("🔔 Bạn có 3 thông báo mới!");
-      }, 1000); // sau 1 giây khi vào trang
-    });
-  </script>
-
-
-  <!-- cho menu user xổ xuống -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const dropdownToggle = document.querySelector('.user-dropdown');
-      const userMenu = document.querySelector('.user-menu');
-
-      if (dropdownToggle && userMenu) {
-        dropdownToggle.addEventListener('click', function (e) {
-          e.stopPropagation();
-          userMenu.classList.toggle('hidden');
-        });
-
-        // Click ngoài thì ẩn menu
-        document.addEventListener('click', function (e) {
-          if (!userMenu.contains(e.target) && !dropdownToggle.contains(e.target)) {
-            userMenu.classList.add('hidden');
-          }
-        });
-      }
-    });
-  </script>
-
-
-  <!-- JavaScript cập nhật thời gian "X phút trước" tự động -->
-  <script>
-    function timeAgo(dateString) {
-      const now = new Date();
-      const date = new Date(dateString);
-      const seconds = Math.floor((now - date) / 1000);
-
-      const intervals = [
-        { label: 'năm', seconds: 31536000 },
-        { label: 'tháng', seconds: 2592000 },
-        { label: 'ngày', seconds: 86400 },
-        { label: 'giờ', seconds: 3600 },
-        { label: 'phút', seconds: 60 },
-        { label: 'giây', seconds: 1 },
-      ];
-
-      for (const interval of intervals) {
-        const count = Math.floor(seconds / interval.seconds);
-        if (count >= 1) {
-          return `${count} ${interval.label} trước`;
-        }
-      }
-      return 'Vừa xong';
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const notifications = document.querySelectorAll('.notify-content');
-
-      notifications.forEach(content => {
-        const timeString = content.getAttribute('data-time');
-        const timeSpan = content.querySelector('.notify-time');
-
-        if (timeString && timeSpan) {
-          timeSpan.textContent = timeAgo(timeString);
-        }
-      });
-    });
-  </script>
-
-
-  <!-- gọi thông báo -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const notificationIcon = document.querySelector('.notification');
-      const notificationBox = document.querySelector('.notification-box');
-      const badge = document.querySelector('.badge');
-
-      if (notificationIcon && notificationBox) {
-        // Toggle hiển thị thông báo khi click chuông
-        notificationIcon.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation(); // Ngăn lan sự kiện click ra ngoài
-          notificationBox.classList.toggle('hidden');
-
-          // Tuỳ chọn: reset badge nếu cần
-          badge.innerText = '0';
-        });
-
-        // Click bên ngoài thì ẩn menu
-        document.addEventListener('click', function (e) {
-          const clickedOutside = !notificationBox.contains(e.target) && !notificationIcon.contains(e.target);
-          if (clickedOutside) {
-            notificationBox.classList.add('hidden');
-          }
-        });
-      }
-    });
-  </script>
-
+  <!-- Logic xử lý -->
+  <script src="/Frontend/assets/js/lichsucauhoi.js"></script>
 
 </body>
 

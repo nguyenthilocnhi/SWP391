@@ -5,7 +5,7 @@
     "ten": "HIV Ag/Ab combo (HIV test thế hệ 4)",
     "mucdich": "Phát hiện sớm HIV (sau 2 - 4 tuần)",
     "thoigian": "1 - 3 giờ",
-    "chiphi": "250.000 - 400.000",
+    "chiphi": "150.000",
     "tinhtrang": "Có"
   },
   {
@@ -14,7 +14,7 @@
     "ten": "Xét nghiệm giang mai (RPR/TPHA)",
     "mucdich": "Phát hiện bệnh giang mai",
     "thoigian": "2 - 24 giờ",
-    "chiphi": "150.000 - 300.000",
+    "chiphi": "200.000",
     "tinhtrang": "Có"
   },
   {
@@ -23,7 +23,7 @@
     "ten": "Xét nghiệm lậu (PCR hoặc nhuộm soi)",
     "mucdich": "Phát hiện vi khuẩn lậu",
     "thoigian": "3 - 24 giờ",
-    "chiphi": "300.000 - 600.000",
+    "chiphi": "800.000",
     "tinhtrang": "Có"
   },
   {
@@ -32,7 +32,7 @@
     "ten": "Chlamydia (PCR)",
     "mucdich": "Phát hiện nhiễm Chlamydia",
     "thoigian": "1 - 2 ngày",
-    "chiphi": "450.000 - 800.000",
+    "chiphi": "650.000",
     "tinhtrang": "Có"
   },
   {
@@ -41,7 +41,7 @@
     "ten": "HBsAg, Anti-HBs",
     "mucdich": "Kiểm tra viêm gan B",
     "thoigian": "2 - 8 giờ",
-    "chiphi": "100.000 - 250.000",
+    "chiphi": "150.000",
     "tinhtrang": "Có"
   },
   {
@@ -50,7 +50,7 @@
     "ten": "HCV Ab",
     "mucdich": "Kiểm tra viêm gan C",
     "thoigian": "4 - 24 giờ",
-    "chiphi": "150.000 - 300.000",
+    "chiphi": "150.000",
     "tinhtrang": "Có"
   },
   {
@@ -59,7 +59,7 @@
     "ten": "Xét nghiệm HSV 1 & 2 (Herpes Simplex Virus)",
     "mucdich": "Phát hiện mụn rộp sinh dục",
     "thoigian": "1 - 2 ngày",
-    "chiphi": "300.000 - 700.000",
+    "chiphi": "700.000",
     "tinhtrang": "Có"
   },
   {
@@ -68,7 +68,7 @@
     "ten": "Pap smear (Tế bào học cổ tử cung)",
     "mucdich": "Sàng lọc ung thư cổ tử cung",
     "thoigian": "1 - 3 ngày",
-    "chiphi": "200.000 - 400.000",
+    "chiphi": "500.000",
     "tinhtrang": "Có"
   },
   {
@@ -77,7 +77,7 @@
     "ten": "Trichomonas vaginalis",
     "mucdich": "Phát hiện trùng roi âm đạo",
     "thoigian": "Vài giờ",
-    "chiphi": "670.000",
+    "chiphi": "70.000",
     "tinhtrang": "Có"
   },
   {
@@ -86,7 +86,7 @@
     "ten": "Sùi mào gà",
     "mucdich": "Phát hiện virus gây u nhú sinh dục (mào gà)",
     "thoigian": "2 - 5 ngày",
-    "chiphi": "500.000 - 1.000.000",
+    "chiphi": "1.200.000",
     "tinhtrang": "Có"
   },
   {
@@ -95,7 +95,7 @@
     "ten": "Chancroid (Hạ cam mềm)",
     "mucdich": "Phát hiện vi khuẩn Haemophilus ducreyi gây loét sinh dục",
     "thoigian": "2 - 4 ngày",
-    "chiphi": "500.000 - 900.000",
+    "chiphi": "800.000",
     "tinhtrang": "Có"
   },
   {
@@ -104,7 +104,7 @@
     "ten": "Rận mu (Pubic lice)",
     "mucdich": "Phát hiện ký sinh trùng vùng mu qua soi hiển vi",
     "thoigian": "1 - 2 giờ",
-    "chiphi": "100.000 - 300.000",
+    "chiphi": "100.000",
     "tinhtrang": "Có"
   },
   {
@@ -113,7 +113,7 @@
     "ten": "Virus Zika (PCR)",
     "mucdich": "Phát hiện virus Zika có thể lây qua đường tình dục",
     "thoigian": "3 - 7 ngày",
-    "chiphi": "800.000 - 1.400.000",
+    "chiphi": "1.200.000",
     "tinhtrang": "Có"
   },
   {
@@ -122,7 +122,7 @@
     "ten": "Mycoplasma genitalium",
     "mucdich": "Phát hiện vi khuẩn gây viêm niệu đạo, viêm vùng chậu",
     "thoigian": "1 - 3 ngày",
-    "chiphi": "600.000 - 1.000.000",
+    "chiphi": "800.000",
     "tinhtrang": "Có"
   },
   {
@@ -131,7 +131,7 @@
     "ten": "Ureaplasma urealyticum",
     "mucdich": "Phát hiện vi khuẩn có thể gây vô sinh, viêm phụ khoa",
     "thoigian": "1 - 3 ngày",
-    "chiphi": "400.000 - 700.000",
+    "chiphi": "700.000",
     "tinhtrang": "Có"
   },
   {
@@ -140,7 +140,7 @@
     "ten": "Tư vấn trước khi làm xét nghiệm STI",
     "mucdich": "Hướng dẫn lựa chọn xét nghiệm phù hợp, đánh giá nguy cơ lây nhiễm",
     "thoigian": "20 - 30 phút",
-    "chiphi": "100.000 - 200.000",
+    "chiphi": "150.000",
     "tinhtrang": "Có"
   },
   {
@@ -149,7 +149,7 @@
     "ten": "Tư vấn sau khi nhận kết quả xét nghiệm",
     "mucdich": "Giải thích kết quả và hướng dẫn bước tiếp theo",
     "thoigian": "15 - 30 phút",
-    "chiphi": "100.000 - 150.000",
+    "chiphi": "150.000",
     "tinhtrang": "Có"
   },
   {
@@ -158,7 +158,7 @@
     "ten": "Tư vấn xét nghiệm định kỳ",
     "mucdich": "Gợi ý tần suất xét nghiệm phù hợp dựa trên hành vi tình dục",
     "thoigian": "15 - 30 phút",
-    "chiphi": "100.000 - 150.000",
+    "chiphi": "150.000",
     "tinhtrang": "Có"
   },
   {
@@ -176,7 +176,7 @@
     "ten": "Tư vấn cho cặp đôi trước QHTD không bao",
     "mucdich": "Hướng dẫn xét nghiệm STI an toàn trước khi quan hệ không dùng bao cao su",
     "thoigian": "30 phút",
-    "chiphi": "150.000 - 200.000",
+    "chiphi": "200.000",
     "tinhtrang": "Có"
   },
   {
@@ -185,7 +185,7 @@
     "ten": "Tư vấn sức khỏe sinh sản",
     "mucdich": "Hỗ trợ cá nhân hoặc cặp đôi hiểu rõ hơn về sức khỏe sinh sản, phòng tránh thai, kế hoạch hóa gia đình.",
     "thoigian": "30 phút - 45 phút",
-    "chiphi": "150.000 - 250.000",
+    "chiphi": "200.000",
     "tinhtrang": "Có"
   },
   {
@@ -194,7 +194,7 @@
     "ten": "Tư vấn tình dục an toàn",
     "mucdich": "Cung cấp kiến thức về quan hệ tình dục an toàn, tránh mang thai ngoài ý muốn, bảo vệ bản thân khỏi lây nhiễm.",
     "thoigian": "30 phút - 45 phút",
-    "chiphi": "150.000 - 250.000",
+    "chiphi": "200.000",
     "tinhtrang": "Có"
   },
   {
@@ -203,7 +203,7 @@
     "ten": "Tư vấn dậy thì và sức khỏe giới tính cho thanh thiếu niên",
     "mucdich": "Giúp thanh thiếu niên hiểu về sự phát triển cơ thể, giới tính, cách bảo vệ bản thân và mối quan hệ lành mạnh.",
     "thoigian": "30 phút - 45 phút",
-    "chiphi": "150.000 - 250.000",
+    "chiphi": "200.000",
     "tinhtrang": "Có"
   }
 ]
