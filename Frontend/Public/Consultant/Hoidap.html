@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danh sách câu hỏi khách hàng</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/Consultant_hoidap.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="user-info">
+        <img src="https://i.postimg.cc/rFsJ2wWR/tuvanvien.jpg" class="avatar" alt="Avatar" />
+        <div class="name" id="consultantName">Tư vấn viên A</div>
+      </div>
+      <nav class="menu">
+        <a href="Home.html">🏠 Trang chủ</a>
+        <a href="Hosotuvanvien.html">📝 Hồ sơ</a>
+        <a href="Lichlamviec.html">📅 Lịch</a>
+        <a href="Lichhen.html">📖 Hẹn</a>
+        <a href="Xemdanhgia.html">⭐ Đánh giá</a>
+        <a href="Hoidap.html" class="active">💬 Hỏi đáp</a>
+      </nav>
+      <div class="bottom-links">
+        <a href="#">❓ Hỗ trợ</a>
+        <a href="#">⚙️ Cài đặt</a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <header class="topbar">
+        <img src="https://i.postimg.cc/g2C1ys2D/nh-ch-p-m-n-h-nh-2025-06-29-000958.png" alt="An Giới" class="logo" />
+        <input type="text" id="searchQuestion" class="search" placeholder="Tìm kiếm câu hỏi..." />
+      </header>
+
+      <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Khách hàng</th>
+            <th>Câu hỏi</th>
+            <th>Email</th>
+            <th>Thời gian gửi</th>
+            <th>Tình trạng</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="questionTableBody">
+          <!-- Nội dung sẽ được render từ JS -->
+        </tbody>
+        
+      </table>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+  </div>
+
+
+  <script src="/Frontend/assets/js/Consultant_hoidap.js"></script>
+</body>
+</html>

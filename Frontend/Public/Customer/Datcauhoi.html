@@ -96,36 +96,43 @@
     const age = document.getElementById("age").value;
     const gender = document.getElementById("gender").value;
     const topic = document.getElementById("topic").value;
-    const dateSent = new Date().toLocaleDateString("vi-VN");
+    const dateSent = new Date().toLocaleString("vi-VN");
+
+    const id = "q" + Math.floor(Math.random() * 1000000);
 
     const newQuestion = {
-      subject,
-      specialty,
-      message,
-      name,
+      id,
+      customer: name,
       email,
       age,
       gender,
+      specialty,
       topic,
-      isAnonymous,
-      status: "Đang chờ trả lời",
-      date: dateSent
+      subject,
+      content: message,
+      time: dateSent,
+      status: "unanswered"
     };
 
-    const questions = JSON.parse(localStorage.getItem("questionHistory")) || [];
-    questions.push(newQuestion);
-    localStorage.setItem("questionHistory", JSON.stringify(questions));
+    // ✅ Lưu vào cả 2 nơi:
+    const consultantList = JSON.parse(localStorage.getItem("questions")) || [];
+    consultantList.push(newQuestion);
+    localStorage.setItem("questions", JSON.stringify(consultantList));
 
+    const historyList = JSON.parse(localStorage.getItem("questionHistory")) || [];
+    historyList.push(newQuestion);
+    localStorage.setItem("questionHistory", JSON.stringify(historyList));
+
+    // ✅ Hiển thị thành công
     document.getElementById("successMessage").style.display = "block";
     this.reset();
     document.getElementById("nameField").style.display = "block";
     document.getElementById("name").required = true;
     document.getElementById("anonymousCheckbox").checked = false;
-
     document.getElementById("successMessage").scrollIntoView({ behavior: 'smooth' });
   });
 
-  // ✅ Đặt ngoài form submit
+  // ✅ Gửi ẩn danh xử lý tên
   document.getElementById("anonymousCheckbox").addEventListener("change", function () {
     const nameField = document.getElementById("nameField");
     const nameInput = document.getElementById("name");

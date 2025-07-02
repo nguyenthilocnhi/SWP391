@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lịch Hẹn Khách Hàng</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/Frontend/assets/css/consultant_lichhen.css">
+  <script defer src="/Frontend/assets/js/consultant_lichhen.js"></script>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="user-info">
+        <img src="https://i.postimg.cc/rFsJ2wWR/tuvanvien.jpg" class="avatar" alt="Avatar">
+        <div class="name" id="consultantName">...</div>
+      </div>
+      <nav class="menu">
+        <a href="Home.html" title="Trang chủ">🏠 Trang chủ</a>
+        <a href="Hosotuvanvien.html" title="Hồ sơ tư vấn viên">📝 Hồ sơ</a>
+        <a href="Lichlamviec.html" title="Lịch làm việc">📅 Lịch</a>
+        <a href="Lichhen.html" title="Lịch hẹn với khách hàng">📖 Hẹn</a>
+        <a href="Xemdanhgia.html" title="Xem đánh giá của người dùng">⭐ Đánh giá</a>
+        <a href="Hoidap.html" title="Câu hỏi & trả lời">💬 Hỏi đáp</a>
+      </nav>
+      <div class="bottom-links">
+        <a href="#" title="Hướng dẫn, trợ giúp">❓ Hỗ trợ</a>
+        <a href="#" title="Tùy chỉnh cài đặt hệ thống">⚙️ Cài đặt</a>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="topbar">
+        <img src="https://i.postimg.cc/g2C1ys2D/nh-ch-p-m-n-h-nh-2025-06-29-000958.pngs" alt="An Giới" class="logo"/>
+        <input type="text" class="search" placeholder="Tìm kiếm..." />
+      </header>
+
+  <div class="container">
+    <h1>Lịch hẹn tư vấn</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Khách hàng</th>
+          <th>Loại tư vấn</th>
+          <th>Phone Number</th>
+          <th>Email</th>
+          <th>Thời gian đăng ký</th>
+          <th>Link tư vấn</th>
+        </tr>
+      </thead>
+      <tbody id="appointmentBody">
+        <!-- Render bằng JS -->
+      </tbody>
+    </table>
+    <div class="pagination" id="pagination"></div>
+
+  </div>
+</body>
+</html>

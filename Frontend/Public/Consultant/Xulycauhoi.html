@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xử Lý Câu Hỏi</title>
+  <link rel="stylesheet" href="/Frontend/assets/css/Consultant_answer.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="user-info">
+        <img src="https://i.postimg.cc/rFsJ2wWR/tuvanvien.jpg" class="avatar" alt="Avatar">
+        <div class="name" id="consultantName">Tư vấn viên A</div>
+      </div>
+      <nav class="menu">
+        <a href="Home.html">🏠 Trang chủ</a>
+        <a href="Hosotuvanvien.html">📝 Hồ sơ</a>
+        <a href="Lichlamviec.html">📅 Lịch</a>
+        <a href="Lichhen.html">📖 Hẹn</a>
+        <a href="Xemdanhgia.html">⭐ Đánh giá</a>
+        <a href="Hoidap.html" class="active">💬 Hỏi đáp</a>
+      </nav>
+      <div class="bottom-links">
+        <a href="#">❓ Hỗ trợ</a>
+        <a href="#">⚙️ Cài đặt</a>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="topbar">
+        <img src="https://i.postimg.cc/g2C1ys2D/nh-ch-p-m-n-h-nh-2025-06-29-000958.png" alt="An Giới" class="logo" />
+        <input type="text" class="search" placeholder="Tìm kiếm câu hỏi..." />
+      </header>
+
+      <div class="container">
+        <h2>Xử lý câu hỏi khách hàng</h2>
+
+        <div class="question-box" id="questionBox">
+          <p><strong>Khách hàng:</strong> <span id="qCustomer"></span></p>
+          <p><strong>Email:</strong> <span id="qEmail"></span></p>
+          <p><strong>Thời gian gửi:</strong> <span id="qTime"></span></p>
+          <p><strong>Câu hỏi:</strong><br><span id="qContent"></span></p>
+        </div>
+
+        <form class="answer-form" id="answerForm">
+          <label for="answer">Trả lời:</label>
+          <textarea id="answer" placeholder="Nhập nội dung trả lời..." required></textarea>
+          <button type="submit">Gửi phản hồi</button>
+        </form>
+
+        <div class="success-msg" id="successMsg">✅ Trả lời đã được gửi!</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const questionId = urlParams.get("id");
+
+      const questions = JSON.parse(localStorage.getItem("questions")) || [];
+      const index = questions.findIndex(q => q.id === questionId);
+      if (index === -1) {
+        document.getElementById("questionBox").innerHTML = "<p>Không tìm thấy câu hỏi.</p>";
+        document.getElementById("answerForm").style.display = "none";
+        return;
+      }
+
+      const q = questions[index];
+      document.getElementById("qCustomer").textContent = q.customer;
+      document.getElementById("qEmail").textContent = q.email;
+      document.getElementById("qTime").textContent = q.time;
+      document.getElementById("qContent").textContent = q.content || q.question;
+
+      // Nếu đã trả lời thì hiện ra nội dung cũ
+      if (q.status === "answered" && q.answer) {
+        document.getElementById("answer").value = q.answer;
+      }
+
+      // Gửi phản hồi
+      document.getElementById("answerForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const content = document.getElementById("answer").value.trim();
+        if (content === "") {
+          alert("Vui lòng nhập nội dung trả lời.");
+          return;
+        }
+
+        questions[index].answer = content;
+        questions[index].status = "answered";
+        localStorage.setItem("questions", JSON.stringify(questions));
+
+        document.getElementById("successMsg").style.display = "block";
+        document.getElementById("successMsg").scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>
