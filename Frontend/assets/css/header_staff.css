@@ -1,0 +1,95 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px 16px 32px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    margin-bottom: 24px;
+}
+.header h2 {
+    font-size: 1.5rem;
+    color: #018866;
+    margin: 0;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.user-header-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 12px;
+}
+.user-header-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 1.1rem;
+}
+.user-header-role {
+    font-size: 0.95rem;
+    color: #888;
+}
+.avatar {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+.avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.status-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #4caf50;
+    border: 2px solid #fff;
+}
+.status-dot.online {
+    background: #4caf50;
+}
+.status-dot.offline {
+    background: #ccc;
+}
+.header-search {
+    display: flex;
+    align-items: center;
+    margin: 0 24px;
+    background: #f4f6fa;
+    border-radius: 24px;
+    padding: 4px 12px;
+    box-shadow: 0 1px 4px rgba(42,91,215,0.04);
+    height: 40px;
+}
+.header-search input[type="text"] {
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 8px 8px 8px 0;
+    font-size: 1rem;
+    width: 200px;
+    color: #333;
+}
+.header-search button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #000000;
+    font-size: 1.1em;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+.header-search button:hover {
+    color: #0cb3a2;
+} 

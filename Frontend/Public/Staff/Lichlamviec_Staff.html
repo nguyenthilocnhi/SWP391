@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lịch làm việc - An Giới</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/Frontend/assets/css/staff-common.css">
+    <link rel="stylesheet" href="/Frontend/assets/css/Staff_lichlamviec.css" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div data-include="/Frontend/components/sidebar.html"></div>
+        <!-- Main Content -->
+        <main class="content-area">
+            <!-- Header -->
+            <div data-include="/Frontend/components/header_staff.html"></div>
+            
+            <!-- Content -->
+            <h2>Lịch làm việc hôm nay</h2>
+            <div class="schedule-date">Thứ Ba, 01/07/2025</div>
+
+            <div class="schedule">
+                <div class="schedule-item">
+                    <div>
+                        <strong>08:00 - 09:30</strong> | Phòng 101<br />
+                        Dịch vụ: Tư vấn sức khỏe sinh sản<br />
+                        Người phụ trách: Nguyễn Văn A
+                    </div>
+                    <span class="status ongoing">Đang diễn ra</span>
+                </div>
+
+                <div class="schedule-item">
+                    <div>
+                        <strong>10:00 - 11:30</strong> | Phòng 202<br />
+                        Dịch vụ: Xét nghiệm HPV<br />
+                        Người phụ trách: Trần Thị B
+                    </div>
+                    <span class="status pending">Chưa bắt đầu</span>
+                </div>
+
+                <div class="schedule-item">
+                    <div>
+                        <strong>14:00 - 15:00</strong> | Phòng 303<br />
+                        Dịch vụ: Tư vấn ECP<br />
+                        Người phụ trách: Nguyễn Văn A
+                    </div>
+                    <span class="status done">Hoàn tất</span>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="/Frontend/assets/js/include.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,249 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Container styles - ensure compatibility with sidebar */
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ==== CONTENT AREA ==== */
+.content-area {
+  flex: 1;
+  padding: 2rem;
+  background: #f9f9f9;
+  overflow-y: auto;
+}
+
+/* ==== HEADER ==== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ==== DASHBOARD ==== */
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  flex: 1 1 200px;
+  text-align: center;
+}
+
+.card-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #09a370;
+}
+
+/* ==== SECTIONS ==== */
+.main-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* ==== COMPONENTS ==== */
+.appointment,
+.notifications,
+.customer {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.appointment {
+  flex: 1 1 600px;
+  max-width: 100%;
+}
+
+.notifications {
+  flex: 1 1 400px;
+  max-width: 100%;
+}
+
+.customer {
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
+/* ==== TITLES ==== */
+.appointment-title,
+.notifications-title,
+.customer-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+/* ==== ITEMS ==== */
+.appointment-item,
+.notifications-item,
+.customer-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 15px;
+  color: #333;
+}
+
+.appointment-item:last-child,
+.notifications-item:last-child,
+.customer-item:last-child {
+  border-bottom: none;
+}
+
+/* ==== TABLE for CUSTOMER ==== */
+.customer table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  color: #333;
+}
+
+.customer th,
+.customer td {
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.customer th {
+  font-weight: bold;
+  color: #111;
+}
+
+.customer tbody tr:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
+/* ==== STATUS BADGES ==== */
+.status {
+  border-radius: 12px;
+  padding: 2px 10px;
+  font-size: 0.9em;
+  font-weight: 500;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.status.confirmed {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.status.done,
+.status.tracking {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status.waiting {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.time {
+  font-size: 0.85em;
+  color: #888;
+  margin-left: 8px;
+}
+
+/* ==== USER HEADER ==== */
+.user-header-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 1rem;
+}
+
+.user-header-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.user-header-role {
+  font-size: 0.8rem;
+  color: #09a370;
+  margin-bottom: 2px;
+}
+
+.user-header-status {
+  font-size: 0.9rem;
+  color: #4ade80;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.avatar {
+  position: relative;
+  display: inline-block;
+}
+
+.avatar .rounded-full {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.status-dot.online {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  background: #1acc5c;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px #d1fae5;
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 900px) {
+  .main-sections,
+  .dashboard {
+    flex-direction: column;
+  }
+}
+
+/* Responsive adjustments for content */
+@media (max-width: 768px) {
+  .main-sections,
+  .dashboard {
+    flex-direction: column;
+  }
+  
+  .card {
+    flex: 1 1 100%;
+  }
+}
