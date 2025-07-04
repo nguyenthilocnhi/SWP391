@@ -5,6 +5,8 @@ import DangNhap from "../Login/Dangnhap";
 import XacThucOTP from "../Login/XacThucOTP";
 import QuenMatKhau from "../Login/QuenMatKhau";
 import GioiThieu from "../Public/GioiThieu";
+import CauHoiThuongGap from "../Public/CauHoiThuongGap";
+import DichVu from "../Public/DichVu";
 
 function App() {
   return (
@@ -17,12 +19,16 @@ function App() {
         <Route path="/login" element={<DangNhap />} />
         <Route path="/forgot-password" element={<QuenMatKhau />} />
         <Route path="/verify-otp" element={<XacThucOTP />} />
-        <Route path="/gioi-thieu" element={<GioiThieu userType="guest" />} />
+        <Route path="/introduce" element={<GioiThieu userType="guest" />} />
+        <Route path="/cau-hoi-thuong-gap" element={<CauHoiThuongGap userType="guest" />} />
+        <Route path="/service" element={<DichVu userType="guest" />} />
 
 
         {/* Customer */}  
         <Route path="/customer" element={<TrangChu userType="customer" />} />
-        <Route path="/customer/gioi-thieu" element={<GioiThieu userType="customer" />} />
+        <Route path="/customer/introduce" element={<GioiThieu userType="customer" />} />
+        <Route path="/customer/cau-hoi-thuong-gap" element={<CauHoiThuongGap userType="customer" />} />
+        <Route path="/customer/service" element={<DichVu userType="customer" />} />
       </Routes>
     </Router>
   );

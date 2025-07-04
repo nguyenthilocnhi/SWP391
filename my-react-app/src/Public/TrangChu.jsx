@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import HeaderGuest from '../components/HeaderGuest';
 import HeaderCustomer from '../components/HeaderCustomer';
@@ -334,22 +335,32 @@ export default function TrangChu({ userType = 'guest' }) {
                     <AccordionContainer>
                         {[
                             {
-                                title: '🎁 Giảm 10% - Tư vấn sức khỏe vị thành niên',
+                                title: '🔥 Giảm 20% cho khách hàng đặt dịch vụ lần đầu',
                                 content: (
                                     <ul>
-                                        <li><strong>Thời gian:</strong> 01/07/2025 - 31/07/2025</li>
-                                        <li><strong>Đối tượng:</strong> 13 - 19 tuổi</li>
-                                        <li><strong>Dịch vụ:</strong> Tâm lý, giới tính, dậy thì</li>
+                                        <li><strong>Thời gian:</strong> Khi có thay đổi khác</li>
+                                        <li><strong>Đối tượng:</strong> Tất cả khách hàng lần đầu đặt dịch vụ</li>
+                                        <li><strong>Áp dụng:</strong> Mọi dịch vụ đặt lần đầu qua hệ thống</li>
                                     </ul>
                                 )
                             },
                             {
-                                title: '💰 Giảm 100.000VND - Tư vấn sức khỏe sinh sản',
+                                title: '🎁 Giảm 10% - Đặt lịch xét nghiệm Giang Mai',
                                 content: (
                                     <ul>
-                                        <li><strong>Thời gian:</strong> 01/07 - 31/08/2025</li>
-                                        <li><strong>Đối tượng:</strong> Nữ từ 18 tuổi</li>
-                                        <li><strong>Dịch vụ:</strong> Tiền hôn nhân</li>
+                                        <li><strong>Thời gian:</strong> 01/07/2025 - 31/08/2025</li>
+                                        <li><strong>Đối tượng:</strong> Tất cả khách hàng đặt lịch xét nghiệm Giang Mai</li>
+                                        <li><strong>Dịch vụ:</strong> Xét nghiệm Giang Mai</li>
+                                    </ul>
+                                )
+                            },
+                            {
+                                title: '💰 Giảm 100.000VND - Đặt lịch tư vấn',
+                                content: (
+                                    <ul>
+                                        <li><strong>Thời gian:</strong> 01/07/2025 - 31/08/2025</li>
+                                        <li><strong>Đối tượng:</strong> Tất cả khách hàng đặt lịch tư vấn</li>
+                                        <li><strong>Dịch vụ:</strong> Tư vấn</li>
                                     </ul>
                                 )
                             }
@@ -381,6 +392,9 @@ export default function TrangChu({ userType = 'guest' }) {
                     <SectionTitle>Cảm nhận từ khách hàng</SectionTitle>
                     <blockquote>“Tôi rất hài lòng với dịch vụ và sự nhiệt tình của đội ngũ An Giới...” – Chị Phương</blockquote>
                     <blockquote>“Tư vấn cụ thể, khoa học. Tôi sẽ tiếp tục sử dụng.” – Anh Minh</blockquote>
+                    <blockquote>“Đặt lịch nhanh chóng, nhân viên tư vấn tận tâm, tôi cảm thấy rất an tâm.” – Bạn Hồng Ngọc</blockquote>
+                    <blockquote>“Không gian sạch sẽ, bảo mật thông tin tốt, tôi sẽ giới thiệu cho bạn bè.” – Anh Tuấn</blockquote>
+                    <blockquote>“Ưu đãi hấp dẫn, dịch vụ chuyên nghiệp, tôi rất hài lòng.” – Chị Lan”</blockquote>
                 </Testimonials>
             </Container>
 
@@ -399,7 +413,7 @@ export default function TrangChu({ userType = 'guest' }) {
                     <div className="faq-answer">Vào mục "Kết quả xét nghiệm" trong hệ thống.</div>
                 </details>
                 <p className="more-question">
-                    Xem thêm <a href="/Frontend/Public/Guest/Cauhoithuonggap.html">tại đây</a>
+                    Xem thêm <Link to="/customer/cau-hoi-thuong-gap">tại đây</Link>
                 </p>
             </FaqContainer>
 

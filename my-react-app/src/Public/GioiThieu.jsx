@@ -9,9 +9,10 @@ const Container = styled.main`
   line-height: 1.6;
   color: #333;
   background-color: #f9f9f9;
-  width: 90%;
-  max-width: 1100px;
-  margin: 95px auto;
+  width: 100vw;
+  margin: 0;
+  padding: 2rem 0;
+  margin-top: 20px;
 `;
 
 const Section = styled.section`

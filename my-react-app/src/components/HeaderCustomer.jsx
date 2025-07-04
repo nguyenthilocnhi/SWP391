@@ -99,7 +99,7 @@ const NotificationBox = styled.div`
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   padding: 16px;
   z-index: 999;
-  display: ${({ visible }) => (visible ? 'flex' : 'none')};
+  display: ${({ $visible }) => ($visible ? 'flex' : 'none')};
   flex-direction: column;
   gap: 10px;
 `;
@@ -110,6 +110,24 @@ const UserInfo = styled.div`
   gap: 10px;
   position: relative;
   cursor: pointer;
+  .user-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.1;
+  }
+  .user-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 2px;
+  }
+  .user-role {
+    font-size: 12px;
+    color: #888;
+    font-weight: 400;
+    margin: 0;
+  }
 `;
 
 const Avatar = styled.img`
@@ -128,7 +146,7 @@ const UserMenu = styled.div`
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   width: 200px;
   z-index: 999;
-  display: ${({ visible }) => (visible ? 'block' : 'none')};
+  display: ${({ $visible }) => ($visible ? 'block' : 'none')};
 
   ul {
     list-style: none;
@@ -167,15 +185,15 @@ export default function HeaderCustomer() {
     <Header>
       <HeaderContainer>
         <Logo>
-          <Link to="/Frontend/Public/Customer/TrangchuCustomer.html">
+          <Link to="/customer">
             <img src="https://i.postimg.cc/mZjYJ7wm/logo.jpg" alt="Logo An Giới" />
           </Link>
         </Logo>
 
         <Nav className="main-nav">
           <ul>
-            <li><Link to="/introduce">Giới thiệu</Link></li>
-            <li><Link to="/dich-vu">Dịch vụ</Link></li>
+            <li><Link to="/customer/introduce">Giới thiệu</Link></li>
+            <li><Link to="/customer/service">Dịch vụ</Link></li>
             <li><Link to="/blog">Blog</Link></li>
             <li><Link to="/datlich">Đặt lịch</Link></li>
             <li><Link to="/tuvanvien">Tư vấn viên</Link></li>
@@ -195,7 +213,7 @@ export default function HeaderCustomer() {
               <NotificationIcon src="https://i.postimg.cc/TP8K01px/notifications-24dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz24.png" alt="Thông báo" />
               <Badge>{notifications.length}</Badge>
             </a>
-            <NotificationBox visible={showNotifications}>
+            <NotificationBox $visible={showNotifications}>
               <p>Bạn có {notifications.length} thông báo mới</p>
               <ul>
                 {notifications.map((item, index) => (
@@ -206,22 +224,22 @@ export default function HeaderCustomer() {
           </NotificationWrapper>
 
           <UserInfo onClick={toggleUserMenu}>
-            <Avatar src="https://i.postimg.cc/vZVQXR5n/avatar-default.png" alt="Avatar" />
+            <Avatar src="/src/assets/react.svg" alt="Avatar" />
             <div className="user-details">
               <span className="user-name">Nguyễn Bích M</span>
               <span className="user-role">Khách Hàng</span>
             </div>
             <span className="user-dropdown">▼</span>
-            <UserMenu visible={showUserMenu}>
+            <UserMenu $visible={showUserMenu}>
               <ul>
-                <li><a href="/Frontend/Public/Customer/Thongtincanhan.html">Thông tin cá nhân</a></li>
-                <li><a href="/Frontend/Public/Customer/theodoichuky.html">Theo dõi chu kỳ</a></li>
-                <li><a href="/Frontend/Public/Customer/Lichsudatlich.html">Lịch sử đặt lịch</a></li>
-                <li><a href="/Frontend/Public/Customer/KetQuaXetNghiem.html">Kết quả xét nghiệm</a></li>
-                <li><a href="/Frontend/Public/Customer/LichsudichvuVadanhgia.html">Lịch sử dịch vụ và đánh giá</a></li>
-                <li><a href="/Frontend/Public/Customer/nhacnho.html">Nhắc uống thuốc tránh thai</a></li>
-                <li><a href="/Frontend/Public/Customer/Datcauhoi.html">Đặt câu hỏi</a></li>
-                <li><a href="/Frontend/Public/Customer/Setting.html">Cài đặt</a></li>
+                <li><a href="/customer/thong-tin-ca-nhan">Thông tin cá nhân</a></li>
+                <li><a href="/customer/theo-doi-chu-ky">Theo dõi chu kỳ</a></li>
+                <li><a href="/customer/lich-su-dat-lich">Lịch sử đặt lịch</a></li>
+                <li><a href="/customer/ket-qua-xet-nghiem">Kết quả xét nghiệm</a></li>
+                <li><a href="/customer/lich-su-dich-vu-va-danh-gia">Lịch sử dịch vụ và đánh giá</a></li>
+                <li><a href="/customer/nhac-nho">Nhắc uống thuốc tránh thai</a></li>
+                <li><a href="/customer/dat-cau-hoi">Đặt câu hỏi</a></li>
+                <li><a href="/customer/cai-dat">Cài đặt</a></li>
               </ul>
             </UserMenu>
           </UserInfo>

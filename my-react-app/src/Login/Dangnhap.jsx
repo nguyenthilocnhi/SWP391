@@ -43,7 +43,7 @@ const DangNhap = () => {
           localStorage.setItem('role', 'customer');
           localStorage.setItem("loggedIn", "true");
           localStorage.setItem("sessionExpire", Date.now() + 15 * 60 * 1000); // 15 phút
-          window.location.href = "/Frontend/Public/Customer/TrangchuCustomer.html";
+          window.location.href = "/customer";
         } else {
           setMessage(data.message || 'Đăng nhập thất bại!');
         }

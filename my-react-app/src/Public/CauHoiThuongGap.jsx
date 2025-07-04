@@ -4,12 +4,15 @@ import HeaderGuest from '../components/HeaderGuest';
 import HeaderCustomer from '../components/HeaderCustomer';
 import Footer from '../components/Footer';
 
-const Container = styled.div`
+const Container = styled.main`
   font-family: 'Segoe UI', sans-serif;
   line-height: 1.6;
   color: #333;
   background-color: #f9f9f9;
-  padding-bottom: 50px;
+  width: 100vw;
+  margin: 0;
+  padding: 2rem 0;
+  margin-top: 20px;
 `;
 
 const FaqSection = styled.section`
@@ -78,16 +81,16 @@ const FaqSection = styled.section`
 `;
 
 const CauHoiThuongGap = () => {
-  const [role, setRole] = useState('Guest');
+  const [role, setRole] = useState('guest');
 
   useEffect(() => {
     const savedRole = localStorage.getItem('role');
-    if (savedRole) setRole(savedRole);
+    if (savedRole) setRole(savedRole.toLowerCase());
   }, []);
 
   return (
     <Container>
-      {role === 'Customer' ? <HeaderCustomer /> : <HeaderGuest />}
+      {role === 'customer' ? <HeaderCustomer /> : <HeaderGuest />}
 
       <FaqSection>
         <h2>
