@@ -7,6 +7,7 @@ import QuenMatKhau from "../Login/QuenMatKhau";
 import GioiThieu from "../Public/GioiThieu";
 import CauHoiThuongGap from "../Public/CauHoiThuongGap";
 import DichVu from "../Public/DichVu";
+import DatLaiMatKhauThanhCong from "../Login/DatLaiMatKhauThanhCong";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/introduce" element={<GioiThieu userType="guest" />} />
         <Route path="/cau-hoi-thuong-gap" element={<CauHoiThuongGap userType="guest" />} />
         <Route path="/service" element={<DichVu userType="guest" />} />
+        <Route path="/dat-lai-mat-khau-thanh-cong" element={<DatLaiMatKhauThanhCong />} />
 
 
         {/* Customer */}  
