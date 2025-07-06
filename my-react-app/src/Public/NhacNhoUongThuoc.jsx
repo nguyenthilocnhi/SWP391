@@ -174,7 +174,8 @@ const Day = styled.div`
   &.today.check {
     background-color: #22c55e !important;
     color: #ffffff !important;
-    border-color: #22c55e !important;
+    border-color: #93c5fd !important;
+    border-width: 3px !important;
     font-weight: bold;
   }
 
@@ -182,7 +183,8 @@ const Day = styled.div`
   &.today.x {
     background-color: #ef4444 !important;
     color: #ffffff !important;
-    border-color: #ef4444 !important;
+    border-color: #93c5fd !important;
+    border-width: 3px !important;
     font-weight: bold;
   }
 
@@ -190,7 +192,8 @@ const Day = styled.div`
   &.today {
     background-color: #f59e0b !important;
     color: #ffffff !important;
-    border-color: #f59e0b !important;
+    border-color: #93c5fd !important;
+    border-width: 3px !important;
     font-weight: bold;
   }
 
@@ -207,6 +210,15 @@ const Day = styled.div`
   /* Tháng đã qua */
   &.past-month {
     opacity: 0.6;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* Ngày trước ngày bắt đầu - để trắng */
+  &.before-start {
+    background-color: #ffffff !important;
+    color: #9ca3af !important;
+    border-color: #e5e7eb !important;
     cursor: default;
     pointer-events: none;
   }
@@ -335,6 +347,8 @@ const NhacNhoUongThuoc = () => {
     useEffect(() => {
         const savedStart = localStorage.getItem("startDate");
         const savedCycle = localStorage.getItem("pillCycle");
+        const hasUsedBefore = localStorage.getItem("hasUsedBefore");
+        
         if (savedStart) {
             setStartDate(new Date(savedStart));
             setShowStartDateInput(false);
@@ -342,9 +356,16 @@ const NhacNhoUongThuoc = () => {
             setShowStartDateInput(true);
         }
         if (savedCycle) setPillCycle(parseInt(savedCycle));
+        
+        // Đánh dấu rằng người dùng đã từng sử dụng hệ thống
+        if (savedStart && !hasUsedBefore) {
+            localStorage.setItem("hasUsedBefore", "true");
+        }
     }, []);
 
     useEffect(() => {
+        if (!startDate) return;
+        
         const key = getKey();
         const saved = JSON.parse(localStorage.getItem(key)) || [];
         setMissedDays(saved);
@@ -356,17 +377,20 @@ const NhacNhoUongThuoc = () => {
         
         const key = getKey();
         const saved = localStorage.getItem(key);
+        const hasUsedBefore = localStorage.getItem("hasUsedBefore");
         
-        // Nếu chưa có dữ liệu cho tháng này, khởi tạo mặc định
-        if (!saved) {
+        // Nếu chưa có dữ liệu cho tháng này và người dùng đã từng sử dụng hệ thống
+        if (!saved && hasUsedBefore) {
             const totalDays = daysInMonth(currentMonth, currentYear);
-            const today = new Date();
-            const currentDate = new Date(currentYear, currentMonth, 1);
+            const monthStart = new Date(currentYear, currentMonth, 1);
+            const monthEnd = new Date(currentYear, currentMonth, totalDays);
             
-            // Mặc định tất cả ngày trong tháng là đã uống (check)
-            const defaultMissedDays = [];
-            localStorage.setItem(key, JSON.stringify(defaultMissedDays));
-            setMissedDays(defaultMissedDays);
+            // Chỉ khởi tạo nếu tháng này có ngày sau start date
+            if (monthEnd >= startDate) {
+                const defaultMissedDays = [];
+                localStorage.setItem(key, JSON.stringify(defaultMissedDays));
+                setMissedDays(defaultMissedDays);
+            }
         }
     }, [currentMonth, currentYear, startDate]);
 
@@ -382,6 +406,7 @@ const NhacNhoUongThuoc = () => {
         if (!input) return alert("Vui lòng chọn ngày bắt đầu!");
         localStorage.setItem("startDate", input);
         localStorage.setItem("pillCycle", cycle);
+        localStorage.setItem("hasUsedBefore", "true");
         setStartDate(new Date(input));
         setPillCycle(parseInt(cycle));
         setShowStartDateInput(false);
@@ -412,10 +437,17 @@ const NhacNhoUongThuoc = () => {
 
     const resetLich = () => {
         if (confirm("Bạn có chắc muốn đặt lại toàn bộ lịch không?")) {
-            const totalDays = daysInMonth(currentMonth, currentYear);
-            const allDays = Array.from({ length: totalDays }, (_, i) => i + 1);
-            localStorage.setItem(getKey(), JSON.stringify(allDays));
-            setMissedDays(allDays);
+            // Xóa dữ liệu localStorage
+            localStorage.removeItem("startDate");
+            localStorage.removeItem("pillCycle");
+            localStorage.removeItem("hasUsedBefore");
+            localStorage.removeItem(getKey());
+            
+            // Reset state về ban đầu
+            setStartDate(null);
+            setPillCycle(28);
+            setMissedDays([]);
+            setShowStartDateInput(true);
         }
     };
 
@@ -446,41 +478,46 @@ const NhacNhoUongThuoc = () => {
             const dateObj = new Date(currentYear, currentMonth, day);
             const isToday = dateObj.toDateString() === today.toDateString();
             const isPastOrToday = dateObj <= today;
-            const isAfterStartDate = startDate ? dateObj.getTime() >= startDate.getTime() : true;
+            const isAfterStartDate = startDate ? dateObj.getTime() >= startDate.getTime() : false;
+            const isStartDate = startDate ? dateObj.toDateString() === startDate.toDateString() : false;
             const isPastMonth = (currentYear < today.getFullYear()) || 
                                (currentYear === today.getFullYear() && currentMonth < today.getMonth());
 
             let className = "day";
             
             // Kiểm tra xem ngày này có thể click được không
-            // Cho phép click vào tất cả ngày trong quá khứ và hôm nay, trừ tháng đã qua
-            const canClick = isPastOrToday && !isPastMonth;
+            // Cho phép click vào tất cả ngày từ ngày bắt đầu đến hôm nay, bao gồm cả tháng đã qua
+            const canClick = isPastOrToday && (isAfterStartDate || isStartDate);
 
             if (isPastOrToday) {
-                // Tất cả ngày trong quá khứ và hôm nay - hiển thị trạng thái từ localStorage
-                if (missedDays.includes(day)) {
-                    className += " x";
+                const hasUsedBefore = localStorage.getItem("hasUsedBefore");
+                const key = getKey();
+                const hasDataForMonth = localStorage.getItem(key) !== null;
+                
+                if ((isAfterStartDate || isStartDate) && hasUsedBefore && hasDataForMonth) {
+                    // Hiển thị trạng thái uống thuốc cho các ngày từ ngày bắt đầu trở đi
+                    if (missedDays.includes(day)) {
+                        className += " x";
+                    } else {
+                        className += " check";
+                    }
+                    
+                    if (isToday) {
+                        className += " today";
+                    }
+                } else if (isAfterStartDate || isStartDate) {
+                    // Ngày sau start date nhưng chưa có dữ liệu cho tháng này - để trắng
+                    className += " before-start";
                 } else {
-                    className += " check";
+                    // Ngày trước ngày bắt đầu - để trắng
+                    className += " before-start";
                 }
                 
-                if (isPastMonth) {
-                    className += " past-month";
-                }
-                
-                if (isToday) {
-                    className += " today";
-                }
+                // Không còn giới hạn tháng đã qua - cho phép tracking tất cả ngày từ start date
             } else {
                 // Ngày chưa tới - không thể click
                 className += " future";
             }
-
-
-            
-
-            
-
             
             days.push(
                 <Day
@@ -510,7 +547,12 @@ const NhacNhoUongThuoc = () => {
             {showStartDateInput && (
                     <StartDateSection>
                     <label>📅 Ngày bắt đầu:</label>
-                        <input id="startDate" type="date" />
+                        <input 
+                            id="startDate" 
+                            type="date" 
+                            max={new Date().toISOString().split('T')[0]}
+                            min={new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+                        />
                     <label>💊 Chu kỳ:</label>
                         <select id="pillCycle">
                         <option value="21">21 viên</option>
@@ -562,14 +604,8 @@ const NhacNhoUongThuoc = () => {
                         <Circle className="x" />
                     Chưa uống
                 </p>
-                    <p>
-                        <Circle className="today" />
-                        Hôm nay
-                    </p>
                 </Legend>
                 
-
-
                 {startDate && (
                     <>
                         <Summary>
@@ -580,17 +616,10 @@ const NhacNhoUongThuoc = () => {
                     <strong>Chưa uống:</strong> {missedDays.length} ngày
                 </p>
                         </Summary>
-
                         <NextPackInfo dangerouslySetInnerHTML={{ __html: suggestNextPack().replace(/\n/g, '<br>') }} />
-
                         <ResetButton onClick={resetLich}>
                     🔁 Đặt lại lịch
                         </ResetButton>
-                        
-
-                        
-
-                        
 
                     </>
                 )}
