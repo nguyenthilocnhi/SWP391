@@ -194,9 +194,9 @@ export default function HeaderCustomer() {
           <ul>
             <li><Link to="/customer/introduce">Giới thiệu</Link></li>
             <li><Link to="/customer/service">Dịch vụ</Link></li>
-            <li><Link to="/blog">Blog</Link></li>
-            <li><Link to="/datlich">Đặt lịch</Link></li>
-            <li><Link to="/tuvanvien">Tư vấn viên</Link></li>
+            <li><Link to="/customer/blog">Blog</Link></li>
+            <li><Link to="/customer/dat-lich-dich-vu">Đặt lịch</Link></li>
+            <li><Link to="/customer/tuvanvien">Tư vấn viên</Link></li>
           </ul>
         </Nav>
 

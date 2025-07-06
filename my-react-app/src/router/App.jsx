@@ -17,6 +17,11 @@ import BlogChiTiet5 from "../Public/BlogChiTiet5";
 import BlogChiTiet6 from "../Public/BlogChiTiet6";
 import NhacNhoUongThuoc from "../Public/NhacNhoUongThuoc";
 import TheoDoiChuKy from "../Public/TheoDoiChuKy";
+import CaiDat from "../Public/CaiDat";
+import DoiMatKhau from "../Public/DoiMatKhau";
+import DatCauHoi from "../Public/DatCauHoi";
+import LichSuCauHoi from "../Public/LichSuCauHoi";
+import DatLichDichVu from "../Public/DatLichDichVu";
 
 function App() {
   return (
@@ -41,7 +46,7 @@ function App() {
         <Route path="/blogchitiet5" element={<BlogChiTiet5 />} />
         <Route path="/blogchitiet6" element={<BlogChiTiet6 />} />
 
-        {/* Customer */}  
+        {/* Customer */}
         <Route path="/customer" element={<TrangChu userType="customer" />} />
         <Route path="/customer/introduce" element={<GioiThieu userType="customer" />} />
         <Route path="/customer/cau-hoi-thuong-gap" element={<CauHoiThuongGap userType="customer" />} />
@@ -55,6 +60,11 @@ function App() {
         <Route path="/customer/blogchitiet6" element={<BlogChiTiet6 />} />
         <Route path="/customer/nhac-nho" element={<NhacNhoUongThuoc userType="customer" />} />
         <Route path="/customer/theo-doi-chu-ky" element={<TheoDoiChuKy userType="customer" />} />
+        <Route path="/customer/cai-dat" element={<CaiDat />} />
+        <Route path="/customer/doi-mat-khau" element={<DoiMatKhau />} />
+        <Route path="/customer/dat-cau-hoi" element={<DatCauHoi />} />
+        <Route path="/customer/lich-su-cau-hoi" element={<LichSuCauHoi />} />
+        <Route path="/customer/dat-lich-dich-vu" element={<DatLichDichVu />} />
       </Routes>
     </Router>
   );
