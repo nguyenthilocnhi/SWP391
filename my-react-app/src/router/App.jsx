@@ -15,6 +15,8 @@ import BlogChiTiet3 from "../Public/BlogChiTiet3";
 import BlogChiTiet4 from "../Public/BlogChiTiet4";
 import BlogChiTiet5 from "../Public/BlogChiTiet5";
 import BlogChiTiet6 from "../Public/BlogChiTiet6";
+import NhacNhoUongThuoc from "../Public/NhacNhoUongThuoc";
+
 function App() {
   return (
     <Router>
@@ -50,6 +52,7 @@ function App() {
         <Route path="/customer/blogchitiet4" element={<BlogChiTiet4 />} />
         <Route path="/customer/blogchitiet5" element={<BlogChiTiet5 />} />
         <Route path="/customer/blogchitiet6" element={<BlogChiTiet6 />} />
+        <Route path="/customer/nhac-nho" element={<NhacNhoUongThuoc userType="customer" />} />
       </Routes>
     </Router>
   );
