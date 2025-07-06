@@ -8,6 +8,7 @@ import GioiThieu from "../Public/GioiThieu";
 import CauHoiThuongGap from "../Public/CauHoiThuongGap";
 import DichVu from "../Public/DichVu";
 import DatLaiMatKhauThanhCong from "../Login/DatLaiMatKhauThanhCong";
+import NhacNhoUongThuoc from "../Public/NhacNhoUongThuoc";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/customer/introduce" element={<GioiThieu userType="customer" />} />
         <Route path="/customer/cau-hoi-thuong-gap" element={<CauHoiThuongGap userType="customer" />} />
         <Route path="/customer/service" element={<DichVu userType="customer" />} />
+        <Route path="/customer/nhac-nho" element={<NhacNhoUongThuoc userType="customer" />} />
       </Routes>
     </Router>
   );
