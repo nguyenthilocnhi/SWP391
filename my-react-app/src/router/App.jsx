@@ -28,6 +28,7 @@ import DoiMatKhau from "../Public/DoiMatKhau";
 import DatCauHoi from "../Public/DatCauHoi";
 import LichSuCauHoi from "../Public/LichSuCauHoi";
 import DatLichDichVu from "../Public/DatLichDichVu";
+import DatLichTuVan from "../Public/DatLichTuVan";
 
 function App() {
   return (
@@ -82,6 +83,7 @@ function App() {
         <Route path="/customer/dat-cau-hoi" element={<DatCauHoi />} />
         <Route path="/customer/lich-su-cau-hoi" element={<LichSuCauHoi />} />
         <Route path="/customer/dat-lich-dich-vu" element={<DatLichDichVu />} />
+        <Route path="/customer/dat-lich-tu-van" element={<DatLichTuVan />} />
       </Routes>
     </Router>
   );
