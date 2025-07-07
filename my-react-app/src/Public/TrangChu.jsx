@@ -415,6 +415,22 @@ export default function TrangChu({ userType = 'guest' }) {
                 <p className="more-question">
                     Xem thêm <Link to="/customer/cau-hoi-thuong-gap">tại đây</Link>
                 </p>
+                <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                  <Link to="/admin/trangchu">
+                    <button style={{
+                      background: '#10b981',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '8px',
+                      padding: '12px 28px',
+                      fontSize: '16px',
+                      fontWeight: 'bold',
+                      cursor: 'pointer'
+                    }}>
+                      Gửi câu hỏi mới
+                    </button>
+                  </Link>
+                </div>
             </FaqContainer>
 
             <Footer />

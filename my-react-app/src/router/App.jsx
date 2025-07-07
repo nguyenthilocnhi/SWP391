@@ -36,6 +36,9 @@ import ThanhToan from "../Public/ThanhToan";
 import ThanhCongDatLich from "../Public/ThanhCongDatLich";
 import LichSuDatLich from "../Public/LichSuDatLich";
 
+import AdminTrangChu from "../Admin/adminTrangChu";
+import AdminHoSo from "../Admin/adminHoSo";
+
 function App() {
   return (
     <Router>
@@ -95,11 +98,18 @@ function App() {
         <Route path="/customer/dat-cau-hoi" element={<DatCauHoi />} />
         <Route path="/customer/lich-su-cau-hoi" element={<LichSuCauHoi />} />
         <Route path="/customer/dat-lich-dich-vu" element={<DatLichDichVu />} />
+
         <Route path="/customer/dat-lich-tu-van" element={<DatLichTuVan />} />
         <Route path="/customer/dat-lich-xet-nghiem" element={<DatLichXetNghiem />} />
         <Route path="/customer/thanh-toan" element={<ThanhToan />} />
         <Route path="/customer/thanh-cong-dat-lich" element={<ThanhCongDatLich />} />
         <Route path="/customer/lich-su-dat-lich" element={<LichSuDatLich />} />
+
+
+        {/* {admin} */}
+        <Route path="/admin/trangchu" element={<AdminTrangChu/>} />
+        <Route path="/admin/hoso" element={<AdminHoSo/>} />
+
       </Routes>
     </Router>
   );
