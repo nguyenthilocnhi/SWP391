@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HeaderCustomer from "../components/HeaderCustomer";
 import Footer from "../components/Footer";
@@ -175,6 +175,10 @@ function DatLichDichVu() {
   const [buttonHover, setButtonHover] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.title = "Đặt Lịch Dịch Vụ";
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -237,7 +241,7 @@ function DatLichDichVu() {
             onSubmit={handleSubmit}
             autoComplete="off"
           >
-            <h2 style={styles.h2}>Đặt Lịch Dịch Vụ</h2>
+            <h2 style={styles.h2}>Đặt lịch dịch vụ</h2>
             <label style={styles.label}>
               Họ và tên <span style={styles.required}>*</span>
             </label>
