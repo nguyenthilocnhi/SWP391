@@ -142,13 +142,13 @@ function HeaderGuest() {
             <li><Link to="/introduce">Giới thiệu</Link></li>
             <li><Link to="/service">Dịch vụ</Link></li>
             <li><Link to="/blog">Blog</Link></li>
-            <li><Link to="/tuvanvien">Tư vấn viên</Link></li>
+            <li><Link to="/tu-van-vien">Tư vấn viên</Link></li>
             <li><Link to="/login">Đăng nhập</Link></li>
             <li><Link to="/register">Đăng ký</Link></li>
           </ul>
         </Nav>
 
-        <SearchForm action="/Frontend/Public/Guest/timkiem.html" method="get">
+        <SearchForm onSubmit={e => { e.preventDefault(); /* handle search here */ }}>
           <input type="text" name="q" placeholder="Tìm kiếm..." required />
           <button type="submit">
             <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />

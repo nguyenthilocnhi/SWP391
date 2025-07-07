@@ -201,12 +201,12 @@ export default function HeaderCustomer() {
             <li><Link to="/customer/service">Dịch vụ</Link></li>
             <li><Link to="/customer/blog">Blog</Link></li>
             <li><Link to="/customer/dat-lich-dich-vu">Đặt lịch</Link></li>
-            <li><Link to="/customer/tuvanvien">Tư vấn viên</Link></li>
+            <li><Link to="/customer/tu-van-vien">Tư vấn viên</Link></li>
           </ul>
         </Nav>
 
         <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <SearchForm action="/Frontend/Public/Customer/timkiem_Customer.html" method="get">
+          <SearchForm onSubmit={e => { e.preventDefault(); /* handle search here */ }}>
             <input type="text" name="q" placeholder="Tìm kiếm..." required />
             <button type="submit">
               <img src="https://i.postimg.cc/mgxvN3zN/t-m-ki-m.png" alt="Tìm kiếm" />

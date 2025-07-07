@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import HeaderGuest from '../components/HeaderGuest';
 import HeaderCustomer from '../components/HeaderCustomer';
 import Footer from '../components/Footer';
+import { Link } from 'react-router-dom';
 
 const Container = styled.main`
   font-family: 'Segoe UI', sans-serif;
@@ -291,8 +292,8 @@ const DichVu = (props) => {
 
   const getDetailUrl = (serviceCode) => {
     return getCurrentPageType() === 'customer'
-      ? `ChitietdichvuCustomer.html?ma=${serviceCode}`
-      : `Chitietdichvu.html?ma=${serviceCode}`;
+      ? <Link to={`/customer/service/${serviceCode}`}>Chi tiết</Link>
+      : <Link to={`/service/${serviceCode}`}>Chi tiết</Link>;
   };
 
   const filteredData = allData.filter((item) => {
@@ -458,9 +459,7 @@ const DichVu = (props) => {
                     <td>{item.chiphi}</td>
                     <td>{item.tinhtrang}</td>
                     <td>
-                      <a href={getDetailUrl(item.ma)} className="detail-link">
-                        Chi tiết
-                      </a>
+                      {getDetailUrl(item.ma)}
                     </td>
                   </tr>
                 ))}

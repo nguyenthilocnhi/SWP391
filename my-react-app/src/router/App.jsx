@@ -7,6 +7,7 @@ import QuenMatKhau from "../Login/QuenMatKhau";
 import GioiThieu from "../Public/GioiThieu";
 import CauHoiThuongGap from "../Public/CauHoiThuongGap";
 import DichVu from "../Public/DichVu";
+import ChiTietDichVu from "../Public/ChiTietDichVu";
 import DatLaiMatKhauThanhCong from "../Login/DatLaiMatKhauThanhCong";
 import BlogPage from "../Public/BlogPage";
 import BlogChiTiet1 from "../Public/BlogChiTiet1";
@@ -28,21 +29,27 @@ import DoiMatKhau from "../Public/DoiMatKhau";
 import DatCauHoi from "../Public/DatCauHoi";
 import LichSuCauHoi from "../Public/LichSuCauHoi";
 import DatLichDichVu from "../Public/DatLichDichVu";
+import TuVanVien from "../Public/TuVanVien";
+import ChiTietTuVanVien from '../Public/ChiTietTuVanVien';
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Guest */}
-        <Route path="/" element={<TrangChu userType="guest" />} />
-        <Route path="/register" element={<DangKy />} />
+        {/* Login */}
         <Route path="/login" element={<DangNhap />} />
+        <Route path="/register" element={<DangKy />} />
         <Route path="/forgot-password" element={<QuenMatKhau />} />
         <Route path="/verify-otp" element={<XacThucOTP />} />
+        <Route path="/dat-lai-mat-khau-thanh-cong" element={<DatLaiMatKhauThanhCong />} />
+
+        {/* Guest */}
+        <Route path="/" element={<TrangChu userType="guest" />} />
         <Route path="/introduce" element={<GioiThieu userType="guest" />} />
         <Route path="/cau-hoi-thuong-gap" element={<CauHoiThuongGap userType="guest" />} />
         <Route path="/service" element={<DichVu userType="guest" />} />
-        <Route path="/dat-lai-mat-khau-thanh-cong" element={<DatLaiMatKhauThanhCong />} />
+        <Route path="/service/:serviceCode" element={<ChiTietDichVu userType="guest" />} />
+        <Route path="/tu-van-vien" element={<TuVanVien userType="guest" />} />
         <Route path="/blog" element={<BlogPage userType="guest" />} />
         <Route path="/blogchitiet1" element={<BlogChiTiet1 userType="guest" />} />
         <Route path="/blogchitiet2" element={<BlogChiTiet2 userType="guest" />} />
@@ -62,6 +69,8 @@ function App() {
         <Route path="/customer/introduce" element={<GioiThieu userType="customer" />} />
         <Route path="/customer/cau-hoi-thuong-gap" element={<CauHoiThuongGap userType="customer" />} />
         <Route path="/customer/service" element={<DichVu userType="customer" />} />
+        <Route path="/customer/service/:serviceCode" element={<ChiTietDichVu userType="customer" />} />
+        <Route path="/customer/tu-van-vien" element={<TuVanVien userType="customer" />} />
         <Route path="/customer/blog" element={<BlogPage userType="customer" />} />
         <Route path="/customer/blogchitiet1" element={<BlogChiTiet1 userType="customer" />} />
         <Route path="/customer/blogchitiet2" element={<BlogChiTiet2 userType="customer" />} />
@@ -82,6 +91,7 @@ function App() {
         <Route path="/customer/dat-cau-hoi" element={<DatCauHoi />} />
         <Route path="/customer/lich-su-cau-hoi" element={<LichSuCauHoi />} />
         <Route path="/customer/dat-lich-dich-vu" element={<DatLichDichVu />} />
+        <Route path="/tu-van-vien/:id" element={<ChiTietTuVanVien />} />
       </Routes>
     </Router>
   );
