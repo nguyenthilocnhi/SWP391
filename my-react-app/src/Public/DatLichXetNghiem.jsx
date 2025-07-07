@@ -3,17 +3,6 @@ import HeaderCustomer from "../components/HeaderCustomer";
 import { useNavigate } from "react-router-dom";
 
 const styles = {
-  page: {
-    fontFamily: "'Inter', 'Segoe UI', sans-serif",
-    background: "#f0fdf4",
-    minHeight: "100vh",
-    margin: 0,
-    padding: 0,
-    width: "100vw",
-    boxSizing: "border-box",
-    display: "flex",
-    flexDirection: "column",
-  },
   main: {
     display: "flex",
     justifyContent: "center",
@@ -25,12 +14,12 @@ const styles = {
   card: {
     background: "#fff",
     padding: 32,
-    borderRadius: 24,
+    borderRadius: 20,
     boxShadow: "0 8px 20px rgba(34,197,94,0.1)",
     maxWidth: 600,
     width: "100%",
     border: "2px solid #34D399",
-    margin: "140px auto 40px auto",
+    margin: "120px auto 0 auto",
   },
   h2: {
     textAlign: "center",
@@ -63,12 +52,11 @@ const styles = {
     display: "block",
     color: "#065f46",
     fontSize: 15,
-    textAlign: "left",
   },
   input: {
     width: "100%",
     padding: 10,
-    margin: "7px 0 0 0",
+    marginTop: 6,
     border: "1px solid #a7f3d0",
     borderRadius: 8,
     fontSize: 14,
@@ -78,12 +66,11 @@ const styles = {
     marginBottom: 0,
     outline: "none",
     transition: "border-color 0.2s, box-shadow 0.2s",
-    textAlign: "left",
   },
   select: {
     width: "100%",
     padding: 10,
-    margin: "7px 0 0 0",
+    marginTop: 6,
     border: "1px solid #a7f3d0",
     borderRadius: 8,
     fontSize: 14,
@@ -92,12 +79,11 @@ const styles = {
     color: "#15803d",
     transition: "border-color 0.2s, box-shadow 0.2s",
     outline: "none",
-    textAlign: "left",
   },
   textarea: {
     width: "100%",
     padding: 10,
-    margin: "7px 0 0 0",
+    marginTop: 6,
     border: "1px solid #a7f3d0",
     borderRadius: 8,
     fontSize: 14,
@@ -106,21 +92,19 @@ const styles = {
     color: "#15803d",
     transition: "border-color 0.2s, box-shadow 0.2s",
     outline: "none",
-    textAlign: "left",
   },
   button: {
-    margin: "28px 0 0 0",
+    marginTop: 24,
     width: "100%",
-    background: "linear-gradient(90deg, #22c55e 0%, #10b981 100%)",
+    padding: 12,
+    backgroundColor: "#10B981",
     color: "white",
-    padding: 14,
     border: "none",
-    borderRadius: 10,
-    fontWeight: 700,
-    fontSize: 17,
+    borderRadius: 8,
+    fontSize: 16,
+    fontWeight: 600,
     cursor: "pointer",
-    transition: "background 0.3s",
-    textAlign: "center",
+    transition: "background-color 0.3s",
   },
   buttonHover: {
     backgroundColor: "#059669",
@@ -149,16 +133,26 @@ const styles = {
       width: "100%",
     },
   },
+  page: {
+    fontFamily: "'Inter', 'Segoe UI', sans-serif",
+    background: "#f0fdf4",
+    minHeight: "100vh",
+    margin: 0,
+    padding: 0,
+    width: "100vw",
+    boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "column",
+  },
 };
 
-function DatLichTuVan() {
+function DatLichXetNghiem() {
   const [form, setForm] = useState({
     hoten: "",
     sdt: "",
     ngay: "",
     gio: "",
-    hinhThuc: "Trực tiếp",
-    loaiTuVan: "",
+    loaiXetNghiem: "",
     ghichu: "",
   });
   const [dateDisplay, setDateDisplay] = useState("");
@@ -167,7 +161,7 @@ function DatLichTuVan() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Đặt Lịch Tư Vấn";
+    document.title = "Đặt Lịch Xét Nghiệm";
     setForm((prev) => ({
       ...prev,
       hoten: localStorage.getItem("tempHoTen") || "",
@@ -200,8 +194,8 @@ function DatLichTuVan() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const { hoten, sdt, ngay, gio, hinhThuc, loaiTuVan, ghichu } = form;
-    if (!hoten || !sdt || !ngay || !gio || !loaiTuVan) {
+    const { hoten, sdt, ngay, gio, loaiXetNghiem, ghichu } = form;
+    if (!hoten || !sdt || !ngay || !gio || !loaiXetNghiem) {
       alert("Vui lòng điền đầy đủ thông tin bắt buộc.");
       return;
     }
@@ -213,25 +207,15 @@ function DatLichTuVan() {
       return;
     }
     const ngayFormat = formatDate(ngay);
-    let googleMeetLink = "";
-    if (hinhThuc === "Online") {
-      const randomCode = Math.random().toString(36).substring(2, 12);
-      googleMeetLink = `https://meet.google.com/${randomCode.slice(0, 3)}-${randomCode.slice(3, 6)}-${randomCode.slice(6, 9)}`;
-      localStorage.setItem("latestMeetLink", googleMeetLink);
-    } else {
-      localStorage.removeItem("latestMeetLink");
-    }
     const lich = {
       hoTen: hoten,
       sdt,
       ngay: ngayFormat,
       gio,
-      hinhThuc,
-      loaiTuVan,
-      dichVu: "Tư Vấn",
+      dichVu: "Xét Nghiệm",
+      loaiXetNghiem,
       lyDo: ghichu,
-      trangThai: "Chờ xử lý",
-      meetLink: googleMeetLink || undefined
+      trangThai: "Chờ xử lý"
     };
     const danhSach = JSON.parse(localStorage.getItem("lichDat")) || [];
     danhSach.push(lich);
@@ -246,7 +230,7 @@ function DatLichTuVan() {
       <HeaderCustomer />
       <main style={styles.main}>
         <div style={styles.card}>
-          <h2 style={styles.h2}>Đặt Lịch Tư Vấn</h2>
+          <h2 style={styles.h2}>Đặt Lịch Xét Nghiệm</h2>
           <form onSubmit={handleSubmit} autoComplete="off">
             <div style={styles.formRow}>
               <div style={styles.formCol}>
@@ -262,7 +246,7 @@ function DatLichTuVan() {
                   required
                 />
                 <label style={styles.label}>
-                  Ngày tư vấn <span style={styles.required}>*</span>
+                  Ngày tháng năm <span style={styles.required}>*</span>
                 </label>
                 <input
                   type="date"
@@ -274,16 +258,15 @@ function DatLichTuVan() {
                   required
                 />
                 <div style={styles.dateDisplay}>{dateDisplay}</div>
-                <label style={styles.label}>Hình thức tư vấn</label>
-                <select
-                  name="hinhThuc"
-                  style={styles.select}
-                  value={form.hinhThuc}
+                <label style={styles.label}>Ghi chú / Yêu cầu đặc biệt</label>
+                <textarea
+                  name="ghichu"
+                  style={styles.textarea}
+                  rows={3}
+                  placeholder="(Không bắt buộc)"
+                  value={form.ghichu}
                   onChange={handleChange}
-                >
-                  <option value="Trực tiếp">Trực tiếp</option>
-                  <option value="Online">Online</option>
-                </select>
+                />
               </div>
               <div style={styles.formCol}>
                 <label style={styles.label}>
@@ -298,7 +281,7 @@ function DatLichTuVan() {
                   required
                 />
                 <label style={styles.label}>
-                  Giờ tư vấn <span style={styles.required}>*</span>
+                  Giờ xét nghiệm <span style={styles.required}>*</span>
                 </label>
                 <input
                   type="time"
@@ -309,36 +292,30 @@ function DatLichTuVan() {
                   required
                 />
                 <label style={styles.label}>
-                  Loại tư vấn <span style={styles.required}>*</span>
+                  Loại xét nghiệm <span style={styles.required}>*</span>
                 </label>
                 <select
-                  name="loaiTuVan"
+                  name="loaiXetNghiem"
                   style={styles.select}
-                  value={form.loaiTuVan}
+                  value={form.loaiXetNghiem}
                   onChange={handleChange}
                   required
                 >
-                  <option value="">-- Chọn loại tư vấn --</option>
-                  <option value="Tư vấn trước khi làm xét nghiệm STI">Tư vấn trước khi làm xét nghiệm STI</option>
-                  <option value="Tư vấn sau khi nhận kết quả xét nghiệm">Tư vấn sau khi nhận kết quả xét nghiệm</option>
-                  <option value="Tư vấn xét nghiệm định kỳ">Tư vấn xét nghiệm định kỳ</option>
-                  <option value="Tư vấn lựa chọn gói xét nghiệm phù hợp">Tư vấn lựa chọn gói xét nghiệm phù hợp</option>
-                  <option value="Tư vấn cho cặp đôi trước QHTD không bao">Tư vấn cho cặp đôi trước QHTD không bao</option>
-                  <option value="Tư vấn sức khỏe sinh sản">Tư vấn sức khỏe sinh sản</option>
-                  <option value="Tư vấn tình dục an toàn">Tư vấn tình dục an toàn</option>
-                  <option value="Tư vấn dậy thì và sức khỏe giới tính cho thanh thiếu niên">Tư vấn dậy thì và sức khỏe giới tính cho thanh thiếu niên</option>
+                  <option value="">-- Chọn loại --</option>
+                  <option value="HIV Ag/Ab combo (HIV test thế hệ 4)">Xét nghiệm HIV</option>
+                  <option value="Giang mai (RPR/TPHA)">Xét nghiệm Giang Mai</option>
+                  <option value="Lậu (PCR hoặc nhuộm soi)">Xét nghiệm Lậu</option>
+                  <option value="Chlamydia(PCR)">Xét nghiệm PCR</option>
+                  <option value="HPV">Xét nghiệm Cổ Tử Cung</option>
+                  <option value="Virus Zika">Xét nghiệm Virus Zika</option>
+                  <option value="Pap smear">Xét nghiệm Tế bào học cổ tử cung</option>
+                  <option value="Sùi mào gà(HPV tuýp nguy cơ thấp)">Xét nghiệm Sùi Mào Gà</option>
+                  <option value="Herpes Simplex Virus">Xét nghiệm HSV 1 & 2</option>
+                  <option value="Hạ cam mềm">Xét nghiệm Chancroid</option>
+                  <option value="Rận mu">Xét nghiệm Pubic lice</option>
                 </select>
               </div>
             </div>
-            <label style={styles.label}>Ghi chú / Lý do</label>
-            <textarea
-              name="ghichu"
-              style={styles.textarea}
-              rows={3}
-              placeholder="(Không bắt buộc)"
-              value={form.ghichu}
-              onChange={handleChange}
-            />
             <button
               type="submit"
               style={buttonHover ? { ...styles.button, ...styles.buttonHover } : styles.button}
@@ -354,4 +331,4 @@ function DatLichTuVan() {
   );
 }
 
-export default DatLichTuVan; 
+export default DatLichXetNghiem; 

@@ -1,0 +1,315 @@
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import HeaderCustomer from "../components/HeaderCustomer";
+import Footer from "../components/Footer";
+
+const STATUS_LABELS = {
+  "Chờ xử lý": { label: "Chờ xử lý", className: "pending" },
+  "Đã xác nhận": { label: "Đã xác nhận", className: "confirmed" },
+  "Đã hủy": { label: "Đã hủy", className: "cancelled" },
+};
+
+const styles = {
+  page: {
+    fontFamily: "'Segoe UI', sans-serif",
+    background: "#f9f9f9",
+    minHeight: "100vh",
+    margin: 0,
+    padding: 0,
+    width: "100vw",
+    boxSizing: "border-box",
+  },
+  container: {
+    maxWidth: 900,
+    width: "100%",
+    margin: "90px auto 40px auto",
+    background: "#fff",
+    padding: "30px 20px",
+    borderRadius: 12,
+    boxShadow: "0 6px 12px rgba(34,197,94,0.08)",
+    border: "2px solid #bbf7d0",
+  },
+  h2: {
+    textAlign: "center",
+    color: "#2f855a",
+    marginBottom: 20,
+    fontSize: 24,
+    fontWeight: 600,
+  },
+  filterBar: {
+    marginBottom: 25,
+    padding: "18px 20px",
+    background: "linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%)",
+    borderRadius: 12,
+    boxShadow: "0 4px 15px rgba(47, 133, 90, 0.1)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    border: "1px solid #d1fae5",
+    gap: 10,
+  },
+  filterLabel: {
+    fontWeight: 600,
+    color: "#2f855a",
+    fontSize: 15,
+    margin: 0,
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+  },
+  filterSelect: {
+    padding: "10px 15px",
+    border: "2px solid #d1fae5",
+    borderRadius: 8,
+    backgroundColor: "white",
+    fontSize: 14,
+    fontWeight: 500,
+    color: "#374151",
+    cursor: "pointer",
+    minWidth: 160,
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    overflowX: "auto",
+    marginTop: 24,
+    borderRadius: '16px 16px 0 0',
+    border: '2px solid #34d399',
+    boxShadow: '0 2px 12px rgba(52,211,153,0.08)',
+    overflow: 'hidden',
+  },
+  th: {
+    backgroundColor: "#f0fff4",
+    color: "#2f855a",
+    textTransform: "uppercase",
+    fontWeight: 600,
+    padding: "14px 16px",
+    border: "1px solid #e2e8f0",
+    fontSize: 15,
+  },
+  td: {
+    padding: "14px 16px",
+    border: "1px solid #e2e8f0",
+    textAlign: "left",
+    fontSize: 15,
+    color: "#333",
+  },
+  status: {
+    padding: "4px 10px",
+    borderRadius: 16,
+    fontSize: 13,
+    fontWeight: 600,
+    display: "inline-block",
+  },
+  btnView: {
+    backgroundColor: "#3b82f6",
+    color: "white",
+    border: "none",
+    borderRadius: 4,
+    padding: "6px 10px",
+    fontSize: 14,
+    cursor: "pointer",
+    margin: "0 2px",
+    transition: "all 0.3s",
+  },
+  btnViewHover: {
+    backgroundColor: "#2563eb",
+    transform: "scale(1.05)",
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(31, 41, 55, 0.4)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 999,
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 32,
+    borderRadius: 16,
+    width: "90%",
+    maxWidth: 500,
+    maxHeight: "90vh",
+    overflowY: "auto",
+    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+    fontFamily: "'Inter', sans-serif",
+    animation: "fadeIn 0.3s ease-in-out",
+  },
+  modalTitle: {
+    fontSize: 22,
+    marginBottom: 20,
+    color: "#111827",
+    fontWeight: 600,
+    display: "flex",
+    alignItems: "center",
+    gap: 6,
+  },
+  modalInfo: {
+    flex: 1,
+  },
+  modalFooter: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginTop: 24,
+  },
+  closeButton: {
+    backgroundColor: "#e11d48",
+    color: "white",
+    border: "none",
+    padding: "10px 18px",
+    borderRadius: 6,
+    fontWeight: 600,
+    cursor: "pointer",
+    transition: "background-color 0.2s ease",
+  },
+};
+
+function LichSuDatLich() {
+  const [lichDat, setLichDat] = useState([]);
+  const [filter, setFilter] = useState("");
+  const [modal, setModal] = useState(null);
+  const [btnViewHover, setBtnViewHover] = useState(-1);
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("lichDat")) || [];
+    setLichDat(data);
+  }, []);
+
+  const filtered = filter
+    ? lichDat.filter(l => l.trangThai === filter)
+    : lichDat;
+
+  const handleDelete = (idx) => {
+    if (!window.confirm("Bạn có chắc muốn xóa lịch đặt này?")) return;
+    const newLichDat = [...lichDat];
+    newLichDat.splice(idx, 1);
+    setLichDat(newLichDat);
+    localStorage.setItem("lichDat", JSON.stringify(newLichDat));
+    if (modal && lichDat[idx] === modal) setModal(null);
+  };
+
+  return (
+    <div style={styles.page}>
+      <HeaderCustomer />
+      <div style={styles.container}>
+        <h2 style={styles.h2}>Lịch Sử Đặt Lịch</h2>
+        <div style={styles.filterBar}>
+          <label style={styles.filterLabel}>
+            Trạng thái:
+            <select
+              style={styles.filterSelect}
+              value={filter}
+              onChange={e => setFilter(e.target.value)}
+            >
+              <option value="">Tất cả</option>
+              <option value="Chờ xử lý">Chờ xử lý</option>
+              <option value="Đã xác nhận">Đã xác nhận</option>
+              <option value="Đã hủy">Đã hủy</option>
+            </select>
+          </label>
+        </div>
+        <div style={{overflowX: 'auto'}}>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.th}>Ngày</th>
+                <th style={styles.th}>Dịch vụ</th>
+                <th style={styles.th}>Lý do</th>
+                <th style={styles.th}>Họ tên</th>
+                <th style={styles.th}>SĐT</th>
+                <th style={styles.th}>Trạng thái</th>
+                <th style={styles.th}>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={7} style={{textAlign: 'center', color: '#888'}}>Không có lịch đặt nào.</td>
+                </tr>
+              ) : (
+                filtered.map((lich, idx) => (
+                  <tr key={idx}>
+                    <td style={styles.td}>{lich.ngay || "-"}</td>
+                    <td style={styles.td}>{lich.dichVu || "-"}</td>
+                    <td style={styles.td}>{lich.lyDo || "-"}</td>
+                    <td style={styles.td}>{lich.hoTen || "-"}</td>
+                    <td style={styles.td}>{lich.sdt || "-"}</td>
+                    <td style={{
+                      ...styles.td,
+                      padding: 0,
+                      border: STATUS_LABELS[lich.trangThai]?.className === 'pending' ? '1px solid #faf089' : 'none',
+                    }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                        minHeight: 28,
+                        background: STATUS_LABELS[lich.trangThai]?.className === 'pending' ? '#fefcbf' : STATUS_LABELS[lich.trangThai]?.className === 'confirmed' ? '#10b981' : '#ef4444',
+                        color: STATUS_LABELS[lich.trangThai]?.className === 'pending' ? '#744210' : '#fff',
+                        borderRadius: 16,
+                        fontWeight: 600,
+                        fontSize: 12,
+                        width: 'fit-content',
+                        margin: '0 auto',
+                        padding: '2px 12px',
+                      }}>{STATUS_LABELS[lich.trangThai]?.label || lich.trangThai || "-"}</div>
+                    </td>
+                    <td style={styles.td}>
+                      <button
+                        style={btnViewHover === idx ? {...styles.btnView, ...styles.btnViewHover} : styles.btnView}
+                        onMouseEnter={() => setBtnViewHover(idx)}
+                        onMouseLeave={() => setBtnViewHover(-1)}
+                        onClick={() => setModal(lich)}
+                      >
+                        Xem
+                      </button>
+                      <button
+                        style={{...styles.btnView, backgroundColor: '#ef4444'}}
+                        onClick={() => handleDelete(lichDat.indexOf(lich))}
+                      >
+                        Xóa
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {modal && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modalContent}>
+            <div style={styles.modalTitle}>Chi Tiết Lịch Hẹn</div>
+            <div style={styles.modalInfo}>
+              <p><strong>Ngày:</strong> {modal.ngay || "-"}</p>
+              <p><strong>Dịch vụ:</strong> {modal.dichVu || "-"}</p>
+              <p><strong>Hình thức:</strong> {modal.hinhThuc || "-"}</p>
+              <p><strong>Loại tư vấn:</strong> {modal.loaiTuVan || "-"}</p>
+              <p><strong>Lý do:</strong> {modal.lyDo || "-"}</p>
+              <p><strong>Họ tên:</strong> {modal.hoTen || "-"}</p>
+              <p><strong>SĐT:</strong> {modal.sdt || "-"}</p>
+              <p><strong>Trạng thái:</strong> {STATUS_LABELS[modal.trangThai]?.label || modal.trangThai || "-"}</p>
+              {modal.meetLink && (
+                <p><strong>Link Meet:</strong> <a href={modal.meetLink} target="_blank" rel="noopener noreferrer" style={{color: '#d97706', fontWeight: 'bold', wordBreak: 'break-all'}}>{modal.meetLink}</a></p>
+              )}
+            </div>
+            <div style={styles.modalFooter}>
+              <button style={styles.closeButton} onClick={() => setModal(null)}>ĐÓNG</button>
+            </div>
+          </div>
+        </div>
+      )}
+      <Footer />
+    </div>
+  );
+}
+
+export default LichSuDatLich; 

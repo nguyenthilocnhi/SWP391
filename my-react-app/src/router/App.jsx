@@ -31,6 +31,10 @@ import LichSuCauHoi from "../Public/LichSuCauHoi";
 import DatLichDichVu from "../Public/DatLichDichVu";
 import TuVanVien from "../Public/TuVanVien";
 import DatLichTuVan from "../Public/DatLichTuVan";
+import DatLichXetNghiem from "../Public/DatLichXetNghiem";
+import ThanhToan from "../Public/ThanhToan";
+import ThanhCongDatLich from "../Public/ThanhCongDatLich";
+import LichSuDatLich from "../Public/LichSuDatLich";
 
 function App() {
   return (
@@ -92,7 +96,10 @@ function App() {
         <Route path="/customer/lich-su-cau-hoi" element={<LichSuCauHoi />} />
         <Route path="/customer/dat-lich-dich-vu" element={<DatLichDichVu />} />
         <Route path="/customer/dat-lich-tu-van" element={<DatLichTuVan />} />
-
+        <Route path="/customer/dat-lich-xet-nghiem" element={<DatLichXetNghiem />} />
+        <Route path="/customer/thanh-toan" element={<ThanhToan />} />
+        <Route path="/customer/thanh-cong-dat-lich" element={<ThanhCongDatLich />} />
+        <Route path="/customer/lich-su-dat-lich" element={<LichSuDatLich />} />
       </Routes>
     </Router>
   );
