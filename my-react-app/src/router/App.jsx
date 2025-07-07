@@ -29,12 +29,8 @@ import DoiMatKhau from "../Public/DoiMatKhau";
 import DatCauHoi from "../Public/DatCauHoi";
 import LichSuCauHoi from "../Public/LichSuCauHoi";
 import DatLichDichVu from "../Public/DatLichDichVu";
-<<<<<<< HEAD
 import TuVanVien from "../Public/TuVanVien";
-import ChiTietTuVanVien from '../Public/ChiTietTuVanVien';
-=======
 import DatLichTuVan from "../Public/DatLichTuVan";
->>>>>>> 2ef3c120bafbe59d912cebd0245de627891a0867
 
 function App() {
   return (
@@ -95,11 +91,8 @@ function App() {
         <Route path="/customer/dat-cau-hoi" element={<DatCauHoi />} />
         <Route path="/customer/lich-su-cau-hoi" element={<LichSuCauHoi />} />
         <Route path="/customer/dat-lich-dich-vu" element={<DatLichDichVu />} />
-<<<<<<< HEAD
-        <Route path="/tu-van-vien/:id" element={<ChiTietTuVanVien />} />
-=======
         <Route path="/customer/dat-lich-tu-van" element={<DatLichTuVan />} />
->>>>>>> 2ef3c120bafbe59d912cebd0245de627891a0867
+
       </Routes>
     </Router>
   );
