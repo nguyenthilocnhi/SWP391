@@ -4,14 +4,17 @@ import HeaderCustomer from '../components/HeaderCustomer';
 import HeaderGuest from '../components/HeaderGuest';
 import Footer from '../components/Footer';
 
-const BlogChiTiet8 = ({ userType = 'guest' }) => {
+const BlogChiTiet8 = () => {
     useEffect(() => {
         document.title = 'U xơ tử cung có nguy hiểm không?';
     }, []);
 
+    // Xác định userType dựa vào localStorage
+    const isCustomer = localStorage.getItem('loggedIn') === 'true' && localStorage.getItem('role') === 'customer';
+
     return (
         <div>
-            {userType === 'customer' ? <HeaderCustomer /> : <HeaderGuest />}
+            {isCustomer ? <HeaderCustomer /> : <HeaderGuest />}
             <style>{`
         body {
           font-family: 'Segoe UI', sans-serif;

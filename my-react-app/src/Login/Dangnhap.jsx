@@ -43,6 +43,9 @@ const DangNhap = () => {
           localStorage.setItem('role', 'customer');
           localStorage.setItem("loggedIn", "true");
           localStorage.setItem("sessionExpire", Date.now() + 15 * 60 * 1000); // 15 phút
+          // Lưu tên người dùng vào localStorage
+          const userName = data.obj.fullName || data.obj.name || data.obj.username || '';
+          localStorage.setItem('userName', userName);
           window.location.href = "/customer";
         } else {
           setMessage(data.message || 'Đăng nhập thất bại!');

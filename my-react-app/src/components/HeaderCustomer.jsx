@@ -177,6 +177,11 @@ export default function HeaderCustomer() {
     'Lịch hẹn khám vào ngày mai',
     'Ưu đãi giảm 10% đang chờ bạn'
   ]);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    setUserName(localStorage.getItem('userName') || 'Khách');
+  }, []);
 
   const toggleUserMenu = () => setShowUserMenu(!showUserMenu);
   const toggleNotifications = () => setShowNotifications(!showNotifications);
@@ -226,7 +231,7 @@ export default function HeaderCustomer() {
           <UserInfo onClick={toggleUserMenu}>
             <Avatar src="/src/assets/react.svg" alt="Avatar" />
             <div className="user-details">
-              <span className="user-name">Nguyễn Bích M</span>
+              <span className="user-name">{userName}</span>
               <span className="user-role">Khách Hàng</span>
             </div>
             <span className="user-dropdown">▼</span>

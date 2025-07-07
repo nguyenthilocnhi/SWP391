@@ -291,7 +291,9 @@ const CaiDat = () => {
       localStorage.removeItem('loggedIn');
       localStorage.removeItem('sessionExpire');
       localStorage.removeItem('role');
-      navigate('/dangnhap');
+      localStorage.removeItem('token');
+      localStorage.removeItem('userName');
+      navigate('/login');
     }
   };
 

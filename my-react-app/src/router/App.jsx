@@ -35,7 +35,6 @@ function App() {
       <Routes>
         {/* Guest */}
         <Route path="/" element={<TrangChu userType="guest" />} />
-        <Route path="/customer" element={<TrangChu userType="customer" />} />
         <Route path="/register" element={<DangKy />} />
         <Route path="/login" element={<DangNhap />} />
         <Route path="/forgot-password" element={<QuenMatKhau />} />
