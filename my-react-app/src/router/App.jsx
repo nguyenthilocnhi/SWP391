@@ -15,6 +15,12 @@ import BlogChiTiet3 from "../Public/BlogChiTiet3";
 import BlogChiTiet4 from "../Public/BlogChiTiet4";
 import BlogChiTiet5 from "../Public/BlogChiTiet5";
 import BlogChiTiet6 from "../Public/BlogChiTiet6";
+import BlogChiTiet7 from "../Public/BlogChiTiet7";
+import BlogChiTiet8 from "../Public/BlogChiTiet8";
+import BlogChiTiet9 from "../Public/BlogChiTiet9";
+import BlogChiTiet10 from "../Public/BlogChiTiet10";
+import BlogChiTiet11 from "../Public/BlogChiTiet11";
+import BlogChiTiet12 from "../Public/BlogChiTiet12";
 import NhacNhoUongThuoc from "../Public/NhacNhoUongThuoc";
 import TheoDoiChuKy from "../Public/TheoDoiChuKy";
 import CaiDat from "../Public/CaiDat";
@@ -38,26 +44,38 @@ function App() {
         <Route path="/cau-hoi-thuong-gap" element={<CauHoiThuongGap userType="guest" />} />
         <Route path="/service" element={<DichVu userType="guest" />} />
         <Route path="/dat-lai-mat-khau-thanh-cong" element={<DatLaiMatKhauThanhCong />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/blogchitiet1" element={<BlogChiTiet1 />} />
-        <Route path="/blogchitiet2" element={<BlogChiTiet2 />} />
-        <Route path="/blogchitiet3" element={<BlogChiTiet3 />} />
-        <Route path="/blogchitiet4" element={<BlogChiTiet4 />} />
-        <Route path="/blogchitiet5" element={<BlogChiTiet5 />} />
-        <Route path="/blogchitiet6" element={<BlogChiTiet6 />} />
+        <Route path="/blog" element={<BlogPage userType="guest" />} />
+        <Route path="/blogchitiet1" element={<BlogChiTiet1 userType="guest" />} />
+        <Route path="/blogchitiet2" element={<BlogChiTiet2 userType="guest" />} />
+        <Route path="/blogchitiet3" element={<BlogChiTiet3 userType="guest" />} />
+        <Route path="/blogchitiet4" element={<BlogChiTiet4 userType="guest" />} />
+        <Route path="/blogchitiet5" element={<BlogChiTiet5 userType="guest" />} />
+        <Route path="/blogchitiet6" element={<BlogChiTiet6 userType="guest" />} />
+        <Route path="/blogchitiet7" element={<BlogChiTiet7 userType="guest" />} />
+        <Route path="/blogchitiet8" element={<BlogChiTiet8 userType="guest" />} />
+        <Route path="/blogchitiet9" element={<BlogChiTiet9 userType="guest" />} />
+        <Route path="/blogchitiet10" element={<BlogChiTiet10 userType="guest" />} />
+        <Route path="/blogchitiet11" element={<BlogChiTiet11 userType="guest" />} />
+        <Route path="/blogchitiet12" element={<BlogChiTiet12 userType="guest" />} />
 
         {/* Customer */}
         <Route path="/customer" element={<TrangChu userType="customer" />} />
         <Route path="/customer/introduce" element={<GioiThieu userType="customer" />} />
         <Route path="/customer/cau-hoi-thuong-gap" element={<CauHoiThuongGap userType="customer" />} />
         <Route path="/customer/service" element={<DichVu userType="customer" />} />
-        <Route path="/customer/blog" element={<BlogPage />} />
-        <Route path="/customer/blogchitiet1" element={<BlogChiTiet1 />} />
-        <Route path="/customer/blogchitiet2" element={<BlogChiTiet2 />} />
-        <Route path="/customer/blogchitiet3" element={<BlogChiTiet3 />} />
-        <Route path="/customer/blogchitiet4" element={<BlogChiTiet4 />} />
-        <Route path="/customer/blogchitiet5" element={<BlogChiTiet5 />} />
-        <Route path="/customer/blogchitiet6" element={<BlogChiTiet6 />} />
+        <Route path="/customer/blog" element={<BlogPage userType="customer" />} />
+        <Route path="/customer/blogchitiet1" element={<BlogChiTiet1 userType="customer" />} />
+        <Route path="/customer/blogchitiet2" element={<BlogChiTiet2 userType="customer" />} />
+        <Route path="/customer/blogchitiet3" element={<BlogChiTiet3 userType="customer" />} />
+        <Route path="/customer/blogchitiet4" element={<BlogChiTiet4 userType="customer" />} />
+        <Route path="/customer/blogchitiet5" element={<BlogChiTiet5 userType="customer" />} />
+        <Route path="/customer/blogchitiet6" element={<BlogChiTiet6 userType="customer" />} />
+        <Route path="/customer/blogchitiet7" element={<BlogChiTiet7 userType="customer" />} />
+        <Route path="/customer/blogchitiet8" element={<BlogChiTiet8 userType="customer" />} />
+        <Route path="/customer/blogchitiet9" element={<BlogChiTiet9 userType="customer" />} />
+        <Route path="/customer/blogchitiet10" element={<BlogChiTiet10 userType="customer" />} />
+        <Route path="/customer/blogchitiet11" element={<BlogChiTiet11 userType="customer" />} />
+        <Route path="/customer/blogchitiet12" element={<BlogChiTiet12 userType="customer" />} />
         <Route path="/customer/nhac-nho" element={<NhacNhoUongThuoc userType="customer" />} />
         <Route path="/customer/theo-doi-chu-ky" element={<TheoDoiChuKy userType="customer" />} />
         <Route path="/customer/cai-dat" element={<CaiDat />} />

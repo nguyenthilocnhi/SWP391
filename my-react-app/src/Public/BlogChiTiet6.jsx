@@ -4,14 +4,10 @@ import HeaderCustomer from '../components/HeaderCustomer';
 import HeaderGuest from '../components/HeaderGuest';
 import Footer from '../components/Footer';
 
-const BlogChiTiet6 = () => {
+const BlogChiTiet6 = ({ userType = 'guest' }) => {
   useEffect(() => {
     document.title = 'Nhiễm HPV có mang thai được không? HPV có lây từ mẹ sang con không?';
   }, []);
-
-  // Lấy userType từ localStorage hoặc mặc định là 'guest'
-  const savedRole = localStorage.getItem('role');
-  const userType = savedRole ? savedRole.toLowerCase() : 'guest';
 
   return (
     <div>

@@ -4,14 +4,10 @@ import HeaderCustomer from '../components/HeaderCustomer';
 import HeaderGuest from '../components/HeaderGuest';
 import Footer from '../components/Footer';
 
-const BlogChiTiet2 = () => {
+const BlogChiTiet2 = ({ userType = 'guest' }) => {
   useEffect(() => {
     document.title = 'Hướng dẫn đọc kết quả xét nghiệm HPV | Blog y tế An Giới';
   }, []);
-
-  // Lấy userType từ localStorage hoặc mặc định là 'guest'
-  const savedRole = localStorage.getItem('role');
-  const userType = savedRole ? savedRole.toLowerCase() : 'guest';
 
   return (
     <div>

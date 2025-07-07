@@ -130,10 +130,7 @@ function convertToDays(dateStr) {
   return Infinity;
 }
 
-const BlogPage = () => {
-  const savedRole = localStorage.getItem('role');
-  const userType = savedRole ? savedRole.toLowerCase() : 'guest';
-  console.log('userType:', userType, 'role:', localStorage.getItem('role'));
+const BlogPage = ({ userType = 'guest' }) => {
   const sortedBlogs = [...blogData].sort((a, b) => convertToDays(a.date) - convertToDays(b.date));
   const [blogs] = useState(sortedBlogs);
   const [displayedBlogs, setDisplayedBlogs] = useState(sortedBlogs);
@@ -255,6 +252,7 @@ const BlogPage = () => {
           align-items: center;
           justify-content: center;
           overflow: hidden;
+          margin-top: 110px;
           margin-bottom: 40px;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
           min-height: 220px;
@@ -313,6 +311,7 @@ const BlogPage = () => {
           .intro-banner {
             padding: 40px 12px;
             min-height: 180px;
+            margin-top: 80px;
           }
           .intro-banner::before {
             font-size: 80px;

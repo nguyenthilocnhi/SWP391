@@ -4,14 +4,10 @@ import HeaderCustomer from '../components/HeaderCustomer';
 import HeaderGuest from '../components/HeaderGuest';
 import Footer from '../components/Footer';
 
-const BlogChiTiet3 = () => {
+const BlogChiTiet3 = ({ userType = 'guest' }) => {
   useEffect(() => {
     document.title = 'Các bệnh tình dục nữ là gì? Dấu hiệu bệnh';
   }, []);
-
-  // Lấy userType từ localStorage hoặc mặc định là 'guest'
-  const savedRole = localStorage.getItem('role');
-  const userType = savedRole ? savedRole.toLowerCase() : 'guest';
 
   return (
     <div>
