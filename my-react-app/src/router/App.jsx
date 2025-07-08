@@ -39,6 +39,7 @@ import LichSuDichVuVaDanhGia from "../Public/LichSuDichVuVaDanhGia";
 import DanhGiaDichVu from "../Public/DanhGiaDichVu";
 import AdminTrangChu from "../Admin/adminTrangChu";
 import AdminHoSo from "../Admin/adminHoSo";
+
 import ThongTinCaNhan from "../Public/ThongTinCaNhan";
 import KetQuaXetNghiem from "../Public/KetQuaXetNghiem";
 import DanhGiaDaGui from "../Public/DanhGiaDaGui";
@@ -46,6 +47,10 @@ import ChiTietTuVanVien from "../Public/ChiTietTuVanVien";
 import StaffTrangChu from "../Staff/StaffTrangChu";
 import StaffLichLamViec from "../Staff/StaffLichLamViec";
 import ConsultantTrangChu from "../Consultant/ConsultantTrangChu";
+
+import AdminKhachHang from "../Admin/adminKhachHang";
+
+
 function App() {
   return (
     <Router>
@@ -119,6 +124,7 @@ function App() {
         <Route path="/customer/danh-gia-da-gui" element={<DanhGiaDaGui />} />
 
 
+
         {/* Staff */}
         <Route path="/staff/trangchu" element={<StaffTrangChu />} />
         <Route path="/staff/lich-lam-viec" element={<StaffLichLamViec />} />
@@ -129,6 +135,11 @@ function App() {
 
         {/* Consultant */}
         <Route path="/consultant/trangchu" element={<ConsultantTrangChu />} /> {/* ✅ Thêm dòng này */}
+
+        {/* {admin} */}
+        <Route path="/admin/trangchu" element={<AdminTrangChu/>} />
+        <Route path="/admin/hoso" element={<AdminHoSo/>} />
+
 
       </Routes>
     </Router>

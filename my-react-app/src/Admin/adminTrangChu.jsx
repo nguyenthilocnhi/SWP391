@@ -7,13 +7,33 @@ import styled from 'styled-components';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const MainContent = styled.main`
-  margin-left: 260px;
-  padding: 100px 24px 24px 24px;
+  padding: 100px 0 24px 210px;
   background: #f9fafb;
   min-height: 100vh;
+  width: 134vw;
+  max-width: 99vw;
+  margin: 0;
+  overflow-x: hidden;
+  box-sizing: border-box;
+
+  @media (max-width: 1200px) {
+    padding-left: 0;
+  }
   @media (max-width: 768px) {
-    margin-left: 0;
     padding-top: 80px;
+    padding-left: 0;
+  }
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 8px;
+  @media (max-width: 1200px) {
+    max-width: 100vw;
+    padding: 0 4px;
   }
 `;
 
@@ -22,6 +42,8 @@ const StatsGrid = styled.div`
   grid-template-columns: 1fr;
   gap: 24px;
   margin-bottom: 24px;
+  width: 100%;
+  box-sizing: border-box;
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -69,17 +91,18 @@ const StatsIconWrapper = styled.div`
 
 const GridLayout = styled.div`
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   gap: 24px;
   width: 100%;
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
-  }
+  max-width: 100vw;
+  box-sizing: border-box;
 `;
 const ChartsRow = styled.div`
   display: flex;
   gap: 32px;
   margin-bottom: 24px;
+  width: 100%;
+  box-sizing: border-box;
   @media (max-width: 900px) {
     flex-direction: column;
     gap: 16px;
@@ -87,11 +110,12 @@ const ChartsRow = styled.div`
 `;
 const ChartBox = styled.div`
   flex: 1 1 0;
-  min-width: 320px;
+  min-width: 360px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-  padding: 24px;
+  padding: 32px 28px;
+  width: 100%;
 `;
 const ChartHeader = styled.div`
   display: flex;
@@ -124,8 +148,10 @@ const Card = styled.div`
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 1px 6px rgba(0,0,0,0.05);
-  padding: 24px;
+  padding: 32px 28px;
   margin-bottom: 24px;
+  width: 100%;
+  box-sizing: border-box;
 `;
 const CardHeader = styled.div`
   display: flex;
@@ -524,131 +550,133 @@ const AdminTrangChu = () => {
     <>
       <AdminLayout />
       <MainContent>
-        <StatsGrid>
-          {stats.map((stat, idx) => (
-            <StatsCard key={idx}>
-              <StatsLeft>
-                <StatsLabel>{stat.label}</StatsLabel>
-                <StatsNumber style={{ color: stat.color }}>{stat.value}</StatsNumber>
-                <StatsChange style={{ color: stat.changeType === 'up' ? '#22c55e' : '#ef4444' }}>
-                  <i className={`fas fa-arrow-${stat.changeType}`}></i> {stat.change} {stat.desc}
-                </StatsChange>
-              </StatsLeft>
-              <StatsIconWrapper bg={stat.bg} color={stat.color}>
-                <i className={stat.icon}></i>
-              </StatsIconWrapper>
-            </StatsCard>
-          ))}
-        </StatsGrid>
-        <GridLayout>
-          <div>
-            <ChartsRow>
-              <ChartBox>
-                <ChartHeader>
-                  <ChartTitle>Thống kê tư vấn theo {consultationPeriod.toLowerCase()}</ChartTitle>
-                  <ChartButtons>
-                    {periods.map(p => (
-                      <ChartBtn key={p} active={consultationPeriod === p} onClick={() => setConsultationPeriod(p)}>{p}</ChartBtn>
-                    ))}
-                  </ChartButtons>
-                </ChartHeader>
-                <Line data={getConsultationChartData(consultationPeriod)} options={chartOptions} height={250} />
-              </ChartBox>
-              <ChartBox>
-                <ChartHeader>
-                  <ChartTitle>Thống kê xét nghiệm theo {testPeriod.toLowerCase()}</ChartTitle>
-                  <ChartButtons>
-                    {periods.map(p => (
-                      <ChartBtn key={p} active={testPeriod === p} onClick={() => setTestPeriod(p)}>{p}</ChartBtn>
-                    ))}
-                  </ChartButtons>
-                </ChartHeader>
-                <Line data={getTestChartData(testPeriod)} options={chartOptions} height={250} />
-              </ChartBox>
-            </ChartsRow>
-            <Card>
-              <CardHeader>
-                <CardTitle>Lịch hẹn gần đây</CardTitle>
-                <ViewAll href="#">Xem tất cả</ViewAll>
-              </CardHeader>
-              <AppointmentsList>
-                {appointments.map((a, idx) => (
-                  <AppointmentItem key={idx}>
-                    <AppointmentImg src={a.avatar} alt={a.name} />
-                    <AppointmentInfo>
-                      <AppointmentName>{a.name}</AppointmentName>
-                      <AppointmentDesc>{a.desc}</AppointmentDesc>
-                      <AppointmentTime>{a.time}</AppointmentTime>
-                    </AppointmentInfo>
-                    <Badge bg={badgeColors[a.status].bg} color={badgeColors[a.status].color}>{a.statusText}</Badge>
-                  </AppointmentItem>
-                ))}
-              </AppointmentsList>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Chủ đề được quan tâm</CardTitle>
-                <ViewAll href="#">Xem tất cả</ViewAll>
-              </CardHeader>
-              <TopicList>
-                {topics.map((t, idx) => (
-                  <TopicItem key={idx} borderTop={idx > 0}>
-                    <TopicInfo>
-                      <AppointmentName>{t.title}</AppointmentName>
-                      <AppointmentDesc>{t.views} lượt xem</AppointmentDesc>
-                      <TopicTags>
-                        {t.tags.map((tag, i) => (
-                          <Tag key={i} bg={tag.bg} color={tag.color}>{tag.name}</Tag>
-                        ))}
-                      </TopicTags>
-                    </TopicInfo>
-                    <TopicImg src={t.image} alt={t.title} />
-                  </TopicItem>
-                ))}
-              </TopicList>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Hoạt động nhân viên gần đây</CardTitle>
-              </CardHeader>
-              <TableContainer>
-                <StaffTable>
-                  <thead>
-                    <tr>
-                      <StaffTh>Nhân viên</StaffTh>
-                      <StaffTh>Hoạt động</StaffTh>
-                      <StaffTh>Thời gian</StaffTh>
-                      <StaffTh>Trạng thái</StaffTh>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {staffActivities.map((s, idx) => (
-                      <tr key={idx}>
-                        <StaffTd>
-                          <StaffInfo>
-                            <StaffImg src={s.staff.avatar} alt={s.staff.name} />
-                            <div>
-                              <StaffName>{s.staff.name}</StaffName>
-                              <StaffRole>{s.staff.role}</StaffRole>
-                            </div>
-                          </StaffInfo>
-                        </StaffTd>
-                        <StaffTd>
-                          <ActivityTitle>{s.activity.title}</ActivityTitle>
-                          <ActivityDesc>{s.activity.desc}</ActivityDesc>
-                        </StaffTd>
-                        <StaffTd>{s.time}</StaffTd>
-                        <StaffTd>
-                          <Badge bg={badgeColors[s.status].bg} color={badgeColors[s.status].color}>{s.statusText}</Badge>
-                        </StaffTd>
+        <ContentWrapper>
+          <StatsGrid>
+            {stats.map((stat, idx) => (
+              <StatsCard key={idx}>
+                <StatsLeft>
+                  <StatsLabel>{stat.label}</StatsLabel>
+                  <StatsNumber style={{ color: stat.color }}>{stat.value}</StatsNumber>
+                  <StatsChange style={{ color: stat.changeType === 'up' ? '#22c55e' : '#ef4444' }}>
+                    <i className={`fas fa-arrow-${stat.changeType}`}></i> {stat.change} {stat.desc}
+                  </StatsChange>
+                </StatsLeft>
+                <StatsIconWrapper bg={stat.bg} color={stat.color}>
+                  <i className={stat.icon}></i>
+                </StatsIconWrapper>
+              </StatsCard>
+            ))}
+          </StatsGrid>
+          <GridLayout>
+            <div>
+              <ChartsRow>
+                <ChartBox>
+                  <ChartHeader>
+                    <ChartTitle>Thống kê tư vấn theo {consultationPeriod.toLowerCase()}</ChartTitle>
+                    <ChartButtons>
+                      {periods.map(p => (
+                        <ChartBtn key={p} active={consultationPeriod === p} onClick={() => setConsultationPeriod(p)}>{p}</ChartBtn>
+                      ))}
+                    </ChartButtons>
+                  </ChartHeader>
+                  <Line data={getConsultationChartData(consultationPeriod)} options={chartOptions} height={250} />
+                </ChartBox>
+                <ChartBox>
+                  <ChartHeader>
+                    <ChartTitle>Thống kê xét nghiệm theo {testPeriod.toLowerCase()}</ChartTitle>
+                    <ChartButtons>
+                      {periods.map(p => (
+                        <ChartBtn key={p} active={testPeriod === p} onClick={() => setTestPeriod(p)}>{p}</ChartBtn>
+                      ))}
+                    </ChartButtons>
+                  </ChartHeader>
+                  <Line data={getTestChartData(testPeriod)} options={chartOptions} height={250} />
+                </ChartBox>
+              </ChartsRow>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Lịch hẹn gần đây</CardTitle>
+                  <ViewAll href="#">Xem tất cả</ViewAll>
+                </CardHeader>
+                <AppointmentsList>
+                  {appointments.map((a, idx) => (
+                    <AppointmentItem key={idx}>
+                      <AppointmentImg src={a.avatar} alt={a.name} />
+                      <AppointmentInfo>
+                        <AppointmentName>{a.name}</AppointmentName>
+                        <AppointmentDesc>{a.desc}</AppointmentDesc>
+                        <AppointmentTime>{a.time}</AppointmentTime>
+                      </AppointmentInfo>
+                      <Badge bg={badgeColors[a.status].bg} color={badgeColors[a.status].color}>{a.statusText}</Badge>
+                    </AppointmentItem>
+                  ))}
+                </AppointmentsList>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Chủ đề được quan tâm</CardTitle>
+                  <ViewAll href="#">Xem tất cả</ViewAll>
+                </CardHeader>
+                <TopicList>
+                  {topics.map((t, idx) => (
+                    <TopicItem key={idx} borderTop={idx > 0}>
+                      <TopicInfo>
+                        <AppointmentName>{t.title}</AppointmentName>
+                        <AppointmentDesc>{t.views} lượt xem</AppointmentDesc>
+                        <TopicTags>
+                          {t.tags.map((tag, i) => (
+                            <Tag key={i} bg={tag.bg} color={tag.color}>{tag.name}</Tag>
+                          ))}
+                        </TopicTags>
+                      </TopicInfo>
+                      <TopicImg src={t.image} alt={t.title} />
+                    </TopicItem>
+                  ))}
+                </TopicList>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Hoạt động nhân viên gần đây</CardTitle>
+                </CardHeader>
+                <TableContainer>
+                  <StaffTable>
+                    <thead>
+                      <tr>
+                        <StaffTh>Nhân viên</StaffTh>
+                        <StaffTh>Hoạt động</StaffTh>
+                        <StaffTh>Thời gian</StaffTh>
+                        <StaffTh>Trạng thái</StaffTh>
                       </tr>
-                    ))}
-                  </tbody>
-                </StaffTable>
-              </TableContainer>
-            </Card>
-          </div>
-        </GridLayout>
+                    </thead>
+                    <tbody>
+                      {staffActivities.map((s, idx) => (
+                        <tr key={idx}>
+                          <StaffTd>
+                            <StaffInfo>
+                              <StaffImg src={s.staff.avatar} alt={s.staff.name} />
+                              <div>
+                                <StaffName>{s.staff.name}</StaffName>
+                                <StaffRole>{s.staff.role}</StaffRole>
+                              </div>
+                            </StaffInfo>
+                          </StaffTd>
+                          <StaffTd>
+                            <ActivityTitle>{s.activity.title}</ActivityTitle>
+                            <ActivityDesc>{s.activity.desc}</ActivityDesc>
+                          </StaffTd>
+                          <StaffTd>{s.time}</StaffTd>
+                          <StaffTd>
+                            <Badge bg={badgeColors[s.status].bg} color={badgeColors[s.status].color}>{s.statusText}</Badge>
+                          </StaffTd>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </StaffTable>
+                </TableContainer>
+              </Card>
+            </div>
+          </GridLayout>
+        </ContentWrapper>
       </MainContent>
     </>
   );
