@@ -42,6 +42,9 @@ import AdminHoSo from "../Admin/adminHoSo";
 import ThongTinCaNhan from "../Public/ThongTinCaNhan";
 import KetQuaXetNghiem from "../Public/KetQuaXetNghiem";
 import DanhGiaDaGui from "../Public/DanhGiaDaGui";
+import ChiTietTuVanVien from "../Public/ChiTietTuVanVien";
+import StaffTrangChu from "../Staff/StaffTrangChu";
+import StaffLichLamViec from "../Staff/StaffLichLamViec";
 function App() {
   return (
     <Router>
@@ -60,6 +63,7 @@ function App() {
         <Route path="/service" element={<DichVu userType="guest" />} />
         <Route path="/service/:serviceCode" element={<ChiTietDichVu userType="guest" />} />
         <Route path="/tu-van-vien" element={<TuVanVien userType="guest" />} />
+        <Route path="/tu-van-vien/:id" element={<ChiTietTuVanVien userType="guest" />} />
         <Route path="/blog" element={<BlogPage userType="guest" />} />
         <Route path="/blogchitiet1" element={<BlogChiTiet1 userType="guest" />} />
         <Route path="/blogchitiet2" element={<BlogChiTiet2 userType="guest" />} />
@@ -81,6 +85,7 @@ function App() {
         <Route path="/customer/service" element={<DichVu userType="customer" />} />
         <Route path="/customer/service/:serviceCode" element={<ChiTietDichVu userType="customer" />} />
         <Route path="/customer/tu-van-vien" element={<TuVanVien userType="customer" />} />
+        <Route path="/customer/tu-van-vien/:id" element={<ChiTietTuVanVien userType="customer" />} />
         <Route path="/customer/blog" element={<BlogPage userType="customer" />} />
         <Route path="/customer/blogchitiet1" element={<BlogChiTiet1 userType="customer" />} />
         <Route path="/customer/blogchitiet2" element={<BlogChiTiet2 userType="customer" />} />
@@ -113,9 +118,14 @@ function App() {
         <Route path="/customer/danh-gia-da-gui" element={<DanhGiaDaGui />} />
 
 
+        {/* Staff */}
+        <Route path="/staff/trangchu" element={<StaffTrangChu/>} />
+        <Route path="/staff/lich-lam-viec" element={<StaffLichLamViec/>} />
+
         {/* {admin} */}
         <Route path="/admin/trangchu" element={<AdminTrangChu/>} />
         <Route path="/admin/hoso" element={<AdminHoSo/>} />
+
 
       </Routes>
     </Router>

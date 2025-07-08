@@ -319,3 +319,30 @@ body.dark .settings-container #langSelect {
     font-size: 1.4rem;
   }
 }
+
+/* List styling for ChiTietTuVanVien */
+ul.custom-list {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+ul.custom-list li {
+  margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+  .profile-info {
+    max-width: 100%;
+    text-align: center;
+  }
+  .profile-header img {
+    max-width: 140px;
+  }
+  .container {
+    padding: 24px 16px;
+  }
+}
