@@ -35,10 +35,12 @@ import DatLichXetNghiem from "../Public/DatLichXetNghiem";
 import ThanhToan from "../Public/ThanhToan";
 import ThanhCongDatLich from "../Public/ThanhCongDatLich";
 import LichSuDatLich from "../Public/LichSuDatLich";
+import LichSuDichVuVaDanhGia from "../Public/LichSuDichVuVaDanhGia";
 
 import AdminTrangChu from "../Admin/adminTrangChu";
 import AdminHoSo from "../Admin/adminHoSo";
-
+import ThongTinCaNhan from "../Public/ThongTinCaNhan";
+import KetQuaXetNghiem from "../Public/KetQuaXetNghiem";
 function App() {
   return (
     <Router>
@@ -98,12 +100,14 @@ function App() {
         <Route path="/customer/dat-cau-hoi" element={<DatCauHoi />} />
         <Route path="/customer/lich-su-cau-hoi" element={<LichSuCauHoi />} />
         <Route path="/customer/dat-lich-dich-vu" element={<DatLichDichVu />} />
-
         <Route path="/customer/dat-lich-tu-van" element={<DatLichTuVan />} />
         <Route path="/customer/dat-lich-xet-nghiem" element={<DatLichXetNghiem />} />
         <Route path="/customer/thanh-toan" element={<ThanhToan />} />
         <Route path="/customer/thanh-cong-dat-lich" element={<ThanhCongDatLich />} />
         <Route path="/customer/lich-su-dat-lich" element={<LichSuDatLich />} />
+        <Route path="/customer/thong-tin-ca-nhan" element={<ThongTinCaNhan />} />
+        <Route path="/customer/ket-qua-xet-nghiem" element={<KetQuaXetNghiem />} />
+        <Route path="/customer/lich-su-dich-vu-va-danh-gia" element={<LichSuDichVuVaDanhGia />} />
 
 
         {/* {admin} */}
