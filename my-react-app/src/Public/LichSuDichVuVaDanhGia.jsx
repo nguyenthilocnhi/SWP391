@@ -337,7 +337,7 @@ const LichSuDichVu = () => {
           </Modal>
         )}
         <div style={{ textAlign: "center" }}>
-          <ViewReviewLink href="danhGiaDaGui.html">
+          <ViewReviewLink href="/customer/danh-gia-da-gui">
             📄 Xem đánh giá đã gửi
           </ViewReviewLink>
         </div>

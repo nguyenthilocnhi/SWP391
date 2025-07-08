@@ -36,11 +36,12 @@ import ThanhToan from "../Public/ThanhToan";
 import ThanhCongDatLich from "../Public/ThanhCongDatLich";
 import LichSuDatLich from "../Public/LichSuDatLich";
 import LichSuDichVuVaDanhGia from "../Public/LichSuDichVuVaDanhGia";
-
+import DanhGiaDichVu from "../Public/DanhGiaDichVu";
 import AdminTrangChu from "../Admin/adminTrangChu";
 import AdminHoSo from "../Admin/adminHoSo";
 import ThongTinCaNhan from "../Public/ThongTinCaNhan";
 import KetQuaXetNghiem from "../Public/KetQuaXetNghiem";
+import DanhGiaDaGui from "../Public/DanhGiaDaGui";
 function App() {
   return (
     <Router>
@@ -108,6 +109,8 @@ function App() {
         <Route path="/customer/thong-tin-ca-nhan" element={<ThongTinCaNhan />} />
         <Route path="/customer/ket-qua-xet-nghiem" element={<KetQuaXetNghiem />} />
         <Route path="/customer/lich-su-dich-vu-va-danh-gia" element={<LichSuDichVuVaDanhGia />} />
+        <Route path="/customer/danh-gia-dich-vu" element={<DanhGiaDichVu />} />
+        <Route path="/customer/danh-gia-da-gui" element={<DanhGiaDaGui />} />
 
 
         {/* {admin} */}
