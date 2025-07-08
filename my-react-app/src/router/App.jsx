@@ -45,6 +45,7 @@ import DanhGiaDaGui from "../Public/DanhGiaDaGui";
 import ChiTietTuVanVien from "../Public/ChiTietTuVanVien";
 import StaffTrangChu from "../Staff/StaffTrangChu";
 import StaffLichLamViec from "../Staff/StaffLichLamViec";
+import ConsultantTrangChu from "../Consultant/ConsultantTrangChu";
 function App() {
   return (
     <Router>
@@ -119,13 +120,15 @@ function App() {
 
 
         {/* Staff */}
-        <Route path="/staff/trangchu" element={<StaffTrangChu/>} />
-        <Route path="/staff/lich-lam-viec" element={<StaffLichLamViec/>} />
+        <Route path="/staff/trangchu" element={<StaffTrangChu />} />
+        <Route path="/staff/lich-lam-viec" element={<StaffLichLamViec />} />
 
-        {/* {admin} */}
-        <Route path="/admin/trangchu" element={<AdminTrangChu/>} />
-        <Route path="/admin/hoso" element={<AdminHoSo/>} />
+        {/* Admin */}
+        <Route path="/admin/trangchu" element={<AdminTrangChu />} />
+        <Route path="/admin/hoso" element={<AdminHoSo />} />
 
+        {/* Consultant */}
+        <Route path="/consultant/trangchu" element={<ConsultantTrangChu />} /> {/* ✅ Thêm dòng này */}
 
       </Routes>
     </Router>
