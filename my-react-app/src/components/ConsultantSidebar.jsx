@@ -64,11 +64,11 @@ const ConsultantSidebar = ({ consultantName }) => (
         </div>
         <nav>
           <a href="/consultant/trangchu" className="active"><FaHome /> Tổng quan</a>
-          <a href="/consultant/quan-ly-khach-hang"><FaUserFriends /> Quản lý khách hàng</a>
           <a href="/consultant/lich-hen"><FaRegCalendarCheck /> Lịch hẹn</a>
           <a href="/consultant/lich-lam-viec"><FaCalendarAlt /> Lịch làm việc</a> 
           <a href="/consultant/tu-van-truc-tuyen"><FaComments /> Tư vấn trực tuyến</a>
           <a href="/consultant/hoi-dap"><MdHealthAndSafety /> Hỏi đáp</a>
+          <a href="/consultant/danh-gia"><FaUserFriends /> Đánh giá</a>
         </nav>
       </div>
       <div className="bottom-links">
