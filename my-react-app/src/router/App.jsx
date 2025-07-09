@@ -64,6 +64,7 @@ import StaffCaiDat from "../Staff/StaffCaiDat";
 import AdminTrangChu from "../Admin/adminTrangChu";
 import AdminHoSo from "../Admin/adminHoSo";
 import AdminKhachHang from "../Admin/adminKhachHang";
+import AdminLichHen from "../Admin/adminLichHen";
 
 
 
@@ -150,9 +151,16 @@ function App() {
         {/* Admin */}
         <Route path="/admin/trangchu" element={<AdminTrangChu />} />
         <Route path="/admin/hoso" element={<AdminHoSo />} />
+        <Route path="/admin/khachhang" element={<AdminKhachHang />} />
+        <Route path="/admin/lichhen" element={<AdminLichHen />} />
 
         {/* Consultant */}
+
         <Route path="/consultant/trangchu" element={<ConsultantTrangChu />} />
+
+        <Route path="/consultant/trangchu" element={<ConsultantTrangChu />} /> {/*  Thêm dòng này */}
+
+
 
       </Routes>
     </Router>

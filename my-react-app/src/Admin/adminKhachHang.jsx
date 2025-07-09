@@ -364,6 +364,8 @@ const AdminKhachHang = () => {
   const [modalType, setModalType] = useState('add');
   const [editIndex, setEditIndex] = useState(null);
   const [form, setForm] = useState({ name: '', email: '', phone: '', date: '', type: '' });
+  const [formError, setFormError] = useState('');
+  const errorTimeoutRef = React.useRef();
   // Phân trang
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -401,9 +403,22 @@ const AdminKhachHang = () => {
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
   const handleSave = () => {
     if (!form.name || !form.email || !form.phone || !form.date || !form.type) {
-      alert('Vui lòng nhập đầy đủ thông tin.');
+      setFormError('Vui lòng nhập đầy đủ thông tin.');
+      clearTimeout(errorTimeoutRef.current);
+      errorTimeoutRef.current = setTimeout(() => setFormError(''), 5000);
       return;
     }
+    // Kiểm tra ngày không được ở quá khứ
+    const now = new Date();
+    const selected = new Date(form.date);
+    now.setHours(0,0,0,0);
+    if (selected < now) {
+      setFormError('Vui lòng chọn ngày hiện tại hoặc tương lai.');
+      clearTimeout(errorTimeoutRef.current);
+      errorTimeoutRef.current = setTimeout(() => setFormError(''), 5000);
+      return;
+    }
+    setFormError('');
     if (modalType === 'add') {
       setCustomers([...customers, { ...form, status: 'new' }]);
     } else if (modalType === 'edit' && editIndex !== null) {
@@ -449,7 +464,6 @@ const AdminKhachHang = () => {
                   <option value="">Tất cả dịch vụ</option>
                   <option value="Tư vấn">Tư vấn</option>
                   <option value="Xét nghiệm">Xét nghiệm</option>
-                  <option value="Khám tổng quát">Khám tổng quát</option>
                 </FilterSelect>
                 <input type="date" value={filterFromDate} onChange={e => { setFilterFromDate(e.target.value); setCurrentPage(1); }} style={{ padding: 8, borderRadius: 8 }} />
                 <span style={{ margin: '0 4px', color: '#888', display: 'flex', alignItems: 'center' }}>
@@ -512,6 +526,11 @@ const AdminKhachHang = () => {
           <ModalOverlay>
             <ModalContent>
               <ModalTitle>{modalType === 'add' ? 'Thêm khách hàng' : 'Chỉnh sửa khách hàng'}</ModalTitle>
+              {formError && (
+                <div style={{ color: '#ef4444', background: '#fef2f2', borderRadius: 8, padding: '8px 12px', marginBottom: 8, textAlign: 'center', fontSize: 15, fontWeight: 500 }}>
+                  {formError}
+                </div>
+              )}
               <ModalForm onSubmit={e => { e.preventDefault(); handleSave(); }}>
                 <ModalLabel>Họ tên:</ModalLabel>
                 <ModalInput name="name" value={form.name} onChange={handleChange} />
@@ -520,13 +539,12 @@ const AdminKhachHang = () => {
                 <ModalLabel>Số điện thoại:</ModalLabel>
                 <ModalInput name="phone" value={form.phone} onChange={handleChange} />
                 <ModalLabel>Ngày đăng ký:</ModalLabel>
-                <ModalInput name="date" type="date" value={form.date} onChange={handleChange} />
+                <ModalInput name="date" type="date" value={form.date} onChange={handleChange} min={new Date().toISOString().slice(0,10)} />
                 <ModalLabel>Dịch vụ:</ModalLabel>
                 <ModalSelect name="type" value={form.type} onChange={handleChange}>
                   <option value="">-- Chọn dịch vụ --</option>
                   <option value="Tư vấn">Tư vấn</option>
                   <option value="Xét nghiệm">Xét nghiệm</option>
-                  <option value="Khám tổng quát">Khám tổng quát</option>
                 </ModalSelect>
                 <div style={{ display: 'flex', gap: 10, marginTop: 16, justifyContent: 'center' }}>
                   <Button color="#22c55e" textcolor="#fff" style={{ minWidth: 80, fontWeight: 600, boxShadow: '0 2px 8px rgba(79,70,229,0.08)' }} type="submit">Lưu</Button>
