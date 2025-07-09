@@ -57,6 +57,7 @@ import ConsultantTrangChu from "../Consultant/ConsultantTrangChu";
 import StaffTrangChu from "../Staff/StaffTrangChu";
 import StaffLichLamViec from "../Staff/StaffLichLamViec";
 import StaffTraKetQua from "../Staff/StaffTraKetQua";
+import StaffQuanLyDatLich from "../Staff/StaffQuanLyDatLich";
 import StaffCaiDat from "../Staff/StaffCaiDat";
 
 {/*Admin*/}
@@ -143,6 +144,7 @@ function App() {
         <Route path="/staff/trangchu" element={<StaffTrangChu />} />
         <Route path="/staff/lich-lam-viec" element={<StaffLichLamViec />} />
         <Route path="/staff/tra-ket-qua" element={<StaffTraKetQua />} />
+        <Route path="/staff/quan-ly-dat-lich" element={<StaffQuanLyDatLich />} />
         <Route path="/staff/cai-dat" element={<StaffCaiDat />} />
 
         {/* Admin */}
