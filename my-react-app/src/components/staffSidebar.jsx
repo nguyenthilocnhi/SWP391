@@ -126,9 +126,9 @@ const SidebarText = styled.span`
 const navLinks = [
   { to: '/staff/trangchu', icon: 'fas fa-home', text: 'Trang chủ' },
   { to: '/staff/lich-lam-viec', icon: 'fas fa-calendar-alt', text: 'Lịch làm việc' },
-  { to: '/staff/quanlydatlich', icon: 'fas fa-calendar-check', text: 'Quản lý đặt lịch' },
-  { to: '/staff/traketquaxetnghiem', icon: 'fas fa-flask', text: 'Trả kết quả xét nghiệm' },
-  { to: '/staff/caidat', icon: 'fas fa-cog', text: 'Cài đặt' },
+  { to: '/staff/quan-ly-dat-lich', icon: 'fas fa-calendar-check', text: 'Quản lý đặt lịch' },
+  { to: '/staff/tra-ket-qua', icon: 'fas fa-flask', text: 'Trả kết quả xét nghiệm' },
+  { to: '/staff/cai-dat', icon: 'fas fa-cog', text: 'Cài đặt' },
 ];
 
 const StaffSidebar = () => {
