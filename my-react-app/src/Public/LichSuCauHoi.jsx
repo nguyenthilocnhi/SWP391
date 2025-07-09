@@ -302,6 +302,12 @@ function LichSuCauHoi() {
                   <p>
                     <strong>Ngày gửi:</strong> {q.time || q.date}
                   </p>
+                  {q.status === 'answered' && q.answer && (
+                    <div style={{marginTop: 8, color: '#059669', background: '#f0fdf4', borderRadius: 8, padding: 10}}>
+                      <b>Phản hồi từ tư vấn viên:</b>
+                      <div>{q.answer}</div>
+                    </div>
+                  )}
                 </div>
                 <div style={styles.questionActions}>
                   <button
@@ -351,6 +357,12 @@ function LichSuCauHoi() {
             <p>
               <strong>Email:</strong> {popup.email || "(Không có email)"}
             </p>
+            {popup.status === 'answered' && popup.answer && (
+              <div style={{marginTop: 12, color: '#059669', background: '#f0fdf4', borderRadius: 8, padding: 10}}>
+                <b>Phản hồi từ tư vấn viên:</b>
+                <div>{popup.answer}</div>
+              </div>
+            )}
             <button style={styles.popupBtn} onClick={() => setPopup(null)}>
               Đóng
             </button>

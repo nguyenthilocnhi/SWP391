@@ -218,6 +218,21 @@ function DatLichTuVan() {
       const randomCode = Math.random().toString(36).substring(2, 12);
       googleMeetLink = `https://meet.google.com/${randomCode.slice(0, 3)}-${randomCode.slice(3, 6)}-${randomCode.slice(6, 9)}`;
       localStorage.setItem("latestMeetLink", googleMeetLink);
+      // --- Lưu vào danh sách onlineBookings ---
+      const onlineBookings = JSON.parse(localStorage.getItem("onlineBookings") || "[]");
+      onlineBookings.push({
+        id: Date.now(),
+        name: hoten,
+        avatar: "https://randomuser.me/api/portraits/lego/1.jpg", // hoặc lấy từ user nếu có
+        waitingTime: "Vừa đặt",
+        status: "waiting",
+        sdt,
+        ngay: ngayFormat,
+        gio,
+        loaiTuVan,
+        ghichu
+      });
+      localStorage.setItem("onlineBookings", JSON.stringify(onlineBookings));
     } else {
       localStorage.removeItem("latestMeetLink");
     }

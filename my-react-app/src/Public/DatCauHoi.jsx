@@ -202,7 +202,7 @@ function DatCauHoi() {
       subject: form.subject.trim(),
       content: form.message.trim(),
       time: new Date().toLocaleString("vi-VN"),
-      status: "unanswered",
+      status: "waiting",
     };
 
     // Lưu vào localStorage

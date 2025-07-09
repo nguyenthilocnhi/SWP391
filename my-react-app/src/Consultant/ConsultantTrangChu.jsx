@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { FaUserFriends, FaCalendarAlt, FaComments, FaClipboardList, FaCog, FaHeadphones, FaSignOutAlt, FaHome, FaRegCalendarCheck } from "react-icons/fa";
-import { MdHealthAndSafety } from "react-icons/md";
-import { IoMdNotifications } from "react-icons/io";
+import ConsultantSidebar from "../components/ConsultantSidebar";
+import ConsultantTopbar from "../components/ConsultantTopbar";
 
 const ConsultantTrangChu = () => {
-  const [consultantName] = useState("Nguyễn Văn A");
+  const [consultantName] = useState("Nguyễn Thị Huyền");
   const [appointmentCount] = useState(12);
   const [questionCount] = useState(3);
   const [ratingScore] = useState(4.7);
+  const [notificationCount] = useState(3);
 
   return (
     <>
@@ -36,53 +36,6 @@ body {
   width: 100vw;
   background-color: #f9fafb;
 }
-.sidebar {
-  width: 180px;
-  background: linear-gradient(160deg, #b2f5ea, #81e6d9);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  z-index: 1000;
-}
-.sidebar .user-info {
-  text-align: center;
-  margin-bottom: 24px;
-}
-.sidebar .avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0 auto 10px;
-  border: 2px solid #fff;
-}
-.sidebar .name {
-  font-size: 14px;
-  font-weight: 600;
-}
-.sidebar nav a,
-.sidebar .bottom-links a {
-  display: block;
-  padding: 10px 12px;
-  margin: 6px 0;
-  font-size: 14px;
-  color: #1f2937;
-  text-decoration: none;
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-.sidebar nav a.active,
-.sidebar nav a:hover {
-  background-color: #ffffff;
-  color: #0f766e;
-  font-weight: 600;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-}
 .main {
   flex: 1;
   margin-left: 180px;
@@ -90,27 +43,6 @@ body {
   background-color: #ffffff;
   overflow-x: hidden;
   min-height: 100vh;
-}
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #e5e7eb;
-  margin-bottom: 32px;
-  position: sticky;
-  top: 0;
-  z-index: 101;
-}
-.topbar .logo {
-  height: 60px;
-}
-.search {
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-  width: 260px;
-  background-color: #f9fafb;
 }
 .welcome {
   text-align: center;
@@ -190,50 +122,15 @@ body {
 .card a:hover {
   text-decoration: underline;
 }
-.bottom-links {
-  margin-top: 24px; /* hoặc 16px tuỳ ý */
-}
       `}</style>
       <div className="dashboard">
         {/* Sidebar */}
-        <aside className="sidebar">
-          <div>
-            <div className="user-info">
-              <img className="avatar" src="https://i.postimg.cc/rFsJ2wWR/tuvanvien.jpg" alt="Consultant" />
-              <div className="name">{consultantName}</div>
-            </div>
-            <nav>
-              <a href="#" className="active"><FaHome /> Tổng quan</a>
-              <a href="#"><FaUserFriends /> Quản lý khách hàng</a>
-              <a href="#"><FaRegCalendarCheck /> Lịch hẹn</a>
-              <a href="/consultant/lich-lam-viec"><FaCalendarAlt /> Lịch làm việc</a>
-              <a href="#"><FaComments /> Tư vấn trực tuyến</a>
-              <a href="#"><MdHealthAndSafety /> Bài viết sức khỏe</a>
-            </nav>
-          </div>
-          <div className="bottom-links">
-            <a href="#"><FaCog /> Cài đặt</a>
-            <a href="#"><FaHeadphones /> Hỗ trợ</a>
-            <a href="#"><FaSignOutAlt /> Đăng xuất</a>
-          </div>
-        </aside>
+        <ConsultantSidebar consultantName={consultantName} />
 
         {/* Main content */}
         <main className="main">
           {/* Topbar */}
-          <div className="topbar">
-            <img className="logo" src="https://i.postimg.cc/g2C1ys2D/nh-ch-p-m-n-h-nh-2025-06-29-000958.png" alt="Logo" />
-            <input className="search" placeholder="Tìm kiếm khách hàng, bài viết..." />
-            <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-              <div style={{ position: "relative", fontSize: "1.6rem", color: "#10b981", cursor: "pointer" }}>
-                <IoMdNotifications />
-                <span style={{
-                  position: "absolute", top: -6, right: -8, background: "#ef4444", color: "#fff",
-                  fontSize: "0.8rem", borderRadius: "50%", padding: "2px 6px", fontWeight: 700
-                }}>3</span>
-              </div>
-            </div>
-          </div>
+          <ConsultantTopbar notificationCount={notificationCount} />
 
           {/* Welcome section */}
           <section className="welcome">
