@@ -65,8 +65,11 @@ import AdminTrangChu from "../Admin/adminTrangChu";
 import AdminHoSo from "../Admin/adminHoSo";
 import AdminKhachHang from "../Admin/adminKhachHang";
 import AdminLichHen from "../Admin/adminLichHen";
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 
 
 function App() {
@@ -155,11 +158,15 @@ function App() {
         <Route path="/admin/lichhen" element={<AdminLichHen />} />
 
         {/* Consultant */}
+<<<<<<< Updated upstream
 
         <Route path="/consultant/trangchu" element={<ConsultantTrangChu />} />
 
         <Route path="/consultant/trangchu" element={<ConsultantTrangChu />} /> {/*  Thêm dòng này */}
 
+=======
+        <Route path="/consultant/trangchu" element={<ConsultantTrangChu />} /> {/*  Thêm dòng này */}
+>>>>>>> Stashed changes
 
 
       </Routes>
