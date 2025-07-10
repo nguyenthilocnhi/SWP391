@@ -69,7 +69,10 @@ import ConsultantTuVanTrucTuyen from "../Consultant/ConsultantTuVanTrucTuyen";
 import ConsultantLichHen from "../Consultant/ConsultantLichHen";
 import ConsultantHoiDap from "../Consultant/ConsultantHoiDap";
 import ConsultantReply from "../Consultant/ConsultantReply";
-
+import ConsultantDanhGia from "../Consultant/ConsultantDanhGia";
+import ConsultantCaiDat from "../Consultant/ConsultantCaiDat";
+import ConsultantHoTro from "../Consultant/ConsultantHoTro";
+import ConsultantDangXuat from "../Consultant/ConsultantDangXuat";
 function App() {
   return (
     <Router>
@@ -161,6 +164,10 @@ function App() {
         <Route path="/consultant/lich-hen" element={<ConsultantLichHen />} />
         <Route path="/consultant/hoi-dap" element={<ConsultantHoiDap />} />
         <Route path="/consultant/hoi-dap/tra-loi/:id" element={<ConsultantReply />} />
+        <Route path="/consultant/danh-gia" element={<ConsultantDanhGia />} />
+        <Route path="/consultant/cai-dat" element={<ConsultantCaiDat />} />
+        <Route path="/consultant/ho-tro" element={<ConsultantHoTro />} />
+        <Route path="/consultant/dang-xuat" element={<ConsultantDangXuat />} />
       </Routes>
     </Router>
   );

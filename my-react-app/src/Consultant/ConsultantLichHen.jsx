@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
+import { useLocation } from "react-router-dom";
 
 const ConsultantLichHen = () => {
+  const location = useLocation();
+  const { appointmentCount } = location.state || {};
   const [appointments, setAppointments] = useState([]);
   const consultantName = "Nguyễn Thị Huyền";
   const notificationCount = 3;
@@ -67,6 +70,11 @@ const ConsultantLichHen = () => {
           <div className="lh-main-card">
             <div className="lh-title">Lịch hẹn tư vấn</div>
             <div className="lh-desc">Danh sách các lịch hẹn tư vấn của khách hàng.</div>
+            {appointmentCount !== undefined && (
+              <div style={{ margin: '16px 0', color: '#047857', fontWeight: 600 }}>
+                Tổng số lịch hẹn trong tháng: {appointmentCount}
+              </div>
+            )}
             {appointments.length === 0 ? (
               <div className="lh-empty">Không có lịch hẹn nào.</div>
             ) : (
