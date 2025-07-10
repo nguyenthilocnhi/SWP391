@@ -1,14 +1,21 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import TrangChu from "../Public/TrangChu";
-import DangKy from "../Login/DangKy";
+{/* Login */}
 import DangNhap from "../Login/Dangnhap";
-import XacThucOTP from "../Login/XacThucOTP";
+import DangKy from "../Login/DangKy";
 import QuenMatKhau from "../Login/QuenMatKhau";
+import XacThucOTP from "../Login/XacThucOTP";
+import DatLaiMatKhauThanhCong from "../Login/DatLaiMatKhauThanhCong";
+
+{/* Public là các trang chung của Guest và Customer */}
+import TrangChu from "../Public/TrangChu";
 import GioiThieu from "../Public/GioiThieu";
 import CauHoiThuongGap from "../Public/CauHoiThuongGap";
 import DichVu from "../Public/DichVu";
 import ChiTietDichVu from "../Public/ChiTietDichVu";
-import DatLaiMatKhauThanhCong from "../Login/DatLaiMatKhauThanhCong";
+import TuVanVien from "../Public/TuVanVien";
+import ChiTietTuVanVien from "../Public/ChiTietTuVanVien";
+
+{/* Blog */}
 import BlogPage from "../Public/BlogPage";
 import BlogChiTiet1 from "../Public/BlogChiTiet1";
 import BlogChiTiet2 from "../Public/BlogChiTiet2";
@@ -22,6 +29,8 @@ import BlogChiTiet9 from "../Public/BlogChiTiet9";
 import BlogChiTiet10 from "../Public/BlogChiTiet10";
 import BlogChiTiet11 from "../Public/BlogChiTiet11";
 import BlogChiTiet12 from "../Public/BlogChiTiet12";
+
+{/* Customer */}
 import NhacNhoUongThuoc from "../Public/NhacNhoUongThuoc";
 import TheoDoiChuKy from "../Public/TheoDoiChuKy";
 import CaiDat from "../Public/CaiDat";
@@ -29,7 +38,6 @@ import DoiMatKhau from "../Public/DoiMatKhau";
 import DatCauHoi from "../Public/DatCauHoi";
 import LichSuCauHoi from "../Public/LichSuCauHoi";
 import DatLichDichVu from "../Public/DatLichDichVu";
-import TuVanVien from "../Public/TuVanVien";
 import DatLichTuVan from "../Public/DatLichTuVan";
 import DatLichXetNghiem from "../Public/DatLichXetNghiem";
 import ThanhToan from "../Public/ThanhToan";
@@ -37,14 +45,24 @@ import ThanhCongDatLich from "../Public/ThanhCongDatLich";
 import LichSuDatLich from "../Public/LichSuDatLich";
 import LichSuDichVuVaDanhGia from "../Public/LichSuDichVuVaDanhGia";
 import DanhGiaDichVu from "../Public/DanhGiaDichVu";
-import AdminTrangChu from "../Admin/adminTrangChu";
-import AdminHoSo from "../Admin/adminHoSo";
 import ThongTinCaNhan from "../Public/ThongTinCaNhan";
 import KetQuaXetNghiem from "../Public/KetQuaXetNghiem";
 import DanhGiaDaGui from "../Public/DanhGiaDaGui";
-import ChiTietTuVanVien from "../Public/ChiTietTuVanVien";
+
+{/* Admin */}
+import AdminTrangChu from "../Admin/adminTrangChu";
+import AdminHoSo from "../Admin/adminHoSo";
+
+
+{/* Staff */}
 import StaffTrangChu from "../Staff/StaffTrangChu";
 import StaffLichLamViec from "../Staff/StaffLichLamViec";
+import StaffQuanLyDatLich from "../Staff/StaffQuanLyDatLich";
+import StaffTraKetQua from "../Staff/StaffTraKetQua";
+import StaffCaiDat from "../Staff/StaffCaiDat";
+import StaffHoTro from "../Staff/StaffHoTro";
+
+{/* Consultant */}
 import ConsultantTrangChu from "../Consultant/ConsultantTrangChu";
 import ConsultantLichLamViec from "../Consultant/ConsultantLichLamViec";
 import ConsultantTuVanTrucTuyen from "../Consultant/ConsultantTuVanTrucTuyen";
@@ -127,6 +145,10 @@ function App() {
         {/* Staff */}
         <Route path="/staff/trangchu" element={<StaffTrangChu />} />
         <Route path="/staff/lich-lam-viec" element={<StaffLichLamViec />} />
+        <Route path="/staff/quan-ly-dat-lich" element={<StaffQuanLyDatLich />} />
+        <Route path="/staff/tra-ket-qua" element={<StaffTraKetQua />} />
+        <Route path="/staff/cai-dat" element={<StaffCaiDat />} />
+        <Route path="/staff/ho-tro" element={<StaffHoTro />} />
 
         {/* Admin */}
         <Route path="/admin/trangchu" element={<AdminTrangChu />} />
