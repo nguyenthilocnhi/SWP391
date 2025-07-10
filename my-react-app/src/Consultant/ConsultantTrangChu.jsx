@@ -1,13 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
+import { Link } from "react-router-dom";
 
 const ConsultantTrangChu = () => {
   const [consultantName] = useState("Nguyễn Thị Huyền");
-  const [appointmentCount] = useState(12);
-  const [questionCount] = useState(3);
-  const [ratingScore] = useState(4.7);
+  const [appointmentCount, setAppointmentCount] = useState(0);
+  const [questionCount, setQuestionCount] = useState(0);
+  const [ratingScore, setRatingScore] = useState(0);
   const [notificationCount] = useState(3);
+
+  useEffect(() => {
+    // Lấy lịch hẹn trong tháng
+    const appointments = JSON.parse(localStorage.getItem("lichHenTuVan")) || [];
+    // Giả sử mỗi lịch hẹn có trường 'ngay' dạng yyyy-mm-dd
+    const currentMonth = new Date().getMonth() + 1;
+    const countLichHen = appointments.filter(a => {
+      const month = new Date(a.ngay).getMonth() + 1;
+      return month === currentMonth;
+    }).length;
+    setAppointmentCount(countLichHen);
+
+    // Lấy số câu hỏi mới
+    const questions = JSON.parse(localStorage.getItem("cauHoiMoi")) || [];
+    setQuestionCount(questions.length);
+
+    // Lấy điểm đánh giá trung bình
+    const reviews = JSON.parse(localStorage.getItem("danhGiaDichVu")) || [];
+    if (reviews.length > 0) {
+      const avg = reviews.reduce((sum, r) => sum + (r.soSao || 0), 0) / reviews.length;
+      setRatingScore(avg.toFixed(1));
+    } else {
+      setRatingScore(0);
+    }
+  }, []);
 
   return (
     <>
@@ -149,17 +175,32 @@ body {
             <div className="card">
               <p>Lịch hẹn trong tháng</p>
               <h2>{appointmentCount}</h2>
-              <a href="#">Xem chi tiết</a>
+              <Link
+                to="/consultant/lich-hen"
+                state={{ appointmentCount }}
+              >
+                Xem chi tiết
+              </Link>
             </div>
             <div className="card">
               <p>Câu hỏi mới</p>
               <h2>{questionCount}</h2>
-              <a href="#">Xem chi tiết</a>
+              <Link
+                to="/consultant/hoi-dap"
+                state={{ questionCount }}
+              >
+                Xem chi tiết
+              </Link>
             </div>
             <div className="card">
               <p>Điểm đánh giá</p>
               <h2>{ratingScore}</h2>
-              <a href="#">Xem chi tiết</a>
+              <Link
+                to="/consultant/danh-gia"
+                state={{ ratingScore }}
+              >
+                Xem chi tiết
+              </Link>
             </div>
           </section>
         </main>

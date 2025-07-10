@@ -1,10 +1,24 @@
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { FaUserFriends, FaCalendarAlt, FaComments, FaClipboardList, FaCog, FaHeadphones, FaSignOutAlt, FaHome, FaRegCalendarCheck } from "react-icons/fa";
 import { MdHealthAndSafety } from "react-icons/md";
 
-const ConsultantSidebar = ({ consultantName }) => (
-  <>
-    <style>{`
+const ConsultantSidebar = ({ consultantName }) => {
+  const location = useLocation();
+  const { pathname } = location;
+
+  const navLinks = [
+    { href: "/consultant/trangchu", icon: <FaHome />, label: "Tổng quan" },
+    { href: "/consultant/lich-hen", icon: <FaRegCalendarCheck />, label: "Lịch hẹn" },
+    { href: "/consultant/lich-lam-viec", icon: <FaCalendarAlt />, label: "Lịch làm việc" },
+    { href: "/consultant/tu-van-truc-tuyen", icon: <FaComments />, label: "Tư vấn trực tuyến" },
+    { href: "/consultant/hoi-dap", icon: <MdHealthAndSafety />, label: "Hỏi đáp" },
+    { href: "/consultant/danh-gia", icon: <FaUserFriends />, label: "Đánh giá" },
+  ];
+
+  return (
+    <>
+      <style>{`
 .sidebar {
   width: 180px;
   background: linear-gradient(160deg, #b2f5ea, #81e6d9);
@@ -35,6 +49,7 @@ const ConsultantSidebar = ({ consultantName }) => (
   font-weight: 600;
 }
 .sidebar nav a,
+.sidebar nav .nav-link,
 .sidebar .bottom-links a {
   display: block;
   padding: 10px 12px;
@@ -46,7 +61,9 @@ const ConsultantSidebar = ({ consultantName }) => (
   transition: background 0.2s;
 }
 .sidebar nav a.active,
-.sidebar nav a:hover {
+.sidebar nav .nav-link.active,
+.sidebar nav a:hover,
+.sidebar nav .nav-link:hover {
   background-color: #ffffff;
   color: #0f766e;
   font-weight: 600;
@@ -55,29 +72,33 @@ const ConsultantSidebar = ({ consultantName }) => (
 .bottom-links {
   margin-top: 24px;
 }
-    `}</style>
-    <aside className="sidebar">
-      <div>
-        <div className="user-info">
-          <img className="avatar" src="https://i.postimg.cc/rFsJ2wWR/tuvanvien.jpg" alt="Consultant" />
-          <div className="name">{consultantName}</div>
+      `}</style>
+      <aside className="sidebar">
+        <div>
+          <div className="user-info">
+            <img className="avatar" src="https://i.postimg.cc/rFsJ2wWR/tuvanvien.jpg" alt="Consultant" />
+            <div className="name">{consultantName}</div>
+          </div>
+          <nav>
+            {navLinks.map(link => (
+              <Link
+                key={link.href}
+                to={link.href}
+                className={pathname.startsWith(link.href) ? "active nav-link" : "nav-link"}
+              >
+                {link.icon} {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
-        <nav>
-          <a href="/consultant/trangchu" className="active"><FaHome /> Tổng quan</a>
-          <a href="/consultant/lich-hen"><FaRegCalendarCheck /> Lịch hẹn</a>
-          <a href="/consultant/lich-lam-viec"><FaCalendarAlt /> Lịch làm việc</a> 
-          <a href="/consultant/tu-van-truc-tuyen"><FaComments /> Tư vấn trực tuyến</a>
-          <a href="/consultant/hoi-dap"><MdHealthAndSafety /> Hỏi đáp</a>
-          <a href="/consultant/danh-gia"><FaUserFriends /> Đánh giá</a>
-        </nav>
-      </div>
-      <div className="bottom-links">
-        <a href="/consultant/cai-dat"><FaCog /> Cài đặt</a>
-        <a href="/consultant/ho-tro"><FaHeadphones /> Hỗ trợ</a>
-        <a href="/consultant/dang-xuat"><FaSignOutAlt /> Đăng xuất</a>
-      </div>
-    </aside>
-  </>
-);
+        <div className="bottom-links">
+          <Link to="/consultant/cai-dat" className={pathname.startsWith("/consultant/cai-dat") ? "active" : ""}><FaCog /> Cài đặt</Link>
+          <Link to="/consultant/ho-tro" className={pathname.startsWith("/consultant/ho-tro") ? "active" : ""}><FaHeadphones /> Hỗ trợ</Link>
+          <Link to="/consultant/dang-xuat"><FaSignOutAlt /> Đăng xuất</Link>
+        </div>
+      </aside>
+    </>
+  );
+};
 
 export default ConsultantSidebar; 

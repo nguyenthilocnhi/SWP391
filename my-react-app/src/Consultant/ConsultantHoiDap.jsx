@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ConsultantHoiDap = () => {
   const [questions, setQuestions] = useState([]);
   const consultantName = "Nguyễn Thị Huyền";
   const notificationCount = 3;
   const navigate = useNavigate();
+  const location = useLocation();
+  const { questionCount } = location.state || {};
 
   useEffect(() => {
     const qs = JSON.parse(localStorage.getItem("questions") || "[]");
@@ -73,6 +75,11 @@ const ConsultantHoiDap = () => {
           <div className="hd-main-card">
             <div className="hd-title">Hỏi đáp khách hàng</div>
             <div className="hd-desc">Danh sách các câu hỏi khách hàng gửi đến tư vấn viên.</div>
+            {questionCount !== undefined && (
+              <div style={{ margin: '16px 0', color: '#047857', fontWeight: 600 }}>
+                Số câu hỏi mới: {questionCount}
+              </div>
+            )}
             <div className="hd-list">
               {questions.length === 0 ? (
                 <div className="hd-empty">Không có câu hỏi nào đang chờ trả lời.</div>
