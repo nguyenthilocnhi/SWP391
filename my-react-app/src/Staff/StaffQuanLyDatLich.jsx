@@ -156,8 +156,8 @@ const statusOptions = [
   'Chờ xác nhận',
   'Đã xác nhận',
   'Đã lấy mẫu',
-  'Đã trả kết quả',
-  'Đã hủy'
+  'Chờ kết quả',
+  'Đã trả kết quả'
 ];
 
 const sampleData = [
@@ -255,14 +255,7 @@ function StaffQuanLyDatLich() {
                   <Td>{row.customer}</Td>
                   <Td>{row.service}</Td>
                   <Td>{row.date}</Td>
-                  <Td>
-                    <StatusSelect
-                      value={row.status}
-                      onChange={e => handleStatusChange(idx, e.target.value)}
-                    >
-                      {statusOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                    </StatusSelect>
-                  </Td>
+                  <Td>{row.status}</Td>
                   <Td>{row.note}</Td>
                   <Td>
                     <ActionBtn onClick={() => openEditModal(idx)}>Chỉnh sửa</ActionBtn>

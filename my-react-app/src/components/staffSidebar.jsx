@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 const SidebarContainer = styled.div`
   min-width: 250px;
   width: 250px;
-  padding: 1.5rem 1rem;
+  padding: 1.5rem 1rem 2.5rem 1rem;
   background: linear-gradient(135deg, #09a370 0%, #0d8a5f 100%);
   height: 100vh;
   display: flex;
@@ -16,10 +16,11 @@ const SidebarContainer = styled.div`
   top: 0;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  overflow-x: hidden;
   @media (max-width: 768px) {
     min-width: 80px;
     width: 80px;
-    padding: 1rem 0.5rem;
+    padding: 1rem 0.5rem 2rem 0.5rem;
   }
 `;
 const Logo = styled.div`
@@ -61,6 +62,8 @@ const Nav = styled.nav`
   flex-direction: column;
   gap: 8px;
   flex: 1;
+  overflow-y: auto;
+  min-height: 0;
 `;
 const NavItem = styled(Link)`
   display: flex;
@@ -129,6 +132,9 @@ const navLinks = [
   { to: '/staff/quan-ly-dat-lich', icon: 'fas fa-calendar-check', text: 'Quản lý đặt lịch' },
   { to: '/staff/tra-ket-qua', icon: 'fas fa-flask', text: 'Trả kết quả xét nghiệm' },
   { to: '/staff/cai-dat', icon: 'fas fa-cog', text: 'Cài đặt' },
+  { to: '/staff/danh-gia', icon: 'fas fa-star', text: 'Đánh giá' },
+  { to: '/staff/ho-tro', icon: 'fas fa-question-circle', text: 'Hỗ trợ' },
+  { to: '/login', icon: 'fas fa-sign-out-alt', text: 'Đăng xuất', logout: true },
 ];
 
 const StaffSidebar = () => {
@@ -148,6 +154,7 @@ const StaffSidebar = () => {
             to={link.to}
             $active={location.pathname === link.to}
             className="nav-item"
+            onClick={link.logout ? () => { localStorage.clear(); sessionStorage.clear(); } : undefined}
           >
             <NavIcon className={link.icon} />
             <SidebarText className="sidebar-text">{link.text}</SidebarText>
