@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaTrashAlt } from 'react-icons/fa';
 
 // SIDEBAR STYLES
 const Sidebar = styled.div`
-  background-color: #4ade80;
-  color: white;
+  background: linear-gradient(135deg, #09a370 0%, #0d8a5f 100%);
+  color: #fff;
   width: 260px;
   flex-shrink: 0;
   display: flex;
@@ -23,7 +23,6 @@ const Sidebar = styled.div`
 
 const SidebarHeader = styled.div`
   padding: 8px;
-  border-bottom: 2px solid #059669;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,19 +69,52 @@ const MenuList = styled.ul`
 const MenuItem = styled(Link)`
   display: flex;
   align-items: center;
-  padding: 8px;
-  border-radius: 8px;
+  padding: 14px 20px;
+  border-radius: 10px;
   text-decoration: none;
-  color: white;
-  transition: background-color 0.3s;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
   margin-bottom: 10px;
-
-  &.active,
+  background: ${({ className }) => className && className.includes('active') ? 'rgba(255,255,255,0.2)' : 'none'};
+  border-left: ${({ className }) => className && className.includes('active') ? '4px solid #fff' : 'none'};
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
   &:hover {
-    background-color: #22c55e;
-    color: white;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
+  i {
+    margin-right: 12px;
+  }
+`;
 
+const MenuItemButton = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  border-radius: 10px;
+  border: none;
+  background: none;
+  color: #fff;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s;
+  &:hover, &:focus {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    outline: none;
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
   i {
     margin-right: 12px;
   }
@@ -90,27 +122,28 @@ const MenuItem = styled(Link)`
 
 // HEADER STYLES
 const Header = styled.header`
-  background-color: white;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border-radius: 16px;
   position: fixed;
   top: 0;
   left: 260px;
   right: 0;
   z-index: 10;
-  padding: 12px 24px;
+  padding: 16px 32px 16px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  margin-bottom: 10px;
   @media (max-width: 768px) {
     left: 0;
   }
 `;
 
 const HeaderTitle = styled.h2`
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #1f2937;
+  color: #018866;
 `;
 
 const HeaderActions = styled.div`
@@ -385,6 +418,14 @@ export default function AdminLayout() {
     setNotifications(nots => nots.filter(n => n.id !== id));
   };
 
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setShowLogoutModal(false);
+    navigate('/admin/dangxuat');
+  };
+
   return (
     <>
       <Sidebar className={sidebarHidden ? 'hidden' : ''}>
@@ -402,13 +443,21 @@ export default function AdminLayout() {
           <MenuList>
             <li><MenuItem to="/admin/trangchu" className="menu-item"><i className="fas fa-tachometer-alt" />Tổng quan</MenuItem></li>
             <li><MenuItem to="/admin/khachhang" className="menu-item"><i className="fas fa-users" />Quản lý khách hàng</MenuItem></li>
+            <li><MenuItem to="/admin/danhgia" className="menu-item"><i className="fas fa-star" />Quản lý đánh giá</MenuItem></li>
             <li><MenuItem to="/admin/lichhen" className="menu-item"><i className="fas fa-calendar-check" />Lịch hẹn</MenuItem></li>
             <li><MenuItem to="/admin/thongke" className="menu-item"><i className="fas fa-chart-pie" />Thống kê</MenuItem></li>
             <li><MenuItem to="/admin/tuvan" className="menu-item"><i className="fas fa-comments" />Tư vấn trực tuyến</MenuItem></li>
             <li><MenuItem to="/admin/baiviet" className="menu-item"><i className="fas fa-notes-medical" />Bài viết sức khỏe</MenuItem></li>
             <li><MenuItem to="/admin/caidat" className="menu-item"><i className="fas fa-cog" />Cài đặt</MenuItem></li>
-            <li><MenuItem to="/admin/hotro" className="menu-item"><i className="fa-solid fa-headset" />Hỗ trợ</MenuItem></li>
-            <li><MenuItem to="/admin/dangxuat" onClick={confirmLogout} className="menu-item"><i className="fas fa-sign-out-alt" />Đăng xuất</MenuItem></li>
+            <li>
+              <MenuItemButton
+                type="button"
+                className="menu-item"
+                onClick={() => setShowLogoutModal(true)}
+              >
+                <i className="fas fa-sign-out-alt" />Đăng xuất
+              </MenuItemButton>
+            </li>
           </MenuList>
         </Nav>
       </Sidebar>
@@ -486,6 +535,44 @@ export default function AdminLayout() {
           </Link>
         </HeaderActions>
       </Header>
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex',
+          alignItems: 'center', justifyContent: 'center', zIndex: 9999
+        }}>
+          <div style={{
+            background: '#fff', borderRadius: 12, padding: 24, maxWidth: 400, width: '90%', textAlign: 'center'
+          }}>
+            <div style={{
+              background: '#dbeafe', color: '#2563eb', width: 64, height: 64, borderRadius: '50%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px'
+            }}>
+              <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 9v2m0 4h.01M4.93 19h14.14c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.59 3z" />
+              </svg>
+            </div>
+            <h2>Xác nhận đăng xuất</h2>
+            <p>Bạn có chắc chắn muốn đăng xuất?</p>
+            <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+              <button
+                style={{ flex: 1, padding: 10, borderRadius: 6, border: 'none', background: '#f3f4f6', color: '#374151', fontWeight: 500, cursor: 'pointer', outline: 'none' }}
+                onMouseOver={e => { e.currentTarget.style.background = '#e5e7eb'; e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
+                onMouseOut={e => { e.currentTarget.style.background = '#f3f4f6'; e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
+                onFocus={e => { e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
+                onClick={() => setShowLogoutModal(false)}
+              >Hủy bỏ</button>
+              <button
+                style={{ flex: 1, padding: 10, borderRadius: 6, border: 'none', background: '#2563eb', color: '#fff', fontWeight: 500, cursor: 'pointer', outline: 'none' }}
+                onMouseOver={e => { e.currentTarget.style.background = '#1d4ed8'; e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
+                onMouseOut={e => { e.currentTarget.style.background = '#2563eb'; e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
+                onFocus={e => { e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
+                onClick={handleLogout}
+              >Đăng xuất</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

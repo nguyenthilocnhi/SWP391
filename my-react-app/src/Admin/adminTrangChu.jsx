@@ -7,7 +7,7 @@ import styled from 'styled-components';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const MainContent = styled.main`
-  padding: 100px 0 24px 210px;
+  padding: 120px 0 24px 210px;
   background: #f9fafb;
   min-height: 100vh;
   width: 134vw;

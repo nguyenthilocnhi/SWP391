@@ -3,7 +3,7 @@ import AdminLayout from '../components/adminLayout';
 import styled from 'styled-components';
 
 const MainContent = styled.main`
-  padding: 100px 0 24px 215px;
+  padding: 120px 0 24px 215px;
   background: #f9fafb;
   min-height: 100vh;
   width: 144vw;
@@ -83,20 +83,27 @@ const Badge = styled.span`
   color: ${props => props.status === 'confirmed' ? '#065f46' : props.status === 'pending' ? '#92400e' : '#1e40af'};
 `;
 const Button = styled.button`
-  padding: 6px 12px;
-  font-size: 14px;
+  padding: 8px 18px;
+  font-size: 15px;
   border-radius: 8px;
   border: none;
-  background-color: ${props => props.color || 'transparent'};
-  color: ${props => props.textcolor || '#4b5563'};
+  background-color: ${props => props.active ? '#4ade80' : '#f3f4f6'};
+  color: ${props => props.active ? '#fff' : '#059669'};
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-weight: 600;
   margin-right: 8px;
+  margin-bottom: 4px;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
   &:hover {
-    background-color: #f3f4f6;
+    background-color: ${props => props.active ? '#059669' : '#e5e7eb'};
+    color: ${props => props.active ? '#fff' : '#047857'};
+    border: none;
+    outline: none;
   }
-  &.small {
-    padding: 6px;
+  &:focus {
+    border: none;
+    outline: none;
   }
 `;
 const ModalOverlay = styled.div`
@@ -155,13 +162,43 @@ const ModalSelect = styled.select`
   }
 `;
 
+const tuVanDetails = [
+  "Tư vấn trước khi làm xét nghiệm STI",
+  "Tư vấn sau khi nhận kết quả xét nghiệm",
+  "Tư vấn xét nghiệm định kỳ",
+  "Tư vấn lựa chọn gói xét nghiệm phù hợp",
+  "Tư vấn cho cặp đôi trước QHTD không bao",
+  "Tư vấn sức khỏe sinh sản",
+  "Tư vấn tình dục an toàn",
+  "Tư vấn dậy thì và sức khỏe giới tính cho thanh thiếu niên"
+];
+const xetNghiemDetails = [
+  "HIV Ag/Ab combo (HIV test thế hệ 4)",
+  "Xét nghiệm giang mai (RPR/TPHA)",
+  "Xét nghiệm lậu (PCR hoặc nhuộm soi)",
+  "Chlamydia (PCR)",
+  "HBsAg, Anti-HBs",
+  "HCV Ab",
+  "Xét nghiệm HSV 1 & 2 (Herpes Simplex Virus)",
+  "Pap smear (Tế bào học cổ tử cung)",
+  "Trichomonas vaginalis",
+  "Sùi mào gà",
+  "Chancroid (Hạ cam mềm)",
+  "Rận mu (Pubic lice)",
+  "Virus Zika (PCR)",
+  "Mycoplasma genitalium",
+  "Ureaplasma urealyticum"
+];
+function getRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 const initialAppointments = [
   {
     name: 'Nguyễn Thị Minh',
-    service: 'Tư vấn sức khỏe',
+    service: 'Tư vấn',
     time: '2025-07-04T14:30',
     status: 'confirmed',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
+    serviceDetail: getRandom(tuVanDetails),
     customerFeedback: 'Dịch vụ tốt, nhân viên nhiệt tình.',
     consultantNote: 'Khách hàng quan tâm sức khỏe tổng quát.',
   },
@@ -170,7 +207,7 @@ const initialAppointments = [
     service: 'Xét nghiệm',
     time: '2025-07-05T09:00',
     status: 'pending',
-    serviceDetail: 'Xét nghiệm máu',
+    serviceDetail: getRandom(xetNghiemDetails),
     customerFeedback: '',
     consultantNote: '',
   },
@@ -185,10 +222,10 @@ const initialAppointments = [
   },
   {
     name: 'Phạm Thị Hoa',
-    service: 'Tư vấn sức khỏe',
+    service: 'Tư vấn',
     time: '2025-07-07T15:45',
     status: 'confirmed',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
+    serviceDetail: getRandom(tuVanDetails),
     customerFeedback: 'Dịch vụ tốt, nhân viên nhiệt tình.',
     consultantNote: 'Khách hàng quan tâm sức khỏe tổng quát.',
   },
@@ -197,7 +234,7 @@ const initialAppointments = [
     service: 'Xét nghiệm',
     time: '2025-07-08T08:30',
     status: 'pending',
-    serviceDetail: 'Xét nghiệm máu',
+    serviceDetail: getRandom(xetNghiemDetails),
     customerFeedback: '',
     consultantNote: '',
   },
@@ -206,16 +243,16 @@ const initialAppointments = [
     service: 'Khám tổng quát',
     time: '2025-07-09T11:00',
     status: 'confirmed',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
+    serviceDetail: '',
     customerFeedback: 'Dịch vụ tốt, nhân viên nhiệt tình.',
     consultantNote: 'Khách hàng quan tâm sức khỏe tổng quát.',
   },
   {
     name: 'Vũ Quang Huy',
-    service: 'Tư vấn sức khỏe',
+    service: 'Tư vấn',
     time: '2025-07-10T13:30',
     status: 'new',
-    serviceDetail: '',
+    serviceDetail: getRandom(tuVanDetails),
     customerFeedback: '',
     consultantNote: '',
   },
@@ -224,7 +261,7 @@ const initialAppointments = [
     service: 'Xét nghiệm',
     time: '2025-07-11T16:00',
     status: 'pending',
-    serviceDetail: 'Xét nghiệm máu',
+    serviceDetail: getRandom(xetNghiemDetails),
     customerFeedback: '',
     consultantNote: '',
   },
@@ -233,16 +270,16 @@ const initialAppointments = [
     service: 'Khám tổng quát',
     time: '2025-07-12T09:45',
     status: 'confirmed',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
+    serviceDetail: '',
     customerFeedback: 'Dịch vụ tốt, nhân viên nhiệt tình.',
     consultantNote: 'Khách hàng quan tâm sức khỏe tổng quát.',
   },
   {
     name: 'Trịnh Thị Hạnh',
-    service: 'Tư vấn sức khỏe',
+    service: 'Tư vấn',
     time: '2025-07-13T14:00',
     status: 'pending',
-    serviceDetail: 'Xét nghiệm máu',
+    serviceDetail: getRandom(tuVanDetails),
     customerFeedback: '',
     consultantNote: '',
   },
@@ -251,7 +288,7 @@ const initialAppointments = [
     service: 'Xét nghiệm',
     time: '2025-07-14T10:30',
     status: 'new',
-    serviceDetail: '',
+    serviceDetail: getRandom(xetNghiemDetails),
     customerFeedback: '',
     consultantNote: '',
   },
@@ -260,16 +297,16 @@ const initialAppointments = [
     service: 'Khám tổng quát',
     time: '2025-07-15T15:15',
     status: 'confirmed',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
+    serviceDetail: '',
     customerFeedback: 'Dịch vụ tốt, nhân viên nhiệt tình.',
     consultantNote: 'Khách hàng quan tâm sức khỏe tổng quát.',
   },
   {
     name: 'Trần Thị C',
-    service: 'Tư vấn sức khỏe',
+    service: 'Tư vấn',
     time: '2025-07-16T08:45',
     status: 'pending',
-    serviceDetail: 'Xét nghiệm máu',
+    serviceDetail: getRandom(tuVanDetails),
     customerFeedback: '',
     consultantNote: '',
   },
@@ -278,7 +315,7 @@ const initialAppointments = [
     service: 'Xét nghiệm',
     time: '2025-07-17T11:30',
     status: 'confirmed',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
+    serviceDetail: getRandom(xetNghiemDetails),
     customerFeedback: 'Dịch vụ tốt, nhân viên nhiệt tình.',
     consultantNote: 'Khách hàng quan tâm sức khỏe tổng quát.',
   },
@@ -293,10 +330,10 @@ const initialAppointments = [
   },
   {
     name: 'Ngô Văn F',
-    service: 'Tư vấn sức khỏe',
+    service: 'Tư vấn',
     time: '2025-07-19T09:20',
     status: 'pending',
-    serviceDetail: 'Xét nghiệm máu',
+    serviceDetail: getRandom(tuVanDetails),
     customerFeedback: '',
     consultantNote: '',
   },
@@ -305,7 +342,7 @@ const initialAppointments = [
     service: 'Xét nghiệm',
     time: '2025-07-20T14:40',
     status: 'confirmed',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
+    serviceDetail: getRandom(xetNghiemDetails),
     customerFeedback: 'Dịch vụ tốt, nhân viên nhiệt tình.',
     consultantNote: 'Khách hàng quan tâm sức khỏe tổng quát.',
   },
@@ -314,16 +351,16 @@ const initialAppointments = [
     service: 'Khám tổng quát',
     time: '2025-07-21T10:10',
     status: 'pending',
-    serviceDetail: 'Xét nghiệm máu',
+    serviceDetail: '',
     customerFeedback: '',
     consultantNote: '',
   },
   {
     name: 'Bùi Thị I',
-    service: 'Tư vấn sức khỏe',
+    service: 'Tư vấn',
     time: '2025-07-22T15:50',
     status: 'confirmed',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
+    serviceDetail: getRandom(tuVanDetails),
     customerFeedback: 'Dịch vụ tốt, nhân viên nhiệt tình.',
     consultantNote: 'Khách hàng quan tâm sức khỏe tổng quát.',
   },
@@ -332,7 +369,7 @@ const initialAppointments = [
     service: 'Xét nghiệm',
     time: '2025-07-23T08:00',
     status: 'new',
-    serviceDetail: '',
+    serviceDetail: getRandom(xetNghiemDetails),
     customerFeedback: '',
     consultantNote: '',
   },
@@ -344,18 +381,30 @@ const formatDateTime = (dateTimeStr) => {
   return d.toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
 };
 
+// Hàm lấy tên chi tiết dịch vụ đồng bộ với FE_SAMPLE_DATA
+function getServiceDetailDisplay(service, detail) {
+  let arr = [];
+  if (service === 'Tư vấn') arr = tuVanDetails;
+  else if (service === 'Xét nghiệm') arr = xetNghiemDetails;
+  if (!detail) return 'Chưa cập nhật';
+  const found = arr.find(d => d === detail);
+  return found ? found : 'Chưa cập nhật';
+}
+
 const AdminLichHen = () => {
   const [appointments, setAppointments] = useState(initialAppointments);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState('add');
   const [editIndex, setEditIndex] = useState(null);
-  const [form, setForm] = useState({ name: '', service: '', time: '', status: 'confirmed' });
+  const [form, setForm] = useState({ name: '', service: '', time: '', status: 'confirmed', serviceDetail: '' });
   const [toast, setToast] = useState('');
   // State cho filter
   const [search, setSearch] = useState('');
   const [filterService, setFilterService] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [deleteIndex, setDeleteIndex] = useState(null);
+  // State cho dropdown chi tiết dịch vụ
+  const [serviceDetailOptions, setServiceDetailOptions] = useState([]);
   // Phân trang
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -379,7 +428,7 @@ const AdminLichHen = () => {
 
   const openAddModal = () => {
     setModalType('add');
-    setForm({ name: '', service: '', time: '', status: 'confirmed' });
+    setForm({ name: '', service: '', time: '', status: 'confirmed', serviceDetail: '' });
     setEditIndex(null);
     setModalOpen(true);
   };
@@ -390,7 +439,19 @@ const AdminLichHen = () => {
     setModalOpen(true);
   };
   const closeModal = () => setModalOpen(false);
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+  // Khi chọn dịch vụ, cập nhật danh sách chi tiết dịch vụ
+  const handleChange = e => {
+    const { name, value } = e.target;
+    if (name === 'service') {
+      let options = [];
+      if (value === 'Tư vấn') options = tuVanDetails;
+      else if (value === 'Xét nghiệm') options = xetNghiemDetails;
+      setServiceDetailOptions(options);
+      setForm(f => ({ ...f, [name]: value, serviceDetail: '' })); // reset serviceDetail khi đổi loại dịch vụ
+    } else {
+      setForm({ ...form, [name]: value });
+    }
+  };
 
   // Chuẩn hóa thời gian về 'YYYY-MM-DDTHH:mm'
   const normalizeTime = (timeStr) => {
@@ -436,11 +497,21 @@ const AdminLichHen = () => {
       setTimeout(() => setToast(''), 2000);
       return;
     }
+    // Tự động random serviceDetail nếu chưa nhập
+    let detail = form.serviceDetail;
+    if (!detail) {
+      if (form.service === 'Tư vấn') {
+        detail = getRandom(tuVanDetails);
+      } else if (form.service === 'Xét nghiệm') {
+        detail = getRandom(xetNghiemDetails);
+      }
+    }
+    const newForm = { ...form, serviceDetail: detail };
     if (modalType === 'add') {
-      setAppointments([...appointments, { ...form }]);
+      setAppointments([...appointments, { ...newForm }]);
     } else if (modalType === 'edit' && editIndex !== null) {
       const updated = [...appointments];
-      updated[editIndex] = { ...form };
+      updated[editIndex] = { ...newForm };
       setAppointments(updated);
     }
     setToast('Lưu thành công!');
@@ -481,7 +552,7 @@ const AdminLichHen = () => {
                 />
                 <ModalSelect style={{ width: 200, marginBottom: 0 }} value={filterService} onChange={e => setFilterService(e.target.value)}>
                   <option value="">Tất cả dịch vụ</option>
-                  <option value="Tư vấn sức khỏe">Tư vấn sức khỏe</option>
+                  <option value="Tư vấn">Tư vấn</option>
                   <option value="Xét nghiệm">Xét nghiệm</option>
                 </ModalSelect>
                 <ModalSelect style={{ width: 200, marginBottom: 0 }} value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
@@ -531,7 +602,7 @@ const AdminLichHen = () => {
               <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
                 <Button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>Trước</Button>
                 {[...Array(totalPages)].map((_, i) => (
-                  <Button key={i} onClick={() => goToPage(i + 1)} color={currentPage === i + 1 ? '#4f46e5' : undefined} textcolor={currentPage === i + 1 ? '#fff' : undefined}>{i + 1}</Button>
+                  <Button key={i} active={currentPage === i + 1} onClick={() => goToPage(i + 1)}>{i + 1}</Button>
                 ))}
                 <Button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>Sau</Button>
               </div>
@@ -551,9 +622,30 @@ const AdminLichHen = () => {
                 <ModalInput name="name" placeholder="Họ tên" value={form.name} onChange={handleChange} />
                 <ModalSelect name="service" value={form.service} onChange={handleChange} style={{ width: '100%' }}>
                   <option value="">-- Chọn dịch vụ --</option>
-                  <option value="Tư vấn sức khỏe">Tư vấn sức khỏe</option>
+                  <option value="Tư vấn">Tư vấn</option>
                   <option value="Xét nghiệm">Xét nghiệm</option>
                 </ModalSelect>
+                {/* Dropdown chi tiết dịch vụ nếu là tư vấn hoặc xét nghiệm */}
+                {form.service === 'Tư vấn' && (
+                  <ModalSelect name="serviceDetail" value={form.serviceDetail} onChange={handleChange} style={{ width: '100%' }}>
+                    <option value="">-- Chọn chi tiết tư vấn --</option>
+                    {tuVanDetails.map((d, i) => (
+                      <option key={i} value={d}>{d}</option>
+                    ))}
+                  </ModalSelect>
+                )}
+                {form.service === 'Xét nghiệm' && (
+                  <ModalSelect name="serviceDetail" value={form.serviceDetail} onChange={handleChange} style={{ width: '100%' }}>
+                    <option value="">-- Chọn chi tiết xét nghiệm --</option>
+                    {xetNghiemDetails.map((d, i) => (
+                      <option key={i} value={d}>{d}</option>
+                    ))}
+                  </ModalSelect>
+                )}
+                {/* Nếu là loại khác hoặc chưa chọn, cho nhập text tự do */}
+                {form.service !== 'Tư vấn' && form.service !== 'Xét nghiệm' && (
+                  <ModalInput name="serviceDetail" placeholder="Chi tiết dịch vụ" value={form.serviceDetail} onChange={handleChange} />
+                )}
                 <ModalInput name="time" type="datetime-local" value={form.time} onChange={handleChange} min={new Date().toISOString().slice(0,16)} />
                 <ModalSelect name="status" value={form.status} onChange={handleChange} style={{ width: '100%' }}>
                   <option value="confirmed">Đã xác nhận</option>
@@ -577,7 +669,7 @@ const AdminLichHen = () => {
                 <b>Dịch vụ:</b> {appointments[detailIndex]?.service}<br/>
                 <b>Thời gian:</b> {formatDateTime(appointments[detailIndex]?.time)}<br/>
                 <b>Trạng thái:</b> <Badge status={appointments[detailIndex]?.status}>{appointments[detailIndex]?.status === 'confirmed' ? 'Đã xác nhận' : appointments[detailIndex]?.status === 'pending' ? 'Chờ xác nhận' : 'Mới'}</Badge><br/>
-                <b>Chi tiết dịch vụ:</b> {appointments[detailIndex]?.serviceDetail || 'Chưa cập nhật'}<br/>
+                <b>Chi tiết dịch vụ:</b> {getServiceDetailDisplay(appointments[detailIndex]?.service, appointments[detailIndex]?.serviceDetail)}<br/>
                 <b>Phản hồi của khách hàng:</b> {appointments[detailIndex]?.customerFeedback || 'Chưa có'}<br/>
                 <b>Chú thích của tư vấn viên:</b> {appointments[detailIndex]?.consultantNote || 'Chưa có'}
               </div>

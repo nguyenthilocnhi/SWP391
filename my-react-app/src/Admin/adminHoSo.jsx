@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
@@ -182,6 +182,17 @@ export default function AdminHoSo() {
   const [successMsg, setSuccessMsg] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const stored = localStorage.getItem(LOCAL_KEY);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setAvatar(parsed.avatar || defaultAvatar);
+        setInfo(parsed.info || initialInfo);
+      } catch {}
+    }
+  }, []);
 
   const handleInputChange = e => {
     setInfo({ ...info, [e.target.name]: e.target.value });

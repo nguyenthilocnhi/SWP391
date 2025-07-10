@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FaArrowRight, FaPlus } from 'react-icons/fa';
 
 const MainContent = styled.main`
-  padding: 100px 0 24px 215px;
+  padding: 120px 0 24px 215px;
   background: #f9fafb;
   min-height: 100vh;
   width: 144vw;
@@ -91,20 +91,27 @@ const Badge = styled.span`
   color: ${props => props.status === 'confirmed' ? '#065f46' : props.status === 'pending' ? '#92400e' : '#1e40af'};
 `;
 const Button = styled.button`
-  padding: 6px 12px;
-  font-size: 14px;
+  padding: 8px 18px;
+  font-size: 15px;
   border-radius: 8px;
   border: none;
-  background-color: ${props => props.color || 'transparent'};
-  color: ${props => props.textcolor || '#4b5563'};
+  background-color: ${props => props.active ? '#4ade80' : '#f3f4f6'};
+  color: ${props => props.active ? '#fff' : '#059669'};
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-weight: 600;
   margin-right: 8px;
+  margin-bottom: 4px;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
   &:hover {
-    background-color: #f3f4f6;
+    background-color: ${props => props.active ? '#059669' : '#e5e7eb'};
+    color: ${props => props.active ? '#fff' : '#047857'};
+    border: none;
+    outline: none;
   }
-  &.small {
-    padding: 6px;
+  &:focus {
+    border: none;
+    outline: none;
   }
 `;
 const ModalOverlay = styled.div`
@@ -123,6 +130,8 @@ const ModalContent = styled.div`
   border-radius: 18px;
   width: 100%;
   max-width: 420px;
+  max-height: 420px;
+  overflow-y: auto;
   box-shadow: 0 8px 32px rgba(79,70,229,0.18), 0 1.5px 6px rgba(0,0,0,0.08);
 `;
 const ModalTitle = styled.h3`
@@ -201,7 +210,7 @@ const FilterSelect = styled.select`
 `;
 
 const initialCustomers = [
-  {
+  { // Tư vấn
     name: 'Nguyễn Thị Minh',
     email: 'minh@example.com',
     phone: '0901234567',
@@ -210,11 +219,11 @@ const initialCustomers = [
     status: 'confirmed',
     address: '123 Lê Lợi, Q.1, TP.HCM',
     note: 'Khách hàng VIP',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
-    price: 500000,
+    serviceDetail: 'Tư vấn trước khi làm xét nghiệm STI',
+    price: 150000,
     paymentStatus: 'Đã thanh toán',
   },
-  {
+  { // Xét nghiệm
     name: 'Trần Văn Hải',
     email: 'hai.tran@example.com',
     phone: '0912345678',
@@ -223,8 +232,8 @@ const initialCustomers = [
     status: 'pending',
     address: '456 Nguyễn Văn Cừ, Q.5, TP.HCM',
     note: 'Cần xác nhận lại thông tin',
-    serviceDetail: 'Xét nghiệm máu',
-    price: 200000,
+    serviceDetail: 'HIV Ag/Ab combo (HIV test thế hệ 4)',
+    price: 150000,
     paymentStatus: 'Chưa thanh toán',
   },
   {
@@ -240,7 +249,7 @@ const initialCustomers = [
     price: 350000,
     paymentStatus: 'Chưa thanh toán',
   },
-  {
+  { // Tư vấn
     name: 'Phạm Thị Hoa',
     email: 'hoa.pham@example.com',
     phone: '0934567890',
@@ -249,11 +258,11 @@ const initialCustomers = [
     status: 'confirmed',
     address: '101 Hai Bà Trưng, Q.1, TP.HCM',
     note: 'Đã thanh toán xong',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
-    price: 450000,
+    serviceDetail: 'Tư vấn sau khi nhận kết quả xét nghiệm',
+    price: 150000,
     paymentStatus: 'Đã thanh toán',
   },
-  {
+  { // Xét nghiệm
     name: 'Ngô Văn An',
     email: 'an.ngo@example.com',
     phone: '0945678901',
@@ -262,8 +271,8 @@ const initialCustomers = [
     status: 'pending',
     address: '202 Nguyễn Trãi, Q.1, TP.HCM',
     note: 'Cần xác nhận lại thông tin',
-    serviceDetail: 'Xét nghiệm máu',
-    price: 250000,
+    serviceDetail: 'Xét nghiệm giang mai (RPR/TPHA)',
+    price: 200000,
     paymentStatus: 'Chưa thanh toán',
   },
   {
@@ -279,7 +288,7 @@ const initialCustomers = [
     price: 380000,
     paymentStatus: 'Đã thanh toán',
   },
-  {
+  { // Tư vấn
     name: 'Vũ Quang Huy',
     email: 'huy.vu@example.com',
     phone: '0967890123',
@@ -288,11 +297,11 @@ const initialCustomers = [
     status: 'new',
     address: '404 Nguyễn Văn Cừ, Q.5, TP.HCM',
     note: 'Cần liên hệ lại',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
-    price: 420000,
+    serviceDetail: 'Tư vấn xét nghiệm định kỳ',
+    price: 150000,
     paymentStatus: 'Chưa thanh toán',
   },
-  {
+  { // Xét nghiệm
     name: 'Bùi Thị Lan',
     email: 'lan.bui@example.com',
     phone: '0978901234',
@@ -301,8 +310,8 @@ const initialCustomers = [
     status: 'pending',
     address: '505 Lê Lợi, Q.1, TP.HCM',
     note: 'Cần xác nhận lại thông tin',
-    serviceDetail: 'Xét nghiệm máu',
-    price: 280000,
+    serviceDetail: 'HBsAg, Anti-HBs',
+    price: 150000,
     paymentStatus: 'Chưa thanh toán',
   },
   {
@@ -318,7 +327,7 @@ const initialCustomers = [
     price: 390000,
     paymentStatus: 'Đã thanh toán',
   },
-  {
+  { // Tư vấn
     name: 'Trịnh Thị Hạnh',
     email: 'hanh.trinh@example.com',
     phone: '0990123456',
@@ -327,11 +336,11 @@ const initialCustomers = [
     status: 'pending',
     address: '707 Nguyễn Trãi, Q.1, TP.HCM',
     note: 'Cần xác nhận lại thông tin',
-    serviceDetail: 'Tư vấn sức khỏe tổng quát',
-    price: 410000,
+    serviceDetail: 'Tư vấn sức khỏe sinh sản',
+    price: 200000,
     paymentStatus: 'Chưa thanh toán',
   },
-  {
+  { // Xét nghiệm
     name: 'Lý Văn Bình',
     email: 'binh.ly@example.com',
     phone: '0902345678',
@@ -340,8 +349,8 @@ const initialCustomers = [
     status: 'new',
     address: '808 Lê Duẩn, Q.1, TP.HCM',
     note: 'Cần liên hệ lại',
-    serviceDetail: 'Xét nghiệm máu',
-    price: 290000,
+    serviceDetail: 'Chlamydia (PCR)',
+    price: 650000,
     paymentStatus: 'Chưa thanh toán',
   },
 ];
@@ -353,6 +362,57 @@ const formatDate = (dateStr) => {
   return `${d}/${m}/${y}`;
 };
 
+// Danh sách chi tiết dịch vụ tư vấn và xét nghiệm kèm giá (đồng nhất với FE_SAMPLE_DATA trong DichVu.jsx)
+const tuVanDetails = [
+  { ten: "Tư vấn trước khi làm xét nghiệm STI", gia: 150000 },
+  { ten: "Tư vấn sau khi nhận kết quả xét nghiệm", gia: 150000 },
+  { ten: "Tư vấn xét nghiệm định kỳ", gia: 150000 },
+  { ten: "Tư vấn lựa chọn gói xét nghiệm phù hợp", gia: 100000 },
+  { ten: "Tư vấn cho cặp đôi trước QHTD không bao", gia: 200000 },
+  { ten: "Tư vấn sức khỏe sinh sản", gia: 200000 },
+  { ten: "Tư vấn tình dục an toàn", gia: 200000 },
+  { ten: "Tư vấn dậy thì và sức khỏe giới tính cho thanh thiếu niên", gia: 200000 }
+];
+const xetNghiemDetails = [
+  { ten: "HIV Ag/Ab combo (HIV test thế hệ 4)", gia: 150000 },
+  { ten: "Xét nghiệm giang mai (RPR/TPHA)", gia: 200000 },
+  { ten: "Xét nghiệm lậu (PCR hoặc nhuộm soi)", gia: 800000 },
+  { ten: "Chlamydia (PCR)", gia: 650000 },
+  { ten: "HBsAg, Anti-HBs", gia: 150000 },
+  { ten: "HCV Ab", gia: 150000 },
+  { ten: "Xét nghiệm HSV 1 & 2 (Herpes Simplex Virus)", gia: 700000 },
+  { ten: "Pap smear (Tế bào học cổ tử cung)", gia: 500000 },
+  { ten: "Trichomonas vaginalis", gia: 70000 },
+  { ten: "Sùi mào gà", gia: 1200000 },
+  { ten: "Chancroid (Hạ cam mềm)", gia: 800000 },
+  { ten: "Rận mu (Pubic lice)", gia: 100000 },
+  { ten: "Virus Zika (PCR)", gia: 1200000 },
+  { ten: "Mycoplasma genitalium", gia: 800000 },
+  { ten: "Ureaplasma urealyticum", gia: 700000 }
+];
+function getRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+function getGiaTuChiTiet(serviceType, detail) {
+  let arr = [];
+  if (serviceType === 'Tư vấn') arr = tuVanDetails;
+  else if (serviceType === 'Xét nghiệm') arr = xetNghiemDetails;
+  const found = arr.find(d => d.ten === detail);
+  return found ? found.gia : '';
+}
+
+// Hàm lấy tên chi tiết dịch vụ đồng bộ với FE_SAMPLE_DATA
+function getServiceDetailDisplay(type, detail) {
+  let arr = [];
+  if (type === 'Tư vấn') arr = tuVanDetails.map(d => d.ten);
+  else if (type === 'Xét nghiệm') arr = xetNghiemDetails.map(d => d.ten);
+  if (!detail) return 'Chưa cập nhật';
+  if (type === 'Tư vấn' || type === 'Xét nghiệm') {
+    return arr.includes(detail) ? detail : 'Chưa cập nhật';
+  }
+  return detail || 'Chưa cập nhật';
+}
+
 const AdminKhachHang = () => {
   const [customers, setCustomers] = useState(initialCustomers);
   const [search, setSearch] = useState('');
@@ -363,7 +423,7 @@ const AdminKhachHang = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState('add');
   const [editIndex, setEditIndex] = useState(null);
-  const [form, setForm] = useState({ name: '', email: '', phone: '', date: '', type: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', date: '', type: '', serviceDetail: '', price: '' });
   const [formError, setFormError] = useState('');
   const errorTimeoutRef = React.useRef();
   // Phân trang
@@ -371,6 +431,8 @@ const AdminKhachHang = () => {
   const itemsPerPage = 10;
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [detailIndex, setDetailIndex] = useState(null);
+  // State cho dropdown chi tiết dịch vụ
+  const [serviceDetailOptions, setServiceDetailOptions] = useState([]);
 
   // Lọc nâng cao
   const filteredCustomers = customers.filter(c => {
@@ -389,18 +451,53 @@ const AdminKhachHang = () => {
 
   const openAddModal = () => {
     setModalType('add');
-    setForm({ name: '', email: '', phone: '', date: '', type: '' });
+    setForm({ name: '', email: '', phone: '', date: '', type: '', serviceDetail: '', price: '' });
     setEditIndex(null);
     setModalOpen(true);
   };
   const openEditModal = idx => {
     setModalType('edit');
-    setForm({ ...customers[idx] });
+    const customer = customers[idx];
+    let serviceDetail = customer.serviceDetail;
+    let price = customer.price;
+    if (customer.type === 'Tư vấn') {
+      const found = tuVanDetails.find(d => d.ten === serviceDetail);
+      if (!found) {
+        serviceDetail = tuVanDetails[0].ten;
+        price = tuVanDetails[0].gia;
+      } else {
+        price = found.gia;
+      }
+    } else if (customer.type === 'Xét nghiệm') {
+      const found = xetNghiemDetails.find(d => d.ten === serviceDetail);
+      if (!found) {
+        serviceDetail = xetNghiemDetails[0].ten;
+        price = xetNghiemDetails[0].gia;
+      } else {
+        price = found.gia;
+      }
+    }
+    setForm({ ...customer, serviceDetail, price });
     setEditIndex(idx);
     setModalOpen(true);
   };
   const closeModal = () => setModalOpen(false);
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+  // Khi chọn dịch vụ hoặc chi tiết dịch vụ, cập nhật giá tiền tự động
+  const handleChange = e => {
+    const { name, value } = e.target;
+    if (name === 'type') {
+      let options = [];
+      if (value === 'Tư vấn') options = tuVanDetails.map(d => d.ten);
+      else if (value === 'Xét nghiệm') options = xetNghiemDetails.map(d => d.ten);
+      setServiceDetailOptions(options);
+      setForm(f => ({ ...f, [name]: value, serviceDetail: '', price: '' }));
+    } else if (name === 'serviceDetail') {
+      const price = getGiaTuChiTiet(form.type, value);
+      setForm({ ...form, serviceDetail: value, price });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
+  };
   const handleSave = () => {
     if (!form.name || !form.email || !form.phone || !form.date || !form.type) {
       setFormError('Vui lòng nhập đầy đủ thông tin.');
@@ -419,11 +516,27 @@ const AdminKhachHang = () => {
       return;
     }
     setFormError('');
+    // Tự động random serviceDetail nếu chưa nhập
+    let detail = form.serviceDetail;
+    let price = form.price;
+    if (!detail) {
+      if (form.type === 'Tư vấn') {
+        const obj = getRandom(tuVanDetails);
+        detail = obj.ten;
+        price = obj.gia;
+      } else if (form.type === 'Xét nghiệm') {
+        const obj = getRandom(xetNghiemDetails);
+        detail = obj.ten;
+        price = obj.gia;
+      }
+    }
+    if (!price && detail) price = getGiaTuChiTiet(form.type, detail);
+    const newForm = { ...form, serviceDetail: detail, price };
     if (modalType === 'add') {
-      setCustomers([...customers, { ...form, status: 'new' }]);
+      setCustomers([...customers, { ...newForm, status: 'new' }]);
     } else if (modalType === 'edit' && editIndex !== null) {
       const updated = [...customers];
-      updated[editIndex] = { ...form, status: customers[editIndex].status };
+      updated[editIndex] = { ...newForm, status: customers[editIndex].status };
       setCustomers(updated);
     }
     closeModal();
@@ -515,7 +628,7 @@ const AdminKhachHang = () => {
               <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
                 <Button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>Trước</Button>
                 {[...Array(totalPages)].map((_, i) => (
-                  <Button key={i} onClick={() => goToPage(i + 1)} color={currentPage === i + 1 ? '#4f46e5' : undefined} textcolor={currentPage === i + 1 ? '#fff' : undefined}>{i + 1}</Button>
+                  <Button key={i} onClick={() => goToPage(i + 1)} active={currentPage === i + 1}>{i + 1}</Button>
                 ))}
                 <Button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>Sau</Button>
               </div>
@@ -546,6 +659,29 @@ const AdminKhachHang = () => {
                   <option value="Tư vấn">Tư vấn</option>
                   <option value="Xét nghiệm">Xét nghiệm</option>
                 </ModalSelect>
+                {/* Dropdown chi tiết dịch vụ nếu là tư vấn hoặc xét nghiệm */}
+                {form.type === 'Tư vấn' && (
+                  <ModalSelect name="serviceDetail" value={form.serviceDetail} onChange={handleChange}>
+                    <option value="">-- Chọn chi tiết tư vấn --</option>
+                    {tuVanDetails.map((d, i) => (
+                      <option key={i} value={d.ten}>{d.ten}</option>
+                    ))}
+                  </ModalSelect>
+                )}
+                {form.type === 'Xét nghiệm' && (
+                  <ModalSelect name="serviceDetail" value={form.serviceDetail} onChange={handleChange}>
+                    <option value="">-- Chọn chi tiết xét nghiệm --</option>
+                    {xetNghiemDetails.map((d, i) => (
+                      <option key={i} value={d.ten}>{d.ten}</option>
+                    ))}
+                  </ModalSelect>
+                )}
+                {/* Nếu là loại khác hoặc chưa chọn, cho nhập text tự do */}
+                {form.type !== 'Tư vấn' && form.type !== 'Xét nghiệm' && (
+                  <ModalInput name="serviceDetail" placeholder="Chi tiết dịch vụ" value={form.serviceDetail || ''} onChange={handleChange} />
+                )}
+                <ModalLabel>Giá tiền:</ModalLabel>
+                <ModalInput name="price" value={form.price ? form.price.toLocaleString('vi-VN') : ''} disabled />
                 <div style={{ display: 'flex', gap: 10, marginTop: 16, justifyContent: 'center' }}>
                   <Button color="#22c55e" textcolor="#fff" style={{ minWidth: 80, fontWeight: 600, boxShadow: '0 2px 8px rgba(79,70,229,0.08)' }} type="submit">Lưu</Button>
                   <Button color="#e5e7eb" textcolor="#1f2937" style={{ minWidth: 80, fontWeight: 500 }} onClick={closeModal} type="button">Hủy</Button>
@@ -579,8 +715,19 @@ const AdminKhachHang = () => {
                 <b>Địa chỉ:</b> {customers[detailIndex]?.address || 'Chưa cập nhật'}<br/>
                 <b>Ngày đăng ký:</b> {formatDate(customers[detailIndex]?.date)}<br/>
                 <b>Dịch vụ:</b> {customers[detailIndex]?.type}<br/>
-                <b>Chi tiết dịch vụ:</b> {customers[detailIndex]?.serviceDetail || 'Chưa cập nhật'}<br/>
-                <b>Giá tiền:</b> {customers[detailIndex]?.price ? customers[detailIndex].price.toLocaleString('vi-VN') + ' đ' : 'Chưa cập nhật'}<br/>
+                <b>Chi tiết dịch vụ:</b> {getServiceDetailDisplay(customers[detailIndex]?.type, customers[detailIndex]?.serviceDetail)}<br/>
+                <b>Giá tiền:</b> {
+                  (customers[detailIndex]?.type === 'Tư vấn' || customers[detailIndex]?.type === 'Xét nghiệm')
+                    ? (
+                        getGiaTuChiTiet(
+                          customers[detailIndex]?.type,
+                          customers[detailIndex]?.serviceDetail
+                        )
+                          ? Number(getGiaTuChiTiet(customers[detailIndex]?.type, customers[detailIndex]?.serviceDetail)).toLocaleString('vi-VN') + ' đ'
+                          : 'Chưa cập nhật'
+                      )
+                    : (customers[detailIndex]?.price ? Number(customers[detailIndex].price).toLocaleString('vi-VN') + ' đ' : 'Chưa cập nhật')
+                }<br/>
                 <b>Trạng thái:</b> <Badge status={customers[detailIndex]?.status}>{customers[detailIndex]?.status === 'confirmed' ? 'Đã xác nhận' : customers[detailIndex]?.status === 'pending' ? 'Chờ xác nhận' : 'Mới'}</Badge><br/>
                 <b>Trạng thái thanh toán:</b> {customers[detailIndex]?.paymentStatus || 'Chưa cập nhật'}<br/>
                 <b>Ghi chú:</b> {customers[detailIndex]?.note || 'Không có'}
