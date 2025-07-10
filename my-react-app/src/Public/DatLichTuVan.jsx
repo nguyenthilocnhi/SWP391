@@ -212,48 +212,51 @@ function DatLichTuVan() {
       alert("Không thể đặt lịch cho ngày trong quá khứ. Vui lòng chọn ngày từ hôm nay trở đi.");
       return;
     }
-    const ngayFormat = formatDate(ngay);
-    let googleMeetLink = "";
-    if (hinhThuc === "Online") {
-      const randomCode = Math.random().toString(36).substring(2, 12);
-      googleMeetLink = `https://meet.google.com/${randomCode.slice(0, 3)}-${randomCode.slice(3, 6)}-${randomCode.slice(6, 9)}`;
-      localStorage.setItem("latestMeetLink", googleMeetLink);
-      // --- Lưu vào danh sách onlineBookings ---
-      const onlineBookings = JSON.parse(localStorage.getItem("onlineBookings") || "[]");
-      onlineBookings.push({
-        id: Date.now(),
-        name: hoten,
-        avatar: "https://randomuser.me/api/portraits/lego/1.jpg", // hoặc lấy từ user nếu có
-        waitingTime: "Vừa đặt",
-        status: "waiting",
-        sdt,
-        ngay: ngayFormat,
-        gio,
-        loaiTuVan,
-        ghichu
-      });
-      localStorage.setItem("onlineBookings", JSON.stringify(onlineBookings));
-    } else {
-      localStorage.removeItem("latestMeetLink");
+    // --- Gọi API đặt lịch tư vấn ---
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Bạn cần đăng nhập để đặt lịch!');
+      navigate('/login');
+      return;
     }
-    const lich = {
-      hoTen: hoten,
-      sdt,
-      ngay: ngayFormat,
-      gio,
-      hinhThuc,
-      loaiTuVan,
-      dichVu: "Tư Vấn",
-      lyDo: ghichu,
-      trangThai: "Chờ xử lý",
-      meetLink: googleMeetLink || undefined
+    const payload = {
+      appointmentDate: new Date(`${ngay}T${gio}:00`).toISOString(),
+      consultationType: loaiTuVan,
+      consultationMethod: hinhThuc,
+      note: ghichu || ""
     };
-    const danhSach = JSON.parse(localStorage.getItem("lichDat")) || [];
-    danhSach.push(lich);
-    localStorage.setItem("lichDat", JSON.stringify(danhSach));
-    localStorage.removeItem("tempHoTen");
-    localStorage.removeItem("tempSDT");
-    navigate("/customer/thanh-toan");
+    fetch('https://api-gender2.purintech.id.vn/api/Appointment/consult-appointment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(res => {
+        if (!res.ok) {
+          if (res.status === 401) {
+            alert('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!');
+            localStorage.removeItem('token');
+            navigate('/login');
+            throw new Error('Unauthorized');
+          }
+          return res.json().then(err => { throw new Error(err.message || JSON.stringify(err)); });
+        }
+        return res.json();
+      })
+      .then(data => {
+        alert(data.message || "Đặt lịch thành công!");
+        localStorage.removeItem("tempHoTen");
+        localStorage.removeItem("tempSDT");
+        navigate("/customer/thanh-toan");
+      })
+      .catch(error => {
+        if (error.message !== 'Unauthorized') {
+          alert("Có lỗi xảy ra khi đặt lịch: " + error.message);
+        }
+        console.error("Lỗi:", error);
+      });
   }
 
   return (

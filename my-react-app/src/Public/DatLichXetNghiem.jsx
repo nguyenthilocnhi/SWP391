@@ -194,36 +194,56 @@ function DatLichXetNghiem() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const { hoten, sdt, ngay, gio, loaiXetNghiem, ghichu } = form;
-    if (!hoten || !sdt || !ngay || !gio || !loaiXetNghiem) {
-      alert("Vui lòng điền đầy đủ thông tin bắt buộc.");
+    // ... validate form
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Bạn cần đăng nhập để đặt lịch!');
+      navigate('/login');
       return;
     }
-    const selectedDate = new Date(ngay);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    if (selectedDate < today) {
-      alert("Không thể đặt lịch cho ngày trong quá khứ. Vui lòng chọn ngày từ hôm nay trở đi.");
-      return;
-    }
-    const ngayFormat = formatDate(ngay);
-    const lich = {
-      hoTen: hoten,
-      sdt,
-      ngay: ngayFormat,
-      gio,
-      dichVu: "Xét Nghiệm",
-      loaiXetNghiem,
-      lyDo: ghichu,
-      trangThai: "Chờ xử lý"
+
+    const payload = {
+      appointmentDate: new Date(`${form.ngay}T${form.gio}:00`).toISOString(),
+      testServiceId: 1,
+      note: form.ghichu || ""
     };
-    const danhSach = JSON.parse(localStorage.getItem("lichDat")) || [];
-    danhSach.push(lich);
-    localStorage.setItem("lichDat", JSON.stringify(danhSach));
-    localStorage.removeItem("tempHoTen");
-    localStorage.removeItem("tempSDT");
-    navigate("/customer/thanh-toan");
+
+    fetch('https://api-gender2.purintech.id.vn/api/Appointment/test-appointment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(res => {
+        if (!res.ok) {
+          if (res.status === 401) {
+            // Token hết hạn hoặc không hợp lệ
+            alert('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!');
+            localStorage.removeItem('token');
+            navigate('/login');
+            throw new Error('Unauthorized');
+          }
+          return res.json().then(err => { throw new Error(err.message || JSON.stringify(err)); });
+        }
+        return res.json();
+      })
+      .then(data => {
+        alert(data.message || "Đặt lịch thành công!");
+        localStorage.removeItem("tempHoTen");
+        localStorage.removeItem("tempSDT");
+        navigate("/customer/thanh-toan");
+      })
+      .catch(error => {
+        if (error.message !== 'Unauthorized') {
+          alert("Có lỗi xảy ra khi đặt lịch: " + error.message);
+        }
+        console.error("Lỗi:", error);
+      });
   }
+
 
   return (
     <div style={styles.page}>

@@ -19,42 +19,34 @@ const DangNhap = () => {
     e.preventDefault();
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
+    // ... validate email, password
 
-    if (trimmedEmail && trimmedPassword) {
-      if (rememberMe) {
-        localStorage.setItem("rememberedEmail", trimmedEmail);
+    try {
+      const response = await fetch('https://api-gender2.purintech.id.vn/api/Auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'accept': '*/*' },
+        body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword })
+      });
+      const data = await response.json();
+      if (data.code === 200) {
+        setMessage('Đăng nhập thành công!');
+        localStorage.setItem('token', data.obj); // data.obj là JWT
+        // Nếu backend trả về role trong token, nên giải mã để lấy role
+        const payload = JSON.parse(atob(data.obj.split('.')[1]));
+        localStorage.setItem('role', payload.role || 'customer');
+        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('sessionExpire', Date.now() + 15 * 60 * 1000);
+        localStorage.setItem('userName', payload.fullName || payload.name || payload.username || '');
+        // Điều hướng theo role
+        if (payload.role === 'Customer') window.location.href = '/customer';
+        else if (payload.role === 'Staff') window.location.href = '/staff/trangchu';
+        else if (payload.role === 'Admin') window.location.href = '/admin/trangchu';
+        else window.location.href = '/';
       } else {
-        localStorage.removeItem("rememberedEmail");
+        setMessage(data.message || 'Đăng nhập thất bại!');
       }
-
-      try {
-        const response = await fetch('https://api-gender2.purintech.id.vn/api/Auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'accept': '*/*'
-          },
-          body: JSON.stringify({ email: trimmedEmail, password: trimmedPassword })
-        });
-        const data = await response.json();
-        if (data.code === 200) {
-          setMessage('Đăng nhập thành công!');
-          localStorage.setItem('token', data.obj);
-          localStorage.setItem('role', 'customer');
-          localStorage.setItem("loggedIn", "true");
-          localStorage.setItem("sessionExpire", Date.now() + 15 * 60 * 1000); // 15 phút
-          // Lưu tên người dùng vào localStorage
-          const userName = data.obj.fullName || data.obj.name || data.obj.username || '';
-          localStorage.setItem('userName', userName);
-          window.location.href = "/customer";
-        } else {
-          setMessage(data.message || 'Đăng nhập thất bại!');
-        }
-      } catch (error) {
-        setMessage('Lỗi kết nối server!');
-      }
-    } else {
-      setMessage("Vui lòng nhập đầy đủ thông tin!");
+    } catch (error) {
+      setMessage('Lỗi kết nối server!');
     }
   };
 

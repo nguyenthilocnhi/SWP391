@@ -175,10 +175,40 @@ function LichSuDatLich() {
   const [filter, setFilter] = useState("");
   const [modal, setModal] = useState(null);
   const [btnViewHover, setBtnViewHover] = useState(-1);
+  // Thêm state cho lịch xét nghiệm từ API
+  const [appointments, setAppointments] = useState([]);
+  const [loadingAppointments, setLoadingAppointments] = useState(true);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("lichDat")) || [];
     setLichDat(data);
+  }, []);
+
+  // Lấy danh sách lịch xét nghiệm từ API
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setLoadingAppointments(false);
+      return;
+    }
+    fetch('https://api-gender2.purintech.id.vn/api/Appointment/test-appointments', {
+      method: 'GET',
+      headers: {
+        'accept': '*/*',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Lỗi lấy dữ liệu');
+        return res.json();
+      })
+      .then(data => {
+        setAppointments(data.obj || []);
+        setLoadingAppointments(false);
+      })
+      .catch(err => {
+        setLoadingAppointments(false);
+      });
   }, []);
 
   const filtered = filter
@@ -193,6 +223,28 @@ function LichSuDatLich() {
     localStorage.setItem("lichDat", JSON.stringify(newLichDat));
     if (modal && lichDat[idx] === modal) setModal(null);
   };
+
+  // Thêm hàm xử lý xóa lịch xét nghiệm từ API
+  function handleDeleteAppointment(id) {
+    if (!window.confirm("Bạn có chắc muốn xóa lịch xét nghiệm này?")) return;
+    const token = localStorage.getItem('token');
+    fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-appointment/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'accept': '*/*',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Xóa không thành công');
+        // Xóa thành công, cập nhật lại danh sách
+        setAppointments(prev => prev.filter(item => item.id !== id));
+        alert('Xóa thành công!');
+      })
+      .catch(err => {
+        alert('Lỗi: ' + err.message);
+      });
+  }
 
   return (
     <div style={styles.page}>
@@ -283,6 +335,53 @@ function LichSuDatLich() {
             </tbody>
           </table>
         </div>
+      </div>
+      {/* Bảng lịch xét nghiệm từ API */}
+      <div style={styles.container}>
+        <h2 style={styles.h2}>Lịch Xét Nghiệm Đã Đặt</h2>
+        {loadingAppointments ? (
+          <div>Đang tải...</div>
+        ) : (
+          <div style={{overflowX: 'auto'}}>
+            <table style={styles.table}>
+              <thead>
+                <tr>
+                  <th style={styles.th}>Họ tên</th>
+                  <th style={styles.th}>SĐT</th>
+                  <th style={styles.th}>Ngày hẹn</th>
+                  <th style={styles.th}>Tên xét nghiệm</th>
+                  <th style={styles.th}>Ghi chú</th>
+                  <th style={styles.th}>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                {appointments.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} style={{textAlign: 'center', color: '#888'}}>Không có lịch xét nghiệm nào.</td>
+                  </tr>
+                ) : (
+                  appointments.map(item => (
+                    <tr key={item.id}>
+                      <td style={styles.td}>{item.fullName}</td>
+                      <td style={styles.td}>{item.phoneNumber}</td>
+                      <td style={styles.td}>{new Date(item.appointmentDate).toLocaleString()}</td>
+                      <td style={styles.td}>{item.testName}</td>
+                      <td style={styles.td}>{item.note}</td>
+                      <td style={styles.td}>
+                        <button
+                          style={{...styles.btnView, backgroundColor: '#ef4444'}}
+                          onClick={() => handleDeleteAppointment(item.id)}
+                        >
+                          Xóa
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
       {modal && (
         <div style={styles.modalOverlay}>
