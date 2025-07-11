@@ -76,12 +76,12 @@ const MenuItem = styled(Link)`
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: 10px;
-  background: ${({ className }) => className && className.includes('active') ? 'rgba(255,255,255,0.2)' : 'none'};
+  background: ${({ className }) => className && className.includes('active') ? 'rgba(255,255,255,0.15)' : 'none'};
   border-left: ${({ className }) => className && className.includes('active') ? '4px solid #fff' : 'none'};
   transition: all 0.3s;
   position: relative;
   overflow: hidden;
-  &:hover {
+  &:hover, &.active {
     background: rgba(255,255,255,0.15);
     color: #fff;
     transform: translateX(5px);
