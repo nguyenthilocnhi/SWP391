@@ -51,16 +51,13 @@ import DanhGiaDaGui from "../Public/DanhGiaDaGui";
 
 {/* Admin */}
 import AdminTrangChu from "../Admin/adminTrangChu";
-import AdminHoSo from "../Admin/adminHoSo";
-
-
-
-import AdminKhachHang from "../Admin/adminKhachHang";
-import AdminLichHen from "../Admin/adminLichHen";
+import AdminTaiKhoan from "../Admin/adminTaiKhoan";
 import AdminThongKe from "../Admin/adminThongKe";
 import AdminTuVan from "../Admin/adminTuVan";
+import AdminDanhGia from "../Admin/adminDanhGia";
 import AdminBaiViet from "../Admin/adminBaiViet";
 import AdminCaiDat from "../Admin/adminCaiDat";
+import AdminQuanLyDichVu from "../Admin/adminQuanLyDichVu";
 import AdminDangXuat from "../Admin/adminDangXuat";
 
 
@@ -167,16 +164,14 @@ function App() {
 
         {/* Admin */}
         <Route path="/admin/trangchu" element={<AdminTrangChu />} />
-        <Route path="/admin/hoso" element={<AdminHoSo />} />
-
-        <Route path="/admin/khachhang" element={<AdminKhachHang />} />
-        <Route path="/admin/lichhen" element={<AdminLichHen />} />
+        <Route path="/admin/khachhang" element={<AdminTaiKhoan />} />
         <Route path="/admin/thongke" element={<AdminThongKe />} />
         <Route path="/admin/tuvan" element={<AdminTuVan />} />
         <Route path="/admin/baiviet" element={<AdminBaiViet />} />
         <Route path="/admin/caidat" element={<AdminCaiDat />} />
         <Route path="/admin/dangxuat" element={<AdminDangXuat />} />
-
+        <Route path="/admin/danh-gia" element={<AdminDanhGia />} />
+        <Route path="/admin/quan-ly-dich-vu" element={<AdminQuanLyDichVu />} />
 
         {/* Consultant */}
         <Route path="/consultant/trangchu" element={<ConsultantTrangChu />} />

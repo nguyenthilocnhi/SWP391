@@ -45,7 +45,7 @@ const FilterSelect = styled.select`
 `;
 
 const MainContent = styled.main`
-  padding: 120px 0 24px 210px;
+  padding: 120px 0 24px 250px;
   background: #f9fafb;
   min-height: 100vh;
   width: 100vw;
