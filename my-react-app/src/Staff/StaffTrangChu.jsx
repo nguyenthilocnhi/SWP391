@@ -3,65 +3,92 @@ import StaffSidebar from '../components/staffSidebar';
 import StaffHeader from '../components/staffHeader';
 import styled from 'styled-components';
 import { Line } from 'react-chartjs-2'; // Thêm thư viện biểu đồ
+import { FaCalendarCheck, FaCalendarDay, FaClipboardCheck, FaChartBar } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   font-family: 'Segoe UI', sans-serif;
   line-height: 1.6;
   color: #333;
   background-color: #f9f9f9;
-  width: 100vw;
+  width: 99vw;
+  max-width: 100vw;
   margin: 0;
-  padding: 2rem 0;
+  padding: 0 0 2rem 0;
 `;
 
 const ContentArea = styled.main`
   flex: 1;
-  padding: 2.5rem 3rem;
+  padding: 110px 3rem 2.5rem 3rem;
   background: transparent;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   margin-left: 250px;
   min-height: 100vh;
   @media (max-width: 768px) {
     margin-left: 80px;
-    padding: 1rem;
+    padding: 90px 1rem 1rem 1rem;
   }
   @media (max-width: 480px) {
-    padding: 0.5rem;
+    padding: 90px 0.5rem 0.5rem 0.5rem;
   }
 `;
 
 const QuickStats = styled.section`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
   margin-bottom: 2rem;
-  max-width: 700px;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
 `;
 
 const StatCard = styled.div`
-  flex: 1;
-  background: #e0f7fa;
-  border-radius: 10px;
-  padding: 0.75rem 0.5rem;
-  text-align: center;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  margin: 0 0.5rem;
-  min-width: 120px;
-  max-width: 150px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  padding: 14px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 0;
+  min-height: 70px;
+  width: 100%;
 `;
-
+const StatInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+const StatLabel = styled.p`
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 6px;
+`;
 const StatValue = styled.h2`
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   color: #0d8a5f;
-  margin: 0 0 0.25rem 0;
+  font-weight: bold;
+  margin: 0 0 6px 0;
 `;
-
-const StatDescription = styled.p`
-  font-size: 0.95rem;
-  color: #333;
+const StatChange = styled.p`
+  font-size: 12px;
   margin: 0;
+  color: ${props => props.$up ? '#22c55e' : '#ef4444'};
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+const StatIconWrapper = styled.div`
+  padding: 8px;
+  border-radius: 9999px;
+  background: ${props => props.$bg || '#e0f7fa'};
+  color: ${props => props.$color || '#0d8a5f'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
 `;
 
 const ChartSection = styled.section`
@@ -206,6 +233,81 @@ const CustomerTd = styled.td`
   text-align: left;
   vertical-align: middle;
   background: #fff;
+`;
+
+const AppointmentListStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+`;
+const AppointmentItemStyled = styled.div`
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 12px 0;
+  &:last-child { border-bottom: none; }
+`;
+const AppointmentImgStyled = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  object-fit: cover;
+  margin-right: 16px;
+  flex-shrink: 0;
+`;
+const AppointmentNameStyled = styled.div`
+  flex: 2;
+  font-weight: 500;
+  color: #111827;
+  font-size: 15px;
+`;
+const AppointmentDescStyled = styled.div`
+  flex: 2;
+  color: #6b7280;
+  font-size: 14px;
+`;
+const AppointmentTimeStyled = styled.div`
+  flex: 1.2;
+  color: #9ca3af;
+  font-size: 13px;
+`;
+const BadgeStyled = styled.span`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-weight: 500;
+  white-space: nowrap;
+  background: ${props => props.bg};
+  color: ${props => props.color};
+  margin-left: 12px;
+  min-width: 100px;
+  height: 32px;
+`;
+
+const ViewAllLink = styled(Link)`
+  font-size: 14px;
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: background 0.2s;
+  &:hover {
+    background: #f3f4f6;
+    text-decoration: none;
+  }
+`;
+
+const AppointmentHeaderStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
 `;
 
 const StaffTrangChu = () => {
@@ -354,20 +456,36 @@ const StaffTrangChu = () => {
         {/* Thống kê nhanh */}
         <QuickStats>
           <StatCard>
-            <StatValue>12</StatValue>
-            <StatDescription>Lịch hẹn chờ xác nhận</StatDescription>
+            <StatInfo>
+              <StatLabel>Lịch hẹn chờ xác nhận</StatLabel>
+              <StatValue>12</StatValue>
+              <StatChange $up>▲ +12.5% so với tuần trước</StatChange>
+            </StatInfo>
+            <StatIconWrapper $bg="#e0f7fa" $color="#0d8a5f"><FaCalendarCheck /></StatIconWrapper>
           </StatCard>
           <StatCard>
-            <StatValue>{todayAppointments}</StatValue>
-            <StatDescription>Lịch hôm nay ({todayAppointments - yesterdayAppointments > 0 ? '+' : ''}{todayAppointments - yesterdayAppointments})</StatDescription>
+            <StatInfo>
+              <StatLabel>Lịch hôm nay</StatLabel>
+              <StatValue>{todayAppointments}</StatValue>
+              <StatChange $up>▲ +2 so với hôm qua</StatChange>
+            </StatInfo>
+            <StatIconWrapper $bg="#e0f7fa" $color="#0d8a5f"><FaCalendarDay /></StatIconWrapper>
           </StatCard>
           <StatCard>
-            <StatValue>7</StatValue>
-            <StatDescription>Cần trả kết quả</StatDescription>
+            <StatInfo>
+              <StatLabel>Cần trả kết quả</StatLabel>
+              <StatValue>7</StatValue>
+              <StatChange>▼ -1 so với tuần trước</StatChange>
+            </StatInfo>
+            <StatIconWrapper $bg="#e0f7fa" $color="#0d8a5f"><FaClipboardCheck /></StatIconWrapper>
           </StatCard>
           <StatCard>
-            <StatValue>142</StatValue>
-            <StatDescription>Tổng lịch đã xử lý trong tháng</StatDescription>
+            <StatInfo>
+              <StatLabel>Tổng lịch đã xử lý trong tháng</StatLabel>
+              <StatValue>142</StatValue>
+              <StatChange $up>▲ +8.9% so với tháng trước</StatChange>
+            </StatInfo>
+            <StatIconWrapper $bg="#e0f7fa" $color="#0d8a5f"><FaChartBar /></StatIconWrapper>
           </StatCard>
         </QuickStats>
 
@@ -386,44 +504,50 @@ const StaffTrangChu = () => {
 
         <MainSections className="main-sections">
           <Appointment className="appointment">
-            <AppointmentTitle className="appointment-title">Lịch hẹn hôm nay</AppointmentTitle>
-            <ul>
-              <AppointmentItem className="appointment-item">
-                <span>Nguyễn Văn A</span>
-                <span>14:30 - 15:00</span>
-                <Status className="status confirmed">Đã xác nhận</Status>
-                <ViewDetails className="view-details">Xem chi tiết</ViewDetails>
-              </AppointmentItem>
-              <AppointmentItem className="appointment-item">
-                <span>Trần Thị B</span>
-                <span>15:00 - 15:30</span>
-                <Status className="status done">Hoàn thành</Status>
-                <ViewDetails className="view-details">Xem chi tiết</ViewDetails>
-              </AppointmentItem>
-              <AppointmentItem className="appointment-item">
-                <span>Lê Văn C</span>
-                <span>16:00 - 16:30</span>
-                <Status className="status waiting">Đang chờ</Status>
-                <ViewDetails className="view-details">Xem chi tiết</ViewDetails>
-              </AppointmentItem>
-            </ul>
+            <AppointmentHeaderStyled>
+              <AppointmentTitle className="appointment-title">Lịch hẹn hôm nay</AppointmentTitle>
+              <ViewAllLink to="/staff/quan-ly-dat-lich">Xem thêm</ViewAllLink>
+            </AppointmentHeaderStyled>
+            <AppointmentListStyled>
+              <AppointmentItemStyled>
+                <AppointmentNameStyled>Nguyễn Văn A</AppointmentNameStyled>
+                <AppointmentDescStyled>Tư vấn sức khỏe</AppointmentDescStyled>
+                <AppointmentTimeStyled>14:30 - 15:00</AppointmentTimeStyled>
+                <BadgeStyled bg="#d1fae5" color="#065f46">Đã xác nhận</BadgeStyled>
+              </AppointmentItemStyled>
+              <AppointmentItemStyled>
+                <AppointmentNameStyled>Trần Thị B</AppointmentNameStyled>
+                <AppointmentDescStyled>Xét nghiệm máu</AppointmentDescStyled>
+                <AppointmentTimeStyled>15:00 - 15:30</AppointmentTimeStyled>
+                <BadgeStyled bg="#d1fae5" color="#065f46">Hoàn thành</BadgeStyled>
+              </AppointmentItemStyled>
+              <AppointmentItemStyled>
+                <AppointmentNameStyled>Lê Văn C</AppointmentNameStyled>
+                <AppointmentDescStyled>Chờ xác nhận</AppointmentDescStyled>
+                <AppointmentTimeStyled>16:00 - 16:30</AppointmentTimeStyled>
+                <BadgeStyled bg="#fef3c7" color="#92400e">Đang chờ</BadgeStyled>
+              </AppointmentItemStyled>
+            </AppointmentListStyled>
           </Appointment>
           <Results className="results">
-            <ResultsTitle className="results-title">Kết quả xét nghiệm gần đây</ResultsTitle>
-            <ul>
-              <ResultItem className="result-item">
-                <span>Nguyễn Văn A</span>
-                <span>Xét nghiệm HIV</span>
-                <span>Kết quả: Âm tính</span>
-                <ViewDetails className="view-details">Xem chi tiết</ViewDetails>
-              </ResultItem>
-              <ResultItem className="result-item">
-                <span>Trần Thị B</span>
-                <span>Xét nghiệm COVID-19</span>
-                <span>Kết quả: Dương tính</span>
-                <ViewDetails className="view-details">Xem chi tiết</ViewDetails>
-              </ResultItem>
-            </ul>
+            <AppointmentHeaderStyled>
+              <AppointmentTitle className="results-title">Kết quả xét nghiệm gần đây</AppointmentTitle>
+              <ViewAllLink to="/staff/tra-ket-qua">Xem thêm</ViewAllLink>
+            </AppointmentHeaderStyled>
+            <AppointmentListStyled>
+              <AppointmentItemStyled>
+                <AppointmentNameStyled>Nguyễn Văn A</AppointmentNameStyled>
+                <AppointmentDescStyled>Xét nghiệm HIV</AppointmentDescStyled>
+                <AppointmentTimeStyled>Âm tính</AppointmentTimeStyled>
+                <BadgeStyled bg="#d1fae5" color="#065f46">Âm tính</BadgeStyled>
+              </AppointmentItemStyled>
+              <AppointmentItemStyled>
+                <AppointmentNameStyled>Trần Thị B</AppointmentNameStyled>
+                <AppointmentDescStyled>Xét nghiệm COVID-19</AppointmentDescStyled>
+                <AppointmentTimeStyled>Dương tính</AppointmentTimeStyled>
+                <BadgeStyled bg="#fee2e2" color="#b91c1c">Dương tính</BadgeStyled>
+              </AppointmentItemStyled>
+            </AppointmentListStyled>
           </Results>
         </MainSections>
         <Customer className="customer">
