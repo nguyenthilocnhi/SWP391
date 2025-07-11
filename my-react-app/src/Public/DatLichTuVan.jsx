@@ -165,6 +165,7 @@ function DatLichTuVan() {
   const [buttonHover, setButtonHover] = useState(false);
   const [minDate, setMinDate] = useState("");
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     document.title = "Đặt Lịch Tư Vấn";
@@ -198,7 +199,7 @@ function DatLichTuVan() {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { hoten, sdt, ngay, gio, hinhThuc, loaiTuVan, ghichu } = form;
     if (!hoten || !sdt || !ngay || !gio || !loaiTuVan) {
@@ -365,6 +366,7 @@ function DatLichTuVan() {
             >
               Đặt lịch
             </button>
+            {message && <div style={{ color: message.includes("thành công") ? "#10B981" : "#EF4444", marginTop: "10px" }}>{message}</div>}
           </form>
         </div>
       </main>
