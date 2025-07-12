@@ -14,6 +14,7 @@ const ConsultantSidebar = ({ consultantName }) => {
     { href: "/consultant/tu-van-truc-tuyen", icon: <FaComments />, label: "Tư vấn trực tuyến" },
     { href: "/consultant/hoi-dap", icon: <MdHealthAndSafety />, label: "Hỏi đáp" },
     { href: "/consultant/danh-gia", icon: <FaUserFriends />, label: "Đánh giá" },
+    { href: "/consultant/viet-blog", icon: <FaClipboardList />, label: "Viết Blog" },
   ];
 
   return (
@@ -22,7 +23,7 @@ const ConsultantSidebar = ({ consultantName }) => {
 .sidebar {
   width: 180px;
   background: linear-gradient(160deg, #b2f5ea, #81e6d9);
-  padding: 16px;
+  padding: 4px 8px 4px 8px;
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
@@ -31,10 +32,11 @@ const ConsultantSidebar = ({ consultantName }) => {
   left: 0;
   height: 100vh;
   z-index: 1000;
+  justify-content: flex-start;
 }
 .sidebar .user-info {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 6px;
 }
 .sidebar .avatar {
   width: 50px;
@@ -70,31 +72,42 @@ const ConsultantSidebar = ({ consultantName }) => {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 .bottom-links {
-  margin-top: 24px;
+  margin-top: 8px;
 }
       `}</style>
       <aside className="sidebar">
-        <div>
-          <div className="user-info">
-            <img className="avatar" src="https://i.postimg.cc/rFsJ2wWR/tuvanvien.jpg" alt="Consultant" />
-            <div className="name">{consultantName}</div>
+        <div style={{display: 'flex', flexDirection: 'column', height: '100%'}}>
+          <div>
+            <div className="user-info">
+              <img className="avatar" src="https://i.postimg.cc/rFsJ2wWR/tuvanvien.jpg" alt="Consultant" />
+              <div className="name">{consultantName}</div>
+            </div>
           </div>
-          <nav>
-            {navLinks.map(link => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={pathname.startsWith(link.href) ? "active nav-link" : "nav-link"}
-              >
-                {link.icon} {link.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-        <div className="bottom-links">
-          <Link to="/consultant/cai-dat" className={pathname.startsWith("/consultant/cai-dat") ? "active" : ""}><FaCog /> Cài đặt</Link>
-          <Link to="/consultant/ho-tro" className={pathname.startsWith("/consultant/ho-tro") ? "active" : ""}><FaHeadphones /> Hỗ trợ</Link>
-          <Link to="/consultant/dang-xuat"><FaSignOutAlt /> Đăng xuất</Link>
+          <div style={{flex: 1, minHeight: 0}}>
+            <nav>
+              {navLinks.map(link => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={pathname.startsWith(link.href) ? "active nav-link" : "nav-link"}
+                >
+                  {link.icon} {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+          <div className="bottom-links" style={{
+            marginTop: 0,
+            marginBottom: 0,
+            paddingBottom: 8,
+            background: "inherit",
+            position: "sticky",
+            bottom: 0
+          }}>
+            <Link to="/consultant/cai-dat" className={pathname.startsWith("/consultant/cai-dat") ? "active" : ""}><FaCog /> Cài đặt</Link>
+            <Link to="/consultant/ho-tro" className={pathname.startsWith("/consultant/ho-tro") ? "active" : ""}><FaHeadphones /> Hỗ trợ</Link>
+            <Link to="/consultant/dang-xuat"><FaSignOutAlt /> Đăng xuất</Link>
+          </div>
         </div>
       </aside>
     </>
