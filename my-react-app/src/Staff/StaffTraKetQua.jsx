@@ -9,10 +9,9 @@ const Container = styled.div`
   color: #333;
   background-color: #f9f9f9;
   width: 99vw;
-  height: 100vh;
-  max-height: 100vh;
+  
   margin: 0;
-  padding: 2rem 0;
+  padding: 4rem 0;
 `;
 const ContentArea = styled.main`
   flex: 1;
@@ -53,17 +52,18 @@ const AddBtn = styled.button`
   color: #fff;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1.3rem;
+  width: 48px;
+  height: 48px;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   transition: background 0.2s, transform 0.2s;
-  &:hover {
+  &:hover, &:focus {
     background: #0d8a5f;
     transform: scale(1.08);
+    outline: none;
   }
 `;
 const Table = styled.table`
@@ -101,6 +101,10 @@ const ActionBtn = styled.button`
   transition: background 0.2s;
   &:hover {
     background: #0d8a5f;
+    outline: none;
+  }
+  &:focus {
+    outline: none;
   }
 `;
 const ModalOverlay = styled.div`
@@ -149,7 +153,7 @@ const Label = styled.label`
   color: #222;
 `;
 const Input = styled.input`
-  width: 100%;
+  width: 95%;
   padding: 8px 10px;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
@@ -231,12 +235,7 @@ function StaffTraKetQua() {
         <Container>
             <StaffSidebar />
             <ContentArea>
-                <StaffHeader
-                    userName="Nguyễn Thị Hương"
-                    userRole="Nhân viên"
-                    avatar="https://placehold.co/40x40"
-                    online={true}
-                />
+                <StaffHeader />
                 <ResultSection>
                     <SectionHeader>
                         <SectionTitle>Trả kết quả xét nghiệm cho khách hàng</SectionTitle>

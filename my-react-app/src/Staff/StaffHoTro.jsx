@@ -9,9 +9,9 @@ const Container = styled.div`
   line-height: 1.6;
   color: #333;
   background-color: #f9f9f9;
-  width: 100vw;
+  width: 99vw;
   margin: 0;
-  padding: 2rem 0;
+  padding: 4rem 0;
 `;
 
 const ContentArea = styled.main`
@@ -68,6 +68,9 @@ const TabButton = styled.button`
   }
   &:hover {
     color: #065f46;
+  }
+  &:focus, &:active {
+    outline: none;
   }
 `;
 const TabContent = styled.div`
@@ -198,7 +201,6 @@ const ResourceDescription = styled.div`
 `;
 
 const StaffHoTro = () => {
-  const [staffName] = useState('Nguyễn Thị Hương');
   const [activeTab, setActiveTab] = useState('faq');
 
   const faqData = [
@@ -249,13 +251,7 @@ const StaffHoTro = () => {
     <Container className="container">
       <StaffSidebar />
       <ContentArea className="content-area">
-        <StaffHeader
-          userName={staffName}
-          userRole="Nhân viên"
-          avatar="https://placehold.co/40x40"
-          online={true}
-          welcome="Chào mừng đến với trang hỗ trợ!"
-        />
+        <StaffHeader />
         <PageHeader>
           <PageTitle>Hỗ trợ & Trợ giúp</PageTitle>
           <PageSubtitle>Tìm kiếm thông tin và liên hệ hỗ trợ khi cần thiết</PageSubtitle>

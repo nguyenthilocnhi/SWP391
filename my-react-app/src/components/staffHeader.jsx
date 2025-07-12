@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Header = styled.header`
@@ -102,26 +102,72 @@ const SearchButton = styled.button`
 `;
 
 const StaffHeader = ({
-  userName = 'Nguyễn Thị Hương',
+  userName,
   userRole = 'Nhân viên',
-  avatar = 'https://placehold.co/40x40',
+  avatar,
   online = true,
-  welcome = 'Chào mừng trở lại, Hương!'
+  welcome
 }) => {
+  // Load thông tin từ localStorage
+  const getInitialHeaderProfile = () => {
+    try {
+      const savedHeaderProfile = localStorage.getItem('staffHeaderProfile');
+      if (savedHeaderProfile) {
+        return JSON.parse(savedHeaderProfile);
+      }
+    } catch (error) {
+      console.error('Lỗi khi load header profile từ localStorage:', error);
+    }
+    return {
+      name: 'Nguyễn Thị Hương',
+      avatar: 'https://placehold.co/40x40',
+    };
+  };
+
+  const [headerProfile, setHeaderProfile] = useState(getInitialHeaderProfile);
+
+  // Lắng nghe sự kiện storage để đồng bộ giữa các tab
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'staffHeaderProfile') {
+        try {
+          const savedHeaderProfile = localStorage.getItem('staffHeaderProfile');
+          if (savedHeaderProfile) {
+            const parsedHeaderProfile = JSON.parse(savedHeaderProfile);
+            setHeaderProfile(parsedHeaderProfile);
+          }
+        } catch (error) {
+          console.error('Lỗi khi sync header profile từ storage:', error);
+        }
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  // Sử dụng thông tin từ localStorage nếu không có props
+  const displayName = userName || headerProfile.name;
+  const displayAvatar = avatar || headerProfile.avatar;
+  const displayWelcome = welcome || `Chào mừng trở lại, ${displayName.split(' ').pop()}!`;
+
   return (
     <Header className="header">
-      <Title>{welcome}</Title>
+      <Title>{displayWelcome}</Title>
       <HeaderSearch className="header-search" action="#" method="get">
         <SearchInput type="text" placeholder="Tìm kiếm..." name="search" />
         <SearchButton type="submit"><i className="fas fa-search"></i></SearchButton>
       </HeaderSearch>
       <HeaderActions className="header-actions">
         <UserHeaderInfo className="user-header-info">
-          <UserHeaderName className="user-header-name">{userName}</UserHeaderName>
+          <UserHeaderName className="user-header-name">{displayName}</UserHeaderName>
           <UserHeaderRole className="user-header-role">{userRole}</UserHeaderRole>
         </UserHeaderInfo>
         <AvatarWrapper className="avatar">
-          <AvatarImg src={avatar} alt="Avatar" className="rounded-full" />
+          <AvatarImg src={displayAvatar} alt="Avatar" className="rounded-full" />
           <StatusDot className={online ? 'status-dot online' : 'status-dot offline'} $online={online} />
         </AvatarWrapper>
       </HeaderActions>

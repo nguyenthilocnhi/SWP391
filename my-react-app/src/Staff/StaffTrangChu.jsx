@@ -445,13 +445,7 @@ const StaffTrangChu = () => {
     <Container className="container">
       <StaffSidebar />
       <ContentArea className="content-area">
-        <StaffHeader
-          userName="Nguyễn Thị Hương"
-          userRole="Nhân viên"
-          avatar="https://placehold.co/40x40"
-          online={true}
-          welcome="Chào mừng trở lại, Hương!"
-        />
+        <StaffHeader />
 
         {/* Thống kê nhanh */}
         <QuickStats>

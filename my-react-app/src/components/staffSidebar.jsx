@@ -134,7 +134,7 @@ const navLinks = [
   { to: '/staff/cai-dat', icon: 'fas fa-cog', text: 'Cài đặt' },
   { to: '/staff/danh-gia', icon: 'fas fa-star', text: 'Đánh giá' },
   { to: '/staff/ho-tro', icon: 'fas fa-question-circle', text: 'Hỗ trợ' },
-  { to: '/login', icon: 'fas fa-sign-out-alt', text: 'Đăng xuất', logout: true },
+  { to: '/staff/dang-xuat', icon: 'fas fa-sign-out-alt', text: 'Đăng xuất', logout: true },
 ];
 
 const StaffSidebar = () => {

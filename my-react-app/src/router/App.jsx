@@ -69,6 +69,7 @@ import StaffTraKetQua from "../Staff/StaffTraKetQua";
 import StaffDanhGia from "../Staff/StaffDanhGia";
 import StaffCaiDat from "../Staff/StaffCaiDat";
 import StaffHoTro from "../Staff/StaffHoTro";
+import StaffDangXuat from "../Staff/StaffDangXuat";
 
 {/* Consultant */}
 import ConsultantTrangChu from "../Consultant/ConsultantTrangChu";
@@ -163,6 +164,7 @@ function App() {
         <Route path="/staff/danh-gia" element={<StaffDanhGia />} />
         <Route path="/staff/cai-dat" element={<StaffCaiDat />} />
         <Route path="/staff/ho-tro" element={<StaffHoTro />} />
+        <Route path="/staff/dang-xuat" element={<StaffDangXuat />} />
 
         {/* Admin */}
         <Route path="/admin/trangchu" element={<AdminTrangChu />} />

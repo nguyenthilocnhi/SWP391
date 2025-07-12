@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import StaffSidebar from '../components/staffSidebar';
 import StaffHeader from '../components/staffHeader';
@@ -9,24 +9,23 @@ const Container = styled.div`
   color: #333;
   background-color: #f9f9f9;
   width: 99vw;
-  height: 100vh;
-  max-height: 100vh;
   margin: 0;
-  padding: 2rem 0;
+  padding: 10px 0;
+  overflow-x: hidden;
 `;
 const ContentArea = styled.main`
   flex: 1;
-  padding: 2.5rem 3rem;
+  padding: 110px 3rem 2rem 3rem;
   background: transparent;
   overflow-y: auto;
   margin-left: 250px;
   min-height: 100vh;
   @media (max-width: 768px) {
     margin-left: 80px;
-    padding: 1rem;
+    padding: 90px 1rem 1rem 1rem;
   }
   @media (max-width: 480px) {
-    padding: 0.5rem;
+    padding: 70px 0.5rem 0.5rem 0.5rem;
   }
 `;
 const SettingsContainer = styled.div`
@@ -63,7 +62,9 @@ const Label = styled.label`
   color: #222;
 `;
 const Input = styled.input`
-  width: 100%;
+  width: 90%;
+  // min-width: 180px;
+  // max-width: 320px;
   padding: 8px 10px;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
@@ -89,6 +90,10 @@ const Button = styled.button`
   color: #fff;
   &:hover {
     background: #0d8a5f;
+    outline: none;
+  }
+  &:focus {
+    outline: none;
   }
 `;
 const SwitchLabel = styled.label`
@@ -139,12 +144,40 @@ const Slider = styled.span`
 `;
 
 function StaffCaiDat() {
-    const [profile, setProfile] = useState({
-        name: 'Nguyễn Thị Hương',
-        email: 'huong@angioi.com',
-        phone: '0123456789',
-        avatar: 'https://placehold.co/80x80',
-    });
+    // State cho profile và headerProfile
+    const getInitialProfile = () => {
+        try {
+            const savedProfile = localStorage.getItem('staffProfile');
+            if (savedProfile) {
+                return JSON.parse(savedProfile);
+            }
+        } catch (error) {
+            console.error('Lỗi khi load profile từ localStorage:', error);
+        }
+        return {
+            name: 'Nguyễn Thị Hương',
+            email: 'huong@angioi.com',
+            phone: '0123456789',
+            avatar: 'https://placehold.co/80x80',
+        };
+    };
+    const getInitialHeaderProfile = () => {
+        try {
+            const savedHeaderProfile = localStorage.getItem('staffHeaderProfile');
+            if (savedHeaderProfile) {
+                return JSON.parse(savedHeaderProfile);
+            }
+        } catch (error) {
+            console.error('Lỗi khi load header profile từ localStorage:', error);
+        }
+        return {
+            name: 'Nguyễn Thị Hương',
+            avatar: 'https://placehold.co/80x80',
+        };
+    };
+    const [profile, setProfile] = useState(getInitialProfile);
+    const [headerProfile, setHeaderProfile] = useState(getInitialHeaderProfile);
+
     const [notify, setNotify] = useState({
         appointment: true,
         question: true,
@@ -170,19 +203,66 @@ function StaffCaiDat() {
     const [profileMsg, setProfileMsg] = useState("");
     const handleProfileUpdate = (e) => {
         e.preventDefault();
-        setProfileMsg("Cập nhật thông tin thành công!");
-        setTimeout(() => setProfileMsg(""), 2000);
+        try {
+            // Cập nhật thông tin hiển thị trên header
+            const newHeaderProfile = {
+                name: profile.name,
+                avatar: profile.avatar
+            };
+            setHeaderProfile(newHeaderProfile);
+            localStorage.setItem('staffProfile', JSON.stringify(profile));
+            localStorage.setItem('staffHeaderProfile', JSON.stringify(newHeaderProfile));
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'staffProfile',
+                newValue: JSON.stringify(profile)
+            }));
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'staffHeaderProfile',
+                newValue: JSON.stringify(newHeaderProfile)
+            }));
+            setProfileMsg("Cập nhật thông tin thành công!");
+            setTimeout(() => setProfileMsg(""), 2000);
+        } catch (error) {
+            console.error('Lỗi khi cập nhật thông tin:', error);
+            setProfileMsg("Có lỗi xảy ra khi cập nhật thông tin!");
+            setTimeout(() => setProfileMsg(""), 2000);
+        }
     };
+    // Đồng bộ khi localStorage thay đổi (giữa các tab)
+    useEffect(() => {
+        const handleStorageChange = (e) => {
+            if (e.key === 'staffProfile') {
+                try {
+                    const savedProfile = localStorage.getItem('staffProfile');
+                    if (savedProfile) {
+                        setProfile(JSON.parse(savedProfile));
+                    }
+                } catch {}
+            }
+            if (e.key === 'staffHeaderProfile') {
+                try {
+                    const savedHeaderProfile = localStorage.getItem('staffHeaderProfile');
+                    if (savedHeaderProfile) {
+                        setHeaderProfile(JSON.parse(savedHeaderProfile));
+                    }
+                } catch {}
+            }
+        };
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
 
     return (
         <Container>
             <StaffSidebar />
             <ContentArea>
                 <StaffHeader
-                    userName="Nguyễn Thị Hương"
+                    userName={headerProfile.name}
                     userRole="Nhân viên"
-                    avatar="https://placehold.co/40x40"
+                    avatar={headerProfile.avatar}
                     online={true}
+                    welcome={`Chào mừng trở lại, ${headerProfile.name.split(' ').pop()}!`}
                 />
                 <SettingsContainer>
                     {/* Profile Settings */}
@@ -193,16 +273,18 @@ function StaffCaiDat() {
                         <FormGroup style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <img src={profile.avatar} alt="Avatar" style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', border: '2px solid #e0e0e0', marginBottom: 8 }} />
-                                <label htmlFor="avatar-upload" style={{ fontSize: 13, color: '#09a370', cursor: 'pointer', textDecoration: 'underline' }}>Đổi ảnh đại diện</label>
+                                <label htmlFor="avatar-upload" style={{ fontSize: 20, color: '#09a370', cursor: 'pointer', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                  <i className="fas fa-camera"></i>
+                                </label>
                                 <input id="avatar-upload" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleAvatarChange} />
                             </div>
                             <div style={{ flex: 1 }}>
                                 <Label>Họ và tên</Label>
-                                <Input type="text" value={profile.name} onChange={e => setProfile(p => ({ ...p, name: e.target.value }))} />
+                                <Input type="text" value={profile.name} onChange={e => setProfile({ ...profile, name: e.target.value })} />
                                 <Label>Email</Label>
-                                <Input type="email" value={profile.email} onChange={e => setProfile(p => ({ ...p, email: e.target.value }))} />
+                                <Input type="email" value={profile.email} disabled style={{ backgroundColor: '#f0f0f0', cursor: 'not-allowed' }} />
                                 <Label>Số điện thoại</Label>
-                                <Input type="tel" value={profile.phone} onChange={e => setProfile(p => ({ ...p, phone: e.target.value }))} />
+                                <Input type="tel" value={profile.phone} onChange={e => setProfile({ ...profile, phone: e.target.value })} />
                             </div>
                         </FormGroup>
                         <Button type="submit">Cập nhật thông tin</Button>
