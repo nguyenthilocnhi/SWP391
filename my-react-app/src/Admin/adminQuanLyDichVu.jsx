@@ -221,7 +221,19 @@ const FE_SAMPLE_DATA = [
 const initialForm = { ma: '', loai: '', ten: '', mucdich: '', thoigian: '', chiphi: '', tinhtrang: 'Có', overview: '', suitableFor: '', preparation: '', process: '', detail: '', moreInfo: '', an: false };
 
 const AdminQuanLyDichVu = () => {
-  const [services, setServices] = useState(FE_SAMPLE_DATA);
+  // Load dữ liệu từ localStorage hoặc sử dụng dữ liệu mẫu
+  const loadServices = () => {
+    const savedData = localStorage.getItem('danhSachDichVu');
+    if (savedData) {
+      return JSON.parse(savedData);
+    } else {
+      // Lưu dữ liệu mẫu vào localStorage
+      localStorage.setItem('danhSachDichVu', JSON.stringify(FE_SAMPLE_DATA));
+      return FE_SAMPLE_DATA;
+    }
+  };
+
+  const [services, setServices] = useState(loadServices);
   const [search, setSearch] = useState('');
   const [filterLoai, setFilterLoai] = useState('');
   const [modalOpen, setModalOpen] = useState(false);

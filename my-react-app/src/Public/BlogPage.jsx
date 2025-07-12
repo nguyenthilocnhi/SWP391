@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import HeaderGuest from '../components/HeaderGuest';
 import HeaderCustomer from '../components/HeaderCustomer';
 import Footer from '../components/Footer';
@@ -17,7 +18,7 @@ const blogData = [
     "date": "1 tháng trước",
     "image": "https://i.postimg.cc/90x2yyHm/H-nh-tin-t-c-1.png",
     "alt": "Chu kì kinh nguyệt",
-    "link": "/blogchitiet1",
+    "link": "/blog/1",
     "tags": ["sinh lý", "nữ"]
   },
   {
@@ -26,7 +27,7 @@ const blogData = [
     "date": "1 tháng trước",
     "image": "https://i.postimg.cc/RVF44pwN/H-nh-tin-t-c-2.jpg",
     "alt": "HPV",
-    "link": "/blogchitiet2",
+    "link": "/blog/2",
     "tags": ["xét nghiệm", "HPV"]
   },
   {
@@ -35,7 +36,7 @@ const blogData = [
     "date": "1 tháng trước",
     "image": "https://i.postimg.cc/SNvqsLGV/H-nh-tin-t-c-3.jpg",
     "alt": "Bệnh phụ nữ",
-    "link": "/blogchitiet3",
+    "link": "/blog/3",
     "tags": ["bệnh lý", "nữ"]
   },
   {
@@ -44,7 +45,7 @@ const blogData = [
     "date": "1 tháng trước",
     "image": "https://i.postimg.cc/tTkGHFT3/H-nh-tin-t-c-4.jpg",
     "alt": "Bệnh nam giới",
-    "link": "/blogchitiet4",
+    "link": "/blog/4",
     "tags": ["bệnh lý", "nam"]
   },
   {
@@ -53,7 +54,7 @@ const blogData = [
     "date": "1 tháng trước",
     "image": "https://i.postimg.cc/YSB5GdLN/H-nh-tin-t-c-5.jpg",
     "alt": "Herpes",
-    "link": "/blogchitiet5",
+    "link": "/blog/5",
     "tags": ["bệnh lây", "herpes"]
   },
   {
@@ -62,7 +63,7 @@ const blogData = [
     "date": "1 tháng trước",
     "image": "https://i.postimg.cc/nc65g328/H-nh-tin-t-c-6.jpg",
     "alt": "HPV và thai sản",
-    "link": "/blogchitiet6",
+    "link": "/blog/6",
     "tags": ["HPV", "thai sản"]
   },
   {
@@ -71,7 +72,7 @@ const blogData = [
     "date": "1 tháng trước",
     "image": "https://i.postimg.cc/cLwjSfkv/H-nh-tin-t-c-7.jpg",
     "alt": "Mãn kinh",
-    "link": "/blogchitiet7",
+    "link": "/blog/7",
     "tags": ["mãn kinh", "nữ"]
   },
   {
@@ -80,7 +81,7 @@ const blogData = [
     "date": "3 tuần trước",
     "image": "https://i.postimg.cc/nzLXJ07F/images-3.jpg",
     "alt": "U xơ tử cung",
-    "link": "/blogchitiet8",
+    "link": "/blog/8",
     "tags": ["phụ khoa", "u xơ"]
   },
   {
@@ -89,7 +90,7 @@ const blogData = [
     "date": "2 tuần trước",
     "image": "https://i.postimg.cc/Rh6q3hX2/images-4.jpg",
     "alt": "Cảm cúm vs cảm lạnh",
-    "link": "/blogchitiet9",
+    "link": "/blog/9",
     "tags": ["miễn dịch", "hô hấp"]
   },
   {
@@ -98,7 +99,7 @@ const blogData = [
     "date": "2 tuần trước",
     "image": "https://i.postimg.cc/fyGyYsPy/images-5.jpg",
     "alt": "Bệnh truyền nhiễm",
-    "link": "/blogchitiet10",
+    "link": "/blog/10",
     "tags": ["lây nhiễm", "máu"]
   },
   {
@@ -107,7 +108,7 @@ const blogData = [
     "date": "1 tuần trước",
     "image": "https://i.postimg.cc/bYWs70vP/download-2.jpg",
     "alt": "Bổ sung sắt",
-    "link": "/blogchitiet11",
+    "link": "/blog/11",
     "tags": ["dinh dưỡng", "phụ nữ"]
   },
   {
@@ -116,7 +117,7 @@ const blogData = [
     "date": "5 ngày trước",
     "image": "https://i.postimg.cc/3JGdYyyv/download-3.jpg",
     "alt": "Ăn uống lành mạnh",
-    "link": "/blogchitiet12",
+    "link": "/blog/12",
     "tags": ["dinh dưỡng", "sinh sản"]
   }
 ];
@@ -580,13 +581,13 @@ const BlogPage = ({ userType = 'guest' }) => {
         ) : (
           paginatedBlogs.map((blog, idx) => (
             <article className="blog-card" key={idx}>
-              <a href={blog.link}>
+              <Link to={userType === 'customer' ? `/customer${blog.link}` : blog.link}>
                 <img src={blog.image} alt={blog.alt} loading="lazy" />
                 <div className="content">
                   <h2>{blog.title}</h2>
                   <p className="date">{blog.date}</p>
                 </div>
-              </a>
+              </Link>
             </article>
           ))
         )}
