@@ -7,11 +7,11 @@ import styled from 'styled-components';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const MainContent = styled.main`
-  padding: 120px 0 24px 210px;
+  padding: 120px 0 24px 250px;
   background: #f9fafb;
   min-height: 100vh;
-  width: 134vw;
-  max-width: 99vw;
+  width: 100vw;
+  max-width: 100vw;
   margin: 0;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -82,8 +82,8 @@ const StatsChange = styled.p`
 const StatsIconWrapper = styled.div`
   padding: 12px;
   border-radius: 9999px;
-  background: ${props => props.bg || '#eef2ff'};
-  color: ${props => props.color || '#4f46e5'};
+  background: ${props => props.$bg || '#eef2ff'};
+  color: ${props => props.$color || '#4f46e5'};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,8 +137,8 @@ const ChartBtn = styled.button`
   font-size: 14px;
   border-radius: 8px;
   border: none;
-  background: ${props => props.active ? '#e0e7ff' : 'transparent'};
-  color: ${props => props.active ? '#4338ca' : '#4b5563'};
+  background: ${props => props.$active ? '#e0e7ff' : 'transparent'};
+  color: ${props => props.$active ? '#4338ca' : '#4b5563'};
   cursor: pointer;
   transition: background 0.3s;
   &:hover { background: #f3f4f6; }
@@ -213,8 +213,8 @@ const Badge = styled.span`
   border-radius: 9999px;
   font-weight: 500;
   white-space: nowrap;
-  background: ${props => props.bg};
-  color: ${props => props.color};
+  background: ${props => props.$bg};
+  color: ${props => props.$color};
 `;
 
 const TopicList = styled.div`
@@ -226,8 +226,8 @@ const TopicItem = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  padding-top: ${props => props.borderTop ? '16px' : '0'};
-  border-top: ${props => props.borderTop ? '1px solid #e5e7eb' : 'none'};
+  padding-top: ${props => props.$borderTop ? '16px' : '0'};
+  border-top: ${props => props.$borderTop ? '1px solid #e5e7eb' : 'none'};
 `;
 const TopicInfo = styled.div`
   flex: 1;
@@ -249,8 +249,8 @@ const Tag = styled.span`
   font-size: 12px;
   border-radius: 9999px;
   font-weight: 500;
-  background: ${props => props.bg};
-  color: ${props => props.color};
+  background: ${props => props.$bg};
+  color: ${props => props.$color};
 `;
 
 const TableContainer = styled.div`
@@ -561,7 +561,7 @@ const AdminTrangChu = () => {
                     <i className={`fas fa-arrow-${stat.changeType}`}></i> {stat.change} {stat.desc}
                   </StatsChange>
                 </StatsLeft>
-                <StatsIconWrapper bg={stat.bg} color={stat.color}>
+                <StatsIconWrapper $bg={stat.bg} $color={stat.color}>
                   <i className={stat.icon}></i>
                 </StatsIconWrapper>
               </StatsCard>
@@ -575,7 +575,7 @@ const AdminTrangChu = () => {
                     <ChartTitle>Thống kê tư vấn theo {consultationPeriod.toLowerCase()}</ChartTitle>
                     <ChartButtons>
                       {periods.map(p => (
-                        <ChartBtn key={p} active={consultationPeriod === p} onClick={() => setConsultationPeriod(p)}>{p}</ChartBtn>
+                        <ChartBtn key={p} $active={consultationPeriod === p} onClick={() => setConsultationPeriod(p)}>{p}</ChartBtn>
                       ))}
                     </ChartButtons>
                   </ChartHeader>
@@ -586,7 +586,7 @@ const AdminTrangChu = () => {
                     <ChartTitle>Thống kê xét nghiệm theo {testPeriod.toLowerCase()}</ChartTitle>
                     <ChartButtons>
                       {periods.map(p => (
-                        <ChartBtn key={p} active={testPeriod === p} onClick={() => setTestPeriod(p)}>{p}</ChartBtn>
+                        <ChartBtn key={p} $active={testPeriod === p} onClick={() => setTestPeriod(p)}>{p}</ChartBtn>
                       ))}
                     </ChartButtons>
                   </ChartHeader>
@@ -607,7 +607,7 @@ const AdminTrangChu = () => {
                         <AppointmentDesc>{a.desc}</AppointmentDesc>
                         <AppointmentTime>{a.time}</AppointmentTime>
                       </AppointmentInfo>
-                      <Badge bg={badgeColors[a.status].bg} color={badgeColors[a.status].color}>{a.statusText}</Badge>
+                      <Badge $bg={badgeColors[a.status].bg} $color={badgeColors[a.status].color}>{a.statusText}</Badge>
                     </AppointmentItem>
                   ))}
                 </AppointmentsList>
@@ -619,13 +619,13 @@ const AdminTrangChu = () => {
                 </CardHeader>
                 <TopicList>
                   {topics.map((t, idx) => (
-                    <TopicItem key={idx} borderTop={idx > 0}>
+                    <TopicItem key={idx} $borderTop={idx > 0}>
                       <TopicInfo>
                         <AppointmentName>{t.title}</AppointmentName>
                         <AppointmentDesc>{t.views} lượt xem</AppointmentDesc>
                         <TopicTags>
                           {t.tags.map((tag, i) => (
-                            <Tag key={i} bg={tag.bg} color={tag.color}>{tag.name}</Tag>
+                            <Tag key={i} $bg={tag.bg} $color={tag.color}>{tag.name}</Tag>
                           ))}
                         </TopicTags>
                       </TopicInfo>
@@ -666,7 +666,7 @@ const AdminTrangChu = () => {
                           </StaffTd>
                           <StaffTd>{s.time}</StaffTd>
                           <StaffTd>
-                            <Badge bg={badgeColors[s.status].bg} color={badgeColors[s.status].color}>{s.statusText}</Badge>
+                            <Badge $bg={badgeColors[s.status].bg} $color={badgeColors[s.status].color}>{s.statusText}</Badge>
                           </StaffTd>
                         </tr>
                       ))}

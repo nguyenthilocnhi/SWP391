@@ -232,33 +232,6 @@ const Spinner = () => (
   </SpinnerWrapper>
 );
 
-// Dữ liệu mẫu FE cho dịch vụ (giả lập)
-const FE_SAMPLE_DATA = [
-  {"ma":"XT001","loai":"Xét nghiệm","ten":"HIV Ag/Ab combo (HIV test thế hệ 4)","mucdich":"Phát hiện sớm HIV (sau 2 - 4 tuần)","thoigian":"1 - 3 giờ","chiphi":"150.000","tinhtrang":"Có"},
-  {"ma":"XT002","loai":"Xét nghiệm","ten":"Xét nghiệm giang mai (RPR/TPHA)","mucdich":"Phát hiện bệnh giang mai","thoigian":"2 - 24 giờ","chiphi":"200.000","tinhtrang":"Có"},
-  {"ma":"XT003","loai":"Xét nghiệm","ten":"Xét nghiệm lậu (PCR hoặc nhuộm soi)","mucdich":"Phát hiện vi khuẩn lậu","thoigian":"3 - 24 giờ","chiphi":"800.000","tinhtrang":"Có"},
-  {"ma":"XT004","loai":"Xét nghiệm","ten":"Chlamydia (PCR)","mucdich":"Phát hiện nhiễm Chlamydia","thoigian":"1 - 2 ngày","chiphi":"650.000","tinhtrang":"Có"},
-  {"ma":"XT005","loai":"Xét nghiệm","ten":"HBsAg, Anti-HBs","mucdich":"Kiểm tra viêm gan B","thoigian":"2 - 8 giờ","chiphi":"150.000","tinhtrang":"Có"},
-  {"ma":"XT006","loai":"Xét nghiệm","ten":"HCV Ab","mucdich":"Kiểm tra viêm gan C","thoigian":"4 - 24 giờ","chiphi":"150.000","tinhtrang":"Có"},
-  {"ma":"XT007","loai":"Xét nghiệm","ten":"Xét nghiệm HSV 1 & 2 (Herpes Simplex Virus)","mucdich":"Phát hiện mụn rộp sinh dục","thoigian":"1 - 2 ngày","chiphi":"700.000","tinhtrang":"Có"},
-  {"ma":"XT008","loai":"Xét nghiệm","ten":"Pap smear (Tế bào học cổ tử cung)","mucdich":"Sàng lọc ung thư cổ tử cung","thoigian":"1 - 3 ngày","chiphi":"500.000","tinhtrang":"Có"},
-  {"ma":"XT009","loai":"Xét nghiệm","ten":"Trichomonas vaginalis","mucdich":"Phát hiện trùng roi âm đạo","thoigian":"Vài giờ","chiphi":"70.000","tinhtrang":"Có"},
-  {"ma":"XT010","loai":"Xét nghiệm","ten":"Sùi mào gà","mucdich":"Phát hiện virus gây u nhú sinh dục (mào gà)","thoigian":"2 - 5 ngày","chiphi":"1.200.000","tinhtrang":"Có"},
-  {"ma":"XT011","loai":"Xét nghiệm","ten":"Chancroid (Hạ cam mềm)","mucdich":"Phát hiện vi khuẩn Haemophilus ducreyi gây loét sinh dục","thoigian":"2 - 4 ngày","chiphi":"800.000","tinhtrang":"Có"},
-  {"ma":"XT012","loai":"Xét nghiệm","ten":"Rận mu (Pubic lice)","mucdich":"Phát hiện ký sinh trùng vùng mu qua soi hiển vi","thoigian":"1 - 2 giờ","chiphi":"100.000","tinhtrang":"Có"},
-  {"ma":"XT013","loai":"Xét nghiệm","ten":"Virus Zika (PCR)","mucdich":"Phát hiện virus Zika có thể lây qua đường tình dục","thoigian":"3 - 7 ngày","chiphi":"1.200.000","tinhtrang":"Có"},
-  {"ma":"XT014","loai":"Xét nghiệm","ten":"Mycoplasma genitalium","mucdich":"Phát hiện vi khuẩn gây viêm niệu đạo, viêm vùng chậu","thoigian":"1 - 3 ngày","chiphi":"800.000","tinhtrang":"Có"},
-  {"ma":"XT015","loai":"Xét nghiệm","ten":"Ureaplasma urealyticum","mucdich":"Phát hiện vi khuẩn có thể gây vô sinh, viêm phụ khoa","thoigian":"1 - 3 ngày","chiphi":"700.000","tinhtrang":"Có"},
-  {"ma":"TV001","loai":"Tư vấn","ten":"Tư vấn trước khi làm xét nghiệm STI","mucdich":"Hướng dẫn lựa chọn xét nghiệm phù hợp, đánh giá nguy cơ lây nhiễm","thoigian":"20 - 30 phút","chiphi":"150.000","tinhtrang":"Có"},
-  {"ma":"TV002","loai":"Tư vấn","ten":"Tư vấn sau khi nhận kết quả xét nghiệm","mucdich":"Giải thích kết quả và hướng dẫn bước tiếp theo","thoigian":"15 - 30 phút","chiphi":"150.000","tinhtrang":"Có"},
-  {"ma":"TV003","loai":"Tư vấn","ten":"Tư vấn xét nghiệm định kỳ","mucdich":"Gợi ý tần suất xét nghiệm phù hợp dựa trên hành vi tình dục","thoigian":"15 - 30 phút","chiphi":"150.000","tinhtrang":"Có"},
-  {"ma":"TV004","loai":"Tư vấn","ten":"Tư vấn lựa chọn gói xét nghiệm phù hợp","mucdich":"Giải thích các loại xét nghiệm, combo test và lợi ích của từng loại","thoigian":"15 - 20 phút","chiphi":"100.000","tinhtrang":"Có"},
-  {"ma":"TV005","loai":"Tư vấn","ten":"Tư vấn cho cặp đôi trước QHTD không bao","mucdich":"Hướng dẫn xét nghiệm STI an toàn trước khi quan hệ không dùng bao cao su","thoigian":"30 phút","chiphi":"200.000","tinhtrang":"Có"},
-  {"ma":"TV006","loai":"Tư vấn","ten":"Tư vấn sức khỏe sinh sản","mucdich":"Hỗ trợ cá nhân hoặc cặp đôi hiểu rõ hơn về sức khỏe sinh sản, phòng tránh thai, kế hoạch hóa gia đình.","thoigian":"30 phút - 45 phút","chiphi":"200.000","tinhtrang":"Có"},
-  {"ma":"TV007","loai":"Tư vấn","ten":"Tư vấn tình dục an toàn","mucdich":"Cung cấp kiến thức về quan hệ tình dục an toàn, tránh mang thai ngoài ý muốn, bảo vệ bản thân khỏi lây nhiễm.","thoigian":"30 phút - 45 phút","chiphi":"200.000","tinhtrang":"Có"},
-  {"ma":"TV008","loai":"Tư vấn","ten":"Tư vấn dậy thì và sức khỏe giới tính cho thanh thiếu niên","mucdich":"Giúp thanh thiếu niên hiểu về sự phát triển cơ thể, giới tính, cách bảo vệ bản thân và mối quan hệ lành mạnh.","thoigian":"30 phút - 45 phút","chiphi":"200.000","tinhtrang":"Có"}
-];
-
 const DichVu = (props) => {
   const [allData, setAllData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -269,10 +242,12 @@ const DichVu = (props) => {
   const rowsPerPage = 10;
 
   useEffect(() => {
-    fetch('/Frontend/assets/data/dichvu.json')
-      .then((res) => res.json())
-      .then((data) => setAllData(data))
-      .catch(() => setAllData(FE_SAMPLE_DATA));
+    const data = localStorage.getItem('danhSachDichVu');
+    if (data) {
+      setAllData(JSON.parse(data));
+    } else {
+      setAllData([]);
+    }
   }, []);
 
   useEffect(() => {
@@ -296,7 +271,9 @@ const DichVu = (props) => {
       : <Link to={`/service/${serviceCode}`}>Chi tiết</Link>;
   };
 
+  // Nếu dữ liệu có trường an, chỉ hiển thị dịch vụ an: false
   const filteredData = allData.filter((item) => {
+    if (typeof item.an !== 'undefined' && item.an) return false;
     const keyword = searchKeyword.toLowerCase();
     const matchesLoai = !filterLoai || item.loai.toLowerCase() === filterLoai.toLowerCase();
     const matchesKeyword =

@@ -7,7 +7,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 const Sidebar = styled.div`
   background: linear-gradient(135deg, #09a370 0%, #0d8a5f 100%);
   color: #fff;
-  width: 260px;
+  width: 250px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -127,16 +127,18 @@ const Header = styled.header`
   border-radius: 16px;
   position: fixed;
   top: 0;
-  left: 260px;
+  left: 250px;
   right: 0;
   z-index: 10;
-  padding: 16px 32px 16px 32px;
+  padding: 12px 24px 12px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     left: 0;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 `;
 
@@ -418,12 +420,12 @@ export default function AdminLayout() {
     setNotifications(nots => nots.filter(n => n.id !== id));
   };
 
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    setShowLogoutModal(false);
-    navigate('/admin/dangxuat');
+    localStorage.clear();
+    sessionStorage.clear();
+    navigate('/login');
   };
 
   return (
@@ -441,19 +443,19 @@ export default function AdminLayout() {
         </SidebarHeader>
         <Nav>
           <MenuList>
-            <li><MenuItem to="/admin/trangchu" className="menu-item"><i className="fas fa-tachometer-alt" />Tổng quan</MenuItem></li>
-            <li><MenuItem to="/admin/khachhang" className="menu-item"><i className="fas fa-users" />Quản lý khách hàng</MenuItem></li>
-            <li><MenuItem to="/admin/danhgia" className="menu-item"><i className="fas fa-star" />Quản lý đánh giá</MenuItem></li>
-            <li><MenuItem to="/admin/lichhen" className="menu-item"><i className="fas fa-calendar-check" />Lịch hẹn</MenuItem></li>
+            <li><MenuItem to="/admin/trangchu" className="menu-item"><i className="fas fa-home" />Trang chủ</MenuItem></li>
+            <li><MenuItem to="/admin/khachhang" className="menu-item"><i className="fas fa-users" />Quản lý tài khoản</MenuItem></li>
+            <li><MenuItem to="/admin/quan-ly-dich-vu" className="menu-item"><i className="fas fa-stethoscope" />Quản lý dịch vụ</MenuItem></li>
+            <li><MenuItem to="/admin/danh-gia" className="menu-item"><i className="fas fa-star" />Quản lý đánh giá</MenuItem></li>
             <li><MenuItem to="/admin/thongke" className="menu-item"><i className="fas fa-chart-pie" />Thống kê</MenuItem></li>
             <li><MenuItem to="/admin/tuvan" className="menu-item"><i className="fas fa-comments" />Tư vấn trực tuyến</MenuItem></li>
-            <li><MenuItem to="/admin/baiviet" className="menu-item"><i className="fas fa-notes-medical" />Bài viết sức khỏe</MenuItem></li>
+            <li><MenuItem to="/admin/baiviet" className="menu-item"><i className="fas fa-newspaper" />Bài viết sức khỏe</MenuItem></li>
             <li><MenuItem to="/admin/caidat" className="menu-item"><i className="fas fa-cog" />Cài đặt</MenuItem></li>
             <li>
               <MenuItemButton
                 type="button"
                 className="menu-item"
-                onClick={() => setShowLogoutModal(true)}
+                onClick={handleLogout}
               >
                 <i className="fas fa-sign-out-alt" />Đăng xuất
               </MenuItemButton>
@@ -527,52 +529,12 @@ export default function AdminLayout() {
               </NotificationDropdown>
             )}
           </div>
-          <Link to="/admin/hoso" style={{textDecoration: 'none'}}>
-            <AdminInfo>
-              <img src={adminInfo.avatar} alt="Admin" />
-              <span>{adminInfo.name || 'Admin'}</span>
-            </AdminInfo>
-          </Link>
+          <AdminInfo>
+            <img src={adminInfo.avatar} alt="Admin" />
+            <span>{adminInfo.name || 'Admin'}</span>
+          </AdminInfo>
         </HeaderActions>
       </Header>
-      {/* Logout Confirmation Modal */}
-      {showLogoutModal && (
-        <div style={{
-          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex',
-          alignItems: 'center', justifyContent: 'center', zIndex: 9999
-        }}>
-          <div style={{
-            background: '#fff', borderRadius: 12, padding: 24, maxWidth: 400, width: '90%', textAlign: 'center'
-          }}>
-            <div style={{
-              background: '#dbeafe', color: '#2563eb', width: 64, height: 64, borderRadius: '50%',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px'
-            }}>
-              <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 9v2m0 4h.01M4.93 19h14.14c1.54 0 2.5-1.67 1.73-3L13.73 4c-.77-1.33-2.69-1.33-3.46 0L3.34 16c-.77 1.33.19 3 1.59 3z" />
-              </svg>
-            </div>
-            <h2>Xác nhận đăng xuất</h2>
-            <p>Bạn có chắc chắn muốn đăng xuất?</p>
-            <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-              <button
-                style={{ flex: 1, padding: 10, borderRadius: 6, border: 'none', background: '#f3f4f6', color: '#374151', fontWeight: 500, cursor: 'pointer', outline: 'none' }}
-                onMouseOver={e => { e.currentTarget.style.background = '#e5e7eb'; e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
-                onMouseOut={e => { e.currentTarget.style.background = '#f3f4f6'; e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
-                onFocus={e => { e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
-                onClick={() => setShowLogoutModal(false)}
-              >Hủy bỏ</button>
-              <button
-                style={{ flex: 1, padding: 10, borderRadius: 6, border: 'none', background: '#2563eb', color: '#fff', fontWeight: 500, cursor: 'pointer', outline: 'none' }}
-                onMouseOver={e => { e.currentTarget.style.background = '#1d4ed8'; e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
-                onMouseOut={e => { e.currentTarget.style.background = '#2563eb'; e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
-                onFocus={e => { e.currentTarget.style.border = 'none'; e.currentTarget.style.outline = 'none'; }}
-                onClick={handleLogout}
-              >Đăng xuất</button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
