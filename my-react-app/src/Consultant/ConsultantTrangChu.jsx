@@ -156,7 +156,7 @@ body {
         {/* Main content */}
         <main className="main">
           {/* Topbar */}
-          <ConsultantTopbar notificationCount={notificationCount} />
+          <ConsultantTopbar notificationCount={notificationCount} consultantName={consultantName} />
 
           {/* Welcome section */}
           <section className="welcome">
