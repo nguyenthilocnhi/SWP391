@@ -58,6 +58,7 @@ import StaffTraKetQua from "../Staff/StaffTraKetQua";
 import StaffDanhGia from "../Staff/StaffDanhGia";
 import StaffCaiDat from "../Staff/StaffCaiDat";
 import StaffHoTro from "../Staff/StaffHoTro";
+import StaffDangXuat from "../Staff/StaffDangXuat";
 
 {/* Consultant */}
 import ConsultantTrangChu from "../Consultant/ConsultantTrangChu";
@@ -70,6 +71,8 @@ import ConsultantDanhGia from "../Consultant/ConsultantDanhGia";
 import ConsultantCaiDat from "../Consultant/ConsultantCaiDat";
 import ConsultantHoTro from "../Consultant/ConsultantHoTro";
 import ConsultantDangXuat from "../Consultant/ConsultantDangXuat";
+import ConsultantVietBlog from "../Consultant/ConsultantVietBlog";
+import ConsultantBaiVietCuaToi from "../Consultant/ConsultantBaiVietCuaToi";
 function App() {
   return (
     <Router>
@@ -128,6 +131,7 @@ function App() {
         <Route path="/staff/danh-gia" element={<StaffDanhGia />} />
         <Route path="/staff/cai-dat" element={<StaffCaiDat />} />
         <Route path="/staff/ho-tro" element={<StaffHoTro />} />
+        <Route path="/staff/dang-xuat" element={<StaffDangXuat />} />
 
         {/* Admin */}
         <Route path="/admin/trangchu" element={<AdminTrangChu />} />
@@ -151,6 +155,8 @@ function App() {
         <Route path="/consultant/cai-dat" element={<ConsultantCaiDat />} />
         <Route path="/consultant/ho-tro" element={<ConsultantHoTro />} />
         <Route path="/consultant/dang-xuat" element={<ConsultantDangXuat />} />
+        <Route path="/consultant/viet-blog" element={<ConsultantVietBlog />} />
+        <Route path="/consultant/bai-viet-cua-toi" element={<ConsultantBaiVietCuaToi />} />
       </Routes>
     </Router>
   );

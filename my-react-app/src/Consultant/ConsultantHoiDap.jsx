@@ -71,7 +71,7 @@ const ConsultantHoiDap = () => {
       <div className="dashboard">
         <ConsultantSidebar consultantName={consultantName} />
         <main className="main">
-          <ConsultantTopbar notificationCount={notificationCount} />
+          <ConsultantTopbar notificationCount={notificationCount} consultantName={consultantName} />
           <div className="hd-main-card">
             <div className="hd-title">Hỏi đáp khách hàng</div>
             <div className="hd-desc">Danh sách các câu hỏi khách hàng gửi đến tư vấn viên.</div>

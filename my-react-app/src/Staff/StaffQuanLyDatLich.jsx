@@ -12,7 +12,7 @@ const Container = styled.div`
   height: 100vh;
   max-height: 100vh;
   margin: 0;
-  padding: 2rem 0;
+  padding: 4rem 0;
 `;
 const ContentArea = styled.main`
   flex: 1;
@@ -92,6 +92,10 @@ const ActionBtn = styled.button`
   transition: background 0.2s;
   &:hover {
     background: #0d8a5f;
+    outline: none;
+  }
+  &:focus {
+    outline: none;
   }
 `;
 const StatusSelect = styled.select`
@@ -116,25 +120,38 @@ const ModalOverlay = styled.div`
 `;
 const ModalContent = styled.div`
   background: #fff;
-  padding: 32px 24px 24px 24px;
-  border-radius: 12px;
+  padding: 32px 28px 24px 28px;
+  border-radius: 18px;
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  max-width: 420px;
+  box-shadow: 0 8px 32px rgba(32,201,151,0.18), 0 1.5px 8px rgba(0,0,0,0.08);
   position: relative;
+  animation: modalFadeIn 0.25s;
+  @keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-30px);}
+    to { opacity: 1; transform: translateY(0);}
+  }
 `;
 const CloseBtn = styled.span`
   position: absolute;
-  top: 12px;
-  right: 18px;
-  font-size: 1.5rem;
-  color: #888;
+  top: 14px;
+  right: 22px;
+  font-size: 2rem;
+  color: #bdbdbd;
   cursor: pointer;
   transition: color 0.2s;
   &:hover { color: #09a370; }
 `;
+const ModalTitle = styled.h3`
+  margin-bottom: 22px;
+  text-align: center;
+  font-size: 1.25rem;
+  color: #09a370;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+`;
 const FormGroup = styled.div`
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 `;
 const Label = styled.label`
   display: block;
@@ -143,13 +160,32 @@ const Label = styled.label`
   color: #222;
 `;
 const Input = styled.input`
-  width: 100%;
+  width: 95%;
   padding: 8px 10px;
   border: 1px solid #e0e0e0;
   border-radius: 5px;
   font-size: 1rem;
   background: #f9f9f9;
   color: #333;
+`;
+const ModalBtnRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+`;
+const SaveBtn = styled(ActionBtn)`
+  background: #09a370;
+  color: #fff;
+  font-weight: 600;
+  min-width: 80px;
+  &:hover, &:focus { background: #0d8a5f; outline: none; }
+`;
+const CancelBtn = styled(ActionBtn)`
+  background: #e0e0e0;
+  color: #333;
+  font-weight: 500;
+  &:hover, &:focus { background: #bdbdbd; color: #222; outline: none; }
 `;
 
 const statusOptions = [
@@ -223,12 +259,7 @@ function StaffQuanLyDatLich() {
     <Container>
       <StaffSidebar />
       <ContentArea>
-        <StaffHeader
-          userName="Nguyễn Thị Hương"
-          userRole="Nhân viên"
-          avatar="https://placehold.co/40x40"
-          online={true}
-        />
+        <StaffHeader />
         <Section>
           <SectionHeader>
             <SectionTitle>Quản lý đặt lịch xét nghiệm</SectionTitle>
@@ -269,7 +300,7 @@ function StaffQuanLyDatLich() {
         <ModalOverlay open={modalOpen}>
           <ModalContent>
             <CloseBtn onClick={closeModal}>&times;</CloseBtn>
-            <h3 style={{marginBottom:18}}>Chỉnh sửa lịch hẹn</h3>
+            <ModalTitle>Chỉnh sửa lịch hẹn</ModalTitle>
             <form onSubmit={handleSubmit}>
               <FormGroup>
                 <Label>Khách hàng</Label>
@@ -293,10 +324,10 @@ function StaffQuanLyDatLich() {
                 <Label>Ghi chú</Label>
                 <Input type="text" value={form.note} onChange={e => setForm(f => ({ ...f, note: e.target.value }))} />
               </FormGroup>
-              <div style={{ textAlign: 'right', marginTop: 16 }}>
-                <ActionBtn type="submit">Lưu</ActionBtn>
-                <ActionBtn type="button" style={{background:'#ccc',color:'#333'}} onClick={closeModal}>Đóng</ActionBtn>
-              </div>
+              <ModalBtnRow>
+                <SaveBtn type="submit">Lưu</SaveBtn>
+                <CancelBtn type="button" onClick={closeModal}>Đóng</CancelBtn>
+              </ModalBtnRow>
             </form>
           </ModalContent>
         </ModalOverlay>

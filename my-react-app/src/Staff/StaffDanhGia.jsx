@@ -8,10 +8,10 @@ const Container = styled.div`
   line-height: 1.6;
   color: #333;
   background-color: #f9f9f9;
-  width: 100vw;
+  width: 99vw;
   min-height: 100vh;
   margin: 0;
-  padding: 2rem 0;
+  padding: 4rem 0;
 `;
 const ContentArea = styled.main`
   flex: 1;
@@ -100,6 +100,10 @@ const ActionBtn = styled.button`
   transition: background 0.2s;
   &:hover {
     background: #0d8a5f;
+    outline: none;
+  }
+  &:focus {
+    outline: none;
   }
 `;
 const StatusTag = styled.span`
@@ -189,6 +193,26 @@ const StarCount = styled.span`
   font-size: 1.05rem;
 `;
 
+const CheckBtn = styled.button`
+  background: #22c55e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.10);
+  cursor: pointer;
+  transition: background 0.18s;
+  &:hover, &:focus {
+    background: #16a34a;
+    outline: none;
+  }
+`;
+
 const ModalOverlay = styled.div`
   display: ${props => (props.open ? 'flex' : 'none')};
   position: fixed;
@@ -227,7 +251,7 @@ const ModalLabel = styled.label`
   color: #222;
 `;
 const ModalTextarea = styled.textarea`
-  width: 100%;
+  width: 95%;
   min-height: 80px;
   padding: 8px 10px;
   border: 1px solid #e0e0e0;
@@ -302,6 +326,7 @@ function StaffDanhGia() {
   };
   const handleSubmitResponse = e => {
     e.preventDefault();
+    if (response.length === 0 || response.length > 150) return;
     setReviews(arr => arr.map((r, i) => i === modalIdx ? { ...r, status: 'Đã xử lý', staffResponse: response } : r));
     handleCloseModal();
   };
@@ -310,12 +335,7 @@ function StaffDanhGia() {
     <Container>
       <StaffSidebar />
       <ContentArea>
-        <StaffHeader
-          userName="Nguyễn Thị Hương"
-          userRole="Nhân viên"
-          avatar="https://placehold.co/40x40"
-          online={true}
-        />
+        <StaffHeader />
         <Section>
           <SectionHeader>
             <SectionTitle>Đánh giá dịch vụ xét nghiệm</SectionTitle>
@@ -382,8 +402,13 @@ function StaffDanhGia() {
                   <Td>
                     {row.status !== 'Đã xử lý' && (
                       <>
-                        <ActionBtn onClick={() => handleMarkHandled(idx)}>Đánh dấu đã xử lý</ActionBtn>
-                        <ActionBtn onClick={() => handleOpenModal(idx)} style={{background:'#f59e42', color:'#fff', marginLeft: 4}}>Xử lý</ActionBtn>
+                        <CheckBtn
+                          title="Đánh dấu đã xử lý"
+                          onClick={() => handleMarkHandled(idx)}
+                        >
+                          <i className="fas fa-check"></i>
+                        </CheckBtn>
+                        <ActionBtn onClick={() => handleOpenModal(idx)} style={{background:'#f59e42', color:'#fff', marginLeft: 8}}>Xử lý</ActionBtn>
                       </>
                     )}
                   </Td>
@@ -400,11 +425,15 @@ function StaffDanhGia() {
                 <ModalLabel>Nhập phản hồi gửi khách hàng (nếu cần):</ModalLabel>
                 <ModalTextarea
                   value={response}
-                  onChange={e => setResponse(e.target.value)}
+                  onChange={e => {
+                    if (e.target.value.length <= 150) setResponse(e.target.value);
+                  }}
                   placeholder="Nhập nội dung phản hồi..."
+                  maxLength={150}
                 />
+                <div style={{fontSize:'0.95em',color:'#888',marginBottom:8,textAlign:'right'}}>{response.length}/150 ký tự</div>
                 <div style={{ textAlign: 'right', marginTop: 8 }}>
-                  <ActionBtn type="submit">Gửi & Đánh dấu đã xử lý</ActionBtn>
+                  <ActionBtn type="submit" disabled={response.length === 0 || response.length > 150}>Gửi & Đánh dấu đã xử lý</ActionBtn>
                   <ActionBtn type="button" style={{background:'#ccc',color:'#333',marginLeft:8}} onClick={handleCloseModal}>Đóng</ActionBtn>
                 </div>
               </form>

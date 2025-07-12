@@ -10,10 +10,9 @@ const Container = styled.div`
   color: #333;
   background-color: #f9f9f9;
   width: 99vw;
-  height: 100vh;
-  max-height: 100vh;
   margin: 0;
-  padding: 2rem 0;
+  padding: 4rem 0;
+  overflow-x: hidden;
 `;
 const ContentArea = styled.main`
   flex: 1;
@@ -64,6 +63,9 @@ const Btn = styled.button`
   display: flex;
   align-items: center;
   gap: 8px;
+  &:hover, &:focus {
+    outline: none;
+  }
 `;
 const BtnPrimary = styled(Btn)`
   background: #20c997;
@@ -71,6 +73,10 @@ const BtnPrimary = styled(Btn)`
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(5, 225, 156, 0.4);
+    outline: none;
+  }
+  &:focus {
+    outline: none;
   }
 `;
 const BtnSecondary = styled(Btn)`
@@ -80,6 +86,10 @@ const BtnSecondary = styled(Btn)`
   &:hover {
     background: #e9ecef;
     border-color: #dee2e6;
+    outline: none;
+  }
+  &:focus {
+    outline: none;
   }
 `;
 const WeekRange = styled.div`
@@ -168,16 +178,21 @@ const ActionBtn = styled.button`
   font-size: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
+  &:hover, &:focus {
+    outline: none;
+  }
 `;
 const EditBtn = styled(ActionBtn)`
   background: #17b8a0;
   color: white;
-  &:hover { background: #13967a; }
+  &:hover { background: #13967a; outline: none; }
+  &:focus { outline: none; }
 `;
 const DeleteBtn = styled(ActionBtn)`
   background: #dc3545;
   color: white;
-  &:hover { background: #c82333; }
+  &:hover { background: #c82333; outline: none; }
+  &:focus { outline: none; }
 `;
 const EmptyState = styled.div`
   text-align: center;
@@ -260,6 +275,10 @@ const SaveBtn = styled.button`
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(40, 167, 123, 0.4);
+    outline: none;
+  }
+  &:focus {
+    outline: none;
   }
 `;
 const NotificationAnim = keyframes`
@@ -558,17 +577,13 @@ const StaffLichLamViec = () => {
     return () => clearTimeout(t);
   }, [currentMonday, viewMode, schedules]);
 
+
+
   return (
     <Container className="container">
       <StaffSidebar />
       <ContentArea className="content-area">
-        <StaffHeader
-          userName="Nguyễn Thị Hương"
-          userRole="Nhân viên"
-          avatar="https://placehold.co/40x40"
-          online={true}
-          welcome="Chào mừng trở lại, Hương!"
-        />
+        <StaffHeader />
         <PageHeader className="page-header">
           <Title><i className="fas fa-calendar-alt"></i> Lịch Làm Việc Nhân Viên</Title>
           <Toolbar className="toolbar">

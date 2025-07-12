@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 32px 16px 32px;
+  padding: 24px 35px 16px 40px;
   background: #fff;
-  border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   margin-bottom: 10px;
+  position: fixed;
+  top: 0;
+  left: 250px;
+  width: calc(100vw - 250px);
+  z-index: 100;
+  box-sizing: border-box;
+  overflow-x: auto;
+  @media (max-width: 768px) {
+    left: 80px;
+    width: calc(100vw - 80px);
+  }
 `;
 const Title = styled.h2`
   font-size: 1.5rem;
@@ -54,7 +64,7 @@ const StatusDot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${props => props.online ? '#4caf50' : '#ccc'};
+  background: ${props => props.$online ? '#4caf50' : '#ccc'};
   border: 2px solid #fff;
 `;
 const HeaderSearch = styled.form`
@@ -92,27 +102,73 @@ const SearchButton = styled.button`
 `;
 
 const StaffHeader = ({
-  userName = 'Nguyễn Thị Hương',
+  userName,
   userRole = 'Nhân viên',
-  avatar = 'https://placehold.co/40x40',
+  avatar,
   online = true,
-  welcome = 'Chào mừng trở lại, Hương!'
+  welcome
 }) => {
+  // Load thông tin từ localStorage
+  const getInitialHeaderProfile = () => {
+    try {
+      const savedHeaderProfile = localStorage.getItem('staffHeaderProfile');
+      if (savedHeaderProfile) {
+        return JSON.parse(savedHeaderProfile);
+      }
+    } catch (error) {
+      console.error('Lỗi khi load header profile từ localStorage:', error);
+    }
+    return {
+      name: 'Nguyễn Thị Hương',
+      avatar: 'https://placehold.co/40x40',
+    };
+  };
+
+  const [headerProfile, setHeaderProfile] = useState(getInitialHeaderProfile);
+
+  // Lắng nghe sự kiện storage để đồng bộ giữa các tab
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'staffHeaderProfile') {
+        try {
+          const savedHeaderProfile = localStorage.getItem('staffHeaderProfile');
+          if (savedHeaderProfile) {
+            const parsedHeaderProfile = JSON.parse(savedHeaderProfile);
+            setHeaderProfile(parsedHeaderProfile);
+          }
+        } catch (error) {
+          console.error('Lỗi khi sync header profile từ storage:', error);
+        }
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  // Sử dụng thông tin từ localStorage nếu không có props
+  const displayName = userName || headerProfile.name;
+  const displayAvatar = avatar || headerProfile.avatar;
+  const displayWelcome = welcome || `Chào mừng trở lại, ${displayName.split(' ').pop()}!`;
+
   return (
     <Header className="header">
-      <Title>{welcome}</Title>
+      <Title>{displayWelcome}</Title>
       <HeaderSearch className="header-search" action="#" method="get">
         <SearchInput type="text" placeholder="Tìm kiếm..." name="search" />
         <SearchButton type="submit"><i className="fas fa-search"></i></SearchButton>
       </HeaderSearch>
       <HeaderActions className="header-actions">
         <UserHeaderInfo className="user-header-info">
-          <UserHeaderName className="user-header-name">{userName}</UserHeaderName>
+          <UserHeaderName className="user-header-name">{displayName}</UserHeaderName>
           <UserHeaderRole className="user-header-role">{userRole}</UserHeaderRole>
         </UserHeaderInfo>
         <AvatarWrapper className="avatar">
-          <AvatarImg src={avatar} alt="Avatar" className="rounded-full" />
-          <StatusDot className={online ? 'status-dot online' : 'status-dot offline'} online={online} />
+          <AvatarImg src={displayAvatar} alt="Avatar" className="rounded-full" />
+          <StatusDot className={online ? 'status-dot online' : 'status-dot offline'} $online={online} />
         </AvatarWrapper>
       </HeaderActions>
     </Header>

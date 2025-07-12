@@ -66,7 +66,7 @@ const ConsultantLichHen = () => {
       <div className="dashboard">
         <ConsultantSidebar consultantName={consultantName} />
         <main className="main">
-          <ConsultantTopbar notificationCount={notificationCount} />
+          <ConsultantTopbar notificationCount={notificationCount} consultantName={consultantName} />
           <div className="lh-main-card">
             <div className="lh-title">Lịch hẹn tư vấn</div>
             <div className="lh-desc">Danh sách các lịch hẹn tư vấn của khách hàng.</div>
