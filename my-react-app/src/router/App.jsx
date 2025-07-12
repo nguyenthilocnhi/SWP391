@@ -14,8 +14,6 @@ import DichVu from "../Public/DichVu";
 import ChiTietDichVu from "../Public/ChiTietDichVu";
 import TuVanVien from "../Public/TuVanVien";
 import ChiTietTuVanVien from "../Public/ChiTietTuVanVien";
-
-{/* Blog */}
 import BlogPage from "../Public/BlogPage";
 import BlogChiTiet from "../Public/BlogChiTiet";
 
@@ -135,7 +133,7 @@ function App() {
 
         {/* Admin */}
         <Route path="/admin/trangchu" element={<AdminTrangChu />} />
-        <Route path="/admin/khachhang" element={<AdminTaiKhoan />} />
+        <Route path="/admin/taikhoan" element={<AdminTaiKhoan />} />
         <Route path="/admin/thongke" element={<AdminThongKe />} />
         <Route path="/admin/tuvan" element={<AdminTuVan />} />
         <Route path="/admin/baiviet" element={<AdminBaiViet />} />
