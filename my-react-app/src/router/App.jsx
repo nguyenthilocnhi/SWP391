@@ -81,6 +81,8 @@ import ConsultantDanhGia from "../Consultant/ConsultantDanhGia";
 import ConsultantCaiDat from "../Consultant/ConsultantCaiDat";
 import ConsultantHoTro from "../Consultant/ConsultantHoTro";
 import ConsultantDangXuat from "../Consultant/ConsultantDangXuat";
+import ConsultantVietBlog from "../Consultant/ConsultantVietBlog";
+import ConsultantBaiVietCuaToi from "../Consultant/ConsultantBaiVietCuaToi";
 function App() {
   return (
     <Router>
@@ -184,6 +186,8 @@ function App() {
         <Route path="/consultant/cai-dat" element={<ConsultantCaiDat />} />
         <Route path="/consultant/ho-tro" element={<ConsultantHoTro />} />
         <Route path="/consultant/dang-xuat" element={<ConsultantDangXuat />} />
+        <Route path="/consultant/viet-blog" element={<ConsultantVietBlog />} />
+        <Route path="/consultant/bai-viet-cua-toi" element={<ConsultantBaiVietCuaToi />} />
       </Routes>
     </Router>
   );

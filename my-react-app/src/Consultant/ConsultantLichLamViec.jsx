@@ -161,7 +161,7 @@ body {
       <div className="dashboard">
         <ConsultantSidebar consultantName={consultantName} />
         <main className="main">
-          <ConsultantTopbar notificationCount={notificationCount} />
+          <ConsultantTopbar notificationCount={notificationCount} consultantName={consultantName} />
           <div className="ws-main-card">
             <div className="ws-title">Bảng Phân Công Làm Việc</div>
             <div className="llv-header">

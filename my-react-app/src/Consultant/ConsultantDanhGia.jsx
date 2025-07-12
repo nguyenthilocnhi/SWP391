@@ -333,7 +333,7 @@ const ConsultantDanhGia = () => {
         {/* Main content */}
         <main className="main">
           {/* Topbar */}
-          <ConsultantTopbar notificationCount={notificationCount} />
+          <ConsultantTopbar notificationCount={notificationCount} consultantName={consultantName} />
 
           {/* Page Header */}
           <div className="page-header">
