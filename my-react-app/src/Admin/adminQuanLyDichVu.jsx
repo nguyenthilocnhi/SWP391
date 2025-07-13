@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminLayout from '../components/adminLayout';
 import styled from 'styled-components';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -221,19 +221,8 @@ const FE_SAMPLE_DATA = [
 const initialForm = { ma: '', loai: '', ten: '', mucdich: '', thoigian: '', chiphi: '', tinhtrang: 'Có', overview: '', suitableFor: '', preparation: '', process: '', detail: '', moreInfo: '', an: false };
 
 const AdminQuanLyDichVu = () => {
-  // Load dữ liệu từ localStorage hoặc sử dụng dữ liệu mẫu
-  const loadServices = () => {
-    const savedData = localStorage.getItem('danhSachDichVu');
-    if (savedData) {
-      return JSON.parse(savedData);
-    } else {
-      // Lưu dữ liệu mẫu vào localStorage
-      localStorage.setItem('danhSachDichVu', JSON.stringify(FE_SAMPLE_DATA));
-      return FE_SAMPLE_DATA;
-    }
-  };
-
-  const [services, setServices] = useState(loadServices);
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [filterLoai, setFilterLoai] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
@@ -244,6 +233,41 @@ const AdminQuanLyDichVu = () => {
   const [modalStep, setModalStep] = useState(1);
   const [confirmAnIndex, setConfirmAnIndex] = useState(null);
   const [confirmAnMode, setConfirmAnMode] = useState(''); // 'an' hoặc 'hien'
+
+  // Lấy danh sách dịch vụ từ API
+  const fetchServices = () => {
+    setLoading(true);
+    Promise.all([
+      fetch('https://api-gender2.purintech.id.vn/api/Service/test-services'),
+      fetch('https://api-gender2.purintech.id.vn/api/Service/advise-services')
+    ])
+      .then(responses => Promise.all(responses.map(res => res.json())))
+      .then(([testData, adviseData]) => {
+        const all = [...(testData || []), ...(adviseData || [])].map(item => ({
+          ma: item.ma || item.id || '',
+          ten: item.ten || item.name || '',
+          loai: item.loai || item.type || '',
+          mucdich: item.mucdich || item.description || '',
+          thoigian: item.thoigian || item.time || '',
+          chiphi: item.chiphi || item.price || '',
+          tinhtrang: item.tinhtrang || item.status || '',
+          an: item.an || false,
+          _raw: item // giữ lại bản gốc để lấy id khi sửa/xóa
+        }));
+        console.log("Danh sách dịch vụ:", all);
+        setServices(all);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Lỗi khi lấy danh sách dịch vụ:', error);
+        setServices([]);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
 
   // Lọc dịch vụ
   const filteredServices = services.filter(s => {
@@ -285,11 +309,9 @@ const AdminQuanLyDichVu = () => {
   // Xử lý form
   const handleChange = e => {
     const { name, value } = e.target;
-    // Nếu chọn loại dịch vụ, tự động gợi ý mã tiếp theo
     if (name === 'loai') {
       let prefix = value === 'Tư vấn' ? 'TV' : value === 'Xét nghiệm' ? 'XT' : '';
       if (prefix) {
-        // Lấy danh sách mã hiện có cùng loại
         const maList = services
           .filter(s => s.loai === value && s.ma.startsWith(prefix))
           .map(s => s.ma.replace(prefix, ''))
@@ -323,8 +345,8 @@ const AdminQuanLyDichVu = () => {
     setFormError('');
     setModalStep(2);
   };
-  // Bước 2: Lưu dịch vụ
-  const handleSave = e => {
+  // Bước 2: Lưu dịch vụ (THÊM/SỬA)
+  const handleSave = async e => {
     e.preventDefault();
     // Validate chi tiết bắt buộc
     if (!form.mota || !form.huongdan || !form.quytrinh || !form.luuy) {
@@ -332,24 +354,111 @@ const AdminQuanLyDichVu = () => {
       return;
     }
     setFormError('');
-    if (modalType === 'add') {
-      updateServices([...services, form]);
-    } else if (modalType === 'edit' && editIndex !== null) {
-      const updated = [...services];
-      updated[editIndex] = form;
-      updateServices(updated);
+    try {
+      if (modalType === 'add') {
+        // Gọi API thêm mới
+        const endpoint = form.loai === 'Tư vấn' 
+          ? 'https://api-gender2.purintech.id.vn/api/Service/advise-service'
+          : 'https://api-gender2.purintech.id.vn/api/Service/test-service';
+        
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form)
+        });
+        
+        if (!response.ok) {
+          throw new Error('Lỗi khi thêm dịch vụ');
+        }
+      } else if (modalType === 'edit' && editIndex !== null) {
+        // Gọi API cập nhật
+        const id = services[editIndex]._raw.id || services[editIndex].ma;
+        const endpoint = form.loai === 'Tư vấn'
+          ? `https://api-gender2.purintech.id.vn/api/Service/advise-service/${id}`
+          : `https://api-gender2.purintech.id.vn/api/Service/test-service/${id}`;
+        
+        const response = await fetch(endpoint, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form)
+        });
+        
+        if (!response.ok) {
+          throw new Error('Lỗi khi cập nhật dịch vụ');
+        }
+      }
+      closeModal();
+      fetchServices();
+    } catch (error) {
+      console.error('Lỗi khi lưu dịch vụ:', error);
+      setFormError('Lỗi khi lưu dịch vụ!');
     }
-    closeModal();
   };
-  // Ẩn/hiện dịch vụ (có xác nhận)
+  
+  // Xóa dịch vụ
+  const handleDelete = async idx => {
+    if (!window.confirm('Bạn có chắc chắn muốn xóa dịch vụ này?')) return;
+    try {
+      const s = services[idx];
+      const id = s._raw.id || s.ma;
+      const endpoint = s.loai === 'Tư vấn'
+        ? `https://api-gender2.purintech.id.vn/api/Service/advise-service/${id}`
+        : `https://api-gender2.purintech.id.vn/api/Service/test-service/${id}`;
+      
+      const response = await fetch(endpoint, {
+        method: 'DELETE'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Lỗi khi xóa dịch vụ');
+      }
+      
+      fetchServices();
+    } catch (error) {
+      console.error('Lỗi khi xóa dịch vụ:', error);
+      alert('Lỗi khi xóa dịch vụ!');
+    }
+  };
+  
+  // Ẩn/hiện dịch vụ (nếu backend hỗ trợ, nên dùng PUT cập nhật trường an)
   const handleToggleAn = idx => {
     const isAn = !services[idx].an;
     setConfirmAnIndex(idx);
     setConfirmAnMode(isAn ? 'an' : 'hien');
   };
+  
   const handleConfirmAn = () => {
     if (confirmAnIndex !== null) {
-      updateServices(services.map((s, i) => i === confirmAnIndex ? { ...s, an: !s.an, tinhtrang: !s.an ? 'Đã ẩn' : 'Có' } : s));
+      // Ẩn/hiện dịch vụ thông qua API
+      const s = services[confirmAnIndex];
+      const id = s._raw.id || s.ma;
+      const updateData = { tinhtrang: !s.an ? 'Đã ẩn' : 'Có' };
+      const endpoint = s.loai === 'Tư vấn'
+        ? `https://api-gender2.purintech.id.vn/api/Service/advise-service/${id}`
+        : `https://api-gender2.purintech.id.vn/api/Service/test-service/${id}`;
+
+      fetch(endpoint, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateData)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Lỗi khi cập nhật trạng thái');
+          }
+          fetchServices();
+          alert('Đã ẩn dịch vụ thành công!');
+        })
+        .catch(error => {
+          console.error('Lỗi khi ẩn dịch vụ:', error);
+          alert('Lỗi khi ẩn dịch vụ!');
+        });
     }
     setConfirmAnIndex(null);
     setConfirmAnMode('');
@@ -361,12 +470,6 @@ const AdminQuanLyDichVu = () => {
   const handleBackStep = () => {
     setModalStep(1);
     setFormError('');
-  };
-
-  // Sau khi cập nhật danh sách dịch vụ, lưu vào localStorage
-  const updateServices = (newServices) => {
-    setServices(newServices);
-    localStorage.setItem('danhSachDichVu', JSON.stringify(newServices));
   };
 
   return (
@@ -410,7 +513,9 @@ const AdminQuanLyDichVu = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredServices.length === 0 ? (
+                  {loading ? (
+                    <tr><ServiceTd colSpan={9} style={{ textAlign: 'center' }}>Đang tải dữ liệu...</ServiceTd></tr>
+                  ) : filteredServices.length === 0 ? (
                     <tr><ServiceTd colSpan={9} style={{ textAlign: 'center' }}>Không có dịch vụ phù hợp.</ServiceTd></tr>
                   ) : (
                     filteredServices.map((item, idx) => (
@@ -425,9 +530,8 @@ const AdminQuanLyDichVu = () => {
                         <ServiceTd>{item.an ? 'Đã ẩn' : item.tinhtrang}</ServiceTd>
                         <ServiceTd>
                           <Button style={{ background: '#fbbf24', color: '#fff', marginRight: 6 }} onClick={() => openEditModal(services.indexOf(item))} title="Sửa"><FaEdit /></Button>
-                          <Button style={{ background: 'transparent', color: item.an ? '#9ca3af' : '#22c55e', boxShadow: 'none', border: 'none', padding: '8px 12px' }} onClick={() => handleToggleAn(services.indexOf(item))} title={item.an ? 'Hiện' : 'Ẩn'}>
-                            {item.an ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-                          </Button>
+                          <Button style={{ background: '#ef4444', color: '#fff', marginRight: 6 }} onClick={() => handleDelete(services.indexOf(item))} title="Xóa"><FaTrash /></Button>
+                          {/* Ẩn/hiện nếu backend hỗ trợ */}
                         </ServiceTd>
                       </tr>
                     ))

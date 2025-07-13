@@ -242,12 +242,33 @@ const DichVu = (props) => {
   const rowsPerPage = 10;
 
   useEffect(() => {
-    const data = localStorage.getItem('danhSachDichVu');
-    if (data) {
-      setAllData(JSON.parse(data));
-    } else {
-      setAllData([]);
-    }
+    setLoading(true);
+    Promise.all([
+      fetch('https://api-gender2.purintech.id.vn/api/Service/test-services'),
+      fetch('https://api-gender2.purintech.id.vn/api/Service/advise-services')
+    ])
+      .then(responses => Promise.all(responses.map(res => res.json())))
+      .then(([testData, adviseData]) => {
+        const all = [...(testData || []), ...(adviseData || [])].map(item => ({
+          ma: item.ma || item.id || "",
+          ten: item.ten || item.name || "",
+          loai: item.loai || item.type || "",
+          mucdich: item.mucdich || item.description || "",
+          thoigian: item.thoigian || item.time || "",
+          chiphi: item.chiphi || item.price || "",
+          tinhtrang: item.tinhtrang || item.status || "",
+          an: item.an || false,
+          _raw: item
+        }));
+        console.log("DATA API:", all);
+        setAllData(all);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Lỗi khi lấy danh sách dịch vụ:', error);
+        setAllData([]);
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -265,10 +286,10 @@ const DichVu = (props) => {
     }
   };
 
-  const getDetailUrl = (serviceCode) => {
+  const getDetailUrl = (item) => {
     return getCurrentPageType() === 'customer'
-      ? <Link to={`/customer/service/${serviceCode}`}>Chi tiết</Link>
-      : <Link to={`/service/${serviceCode}`}>Chi tiết</Link>;
+      ? <Link to={`/customer/service/${item.ma}`} state={{ id: item._raw.id, loai: item.loai }} >Chi tiết</Link>
+      : <Link to={`/service/${item.ma}`} state={{ id: item._raw.id, loai: item.loai }} >Chi tiết</Link>;
   };
 
   // Nếu dữ liệu có trường an, chỉ hiển thị dịch vụ an: false
@@ -436,7 +457,7 @@ const DichVu = (props) => {
                     <td>{item.chiphi}</td>
                     <td>{item.tinhtrang}</td>
                     <td>
-                      {getDetailUrl(item.ma)}
+                      {getDetailUrl(item)}
                     </td>
                   </tr>
                 ))}

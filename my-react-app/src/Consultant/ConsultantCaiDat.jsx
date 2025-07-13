@@ -230,7 +230,7 @@ function ConsultantCaiDat() {
       <div style={styles.dashboard}>
         <ConsultantSidebar consultantName={consultantName} />
         <main style={styles.main}>
-          <ConsultantTopbar notificationCount={notificationCount} />
+          <ConsultantTopbar notificationCount={notificationCount} consultantName={consultantName} />
           <div style={styles.grid}>
             {/* Card 1: Thông tin cá nhân */}
             <div style={styles.card}>
