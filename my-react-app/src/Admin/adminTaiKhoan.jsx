@@ -305,7 +305,7 @@ const AdminTaiKhoan = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNSIsImVtYWlsIjoiYWRtaW5AZGVmYXVsdC5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3NTIzMzYwNjAsImV4cCI6MTc1MjMzOTY2MCwiaWF0IjoxNzUyMzM2MDYwfQ.wEPZzAC2d-__sc5zmDU-g7w3AIG7J66BYtMdgxmxFPE'
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
 
@@ -357,7 +357,7 @@ const AdminTaiKhoan = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNSIsImVtYWlsIjoiYWRtaW5AZGVmYXVsdC5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3NTIzMzYwNjAsImV4cCI6MTc1MjMzOTY2MCwiaWF0IjoxNzUyMzM2MDYwfQ.wEPZzAC2d-__sc5zmDU-g7w3AIG7J66BYtMdgxmxFPE'
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
 
@@ -385,7 +385,7 @@ const AdminTaiKhoan = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNSIsImVtYWlsIjoiYWRtaW5AZGVmYXVsdC5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3NTIzMzYwNjAsImV4cCI6MTc1MjMzOTY2MCwiaWF0IjoxNzUyMzM2MDYwfQ.wEPZzAC2d-__sc5zmDU-g7w3AIG7J66BYtMdgxmxFPE'
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({ role: newRole })
       });
@@ -448,7 +448,7 @@ const AdminTaiKhoan = () => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNSIsImVtYWlsIjoiYWRtaW5AZGVmYXVsdC5jb20iLCJyb2xlIjoiQWRtaW4iLCJuYmYiOjE3NTIzMzYwNjAsImV4cCI6MTc1MjMzOTY2MCwiaWF0IjoxNzUyMzM2MDYwfQ.wEPZzAC2d-__sc5zmDU-g7w3AIG7J66BYtMdgxmxFPE'
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
 

@@ -238,12 +238,23 @@ const AdminQuanLyDichVu = () => {
   const fetchServices = () => {
     setLoading(true);
     Promise.all([
-      fetch('https://api-gender2.purintech.id.vn/api/Service/test-services'),
-      fetch('https://api-gender2.purintech.id.vn/api/Service/advise-services')
+      fetch('https://api-gender2.purintech.id.vn/api/Service/test-services', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      }),
+      fetch('https://api-gender2.purintech.id.vn/api/Service/advise-services', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
     ])
       .then(responses => Promise.all(responses.map(res => res.json())))
       .then(([testData, adviseData]) => {
-        const all = [...(testData || []), ...(adviseData || [])].map(item => ({
+        // Nếu API trả về { code, message, obj }
+        const testArr = Array.isArray(testData?.obj) ? testData.obj : (Array.isArray(testData) ? testData : []);
+        const adviseArr = Array.isArray(adviseData?.obj) ? adviseData.obj : (Array.isArray(adviseData) ? adviseData : []);
+        const all = [...testArr, ...adviseArr].map(item => ({
           ma: item.ma || item.id || '',
           ten: item.ten || item.name || '',
           loai: item.loai || item.type || '',
@@ -365,6 +376,7 @@ const AdminQuanLyDichVu = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
           body: JSON.stringify(form)
         });
@@ -383,6 +395,7 @@ const AdminQuanLyDichVu = () => {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
           body: JSON.stringify(form)
         });
@@ -410,7 +423,10 @@ const AdminQuanLyDichVu = () => {
         : `https://api-gender2.purintech.id.vn/api/Service/test-service/${id}`;
       
       const response = await fetch(endpoint, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       });
       
       if (!response.ok) {
@@ -445,6 +461,7 @@ const AdminQuanLyDichVu = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify(updateData)
       })
