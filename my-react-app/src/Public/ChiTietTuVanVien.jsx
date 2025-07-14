@@ -230,72 +230,138 @@ const tuvanvien = [
 
 const Main = styled.main`
   font-family: 'Segoe UI', sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background-color: #f9f9f9;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e9f7f7 100%);
   width: 100vw;
   margin: 0;
   padding: 2rem 0;
   margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
+
+const Card = styled.div`
+  background: #fff;
+  border-radius: 2rem;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.10), 0 1.5px 6px rgba(0,0,0,0.04);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto 2rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @media (max-width: 600px) {
+    padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+    max-width: 98vw;
+  }
+`;
+
 const Avatar = styled.img`
-  width: 180px;
-  height: 180px;
-  object-fit: contain;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
   object-position: center;
   background: #e6f9f1;
-  border-radius: 12px;
+  border-radius: 50%;
+  border: 5px solid #e0f7ef;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.13);
   margin: 0 auto 24px auto;
   display: block;
 `;
+
 const Name = styled.h2`
   text-align: center;
   color: #0f172a;
-  font-size: 2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
   margin-bottom: 8px;
 `;
+
 const Info = styled.p`
-  text-align: center;
+  text-align: left;
   color: #374151;
-  font-size: 1.1rem;
+  font-size: 1.13rem;
   margin-bottom: 8px;
+  width: 100%;
 `;
+
 const BackLink = styled(RouterLink)`
-  display: inline-block;
-  color: #10b981;
+  display: block;
+  color: #fff;
+  background: linear-gradient(90deg, #10b981 60%, #34d399 100%);
   text-decoration: none;
   font-weight: 600;
-  padding: 10px 20px;
-  border: 2px solid #10b981;
-  border-radius: 6px;
-  margin: 24px auto 0 auto;
-  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  padding: 14px 0;
+  border: none;
+  border-radius: 2rem;
+  margin: 32px auto 0 auto;
+  width: 80%;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.10);
+  transition: all 0.25s cubic-bezier(.4,0,.2,1);
   &:hover {
-    background-color: #10b981;
-    color: white;
+    background: linear-gradient(90deg, #34d399 60%, #10b981 100%);
+    color: #fff;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 18px rgba(16,185,129,0.13);
     text-decoration: none;
   }
 `;
+
 const ErrorMessage = styled.div`
   text-align: center;
   padding: 40px 20px;
-  background: #f9f9f9;
-  border-radius: 10px;
+  background: #fff;
+  border-radius: 1.5rem;
   margin: 20px 0;
+  box-shadow: 0 4px 16px rgba(211,47,47,0.07);
   h2 {
     color: #d32f2f;
     margin-bottom: 15px;
+    font-size: 1.6rem;
   }
   p {
     color: #666;
     margin-bottom: 20px;
   }
 `;
+
 const SectionTitle = styled.h3`
   color: #0f172a;
-  font-size: 1.5rem;
-  margin-top: 24px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-top: 28px;
   margin-bottom: 12px;
+  width: 100%;
+  border-left: 5px solid #10b981;
+  padding-left: 12px;
+`;
+
+const CustomList = styled.ul`
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.5rem;
+  width: 100%;
+`;
+const CustomListItem = styled.li`
+  position: relative;
+  padding-left: 2.1em;
+  margin-bottom: 0.5em;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  &:before {
+    content: '\2713';
+    color: #10b981;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    font-size: 1.2em;
+  }
 `;
 
 const ChiTietTuVanVien = () => {
@@ -333,43 +399,45 @@ const ChiTietTuVanVien = () => {
     <>
       {isCustomer ? <HeaderCustomer /> : <HeaderGuest />}
       <Main>
-        <Avatar src={advisor.image} alt={advisor.name} />
-        <Name>{advisor.name}</Name>
-        <Info><strong>Chuyên môn:</strong> {advisor.specialty}</Info>
-        <Info><strong>Kinh nghiệm:</strong> {advisor.experience}</Info>
-        <Info><strong>Học vấn:</strong> {advisor.education}</Info>
-        {/* Hiển thị các trường chi tiết nếu có */}
-        {advisor.introduction && (
-          <>
-            <SectionTitle>Giới thiệu</SectionTitle>
-            <Info style={{ textAlign: 'left' }}>{advisor.introduction}</Info>
-          </>
-        )}
-        {advisor.certificates && (
-          <>
-            <SectionTitle>Chứng chỉ</SectionTitle>
-            <ul className="custom-list">
-              {advisor.certificates.map((c, i) => <li key={i}>{c}</li>)}
-            </ul>
-          </>
-        )}
-        {advisor.degrees && (
-          <>
-            <SectionTitle>Bằng cấp</SectionTitle>
-            <ul className="custom-list">
-              {advisor.degrees.map((d, i) => <li key={i}>{d}</li>)}
-            </ul>
-          </>
-        )}
-        {advisor.achievements && (
-          <>
-            <SectionTitle>Thành tựu nổi bật</SectionTitle>
-            <ul className="custom-list">
-              {advisor.achievements.map((a, i) => <li key={i}>{a}</li>)}
-            </ul>
-          </>
-        )}
-        <BackLink to="/tu-van-vien">← Quay lại danh sách tư vấn viên</BackLink>
+        <Card>
+          <Avatar src={advisor.image} alt={advisor.name} />
+          <Name>{advisor.name}</Name>
+          <Info><strong>Chuyên môn:</strong> {advisor.specialty}</Info>
+          <Info><strong>Kinh nghiệm:</strong> {advisor.experience}</Info>
+          <Info><strong>Học vấn:</strong> {advisor.education}</Info>
+          {/* Hiển thị các trường chi tiết nếu có */}
+          {advisor.introduction && (
+            <>
+              <SectionTitle>Giới thiệu</SectionTitle>
+              <Info style={{ textAlign: 'left' }}>{advisor.introduction}</Info>
+            </>
+          )}
+          {advisor.certificates && (
+            <>
+              <SectionTitle>Chứng chỉ</SectionTitle>
+              <CustomList>
+                {advisor.certificates.map((c, i) => <CustomListItem key={i}>{c}</CustomListItem>)}
+              </CustomList>
+            </>
+          )}
+          {advisor.degrees && (
+            <>
+              <SectionTitle>Bằng cấp</SectionTitle>
+              <CustomList>
+                {advisor.degrees.map((d, i) => <CustomListItem key={i}>{d}</CustomListItem>)}
+              </CustomList>
+            </>
+          )}
+          {advisor.achievements && (
+            <>
+              <SectionTitle>Thành tựu nổi bật</SectionTitle>
+              <CustomList>
+                {advisor.achievements.map((a, i) => <CustomListItem key={i}>{a}</CustomListItem>)}
+              </CustomList>
+            </>
+          )}
+          <BackLink to="/tu-van-vien">← Quay lại danh sách tư vấn viên</BackLink>
+        </Card>
       </Main>
       <Footer />
     </>
