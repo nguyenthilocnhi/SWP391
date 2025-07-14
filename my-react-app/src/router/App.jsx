@@ -40,7 +40,6 @@ import DanhGiaDaGui from "../Public/DanhGiaDaGui";
 import AdminTrangChu from "../Admin/adminTrangChu";
 import AdminTaiKhoan from "../Admin/adminTaiKhoan";
 import AdminThongKe from "../Admin/adminThongKe";
-import AdminTuVan from "../Admin/adminTuVan";
 import AdminDanhGia from "../Admin/adminDanhGia";
 import AdminBaiViet from "../Admin/adminBaiViet";
 import AdminCaiDat from "../Admin/adminCaiDat";
@@ -135,7 +134,6 @@ function App() {
         <Route path="/admin/trangchu" element={<AdminTrangChu />} />
         <Route path="/admin/taikhoan" element={<AdminTaiKhoan />} />
         <Route path="/admin/thongke" element={<AdminThongKe />} />
-        <Route path="/admin/tuvan" element={<AdminTuVan />} />
         <Route path="/admin/baiviet" element={<AdminBaiViet />} />
         <Route path="/admin/caidat" element={<AdminCaiDat />} />
         <Route path="/admin/dangxuat" element={<AdminDangXuat />} />

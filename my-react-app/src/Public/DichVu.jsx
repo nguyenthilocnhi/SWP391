@@ -242,49 +242,57 @@ const DichVu = (props) => {
   const rowsPerPage = 10;
 
   useEffect(() => {
-    setLoading(true);
-    Promise.all([
-      fetch('https://api-gender2.purintech.id.vn/api/Service/test-services'),
-      fetch('https://api-gender2.purintech.id.vn/api/Service/advise-services')
-    ])
-      .then(responses => Promise.all(responses.map(res => res.json())))
-      .then(([testData, adviseData]) => {
-        const all = [...(testData || []), ...(adviseData || [])].map(item => ({
-          ma: item.ma || item.id || "",
-          ten: item.ten || item.name || "",
-          loai: item.loai || item.type || "",
-          mucdich: item.mucdich || item.description || "",
-          thoigian: item.thoigian || item.time || "",
-          chiphi: item.chiphi || item.price || "",
-          tinhtrang: item.tinhtrang || item.status || "",
-          an: item.an || false,
-          _raw: item
-        }));
-        console.log("DATA API:", all);
-        setAllData(all);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Lỗi khi lấy danh sách dịch vụ:', error);
-        setAllData([]);
-        setLoading(false);
-      });
-  }, []);
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error("Không có token. Hãy đăng nhập lại.");
+    return;
+  }
 
-  useEffect(() => {
-    if (currentPage !== 1) setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 400);
-    return () => clearTimeout(timer);
-  }, [currentPage]);
+  setLoading(true);
 
-  const getCurrentPageType = () => {
-    const currentPath = window.location.pathname;
-    if (currentPath.includes('/Customer/')) {
-      return 'customer';
-    } else {
-      return 'guest';
+  const fetchWithToken = async (url) => {
+    const res = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    // Kiểm tra nếu không thành công thì ném lỗi
+    if (!res.ok) {
+      const text = await res.text();  // tránh lỗi .json() khi không có JSON
+      throw new Error(`Lỗi ${res.status}: ${text}`);
     }
+
+    return res.json();
   };
+
+  Promise.all([
+    fetchWithToken('https://api-gender2.purintech.id.vn/api/Service/test-services'),
+    fetchWithToken('https://api-gender2.purintech.id.vn/api/Service/advise-services')
+  ])
+    .then(([testData, adviseData]) => {
+      const all = [...(testData || []), ...(adviseData || [])].map(item => ({
+        ma: item.ma || item.id || "",
+        ten: item.ten || item.name || "",
+        loai: item.loai || item.type || "",
+        mucdich: item.mucdich || item.description || "",
+        thoigian: item.thoigian || item.time || "",
+        chiphi: item.chiphi || item.price || "",
+        tinhtrang: item.tinhtrang || item.status || "",
+        an: item.an || false,
+        _raw: item
+      }));
+
+      setAllData(all);
+      setLoading(false);
+    })
+    .catch(error => {
+      console.error('Lỗi khi lấy danh sách dịch vụ:', error.message);
+      setAllData([]);
+      setLoading(false);
+    });
+}, []);
+
 
   const getDetailUrl = (item) => {
     return getCurrentPageType() === 'customer'
