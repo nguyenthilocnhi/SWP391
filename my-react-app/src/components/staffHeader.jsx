@@ -6,9 +6,21 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 24px 35px 16px 40px;
+  padding: 24px 35px 16px 40px;
   background: #fff;
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   margin-bottom: 10px;
+  position: fixed;
+  top: 0;
+  left: 250px;
+  width: calc(100vw - 250px);
+  z-index: 100;
+  box-sizing: border-box;
+  overflow-x: auto;
+  @media (max-width: 768px) {
+    left: 80px;
+    width: calc(100vw - 80px);
+  }
   position: fixed;
   top: 0;
   left: 250px;
@@ -64,7 +76,7 @@ const StatusDot = styled.span`
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: ${props => props.$online ? '#4caf50' : '#ccc'};
+  background: ${props => props.$$online ? '#4caf50' : '#ccc'};
   border: 2px solid #fff;
 `;
 const HeaderSearch = styled.form`
@@ -167,8 +179,8 @@ const StaffHeader = ({
           <UserHeaderRole className="user-header-role">{userRole}</UserHeaderRole>
         </UserHeaderInfo>
         <AvatarWrapper className="avatar">
-          <AvatarImg src={displayAvatar} alt="Avatar" className="rounded-full" />
-          <StatusDot className={online ? 'status-dot online' : 'status-dot offline'} $online={online} />
+          <AvatarImg src={avatar} alt="Avatar" className="rounded-full" />
+          <StatusDot className={online ? 'status-dot online' : 'status-dot offline'} online={online} />
         </AvatarWrapper>
       </HeaderActions>
     </Header>

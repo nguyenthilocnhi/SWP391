@@ -101,7 +101,6 @@ const Button = styled.button`
   cursor: pointer;
   font-weight: 600;
   margin-right: 8px;
-  margin-bottom: 4px;
   transition: background 0.2s, color 0.2s;
   outline: none;
   &:hover {
@@ -412,10 +411,12 @@ const AdminQuanLyDichVu = () => {
                         <ServiceTd>{item.chiphi}</ServiceTd>
                         <ServiceTd>{item.an ? 'Đã ẩn' : item.tinhtrang}</ServiceTd>
                         <ServiceTd>
-                          <Button style={{ background: '#fbbf24', color: '#fff', marginRight: 6 }} onClick={() => openEditModal(services.indexOf(item))} title="Sửa"><FaEdit /></Button>
-                          <Button style={{ background: 'transparent', color: item.an ? '#9ca3af' : '#22c55e', boxShadow: 'none', border: 'none', padding: '8px 12px' }} onClick={() => handleToggleAn(services.indexOf(item))} title={item.an ? 'Hiện' : 'Ẩn'}>
-                            {item.an ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-                          </Button>
+                          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                            <Button style={{ background: '#fbbf24', color: '#fff', marginRight: 6 }} onClick={() => openEditModal(services.indexOf(item))} title="Sửa"><FaEdit /></Button>
+                            <Button style={{ background: 'transparent', color: item.an ? '#9ca3af' : '#22c55e', boxShadow: 'none', border: 'none', padding: '8px 12px' }} onClick={() => handleToggleAn(services.indexOf(item))} title={item.an ? 'Hiện' : 'Ẩn'}>
+                              {item.an ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                            </Button>
+                          </div>
                         </ServiceTd>
                       </tr>
                     ))

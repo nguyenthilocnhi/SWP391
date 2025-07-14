@@ -8,12 +8,12 @@ import DangKy from "../Login/DangKy";
 
 const Hero = styled.section`
   margin-top: 120px;
-  width: 100vw;
+  width: 99vw;
   display: flex;
   justify-content: center;
   background: #fff;
   img {
-    width: 100vw;
+    width: 99vw;
     height: auto;
     object-fit: cover;
     display: block;
@@ -22,7 +22,7 @@ const Hero = styled.section`
 `;
 
 const Container = styled.main`
-  width: 100vw;
+  width: 99vw;
   margin: 0;
   padding: 2rem 0;
 `;
