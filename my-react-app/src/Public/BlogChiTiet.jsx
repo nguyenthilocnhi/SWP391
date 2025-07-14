@@ -1249,12 +1249,15 @@ const BlogChiTiet = ({ userType = 'guest' }) => {
           font-family: 'Segoe UI', sans-serif;
           line-height: 1.6;
           color: #333;
-          background-color: #f9f9f9;
+          background: #f9f9f9;
         }
         .main-content {
+          display: block;
+          width: 100vw;
           margin-top: 110px;
           min-height: calc(100vh - 110px);
-          display: block;
+          padding-bottom: 48px;
+          background: none;
         }
         a {
           text-decoration: none;
@@ -1262,29 +1265,19 @@ const BlogChiTiet = ({ userType = 'guest' }) => {
         a:hover {
           text-decoration: none;
         }
-        @media (max-width: 768px) {
-          .main-content {
-            margin-top: 80px;
-            min-height: calc(100vh - 80px);
-          }
-        }
-        main {
-          width: 100%;
-          padding: 40px 24px;
-          background: none;
-          border-radius: 0;
-          box-shadow: none;
-          margin: 0;
-        }
         .breadcrumb {
           font-size: 14px;
           color: #6b7280;
           margin-bottom: 10px;
+          width: 100%;
+          padding: 0 24px;
         }
         .main-title {
           font-size: 2rem;
           color: #111827;
           margin-bottom: 1.5rem;
+          width: 100%;
+          padding: 0 24px;
         }
         .content h2 {
           margin-top: 2rem;
@@ -1315,6 +1308,10 @@ const BlogChiTiet = ({ userType = 'guest' }) => {
           border-radius: 8px;
           color: #92400e;
           margin-top: 16px;
+          width: 100%;
+          box-sizing: border-box;
+          padding-left: 24px;
+          padding-right: 24px;
         }
         .final-call {
           font-size: 16px;
@@ -1336,11 +1333,14 @@ const BlogChiTiet = ({ userType = 'guest' }) => {
           display: block;
           margin: 24px auto;
           border-radius: 12px;
+          box-sizing: border-box;
         }
         .date {
           color: #888;
           font-size: 14px;
           margin-bottom: 16px;
+          width: 100%;
+          padding: 0 24px;
         }
       `}</style>
             <main className="main-content">
