@@ -155,7 +155,7 @@ const Star = styled.span`
 `;
 
 const TABS = [
-  { key: 'dichvu', label: 'Đánh giá dịch vụ', storage: 'danhGiaDichVu' },
+  // { key: 'dichvu', label: 'Đánh giá dịch vụ', storage: 'danhGiaDichVu' },
   { key: 'nhanvien', label: 'Đánh giá nhân viên', storage: 'danhGiaNhanVien' },
   { key: 'tuvanvien', label: 'Đánh giá tư vấn viên', storage: 'danhGiaTuVanVien' },
 ];
@@ -173,7 +173,7 @@ const SAMPLE_TUVANVIEN = [
 const ROWS_PER_PAGE = 10;
 
 const AdminDanhGia = () => {
-  const [tab, setTab] = useState('dichvu');
+  const [tab, setTab] = useState('nhanvien'); // Default to nhanvien
   const [reviews, setReviews] = useState([]);
   const [search, setSearch] = useState('');
   const [filterStar, setFilterStar] = useState('');
@@ -184,9 +184,10 @@ const AdminDanhGia = () => {
   // Load dữ liệu theo tab
   useEffect(() => {
     let data = [];
-    if (tab === 'dichvu') {
-      data = JSON.parse(localStorage.getItem('danhGiaDichVu')) || [];
-    } else if (tab === 'nhanvien') {
+    // if (tab === 'dichvu') {
+    //   data = JSON.parse(localStorage.getItem('danhGiaDichVu')) || [];
+    // } else 
+    if (tab === 'nhanvien') {
       data = JSON.parse(localStorage.getItem('danhGiaNhanVien'));
       if (!data) {
         data = SAMPLE_NHANVIEN;
@@ -208,9 +209,10 @@ const AdminDanhGia = () => {
   // Lọc đánh giá
   const filteredReviews = reviews.filter(r => {
     let matchSearch = true;
-    if (tab === 'dichvu') {
-      matchSearch = r.tenDichVu?.toLowerCase().includes(search.toLowerCase()) || r.noiDung?.toLowerCase().includes(search.toLowerCase());
-    } else if (tab === 'nhanvien') {
+    // if (tab === 'dichvu') {
+    //   matchSearch = r.tenDichVu?.toLowerCase().includes(search.toLowerCase()) || r.noiDung?.toLowerCase().includes(search.toLowerCase());
+    // } else 
+    if (tab === 'nhanvien') {
       matchSearch = r.tenNhanVien?.toLowerCase().includes(search.toLowerCase()) || r.noiDung?.toLowerCase().includes(search.toLowerCase());
     } else if (tab === 'tuvanvien') {
       matchSearch = r.tenTuVanVien?.toLowerCase().includes(search.toLowerCase()) || r.noiDung?.toLowerCase().includes(search.toLowerCase());
@@ -262,14 +264,14 @@ const AdminDanhGia = () => {
             </div>
             <CardHeader>
               <CardTitle>
-                {tab === 'dichvu' && 'Quản lý đánh giá dịch vụ'}
+                {/* {tab === 'dichvu' && 'Quản lý đánh giá dịch vụ'} */}
                 {tab === 'nhanvien' && 'Quản lý đánh giá nhân viên'}
                 {tab === 'tuvanvien' && 'Quản lý đánh giá tư vấn viên'}
               </CardTitle>
               <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
                 <SearchBox
                   type="text"
-                  placeholder={tab === 'dichvu' ? 'Tìm theo tên dịch vụ, nội dung...' : tab === 'nhanvien' ? 'Tìm theo tên nhân viên, nội dung...' : 'Tìm theo tên tư vấn viên, nội dung...'}
+                  placeholder={tab === 'nhanvien' ? 'Tìm theo tên nhân viên, nội dung...' : 'Tìm theo tên tư vấn viên, nội dung...'}
                   value={search}
                   onChange={e => { setSearch(e.target.value); setCurrentPage(1); }}
                 />
@@ -288,8 +290,10 @@ const AdminDanhGia = () => {
                 <thead>
                   <tr>
                     <ReviewTh>STT</ReviewTh>
-                    <ReviewTh>
+                    {/* <ReviewTh>
                       {tab === 'dichvu' && 'Tên dịch vụ'}
+                    </ReviewTh> */}
+                    <ReviewTh>
                       {tab === 'nhanvien' && 'Tên nhân viên'}
                       {tab === 'tuvanvien' && 'Tên tư vấn viên'}
                     </ReviewTh>
@@ -306,8 +310,10 @@ const AdminDanhGia = () => {
                     pageData.map((item, idx) => (
                       <tr key={idx}>
                         <ReviewTd>{(currentPage - 1) * ROWS_PER_PAGE + idx + 1}</ReviewTd>
-                        <ReviewTd>
+                        {/* <ReviewTd>
                           {tab === 'dichvu' && item.tenDichVu}
+                        </ReviewTd> */}
+                        <ReviewTd>
                           {tab === 'nhanvien' && item.tenNhanVien}
                           {tab === 'tuvanvien' && item.tenTuVanVien}
                         </ReviewTd>
@@ -345,7 +351,7 @@ const AdminDanhGia = () => {
           <ModalContent>
             <ModalTitle>Chi tiết đánh giá</ModalTitle>
             <div style={{ marginBottom: 18 }}>
-              {tab === 'dichvu' && (<><b>Dịch vụ:</b> {modalReview.tenDichVu}<br /></>)}
+              {/* {tab === 'dichvu' && (<><b>Dịch vụ:</b> {modalReview.tenDichVu}<br /></>)} */}
               {tab === 'nhanvien' && (<><b>Nhân viên:</b> {modalReview.tenNhanVien}<br /></>)}
               {tab === 'tuvanvien' && (<><b>Tư vấn viên:</b> {modalReview.tenTuVanVien}<br /></>)}
               <b>Số sao:</b> {renderStars(modalReview.soSao)}<br />

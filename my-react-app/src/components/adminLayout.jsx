@@ -444,11 +444,10 @@ export default function AdminLayout() {
         <Nav>
           <MenuList>
             <li><MenuItem to="/admin/trangchu" className="menu-item"><i className="fas fa-home" />Trang chủ</MenuItem></li>
-            <li><MenuItem to="/admin/khachhang" className="menu-item"><i className="fas fa-users" />Quản lý tài khoản</MenuItem></li>
+            <li><MenuItem to="/admin/taikhoan" className="menu-item"><i className="fas fa-users" />Quản lý tài khoản</MenuItem></li>
             <li><MenuItem to="/admin/quan-ly-dich-vu" className="menu-item"><i className="fas fa-stethoscope" />Quản lý dịch vụ</MenuItem></li>
             <li><MenuItem to="/admin/danh-gia" className="menu-item"><i className="fas fa-star" />Quản lý đánh giá</MenuItem></li>
             <li><MenuItem to="/admin/thongke" className="menu-item"><i className="fas fa-chart-pie" />Thống kê</MenuItem></li>
-            <li><MenuItem to="/admin/tuvan" className="menu-item"><i className="fas fa-comments" />Tư vấn trực tuyến</MenuItem></li>
             <li><MenuItem to="/admin/baiviet" className="menu-item"><i className="fas fa-newspaper" />Bài viết sức khỏe</MenuItem></li>
             <li><MenuItem to="/admin/caidat" className="menu-item"><i className="fas fa-cog" />Cài đặt</MenuItem></li>
             <li>

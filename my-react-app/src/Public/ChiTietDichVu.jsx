@@ -1073,7 +1073,22 @@ const ChiTietDichVu = () => {
     const [isCustomer, setIsCustomer] = useState(false);
 
     useEffect(() => {
-        setServiceDetail(serviceDetails[serviceCode]);
+        // Giả sử bạn biết loại dịch vụ (loai: 'Tư vấn' hoặc 'Xét nghiệm')
+        const endpoint = serviceDetails[serviceCode]?.type === 'Tư vấn'
+            ? `https://api-gender2.purintech.id.vn/api/Service/advise-service/${serviceCode}`
+            : `https://api-gender2.purintech.id.vn/api/Service/test-service/${serviceCode}`;
+        
+        fetch(endpoint)
+            .then(res => res.json())
+            .then(data => {
+                console.log("Chi tiết dịch vụ:", data);
+                setServiceDetail(data);
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy chi tiết dịch vụ:', error);
+                setServiceDetail(null);
+            });
+            
         if (serviceDetails[serviceCode]) {
             document.title = `${serviceDetails[serviceCode].title} - An Giới`;
         }

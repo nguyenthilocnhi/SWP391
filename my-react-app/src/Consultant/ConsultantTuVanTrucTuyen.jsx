@@ -72,7 +72,7 @@ const ConsultantTuVanTrucTuyen = () => {
       <div className="dashboard">
         <ConsultantSidebar consultantName={consultantName} />
         <main className="main">
-          <ConsultantTopbar notificationCount={notificationCount} />
+          <ConsultantTopbar notificationCount={notificationCount} consultantName={consultantName} />
           <div className="tvtt-main-card">
             <div className="tvtt-title">Tư vấn trực tuyến</div>
             <div className="tvtt-desc">Danh sách khách hàng đang chờ tư vấn. Hãy nhấn "Bắt đầu tư vấn" để kết nối với khách hàng.</div>

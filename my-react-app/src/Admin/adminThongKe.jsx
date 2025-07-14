@@ -354,12 +354,15 @@ const AdminThongKe = () => {
   const mostUsedService = Object.keys(serviceCount).length > 0 ? serviceMap[Object.entries(serviceCount).sort((a,b)=>b[1]-a[1])[0][0]] : 'Không có';
 
   // Chuẩn bị dữ liệu cho biểu đồ
-  // 1. Biểu đồ đường: Số lịch hẹn theo ngày
+  // 1. Biểu đồ cột: Số lịch hẹn theo ngày, tách theo dịch vụ tư vấn và xét nghiệm
   const dateLabels = Array.from(new Set(filtered.map(a => a.date))).sort();
-  const appointmentsByDate = dateLabels.map(date => filtered.filter(a => a.date === date).length);
-
-  // 2. Biểu đồ cột: Doanh thu theo ngày
-  const revenueByDate = dateLabels.map(date => filtered.filter(a => a.date === date).reduce((sum, a) => sum + a.revenue, 0));
+  // Số lịch hẹn tư vấn theo ngày
+  const appointmentsTuVanByDate = dateLabels.map(date => filtered.filter(a => a.date === date && a.service === 'tuvan').length);
+  // Số lịch hẹn xét nghiệm theo ngày
+  const appointmentsXetNghiemByDate = dateLabels.map(date => filtered.filter(a => a.date === date && a.service === 'xetnghiem').length);
+  // 2. Biểu đồ cột: Doanh thu theo ngày, tách theo dịch vụ tư vấn và xét nghiệm
+  const revenueTuVanByDate = dateLabels.map(date => filtered.filter(a => a.date === date && a.service === 'tuvan').reduce((sum, a) => sum + a.revenue, 0));
+  const revenueXetNghiemByDate = dateLabels.map(date => filtered.filter(a => a.date === date && a.service === 'xetnghiem').reduce((sum, a) => sum + a.revenue, 0));
 
   // 3. Biểu đồ tròn: Tỷ lệ các loại dịch vụ
   const serviceCounts = serviceTypes.map(type => filtered.filter(a => a.service === type).length);
@@ -510,20 +513,36 @@ const AdminThongKe = () => {
               <ChartHeader>
                 <ChartTitle>Lịch hẹn theo {allTimeUnit === 'day' ? 'ngày' : allTimeUnit === 'week' ? 'tuần' : allTimeUnit === 'month' ? 'tháng' : 'năm'}</ChartTitle>
               </ChartHeader>
-              {appointmentsLabels.length > 0 ? (
+              {dateLabels.length > 0 ? (
                 <Bar
                   data={{
-                    labels: appointmentsLabels,
-                    datasets: [{
-                      label: 'Lịch hẹn',
-                      data: appointmentsByPeriod,
-                      backgroundColor: '#4f46e5',
-                    }],
+                    labels: dateLabels,
+                    datasets: [
+                      {
+                        label: 'Tư vấn',
+                        data: appointmentsTuVanByDate,
+                        backgroundColor: '#4f46e5',
+                      },
+                      {
+                        label: 'Xét nghiệm',
+                        data: appointmentsXetNghiemByDate,
+                        backgroundColor: '#22c55e',
+                      },
+                    ],
                   }}
                   options={{
                     responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true } },
+                    plugins: { legend: { position: 'top' } },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        min: 0,
+                        ticks: {
+                          stepSize: 1,
+                          callback: function(value) { return Number.isInteger(value) ? value : null; }
+                        }
+                      }
+                    },
                   }}
                   height={220}
                 />
@@ -535,44 +554,27 @@ const AdminThongKe = () => {
               <ChartHeader>
                 <ChartTitle>Doanh thu theo {allTimeUnit === 'day' ? 'ngày' : allTimeUnit === 'week' ? 'tuần' : allTimeUnit === 'month' ? 'tháng' : 'năm'}</ChartTitle>
               </ChartHeader>
-              {appointmentsLabels.length > 0 ? (
+              {dateLabels.length > 0 ? (
                 <Bar
                   data={{
-                    labels: appointmentsLabels,
-                    datasets: [{
-                      label: 'Doanh thu',
-                      data: revenueByPeriod,
-                      backgroundColor: '#22c55e',
-                    }],
+                    labels: dateLabels,
+                    datasets: [
+                      {
+                        label: 'Tư vấn',
+                        data: revenueTuVanByDate,
+                        backgroundColor: '#4f46e5',
+                      },
+                      {
+                        label: 'Xét nghiệm',
+                        data: revenueXetNghiemByDate,
+                        backgroundColor: '#22c55e',
+                      },
+                    ],
                   }}
                   options={{
                     responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true } },
-                  }}
-                  height={220}
-                />
-              ) : (
-                <div style={{color:'#888',textAlign:'center',padding:'32px 0'}}>Không có dữ liệu</div>
-              )}
-            </ChartBox>
-          </ChartsRow>
-          <ChartsRow>
-            <ChartBox>
-              <ChartHeader>
-                <ChartTitle>Tỷ lệ dịch vụ</ChartTitle>
-              </ChartHeader>
-              {filtered.length > 0 ? (
-                <Bar
-                  data={{
-                   labels: serviceTypes.map(type => serviceMap[type]),
-                   datasets: serviceTypes.map((type, idx) => ({ label: serviceMap[type], data: serviceCountsByPeriod[idx], backgroundColor: pieColors[idx] }))
-                  }}
-                  options={{
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    indexAxis: 'y',
-                    scales: { x: { beginAtZero: true } },
+                    plugins: { legend: { position: 'top' } },
+                    scales: { y: { beginAtZero: true, min: 0 } },
                   }}
                   height={220}
                 />
@@ -601,106 +603,21 @@ const AdminThongKe = () => {
               <StatsNumber>{medTotal}</StatsNumber>
             </SmallStatsCard>
           </SmallStatsGrid>
-          <ChartBox>
-            <ChartHeader>
-              <ChartTitle>Số người dùng theo {allTimeUnit === 'day' ? 'ngày' : allTimeUnit === 'week' ? 'tuần' : allTimeUnit === 'month' ? 'tháng' : 'năm'}</ChartTitle>
-            </ChartHeader>
-            {medLabels.length > 0 ? (
-              <Bar
-                data={{
-                  labels: medLabels,
-                  datasets: [
-                    { label: 'Số người dùng', data: medUsersByPeriod, backgroundColor: '#22c55e' },
-                  ],
-                }}
-                options={{
-                  responsive: true,
-                  plugins: { legend: { display: false } },
-                  scales: { y: { beginAtZero: true } },
-                }}
-                height={220}
-              />
-            ) : (
-              <div style={{color:'#888',textAlign:'center',padding:'32px 0'}}>Không có dữ liệu</div>
-            )}
-          </ChartBox>
-          <Table>
-            <thead>
-              <tr>
-                <Th>Ngày</Th>
-                <Th>Người dùng</Th>
-                <Th>Trạng thái</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredMedication.map((row, idx) => (
-                <tr key={idx}>
-                  <Td>{row.date}</Td>
-                  <Td>{row.user}</Td>
-                  <Td>{row.status === 'on_time' ? 'Đúng giờ' : row.status === 'late' ? 'Trễ' : 'Bỏ uống'}</Td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          {/* Xóa bảng danh sách dữ liệu uống thuốc */}
 
           {/* SECTION: Thống kê theo dõi chu kỳ */}
           <SectionTitle>Thống kê theo dõi chu kỳ</SectionTitle>
           <SmallStatsGrid>
             <SmallStatsCard>
+              <StatsLabel>Tổng số người sử dụng</StatsLabel>
+              <StatsNumber>{Array.from(new Set(filteredCycle.map(a => a.user))).length}</StatsNumber>
+            </SmallStatsCard>
+            <SmallStatsCard>
               <StatsLabel>Tổng số lượt ghi nhận</StatsLabel>
               <StatsNumber>{cycleTotal}</StatsNumber>
             </SmallStatsCard>
-            <SmallStatsCard>
-              <StatsLabel>Bình thường</StatsLabel>
-              <StatsNumber>{cycleNormalTotal}</StatsNumber>
-            </SmallStatsCard>
-            <SmallStatsCard>
-              <StatsLabel>Bất thường</StatsLabel>
-              <StatsNumber>{cycleAbnormalTotal}</StatsNumber>
-            </SmallStatsCard>
           </SmallStatsGrid>
-          <ChartBox>
-            <ChartHeader>
-              <ChartTitle>Biểu đồ theo dõi chu kỳ theo {allTimeUnit === 'day' ? 'ngày' : allTimeUnit === 'week' ? 'tuần' : allTimeUnit === 'month' ? 'tháng' : 'năm'}</ChartTitle>
-            </ChartHeader>
-            {cycleLabels.length > 0 ? (
-              <Bar
-                data={{
-                  labels: cycleLabels,
-                  datasets: [
-                    { label: 'Bình thường', data: cycleNormal, backgroundColor: '#22c55e' },
-                    { label: 'Bất thường', data: cycleAbnormal, backgroundColor: '#ef4444' },
-                  ],
-                }}
-                options={{
-                  responsive: true,
-                  plugins: { legend: { position: 'top' } },
-                  scales: { y: { beginAtZero: true } },
-                }}
-                height={220}
-              />
-            ) : (
-              <div style={{color:'#888',textAlign:'center',padding:'32px 0'}}>Không có dữ liệu</div>
-            )}
-          </ChartBox>
-          <Table>
-            <thead>
-              <tr>
-                <Th>Ngày</Th>
-                <Th>Người dùng</Th>
-                <Th>Trạng thái</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCycle.map((row, idx) => (
-                <tr key={idx}>
-                  <Td>{row.date}</Td>
-                  <Td>{row.user}</Td>
-                  <Td>{row.status === 'normal' ? 'Bình thường' : 'Bất thường'}</Td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+          {/* Ẩn các số liệu khác */}
         </ContentWrapper>
       </MainContent>
     </>
