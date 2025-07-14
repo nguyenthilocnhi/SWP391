@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const MainContent = styled.main`
 
+
   padding: 120px 0 24px 250px;
 
 

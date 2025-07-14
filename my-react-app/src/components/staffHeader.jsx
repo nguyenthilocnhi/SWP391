@@ -6,7 +6,9 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 24px 35px 16px 40px;
+
   padding: 24px 35px 16px 40px;
+
   background: #fff;
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   margin-bottom: 10px;
@@ -21,6 +23,7 @@ const Header = styled.header`
     left: 80px;
     width: calc(100vw - 80px);
   }
+
   position: fixed;
   top: 0;
   left: 250px;
@@ -32,6 +35,7 @@ const Header = styled.header`
     left: 80px;
     width: calc(100vw - 80px);
   }
+
 `;
 const Title = styled.h2`
   font-size: 1.5rem;
@@ -180,7 +184,7 @@ const StaffHeader = ({
         </UserHeaderInfo>
         <AvatarWrapper className="avatar">
           <AvatarImg src={avatar} alt="Avatar" className="rounded-full" />
-          <StatusDot className={online ? 'status-dot online' : 'status-dot offline'} online={online} />
+          <StatusDot className={online ? 'status-dot online' : 'status-dot offline'} $online={online} />
         </AvatarWrapper>
       </HeaderActions>
     </Header>
