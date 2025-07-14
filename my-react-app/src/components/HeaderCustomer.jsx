@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -78,14 +78,22 @@ const NotificationIcon = styled.img`
 
 const Badge = styled.span`
   position: absolute;
-  top: -6px;
+  top: -10px;
   right: -15px;
-  background-color: red;
-  color: white;
-  padding: 2px 6px;
+  background-color: #ef4444;
+  color: #fff;
+  padding: 0 6px;
+  min-width: 6px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(239,68,68,0.15);
+  z-index: 2;
 `;
 
 const NotificationBox = styled.div`
@@ -173,18 +181,61 @@ export default function HeaderCustomer() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [notifications, setNotifications] = useState([
-    'Kết quả xét nghiệm đã có',
-    'Lịch hẹn khám vào ngày mai',
-    'Ưu đãi giảm 10% đang chờ bạn'
+    { id: 1, text: 'Kết quả xét nghiệm đã có', time: '09:00 01/07' },
+    { id: 2, text: 'Lịch hẹn khám vào ngày mai', time: '08:45 01/07' },
+    { id: 3, text: 'Ưu đãi giảm 10% đang chờ bạn', time: '08:00 01/07' }
   ]);
   const [userName, setUserName] = useState('');
+  const bellRef = useRef();
+  const userRef = useRef();
 
   useEffect(() => {
     setUserName(localStorage.getItem('userName') || 'Khách');
   }, []);
 
+  // Đóng dropdown khi click ra ngoài (chuông)
+  useEffect(() => {
+    if (!showNotifications) return;
+    const handleClick = (e) => {
+      if (bellRef.current && !bellRef.current.contains(e.target)) {
+        setShowNotifications(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showNotifications]);
+
+  // Đóng dropdown khi click ra ngoài (profile)
+  useEffect(() => {
+    if (!showUserMenu) return;
+    const handleClick = (e) => {
+      if (userRef.current && !userRef.current.contains(e.target)) {
+        setShowUserMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showUserMenu]);
+
+  // Tự động thêm thông báo mới mỗi 200 giây
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const pad = n => n.toString().padStart(2, '0');
+      const time = `${pad(now.getHours())}:${pad(now.getMinutes())} ${pad(now.getDate())}/${pad(now.getMonth()+1)}`;
+      setNotifications(nots => [
+        { id: Date.now(), text: 'Bạn có thông báo mới!', time },
+        ...nots
+      ]);
+    }, 200000);
+    return () => clearInterval(interval);
+  }, []);
+
   const toggleUserMenu = () => setShowUserMenu(!showUserMenu);
   const toggleNotifications = () => setShowNotifications(!showNotifications);
+  const handleDeleteNotification = (id) => {
+    setNotifications(nots => nots.filter(n => n.id !== id));
+  };
 
   return (
     <Header>
@@ -213,22 +264,34 @@ export default function HeaderCustomer() {
             </button>
           </SearchForm>
 
-          <NotificationWrapper>
-            <a href="#" onClick={e => { e.preventDefault(); toggleNotifications(); }}>
-              <NotificationIcon src="https://i.postimg.cc/TP8K01px/notifications-24dp-1-F1-F1-F-FILL0-wght400-GRAD0-opsz24.png" alt="Thông báo" />
-              <Badge>{notifications.length}</Badge>
+          <NotificationWrapper ref={bellRef}>
+            <a href="#" onClick={e => { e.preventDefault(); toggleNotifications(); }} style={{position:'relative', display:'inline-block'}}>
+              {/* Thay hình ảnh chuông bằng icon font-awesome */}
+              <i className="fas fa-bell" style={{fontSize: '23px', color: '#4b5563'}}></i>
+              {notifications.length > 0 && (
+                <Badge>{notifications.length}</Badge>
+              )}
             </a>
-            <NotificationBox $visible={showNotifications}>
-              <p>Bạn có {notifications.length} thông báo mới</p>
-              <ul>
-                {notifications.map((item, index) => (
-                  <li key={index}><div className="notify-content">{item}</div></li>
-                ))}
-              </ul>
+            <NotificationBox $visible={showNotifications} style={{right:0, minWidth:260}}>
+              {notifications.length === 0 ? (
+                <p style={{color:'#9ca3af', textAlign:'center'}}>Chưa có thông báo nào</p>
+              ) : (
+                <ul style={{padding:0, margin:0, listStyle:'none'}}>
+                  {notifications.map((item) => (
+                    <li key={item.id} style={{display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:'1px solid #f3f4f6', padding:'8px 0'}}>
+                      <div>
+                        <div className="notify-content">{item.text}</div>
+                        <span style={{color:'#9ca3af', fontSize:13}}>{item.time}</span>
+                      </div>
+                      <button onClick={() => handleDeleteNotification(item.id)} style={{background:'none', border:'none', color:'#ef4444', fontSize:16, cursor:'pointer', marginLeft:8}} title="Xóa thông báo">✕</button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </NotificationBox>
           </NotificationWrapper>
 
-          <UserInfo onClick={toggleUserMenu}>
+          <UserInfo ref={userRef} onClick={toggleUserMenu}>
             <Avatar src="/src/assets/react.svg" alt="Avatar" />
             <div className="user-details">
               <span className="user-name">{userName}</span>

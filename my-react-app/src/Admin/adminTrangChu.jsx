@@ -11,7 +11,7 @@ const MainContent = styled.main`
   background: #f9fafb;
   min-height: 100vh;
   width: 100vw;
-  max-width: 100vw;
+  max-width: 99vw;
   margin: 0;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -48,7 +48,7 @@ const StatsGrid = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
   @media (min-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 const StatsCard = styled.div`
@@ -334,17 +334,7 @@ const stats = [
     icon: 'fas fa-vials',
     color: '#ef4444',
     bg: '#fee2e2',
-  },
-  {
-    label: 'Lịch hẹn mới',
-    value: '18',
-    change: '+8.9%',
-    changeType: 'up',
-    desc: 'so với hôm qua',
-    icon: 'fas fa-calendar-check',
-    color: '#22c55e',
-    bg: '#dcfce7',
-  },
+  }
 ];
 
 const chartDataSet = {
@@ -593,25 +583,7 @@ const AdminTrangChu = () => {
                   <Line data={getTestChartData(testPeriod)} options={chartOptions} height={250} />
                 </ChartBox>
               </ChartsRow>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Lịch hẹn gần đây</CardTitle>
-                  <ViewAll href="#">Xem tất cả</ViewAll>
-                </CardHeader>
-                <AppointmentsList>
-                  {appointments.map((a, idx) => (
-                    <AppointmentItem key={idx}>
-                      <AppointmentImg src={a.avatar} alt={a.name} />
-                      <AppointmentInfo>
-                        <AppointmentName>{a.name}</AppointmentName>
-                        <AppointmentDesc>{a.desc}</AppointmentDesc>
-                        <AppointmentTime>{a.time}</AppointmentTime>
-                      </AppointmentInfo>
-                      <Badge $bg={badgeColors[a.status].bg} $color={badgeColors[a.status].color}>{a.statusText}</Badge>
-                    </AppointmentItem>
-                  ))}
-                </AppointmentsList>
-              </Card>
+              {/* Xóa Card Lịch hẹn gần đây */}
               <Card>
                 <CardHeader>
                   <CardTitle>Chủ đề được quan tâm</CardTitle>

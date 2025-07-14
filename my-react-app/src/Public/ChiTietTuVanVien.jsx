@@ -232,7 +232,7 @@ const Main = styled.main`
   font-family: 'Segoe UI', sans-serif;
   min-height: 100vh;
   background: linear-gradient(135deg, #f0f4f8 0%, #e9f7f7 100%);
-  width: 100vw;
+  width: 99vw;
   margin: 0;
   padding: 2rem 0;
   margin-top: 100px;

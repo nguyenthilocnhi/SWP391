@@ -10,7 +10,7 @@ const Container = styled.main`
   line-height: 1.6;
   color: #333;
   background-color: #f9f9f9;
-  width: 100vw;
+  width: 99vw;
   margin: 0;
   padding: 2rem 0;
   margin-top: 100px;

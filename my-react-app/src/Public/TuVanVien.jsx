@@ -58,7 +58,7 @@ const tuvanvien = [
 
 // Styled-components reused from TrangChu
 const Container = styled.main`
-  width: 100vw;
+  width: 99vw;
   margin: 0;
   padding: 2rem 0;
   margin-top: 100px;
@@ -136,18 +136,20 @@ const SearchInput = styled.input`
 
 const TuVanVien = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [isCustomer, setIsCustomer] = useState(false);
+  // const [isCustomer, setIsCustomer] = useState(false);
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('loggedIn');
-    const role = localStorage.getItem('role');
-    console.log('DEBUG HEADER: loggedIn', loggedIn, 'role', role);
-    if (loggedIn !== 'true') {
-      setIsCustomer(false);
-    } else {
-      setIsCustomer(role === 'customer');
-    }
-  }, []);
+  // useEffect(() => {
+  //   const loggedIn = localStorage.getItem('loggedIn');
+  //   const role = localStorage.getItem('role');
+  //   if (loggedIn !== 'true') {
+  //     setIsCustomer(false);
+  //   } else {
+  //     setIsCustomer(role === 'customer');
+  //   }
+  // }, []);
+
+  // Lấy trực tiếp từ localStorage mỗi lần render
+  const isCustomer = localStorage.getItem('loggedIn') === 'true' && localStorage.getItem('role') === 'customer';
 
   const filteredAdvisors = tuvanvien.filter(advisor =>
     advisor.name.toLowerCase().includes(searchTerm.toLowerCase())

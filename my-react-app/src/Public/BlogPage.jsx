@@ -194,7 +194,7 @@ const BlogPage = ({ userType = 'guest' }) => {
 
         .blog-root {
           min-height: 100vh;
-          width: 100vw;
+          width: 99vw;
           background-color: #f9f9f9;
           box-sizing: border-box;
           overflow-x: hidden;
