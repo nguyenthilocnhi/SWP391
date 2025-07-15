@@ -359,7 +359,7 @@ const AdminQuanLyDichVu = () => {
   const handleSave = async e => {
     e.preventDefault();
     // Validate chi tiết bắt buộc
-    if (!form.mota || !form.huongdan || !form.quytrinh || !form.luuy) {
+    if (!form.overview || !form.suitableFor || !form.preparation || !form.process) {
       setFormError('Vui lòng nhập đầy đủ thông tin chi tiết.');
       return;
     }
@@ -551,10 +551,9 @@ const AdminQuanLyDichVu = () => {
                             <Button style={{ background: 'transparent', color: item.an ? '#9ca3af' : '#22c55e', boxShadow: 'none', border: 'none', padding: '8px 12px' }} onClick={() => handleToggleAn(services.indexOf(item))} title={item.an ? 'Hiện' : 'Ẩn'}>
                               {item.an ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
                             </Button>
+                            <Button style={{ background: '#ef4444', color: '#fff', marginRight: 6 }} onClick={() => handleDelete(services.indexOf(item))} title="Xóa"><FaTrash /></Button>
                           </div>
 
-                          <Button style={{ background: '#fbbf24', color: '#fff', marginRight: 6 }} onClick={() => openEditModal(services.indexOf(item))} title="Sửa"><FaEdit /></Button>
-                          <Button style={{ background: '#ef4444', color: '#fff', marginRight: 6 }} onClick={() => handleDelete(services.indexOf(item))} title="Xóa"><FaTrash /></Button>
                           {/* Ẩn/hiện nếu backend hỗ trợ */}
 
                         </ServiceTd>

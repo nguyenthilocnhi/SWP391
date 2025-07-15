@@ -242,62 +242,74 @@ const DichVu = (props) => {
   const rowsPerPage = 10;
 
   useEffect(() => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    console.error("Không có token. Hãy đăng nhập lại.");
-    return;
-  }
-
-  setLoading(true);
-
-  const fetchWithToken = async (url) => {
-    const res = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    // Kiểm tra nếu không thành công thì ném lỗi
-    if (!res.ok) {
-      const text = await res.text();  // tránh lỗi .json() khi không có JSON
-      throw new Error(`Lỗi ${res.status}: ${text}`);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("Không có token. Hãy đăng nhập lại.");
+      // Trang này yêu cầu token để fetch dữ liệu
+      return;
     }
 
-    return res.json();
-  };
+    setLoading(true);
 
-  Promise.all([
-    fetchWithToken('https://api-gender2.purintech.id.vn/api/Service/test-services'),
-    fetchWithToken('https://api-gender2.purintech.id.vn/api/Service/advise-services')
-  ])
-    .then(([testData, adviseData]) => {
-      const all = [...(testData || []), ...(adviseData || [])].map(item => ({
-        ma: item.ma || item.id || "",
-        ten: item.ten || item.name || "",
-        loai: item.loai || item.type || "",
-        mucdich: item.mucdich || item.description || "",
-        thoigian: item.thoigian || item.time || "",
-        chiphi: item.chiphi || item.price || "",
-        tinhtrang: item.tinhtrang || item.status || "",
-        an: item.an || false,
-        _raw: item
-      }));
+    const fetchWithToken = async (url) => {
+      const res = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Lỗi ${res.status}: ${text}`);
+      }
+      return res.json();
+    };
 
-      setAllData(all);
-      setLoading(false);
-    })
-    .catch(error => {
-      console.error('Lỗi khi lấy danh sách dịch vụ:', error.message);
-      setAllData([]);
-      setLoading(false);
-    });
-}, []);
+    Promise.all([
+      fetchWithToken('https://api-gender2.purintech.id.vn/api/Service/test-services'),
+      fetchWithToken('https://api-gender2.purintech.id.vn/api/Service/advise-services')
+    ])
+      .then(([testResponse, adviseResponse]) => {
+        // Lấy mảng obj từ response, thêm loại dịch vụ
+        const testServices = (testResponse?.obj || []).map(item => ({ ...item, type: 'Xét nghiệm' }));
+        const adviseServices = (adviseResponse?.obj || []).map(item => ({ ...item, type: 'Tư vấn' }));
+
+        // Map dữ liệu về format hiển thị
+        const all = [...testServices, ...adviseServices].map(item => ({
+          ma: item.id,
+          ten: item.testName || item.consultationType || 'Không có tên',
+          loai: item.type,
+          mucdich: item.description,
+          thoigian: item.duration,
+          chiphi: item.price != null ? item.price.toLocaleString('vi-VN') + ' VNĐ' : 'N/A',
+          tinhtrang: item.isAvailable ? 'Có' : 'Không có',
+          an: !item.isAvailable,
+          _raw: item
+        }));
+
+        setAllData(all);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Lỗi khi lấy danh sách dịch vụ:', error.message);
+        setAllData([]);
+        setLoading(false);
+      });
+  }, []);
 
 
   const getDetailUrl = (item) => {
-    return getCurrentPageType() === 'customer'
-      ? <Link to={`/customer/service/${item.ma}`} state={{ id: item._raw.id, loai: item.loai }} >Chi tiết</Link>
-      : <Link to={`/service/${item.ma}`} state={{ id: item._raw.id, loai: item.loai }} >Chi tiết</Link>;
+    // Xác định role từ props hoặc localStorage
+    let userType = props?.userType;
+    if (!userType) {
+        const savedRole = localStorage.getItem('role');
+        userType = savedRole ? savedRole.toLowerCase() : 'guest';
+    }
+
+    const path = userType === 'customer' 
+        ? `/customer/service/${item.ma}` 
+        : `/service/${item.ma}`;
+    
+    return <Link className="detail-link" to={path} state={{ id: item._raw.id, loai: item.loai }}>Chi tiết</Link>;
   };
 
   // Nếu dữ liệu có trường an, chỉ hiển thị dịch vụ an: false
@@ -442,7 +454,6 @@ const DichVu = (props) => {
             <StyledTable id="serviceTable">
               <thead>
                 <tr>
-                  <th>STT</th>
                   <th>Mã dịch vụ</th>
                   <th>Loại</th>
                   <th>Tên dịch vụ</th>
@@ -456,7 +467,6 @@ const DichVu = (props) => {
               <tbody>
                 {pageData.map((item, index) => (
                   <tr key={item.ma}>
-                    <td>{start + index + 1}</td>
                     <td>{item.ma}</td>
                     <td>{item.loai}</td>
                     <td>{item.ten}</td>

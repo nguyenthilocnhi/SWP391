@@ -294,6 +294,10 @@ const AdminTaiKhoan = () => {
   const [deleteError, setDeleteError] = useState('');
   // State cho dropdown chi tiết dịch vụ
   const [serviceDetailOptions, setServiceDetailOptions] = useState([]);
+  const [showOtpPopup, setShowOtpPopup] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [otpError, setOtpError] = useState('');
+  const [otpEmail, setOtpEmail] = useState('');
 
   // API lấy danh sách tất cả người dùng
   const fetchUsers = async () => {
@@ -339,10 +343,10 @@ const AdminTaiKhoan = () => {
   // Hàm chuyển đổi mã vai trò thành tên vai trò
   const getRoleName = (role) => {
     switch (role) {
-      case 1: return 'Admin';
+      case 1: return 'Khách hàng';
       case 2: return 'Tư vấn viên';
       case 3: return 'Nhân viên';
-      case 4: return 'Khách hàng';
+      case 4: return 'Admin';
       default: return 'Không xác định';
     }
   };
@@ -553,30 +557,37 @@ const AdminTaiKhoan = () => {
   // Xử lý thay đổi giá trị trong form
   const handleChange = e => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm({ ...form, [name]: name === 'role' ? Number(value) : value });
   };
 
   // Xử lý lưu thông tin người dùng
   const handleSave = async () => {
-    if (!form.name || !form.email || !form.phone || !form.date || !form.password || !form.confirmPassword) {
+    if (!form.name || !form.email || !form.phone || !form.date) {
       setFormError('Vui lòng nhập đầy đủ thông tin.');
       clearTimeout(errorTimeoutRef.current);
       errorTimeoutRef.current = setTimeout(() => setFormError(''), 5000);
       return;
     }
 
-    if (form.password !== form.confirmPassword) {
-      setFormError('Mật khẩu và xác nhận mật khẩu không khớp.');
-      clearTimeout(errorTimeoutRef.current);
-      errorTimeoutRef.current = setTimeout(() => setFormError(''), 5000);
-      return;
-    }
-
-    if (form.password.length < 6) {
-      setFormError('Mật khẩu phải có ít nhất 6 ký tự.');
-      clearTimeout(errorTimeoutRef.current);
-      errorTimeoutRef.current = setTimeout(() => setFormError(''), 5000);
-      return;
+    if (modalType === 'add') {
+      if (!form.password || !form.confirmPassword) {
+        setFormError('Vui lòng nhập mật khẩu và xác nhận mật khẩu.');
+        clearTimeout(errorTimeoutRef.current);
+        errorTimeoutRef.current = setTimeout(() => setFormError(''), 5000);
+        return;
+      }
+      if (form.password !== form.confirmPassword) {
+        setFormError('Mật khẩu và xác nhận mật khẩu không khớp.');
+        clearTimeout(errorTimeoutRef.current);
+        errorTimeoutRef.current = setTimeout(() => setFormError(''), 5000);
+        return;
+      }
+      if (form.password.length < 6) {
+        setFormError('Mật khẩu phải có ít nhất 6 ký tự.');
+        clearTimeout(errorTimeoutRef.current);
+        errorTimeoutRef.current = setTimeout(() => setFormError(''), 5000);
+        return;
+      }
     }
 
     setFormError('');
@@ -595,12 +606,14 @@ const AdminTaiKhoan = () => {
 
       const success = await createUser(userData);
       if (success) {
+        setOtpEmail(form.email);
+        setShowOtpPopup(true);
         closeModal();
       }
     } else if (modalType === 'edit' && editIndex !== null) {
       // Cập nhật vai trò người dùng qua API
       if (form.userId && form.role) {
-        updateUserRole(form.userId, form.role);
+        updateUserRole(form.userId, Number(form.role));
       }
       
       // Cập nhật thông tin local (nếu không có API cập nhật thông tin khác)
@@ -659,7 +672,7 @@ const AdminTaiKhoan = () => {
 
   // Xử lý cập nhật vai trò (đã chuyển vào modal chỉnh sửa)
   const handleRoleUpdate = (userId, currentRole) => {
-    const newRole = prompt(`Nhập vai trò mới (1: Admin, 2: Tư vấn viên, 3: Nhân viên, 4: Khách hàng):\nVai trò hiện tại: ${getRoleName(currentRole)}`);
+    const newRole = prompt(`Nhập vai trò mới (1: Khách hàng, 2: Tư vấn viên, 3: Nhân viên, 4: Admin):\nVai trò hiện tại: ${getRoleName(currentRole)}`);
     
     if (newRole && !isNaN(newRole)) {
       const roleNumber = parseInt(newRole);
@@ -674,6 +687,34 @@ const AdminTaiKhoan = () => {
   // Làm mới dữ liệu
   const handleRefresh = () => {
     fetchUsers();
+  };
+
+  // Hàm xác thực OTP
+  const handleVerifyOtp = async () => {
+    if (!otp) {
+      setOtpError('Vui lòng nhập mã OTP');
+      return;
+    }
+    setOtpError('');
+    try {
+      const response = await fetch('https://api-gender2.purintech.id.vn/api/Auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: otpEmail, otp })
+      });
+      const data = await response.json();
+      if (response.ok && data.code === 200) {
+        alert('Xác thực thành công!');
+        setShowOtpPopup(false);
+        setOtp('');
+        setOtpEmail('');
+        fetchUsers();
+      } else {
+        setOtpError(data.message || 'Mã OTP không đúng hoặc đã hết hạn');
+      }
+    } catch (err) {
+      setOtpError('Lỗi xác thực OTP');
+    }
   };
 
   return (
@@ -779,9 +820,12 @@ const AdminTaiKhoan = () => {
                           <Button className="small" onClick={() => openEditModal(customers.indexOf(c))}>
                             <i className="fas fa-edit"></i>
                           </Button>
-                          <Button className="small" $color="#ef4444" $textcolor="#fff" onClick={() => handleDelete(customers.indexOf(c))}>
-                            <i className="fas fa-trash"></i>
-                          </Button>
+                          {/* Ẩn nút xóa nếu là Admin */}
+                          {c.role !== 4 && (
+                            <Button className="small" $color="#ef4444" $textcolor="#fff" onClick={() => handleDelete(customers.indexOf(c))}>
+                              <i className="fas fa-trash"></i>
+                            </Button>
+                          )}
                         </StaffTd>
                       </tr>
                     ))}
@@ -840,10 +884,10 @@ const AdminTaiKhoan = () => {
                 )}
                 <ModalLabel>Vai trò:</ModalLabel>
                 <ModalSelect name="role" value={form.role} onChange={handleChange}>
-                  <option value={1}>Admin</option>
+                  <option value={1}>Khách hàng</option>
                   <option value={2}>Tư vấn viên</option>
                   <option value={3}>Nhân viên</option>
-                  <option value={4}>Khách hàng</option>
+                  <option value={4}>Admin</option>
                 </ModalSelect>
                 <div style={{ display: 'flex', gap: 10, marginTop: 16, justifyContent: 'center' }}>
                   <Button $color="#22c55e" $textcolor="#fff" style={{ minWidth: 80, fontWeight: 600, boxShadow: '0 2px 8px rgba(79,70,229,0.08)' }} type="submit">Lưu</Button>
@@ -909,6 +953,28 @@ const AdminTaiKhoan = () => {
               )}
               <div style={{ textAlign: 'center', marginTop: 16 }}>
                 <Button $color="#22c55e" $textcolor="#fff" onClick={closeDetailModal}>Đóng</Button>
+              </div>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+
+        {showOtpPopup && (
+          <ModalOverlay>
+            <ModalContent>
+              <ModalTitle>Xác thực tài khoản</ModalTitle>
+              <div style={{ marginBottom: 12 }}>
+                Nhập mã OTP đã gửi về email <b>{otpEmail}</b>
+              </div>
+              <ModalInput
+                type="text"
+                placeholder="Nhập mã OTP"
+                value={otp}
+                onChange={e => setOtp(e.target.value)}
+              />
+              {otpError && <div style={{ color: 'red', marginBottom: 8 }}>{otpError}</div>}
+              <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 8 }}>
+                <Button $color="#22c55e" $textcolor="#fff" onClick={handleVerifyOtp}>Xác thực</Button>
+                <Button $color="#e5e7eb" $textcolor="#1f2937" onClick={() => setShowOtpPopup(false)}>Đóng</Button>
               </div>
             </ModalContent>
           </ModalOverlay>
