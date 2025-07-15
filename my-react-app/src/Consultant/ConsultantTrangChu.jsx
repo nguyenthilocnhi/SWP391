@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
-import { Link } from "react-router-dom";
 
 const ConsultantTrangChu = () => {
   const [consultantName] = useState("Nguyễn Thị Huyền");

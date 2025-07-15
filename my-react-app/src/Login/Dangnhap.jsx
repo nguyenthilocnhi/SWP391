@@ -36,10 +36,10 @@ const DangNhap = () => {
         console.log('ROLE TRONG JWT:', role, typeof role); // Thêm log kiểm tra role
         if (!isNaN(role)) role = Number(role); // Nếu là số dạng chuỗi thì chuyển sang số
         localStorage.setItem('role', role);
-        if (role === 4 || role === 'Admin' || role === 'admin') window.location.href = '/admin/trangchu';
-        else if (role === 2 || role === 'Tư vấn viên' || role === 'consultant') window.location.href = '/consultant/trangchu';
-        else if (role === 3 || role === 'Nhân viên' || role === 'staff') window.location.href = '/staff/trangchu';
-        else if (role === 1 || role === 'Khách hàng' || role === 'customer') window.location.href = '/customer';
+        if (role === 4 || role === 'Khách hàng' || role === 'customer') window.location.href = '/admin/trangchu';
+        else if (role === 2 || role === 'Tư vấn viên') window.location.href = '/consultant/trangchu';
+        else if (role === 3 || role === 'Nhân viên') window.location.href = '/staff/trangchu';
+        else if (role === 1 || role === 'Admin') window.location.href = '/customer';
         else window.location.href = '/';
       } else {
         setMessage(data.message || 'Đăng nhập thất bại!');

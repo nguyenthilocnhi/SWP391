@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
 import { FaSave, FaEye, FaUpload, FaTimes } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 
 const ConsultantVietBlog = () => {
-  const navigate = useNavigate();
   const [consultantName] = useState("Nguyễn Thị Huyền");
   const [notificationCount] = useState(3);
   
