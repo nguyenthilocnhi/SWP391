@@ -241,31 +241,52 @@ const AdminQuanLyDichVu = () => {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
-      }),
+      }).then(res => res.json()),
       fetch('https://api-gender2.purintech.id.vn/api/Service/advise-services', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
-      })
+      }).then(res => res.json())
     ])
-      .then(responses => Promise.all(responses.map(res => res.json())))
       .then(([testData, adviseData]) => {
-        // Nếu API trả về { code, message, obj }
-        const testArr = Array.isArray(testData?.obj) ? testData.obj : (Array.isArray(testData) ? testData : []);
-        const adviseArr = Array.isArray(adviseData?.obj) ? adviseData.obj : (Array.isArray(adviseData) ? adviseData : []);
-        const all = [...testArr, ...adviseArr].map(item => ({
-          ma: item.ma || item.id || '',
-          ten: item.ten || item.name || '',
-          loai: item.loai || item.type || '',
-          mucdich: item.mucdich || item.description || '',
-          thoigian: item.thoigian || item.time || '',
-          chiphi: item.chiphi || item.price || '',
-          tinhtrang: item.tinhtrang || item.status || '',
-          an: item.an || false,
-          _raw: item // giữ lại bản gốc để lấy id khi sửa/xóa
+        // Gán loại cho từng dịch vụ
+        const testServices = (testData?.obj || []).map(item => ({
+          ...item,
+          ma: item.id,
+          ten: item.testName,
+          loai: 'Xét nghiệm',
+          mucdich: item.description,
+          thoigian: item.duration,
+          chiphi: item.price,
+          tinhtrang: item.isAvailable ? 'Có' : 'Không có',
+          an: !item.isAvailable,
+          overview: item.overview || '',
+          suitableFor: Array.isArray(item.suitableFor) ? item.suitableFor : (item.suitableFor || ''),
+          preparation: Array.isArray(item.preparation) ? item.preparation : (item.preparation || ''),
+          process: Array.isArray(item.process) ? item.process : (item.process || ''),
+          detail: item.detail || '',
+          moreInfo: item.moreInfo || '',
+          _raw: item
         }));
-        console.log("Danh sách dịch vụ:", all);
-        setServices(all);
+        const adviseServices = (adviseData?.obj || []).map(item => ({
+          ...item,
+          ma: item.id,
+          ten: item.consultationType || item.name || '',
+          loai: 'Tư vấn',
+          mucdich: item.description,
+          thoigian: item.duration || item.time || '',
+          chiphi: item.price,
+          tinhtrang: item.isAvailable ? 'Có' : 'Không có',
+          an: !item.isAvailable,
+          overview: item.overview || '',
+          suitableFor: Array.isArray(item.suitableFor) ? item.suitableFor : (item.suitableFor || ''),
+          preparation: Array.isArray(item.preparation) ? item.preparation : (item.preparation || ''),
+          process: Array.isArray(item.process) ? item.process : (item.process || ''),
+          detail: item.detail || '',
+          moreInfo: item.moreInfo || '',
+          _raw: item
+        }));
+        setServices([...testServices, ...adviseServices]);
         setLoading(false);
       })
       .catch(error => {
@@ -517,7 +538,6 @@ const AdminQuanLyDichVu = () => {
               <ServiceTable>
                 <thead>
                   <tr>
-                    <ServiceTh>STT</ServiceTh>
                     <ServiceTh>Mã</ServiceTh>
                     <ServiceTh>Loại</ServiceTh>
                     <ServiceTh>Tên dịch vụ</ServiceTh>
@@ -525,27 +545,40 @@ const AdminQuanLyDichVu = () => {
                     <ServiceTh>Thời gian</ServiceTh>
                     <ServiceTh>Chi phí</ServiceTh>
                     <ServiceTh>Tình trạng</ServiceTh>
+                    <ServiceTh>Tổng quan</ServiceTh>
+                    <ServiceTh>Đối tượng phù hợp</ServiceTh>
+                    <ServiceTh>Lưu ý chuẩn bị</ServiceTh>
+                    <ServiceTh>Quy trình</ServiceTh>
+                    <ServiceTh>Chi tiết</ServiceTh>
+                    <ServiceTh>Thông tin bổ sung</ServiceTh>
+                    <ServiceTh>Ẩn/Hiện</ServiceTh>
                     <ServiceTh>Thao tác</ServiceTh>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
-                    <tr><ServiceTd colSpan={9} style={{ textAlign: 'center' }}>Đang tải dữ liệu...</ServiceTd></tr>
+                    <tr><ServiceTd colSpan={15} style={{ textAlign: 'center' }}>Đang tải dữ liệu...</ServiceTd></tr>
                   ) : filteredServices.length === 0 ? (
-                    <tr><ServiceTd colSpan={9} style={{ textAlign: 'center' }}>Không có dịch vụ phù hợp.</ServiceTd></tr>
+                    <tr><ServiceTd colSpan={15} style={{ textAlign: 'center' }}>Không có dịch vụ phù hợp.</ServiceTd></tr>
                   ) : (
-                    filteredServices.map((item, idx) => (
+                    filteredServices.map((item) => (
                       <tr key={item.ma}>
-                        <ServiceTd>{idx + 1}</ServiceTd>
                         <ServiceTd>{item.ma}</ServiceTd>
                         <ServiceTd>{item.loai}</ServiceTd>
                         <ServiceTd>{item.ten}</ServiceTd>
                         <ServiceTd>{item.mucdich}</ServiceTd>
                         <ServiceTd>{item.thoigian}</ServiceTd>
                         <ServiceTd>{item.chiphi}</ServiceTd>
-                        <ServiceTd>{item.an ? 'Đã ẩn' : item.tinhtrang}</ServiceTd>
+                        <ServiceTd>{item.tinhtrang}</ServiceTd>
+                        <ServiceTd>{item.overview || ''}</ServiceTd>
+                        <ServiceTd>{Array.isArray(item.suitableFor) ? item.suitableFor.join(', ') : (item.suitableFor || '')}</ServiceTd>
+                        <ServiceTd>{Array.isArray(item.preparation) ? item.preparation.join(', ') : (item.preparation || '')}</ServiceTd>
+                        <ServiceTd>{Array.isArray(item.process) ? item.process.join(', ') : (item.process || '')}</ServiceTd>
+                        <ServiceTd>{item.detail || ''}</ServiceTd>
+                        <ServiceTd>{item.moreInfo || ''}</ServiceTd>
+                        <ServiceTd>{item.an ? 'Đã ẩn' : 'Hiện'}</ServiceTd>
                         <ServiceTd>
-
+                          {/* Các nút thao tác giữ nguyên */}
                           <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
                             <Button style={{ background: '#fbbf24', color: '#fff', marginRight: 6 }} onClick={() => openEditModal(services.indexOf(item))} title="Sửa"><FaEdit /></Button>
                             <Button style={{ background: 'transparent', color: item.an ? '#9ca3af' : '#22c55e', boxShadow: 'none', border: 'none', padding: '8px 12px' }} onClick={() => handleToggleAn(services.indexOf(item))} title={item.an ? 'Hiện' : 'Ẩn'}>
@@ -553,9 +586,6 @@ const AdminQuanLyDichVu = () => {
                             </Button>
                             <Button style={{ background: '#ef4444', color: '#fff', marginRight: 6 }} onClick={() => handleDelete(services.indexOf(item))} title="Xóa"><FaTrash /></Button>
                           </div>
-
-                          {/* Ẩn/hiện nếu backend hỗ trợ */}
-
                         </ServiceTd>
                       </tr>
                     ))
