@@ -9,6 +9,10 @@ const QuenMatKhau = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [otpError, setOtpError] = useState("");
+  const [otpLoading, setOtpLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -45,11 +49,8 @@ const QuenMatKhau = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccess(true);
-        // Navigate to success page after a short delay
-        setTimeout(() => {
-          navigate('/dat-lai-mat-khau-thanh-cong');
-        }, 2000);
+        // Hiện modal OTP thay vì chuyển hướng ngay
+        setShowOtpModal(true);
       } else {
         setError(data.message || 'Có lỗi xảy ra khi đặt lại mật khẩu.');
       }
@@ -57,6 +58,39 @@ const QuenMatKhau = () => {
       setError('Không thể kết nối đến máy chủ. Vui lòng thử lại.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Hàm xác thực OTP
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault();
+    setOtpError("");
+    setOtpLoading(true);
+    try {
+      const response = await fetch('https://api-gender2.purintech.id.vn/api/Auth/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          otp: otp
+        })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setShowOtpModal(false);
+        setSuccess(true);
+        setTimeout(() => {
+          navigate('/dat-lai-mat-khau-thanh-cong');
+        }, 2000);
+      } else {
+        setOtpError(data.message || 'OTP không đúng hoặc đã hết hạn.');
+      }
+    } catch (error) {
+      setOtpError('Không thể kết nối đến máy chủ. Vui lòng thử lại.');
+    } finally {
+      setOtpLoading(false);
     }
   };
 
@@ -226,6 +260,59 @@ const QuenMatKhau = () => {
           </form>
         </div>
       </div>
+      {/* Modal OTP */}
+      {showOtpModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0,0,0,0.3)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: '#fff',
+            padding: '2rem',
+            borderRadius: '12px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+            minWidth: '320px',
+            maxWidth: '90vw',
+            textAlign: 'center',
+            position: 'relative'
+          }}>
+            <h3>Xác thực OTP</h3>
+            <p>Vui lòng nhập mã OTP đã gửi về email của bạn.</p>
+            {otpError && <div className="error-message">{otpError}</div>}
+            <form onSubmit={handleOtpSubmit}>
+              <input
+                type="text"
+                placeholder="Nhập mã OTP"
+                value={otp}
+                onChange={e => setOtp(e.target.value)}
+                disabled={otpLoading}
+                style={{
+                  width: '100%',
+                  padding: '0.75rem',
+                  marginBottom: '1rem',
+                  border: '1px solid #a5d6a7',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  outline: 'none',
+                  transition: 'border-color 0.2s ease'
+                }}
+              />
+              <button type="submit" disabled={otpLoading || !otp} style={{marginBottom: '0.5rem'}}>
+                {otpLoading ? 'Đang xác thực...' : 'Xác nhận'}
+              </button>
+            </form>
+            <button onClick={() => setShowOtpModal(false)} style={{background: '#ccc', color: '#333', marginTop: '0.5rem'}}>Đóng</button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

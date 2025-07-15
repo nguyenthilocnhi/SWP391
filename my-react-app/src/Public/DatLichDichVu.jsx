@@ -19,7 +19,7 @@ const styles = {
     minHeight: "100vh",
     background: "#e6f9ed",
     padding: 0,
-    width: "100vw",
+    width: "99vw",
   },
   card: {
     width: "100%",

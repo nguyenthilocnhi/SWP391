@@ -32,22 +32,14 @@ const DangNhap = () => {
         localStorage.setItem('token', data.obj); // data.obj là JWT
         // Nếu backend trả về role trong token, nên giải mã để lấy role
         const payload = JSON.parse(atob(data.obj.split('.')[1]));
-        let role = payload.role;
-        console.log('ROLE TRONG JWT:', role, typeof role);
-
-        // Mapping role string về số
-        if (role === 'Consultant' || role === 'Tư vấn viên') role = 2;
-        else if (role === 'Admin'|| role ==='admin') role = 4;
-        else if (role === 'Staff' || role === 'Nhân viên') role = 3;
-        else if (role === 'Customer' || role === 'Khách hàng') role = 1;
-        else if (!isNaN(role)) role = Number(role);
-
-        localStorage.setItem('role', role);
-
-        if (role === 4) window.location.href = '/admin/trangchu';
-        else if (role === 2) window.location.href = '/consultant/trangchu';
-        else if (role === 3) window.location.href = '/staff/trangchu';
-        else if (role === 1) window.location.href = '/customer';
+        localStorage.setItem('role', (payload.role || 'customer').toLowerCase());
+        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('sessionExpire', Date.now() + 15 * 60 * 1000);
+        localStorage.setItem('userName', payload.fullName || payload.name || payload.username || '');
+        // Điều hướng theo role
+        if ((payload.role || '').toLowerCase() === 'customer') window.location.href = '/customer';
+        else if ((payload.role || '').toLowerCase() === 'staff') window.location.href = '/staff/trangchu';
+        else if ((payload.role || '').toLowerCase() === 'admin') window.location.href = '/admin/trangchu';
         else window.location.href = '/';
       } else {
         setMessage(data.message || 'Đăng nhập thất bại!');

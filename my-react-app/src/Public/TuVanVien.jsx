@@ -149,7 +149,7 @@ const TuVanVien = () => {
   // }, []);
 
   // Lấy trực tiếp từ localStorage mỗi lần render
-  const isCustomer = localStorage.getItem('loggedIn') === 'true' && localStorage.getItem('role') === 'customer';
+  const isCustomer = localStorage.getItem('loggedIn') === 'true' && (localStorage.getItem('role') || '').toLowerCase() === 'customer';
 
   const filteredAdvisors = tuvanvien.filter(advisor =>
     advisor.name.toLowerCase().includes(searchTerm.toLowerCase())
