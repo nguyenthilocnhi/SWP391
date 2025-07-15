@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
 import { FaCheckCircle, FaRegCircle, FaUserClock } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const timeSlots = [
   "06:00 - 11:00",
@@ -46,6 +47,7 @@ function countWorkShifts(matrix, colIdx) {
 const getMatrixKey = (week) => `workScheduleMatrix_${week}`;
 
 const ConsultantLichLamViecNew = () => {
+  const navigate = useNavigate();
   const [week, setWeek] = useState(weekOptions[0]);
   const [matrix, setMatrix] = useState(initialMatrix);
   const [popup, setPopup] = useState(null);
@@ -54,13 +56,17 @@ const ConsultantLichLamViecNew = () => {
 
   // Load matrix theo tuần khi đổi tuần
   useEffect(() => {
+    const role = Number(localStorage.getItem('role'));
+    if (role !== 2) {
+      navigate('/login');
+    }
     const data = localStorage.getItem(getMatrixKey(week));
     if (data) {
       setMatrix(JSON.parse(data));
     } else {
       setMatrix(initialMatrix);
     }
-  }, [week]);
+  }, [week, navigate]);
 
   // Popup chỉnh sửa trạng thái ca
   const openEditPopup = (row, col) => setPopup({ row, col, status: matrix[row][col] || 0 });

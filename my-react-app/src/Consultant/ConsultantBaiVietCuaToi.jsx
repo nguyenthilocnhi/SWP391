@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
 import { FaEye, FaEdit, FaTrash, FaClock, FaCheck, FaTimes } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const ConsultantBaiVietCuaToi = () => {
+  const navigate = useNavigate();
   const [consultantName] = useState("Nguyễn Thị Huyền");
   const [notificationCount] = useState(3);
   const [myArticles, setMyArticles] = useState([]);
@@ -12,8 +14,12 @@ const ConsultantBaiVietCuaToi = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    const role = Number(localStorage.getItem('role'));
+    if (role !== 2) {
+      navigate('/login');
+    }
     loadMyArticles();
-  }, []);
+  }, [navigate]);
 
   const loadMyArticles = () => {
     const allArticles = JSON.parse(localStorage.getItem("blogs")) || [];

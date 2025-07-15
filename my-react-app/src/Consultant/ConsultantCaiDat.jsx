@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
+import { useNavigate } from "react-router-dom";
 
 const styles = {
   page: {
@@ -155,6 +156,7 @@ const styles = {
 };
 
 function ConsultantCaiDat() {
+  const navigate = useNavigate();
   // Thông tin cá nhân mẫu
   const [info, setInfo] = useState({
     name: "Nguyễn Thị Hương",
@@ -176,6 +178,13 @@ function ConsultantCaiDat() {
   const [success, setSuccess] = useState("");
   const consultantName = info.name;
   const notificationCount = 3;
+
+  useEffect(() => {
+    const role = Number(localStorage.getItem('role'));
+    if (role !== 2) {
+      navigate('/login');
+    }
+  }, [navigate]);
 
   // Đổi ảnh đại diện
   const handleAvatarChange = e => {

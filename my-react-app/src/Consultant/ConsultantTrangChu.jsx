@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ConsultantTrangChu = () => {
+  const navigate = useNavigate();
   const [consultantName] = useState("Nguyễn Thị Huyền");
   const [appointmentCount, setAppointmentCount] = useState(0);
   const [questionCount, setQuestionCount] = useState(0);
@@ -11,6 +13,10 @@ const ConsultantTrangChu = () => {
   const [notificationCount] = useState(3);
 
   useEffect(() => {
+    const role = Number(localStorage.getItem('role'));
+    if (role !== 2) {
+      navigate('/login'); // hoặc navigate('/') nếu muốn về trang chủ
+    }
     // Lấy lịch hẹn trong tháng
     const appointments = JSON.parse(localStorage.getItem("lichHenTuVan")) || [];
     // Giả sử mỗi lịch hẹn có trường 'ngay' dạng yyyy-mm-dd
@@ -33,7 +39,7 @@ const ConsultantTrangChu = () => {
     } else {
       setRatingScore(0);
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <>

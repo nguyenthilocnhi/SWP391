@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
 import { FaStar, FaRegStar, FaFilter, FaSort, FaSearch, FaCalendarAlt, FaUser } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ConsultantDanhGia = () => {
+  const navigate = useNavigate();
   const [consultantName] = useState("Nguyễn Thị Huyền");
   const [notificationCount] = useState(3);
   const [reviews, setReviews] = useState([]);
@@ -22,8 +23,12 @@ const ConsultantDanhGia = () => {
   const { appointmentCount, questionCount, ratingScore } = location.state || {};
 
   useEffect(() => {
+    const role = Number(localStorage.getItem('role'));
+    if (role !== 2) {
+      navigate('/login');
+    }
     loadReviews();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     filterAndSortReviews();
