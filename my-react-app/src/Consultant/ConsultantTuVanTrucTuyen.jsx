@@ -10,10 +10,6 @@ const ConsultantTuVanTrucTuyen = () => {
   const notificationCount = 3;
 
   useEffect(() => {
-    const role = Number(localStorage.getItem('role'));
-    if (role !== 2) {
-      navigate('/login');
-    }
     const onlineBookings = JSON.parse(localStorage.getItem("onlineBookings") || "[]");
     setCustomers(onlineBookings.filter(b => b.status === "waiting"));
   }, [navigate]);

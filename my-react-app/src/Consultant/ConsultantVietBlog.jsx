@@ -21,13 +21,6 @@ const ConsultantVietBlog = () => {
 
   const [isPreview, setIsPreview] = useState(false);
 
-  useEffect(() => {
-    const role = Number(localStorage.getItem('role'));
-    if (role !== 2) {
-      navigate('/login');
-    }
-  }, [navigate]);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBlogData(prev => ({

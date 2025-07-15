@@ -13,14 +13,6 @@ const ConsultantBaiVietCuaToi = () => {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    const role = Number(localStorage.getItem('role'));
-    if (role !== 2) {
-      navigate('/login');
-    }
-    loadMyArticles();
-  }, [navigate]);
-
   const loadMyArticles = () => {
     const allArticles = JSON.parse(localStorage.getItem("blogs")) || [];
     const myArticles = allArticles.filter(article => article.author === consultantName);

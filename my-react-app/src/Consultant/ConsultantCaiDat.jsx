@@ -179,13 +179,6 @@ function ConsultantCaiDat() {
   const consultantName = info.name;
   const notificationCount = 3;
 
-  useEffect(() => {
-    const role = Number(localStorage.getItem('role'));
-    if (role !== 2) {
-      navigate('/login');
-    }
-  }, [navigate]);
-
   // Đổi ảnh đại diện
   const handleAvatarChange = e => {
     if (e.target.files[0]) {

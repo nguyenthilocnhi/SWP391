@@ -10,12 +10,6 @@ const ConsultantHoTro = () => {
   const [notificationCount] = useState(3);
   const [activeTab, setActiveTab] = useState("faq");
 
-  useEffect(() => {
-    const role = Number(localStorage.getItem('role'));
-    if (role !== 2) {
-      navigate('/login');
-    }
-  }, [navigate]);
 
   const faqData = [
     {

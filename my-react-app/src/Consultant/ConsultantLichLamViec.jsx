@@ -56,10 +56,6 @@ const ConsultantLichLamViecNew = () => {
 
   // Load matrix theo tuần khi đổi tuần
   useEffect(() => {
-    const role = Number(localStorage.getItem('role'));
-    if (role !== 2) {
-      navigate('/login');
-    }
     const data = localStorage.getItem(getMatrixKey(week));
     if (data) {
       setMatrix(JSON.parse(data));

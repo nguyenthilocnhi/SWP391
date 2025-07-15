@@ -12,10 +12,6 @@ const ConsultantReply = () => {
   const notificationCount = 3;
 
   useEffect(() => {
-    const role = Number(localStorage.getItem('role'));
-    if (role !== 2) {
-      navigate('/login');
-    }
     const qs = JSON.parse(localStorage.getItem("questions") || "[]");
     const q = qs.find(q => q.id === id);
     setQuestion(q);

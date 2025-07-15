@@ -21,15 +21,6 @@ const ConsultantDanhGia = () => {
 
   const location = useLocation();
   const { appointmentCount, questionCount, ratingScore } = location.state || {};
-
-  useEffect(() => {
-    const role = Number(localStorage.getItem('role'));
-    if (role !== 2) {
-      navigate('/login');
-    }
-    loadReviews();
-  }, [navigate]);
-
   useEffect(() => {
     filterAndSortReviews();
   }, [reviews, filterRating, sortBy, searchTerm]);
