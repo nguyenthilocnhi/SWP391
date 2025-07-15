@@ -1,17 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
+import { useNavigate } from "react-router-dom";
 
 
 const ConsultantTuVanTrucTuyen = () => {
+  const navigate = useNavigate();
   const [customers, setCustomers] = useState([]);
   const consultantName = "Nguyễn Thị Huyền";
   const notificationCount = 3;
 
   useEffect(() => {
+    let role = localStorage.getItem('role');
+    if (role === 'Consultant' || role === 'Tư vấn viên') role = 2;
+    else if (role === 'Admin') role = 4;
+    else if (role === 'Staff' || role === 'Nhân viên') role = 3;
+    else if (role === 'Customer' || role === 'Khách hàng') role = 1;
+    else if (!isNaN(role)) role = Number(role);
+    if (Number(role) !== 2) {
+      navigate('/login');
+    }
     const onlineBookings = JSON.parse(localStorage.getItem("onlineBookings") || "[]");
     setCustomers(onlineBookings.filter(b => b.status === "waiting"));
-  }, []);
+  }, [navigate]);
 
   const handleStartConsult = (id) => {
     // Cập nhật trạng thái booking

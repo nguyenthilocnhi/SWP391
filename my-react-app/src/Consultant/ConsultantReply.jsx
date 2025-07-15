@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
@@ -12,6 +12,15 @@ const ConsultantReply = () => {
   const notificationCount = 3;
 
   useEffect(() => {
+    let role = localStorage.getItem('role');
+    if (role === 'Consultant' || role === 'Tư vấn viên') role = 2;
+    else if (role === 'Admin') role = 4;
+    else if (role === 'Staff' || role === 'Nhân viên') role = 3;
+    else if (role === 'Customer' || role === 'Khách hàng') role = 1;
+    else if (!isNaN(role)) role = Number(role);
+    if (Number(role) !== 2) {
+      navigate('/login');
+    }
     const qs = JSON.parse(localStorage.getItem("questions") || "[]");
     const q = qs.find(q => q.id === id);
     setQuestion(q);

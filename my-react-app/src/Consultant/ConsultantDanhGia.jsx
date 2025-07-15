@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
 import { FaStar, FaRegStar, FaFilter, FaSort, FaSearch, FaCalendarAlt, FaUser } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 const ConsultantDanhGia = () => {
+  const navigate = useNavigate();
   const [consultantName] = useState("Nguyễn Thị Huyền");
   const [notificationCount] = useState(3);
   const [reviews, setReviews] = useState([]);
@@ -22,8 +23,17 @@ const ConsultantDanhGia = () => {
   const location = useLocation();
   const { appointmentCount, questionCount, ratingScore } = location.state || {};
   useEffect(() => {
-    filterAndSortReviews();
-  }, [reviews, filterRating, sortBy, searchTerm]);
+    let role = localStorage.getItem('role');
+    if (role === 'Consultant' || role === 'Tư vấn viên') role = 2;
+    else if (role === 'Admin') role = 4;
+    else if (role === 'Staff' || role === 'Nhân viên') role = 3;
+    else if (role === 'Customer' || role === 'Khách hàng') role = 1;
+    else if (!isNaN(role)) role = Number(role);
+    if (Number(role) !== 2) {
+      navigate('/login');
+    }
+    loadReviews();
+  }, [navigate]);
 
   const loadReviews = () => {
     // Lấy đánh giá từ localStorage (kết nối với trang đánh giá dịch vụ)
