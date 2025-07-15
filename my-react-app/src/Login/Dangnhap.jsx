@@ -29,16 +29,17 @@ const DangNhap = () => {
       });
       const data = await response.json();
       if (data.code === 200) {
-        setMessage('Đăng nhập thành công!');
         localStorage.setItem('token', data.obj); // data.obj là JWT
-        // Luôn ép kiểu role về số
+        // Nếu backend trả về role trong token, nên giải mã để lấy role
         const payload = JSON.parse(atob(data.obj.split('.')[1]));
-        let role = Number(payload.role);
+        let role = payload.role;
+        console.log('ROLE TRONG JWT:', role, typeof role); // Thêm log kiểm tra role
+        if (!isNaN(role)) role = Number(role); // Nếu là số dạng chuỗi thì chuyển sang số
         localStorage.setItem('role', role);
-        if (role === 4) window.location.href = '/admin/trangchu';
-        else if (role === 2) window.location.href = '/consultant/trangchu';
-        else if (role === 3) window.location.href = '/staff/trangchu';
-        else if (role === 1) window.location.href = '/customer';
+        if (role === 4 || role === 'Admin' || role === 'admin') window.location.href = '/admin/trangchu';
+        else if (role === 2 || role === 'Tư vấn viên' || role === 'consultant') window.location.href = '/consultant/trangchu';
+        else if (role === 3 || role === 'Nhân viên' || role === 'staff') window.location.href = '/staff/trangchu';
+        else if (role === 1 || role === 'Khách hàng' || role === 'customer') window.location.href = '/customer';
         else window.location.href = '/';
       } else {
         setMessage(data.message || 'Đăng nhập thất bại!');
