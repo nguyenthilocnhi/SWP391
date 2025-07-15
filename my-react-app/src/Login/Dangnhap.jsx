@@ -39,7 +39,7 @@ const DangNhap = () => {
         if (role === 4 || role === 'Admin' || role === 'admin') window.location.href = '/admin/trangchu';
         else if (role === 2 || role === 'Tư vấn viên') window.location.href = '/consultant/trangchu';
         else if (role === 3 || role === 'Nhân viên') window.location.href = '/staff/trangchu';
-        else if (role === 1 || role === 'Khách hàng') window.location.href = '/customer';
+        else if (role === 1 || role === 'customer') window.location.href = '/customer';
         else window.location.href = '/';
       } else {
         setMessage(data.message || 'Đăng nhập thất bại!');
