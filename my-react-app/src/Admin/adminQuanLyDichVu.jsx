@@ -407,9 +407,22 @@ const AdminQuanLyDichVu = () => {
         const endpoint = form.loai === 'Tư vấn'
           ? `https://api-gender2.purintech.id.vn/api/Service/advise-service/${id}`
           : `https://api-gender2.purintech.id.vn/api/Service/test-service/${id}`;
-        const payload = { ...form, price: Number(form.chiphi) };
-        // Xóa trường chiphi nếu backend không cần
+        const payload = { ...form };
+        // Map lại trường dữ liệu cho đúng backend
+        payload.price = Number(form.chiphi);
+        payload.description = form.mucdich;
+        payload.duration = form.thoigian;
+        payload.isAvailable = form.tinhtrang === 'Có';
+        if (form.loai === 'Tư vấn') {
+          payload.consultationType = form.ten;
+        } else {
+          payload.testName = form.ten;
+        }
         delete payload.chiphi;
+        delete payload.ten;
+        delete payload.mucdich;
+        delete payload.thoigian;
+        delete payload.tinhtrang;
         const response = await fetch(endpoint, {
           method: 'PUT',
           headers: {
@@ -437,23 +450,25 @@ const AdminQuanLyDichVu = () => {
     if (!window.confirm('Bạn có chắc chắn muốn xóa dịch vụ này?')) return;
     try {
       const s = services[idx];
-      const id = s._raw.id || s.ma;
+      const id = s._raw?.id || s.ma;
       const endpoint = s.loai === 'Tư vấn'
         ? `https://api-gender2.purintech.id.vn/api/Service/advise-service/${id}`
         : `https://api-gender2.purintech.id.vn/api/Service/test-service/${id}`;
-      
+
       const response = await fetch(endpoint, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
-      
+
+      const data = await response.json();
+      console.log('Kết quả xóa dịch vụ:', data);
       if (!response.ok) {
         throw new Error('Lỗi khi xóa dịch vụ');
       }
-      
       fetchServices();
+      alert('Xóa dịch vụ thành công!');
     } catch (error) {
       console.error('Lỗi khi xóa dịch vụ:', error);
       alert('Lỗi khi xóa dịch vụ!');
@@ -472,7 +487,8 @@ const AdminQuanLyDichVu = () => {
       // Ẩn/hiện dịch vụ thông qua API
       const s = services[confirmAnIndex];
       const id = s._raw.id || s.ma;
-      const updateData = { tinhtrang: !s.an ? 'Đã ẩn' : 'Có' };
+      // Gửi đúng trường isAvailable cho backend
+      const updateData = { isAvailable: !s.an };
       const endpoint = s.loai === 'Tư vấn'
         ? `https://api-gender2.purintech.id.vn/api/Service/advise-service/${id}`
         : `https://api-gender2.purintech.id.vn/api/Service/test-service/${id}`;
@@ -485,16 +501,15 @@ const AdminQuanLyDichVu = () => {
         },
         body: JSON.stringify(updateData)
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Lỗi khi cập nhật trạng thái');
-          }
+        .then(response => response.json().then(data => {
+          console.log('Kết quả cập nhật trạng thái:', data);
+          if (!response.ok) throw new Error('Lỗi khi cập nhật trạng thái');
           fetchServices();
-          alert('Đã ẩn dịch vụ thành công!');
-        })
+          alert(`${!s.an ? 'Đã ẩn' : 'Đã hiện'} dịch vụ thành công!`);
+        }))
         .catch(error => {
-          console.error('Lỗi khi ẩn dịch vụ:', error);
-          alert('Lỗi khi ẩn dịch vụ!');
+          console.error('Lỗi khi ẩn/hiện dịch vụ:', error);
+          alert('Lỗi khi ẩn/hiện dịch vụ!');
         });
     }
     setConfirmAnIndex(null);
@@ -612,18 +627,17 @@ const AdminQuanLyDichVu = () => {
               <ModalInput name="ma" value={form.ma} onChange={handleChange} placeholder="Mã dịch vụ" readOnly />
               <ModalLabel>Tên dịch vụ</ModalLabel>
               <ModalInput name="ten" value={form.ten} onChange={handleChange} placeholder="Nhập tên dịch vụ" />
-              <ModalLabel>Mục đích</ModalLabel>
-              <ModalInput name="mucdich" value={form.mucdich} onChange={handleChange} placeholder="Nhập mục đích" />
+              <ModalLabel>Mô tả</ModalLabel>
+              <ModalInput name="mucdich" value={form.mucdich} onChange={handleChange} placeholder="Nhập mô tả" />
               <ModalLabel>Thời gian</ModalLabel>
-              <ModalInput name="thoigian" value={form.thoigian} onChange={handleChange} placeholder="Nhập thời gian thực hiện" />
+              <ModalInput name="thoigian" value={form.thoigian} onChange={handleChange} placeholder="Nhập thời gian" />
               <ModalLabel>Chi phí</ModalLabel>
               <ModalInput name="chiphi" value={form.chiphi} onChange={handleChange} placeholder="Nhập chi phí" />
-              <ModalLabel>Tình trạng</ModalLabel>
-              {modalType === 'add' ? (
-                <ModalInput name="tinhtrang" value="Có" readOnly />
-              ) : (
-                <ModalInput name="tinhtrang" value={form.tinhtrang} onChange={handleChange} placeholder="Có/Không" />
-              )}
+              <ModalLabel>Trạng thái</ModalLabel>
+              <ModalSelect name="tinhtrang" value={form.tinhtrang} onChange={handleChange}>
+                <option value="Có">Có</option>
+                <option value="Không có">Không có</option>
+              </ModalSelect>
               <ModalActions>
                 <Button type="button" style={{ background: '#e5e7eb', color: '#374151' }} onClick={closeModal}>Hủy</Button>
                 <Button type="submit">Lưu</Button>

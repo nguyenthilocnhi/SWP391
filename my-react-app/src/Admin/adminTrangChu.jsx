@@ -606,46 +606,6 @@ const AdminTrangChu = () => {
                   ))}
                 </TopicList>
               </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Hoạt động nhân viên gần đây</CardTitle>
-                </CardHeader>
-                <TableContainer>
-                  <StaffTable>
-                    <thead>
-                      <tr>
-                        <StaffTh>Nhân viên</StaffTh>
-                        <StaffTh>Hoạt động</StaffTh>
-                        <StaffTh>Thời gian</StaffTh>
-                        <StaffTh>Trạng thái</StaffTh>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {staffActivities.map((s, idx) => (
-                        <tr key={idx}>
-                          <StaffTd>
-                            <StaffInfo>
-                              <StaffImg src={s.staff.avatar} alt={s.staff.name} />
-                              <div>
-                                <StaffName>{s.staff.name}</StaffName>
-                                <StaffRole>{s.staff.role}</StaffRole>
-                              </div>
-                            </StaffInfo>
-                          </StaffTd>
-                          <StaffTd>
-                            <ActivityTitle>{s.activity.title}</ActivityTitle>
-                            <ActivityDesc>{s.activity.desc}</ActivityDesc>
-                          </StaffTd>
-                          <StaffTd>{s.time}</StaffTd>
-                          <StaffTd>
-                            <Badge $bg={badgeColors[s.status].bg} $color={badgeColors[s.status].color}>{s.statusText}</Badge>
-                          </StaffTd>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </StaffTable>
-                </TableContainer>
-              </Card>
             </div>
           </GridLayout>
         </ContentWrapper>
