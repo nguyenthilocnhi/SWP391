@@ -280,7 +280,7 @@ const DichVu = (props) => {
           loai: item.type,
           mucdich: item.description,
           thoigian: item.duration,
-          chiphi: item.price != null ? item.price.toLocaleString('vi-VN') + ' VNĐ' : 'N/A',
+          chiphi: item.price,
           tinhtrang: item.isAvailable ? 'Có' : 'Không có',
           an: !item.isAvailable,
           _raw: item
@@ -472,7 +472,7 @@ const DichVu = (props) => {
                     <td>{item.ten}</td>
                     <td>{item.mucdich}</td>
                     <td>{item.thoigian}</td>
-                    <td>{item.chiphi}</td>
+                    <td>{item.chiphi + '.000 VNĐ'}</td>
                     <td>{item.tinhtrang}</td>
                     <td>
                       {getDetailUrl(item)}

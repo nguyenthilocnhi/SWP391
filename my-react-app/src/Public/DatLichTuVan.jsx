@@ -123,7 +123,7 @@ const styles = {
     textAlign: "center",
   },
   buttonHover: {
-    backgroundColor: "#059669",
+    background: "#059669", // Đổi từ backgroundColor sang background
   },
   required: {
     color: "#ef4444",
@@ -166,7 +166,7 @@ function DatLichTuVan() {
   const [minDate, setMinDate] = useState("");
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const [adviceNames, setAdviceNames] = useState([]);
+  const [services, setServices] = useState([]);
 
   useEffect(() => {
     document.title = "Đặt Lịch Tư Vấn";
@@ -177,6 +177,17 @@ function DatLichTuVan() {
     }));
     const today = new Date().toISOString().split('T')[0];
     setMinDate(today);
+
+    // Fetch danh sách dịch vụ tư vấn
+    fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-names')
+      .then(res => res.json())
+      .then(data => {
+        console.log("DANH SÁCH DỊCH VỤ:", data); // Thêm log để kiểm tra dữ liệu trả về
+        if (Array.isArray(data)) setServices(data);
+        else if (Array.isArray(data.obj)) setServices(data.obj);
+        else setServices([]);
+      })
+      .catch(() => setServices([]));
   }, []);
 
   useEffect(() => {
@@ -186,29 +197,6 @@ function DatLichTuVan() {
       setDateDisplay("");
     }
   }, [form.ngay]);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-names', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (Array.isArray(data)) {
-            setAdviceNames(data);
-          } else if (Array.isArray(data.obj)) {
-            setAdviceNames(data.obj);
-          } else {
-            setAdviceNames([]);
-          }
-        })
-        .catch(err => {
-          setAdviceNames([]);
-          console.error(err);
-        });
-    }
-  }, []);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -269,13 +257,14 @@ function DatLichTuVan() {
       navigate('/login');
       return;
     }
+    // Xác định contactType từ hinhThuc
+    let contactType = 1; // 1: Trực tiếp, 2: Online
+    if (hinhThuc === 'Online') contactType = 2;
     const payload = {
-      fullName: hoten,
-      phone: sdt,
       appointmentDate: new Date(`${ngay}T${gio}:00`).toISOString(),
-      adviceServiceId: Number(loaiTuVan), // ép kiểu sang số
-      consultationMethod: hinhThuc,
-      note: ghichu || ""
+      adviceServiceId: Number(loaiTuVan),
+      note: ghichu || "",
+      contactType: contactType
     };
     console.log('Payload gửi lên:', payload);
     fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointment', {
@@ -388,6 +377,7 @@ function DatLichTuVan() {
                   onChange={handleChange}
                   required
                 />
+                {/* Loại tư vấn */}
                 <label style={styles.label}>
                   Loại tư vấn <span style={styles.required}>*</span>
                 </label>
@@ -399,8 +389,8 @@ function DatLichTuVan() {
                   required
                 >
                   <option value="">-- Chọn loại tư vấn --</option>
-                  {Array.isArray(adviceNames) && adviceNames.map(item => (
-                    <option key={item.id} value={item.id}>{item.name}</option>
+                  {Array.isArray(services) && services.map(item => (
+                    <option key={item.id} value={item.id}>{item.consultationType}</option>
                   ))}
                 </select>
               </div>

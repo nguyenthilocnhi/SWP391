@@ -234,66 +234,68 @@ const AdminQuanLyDichVu = () => {
   const [confirmAnMode, setConfirmAnMode] = useState(''); // 'an' hoặc 'hien'
 
   // Lấy danh sách dịch vụ từ API
-  const fetchServices = () => {
+  const fetchServices = async () => {
     setLoading(true);
-    Promise.all([
-      fetch('https://api-gender2.purintech.id.vn/api/Service/test-services', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      }).then(res => res.json()),
-      fetch('https://api-gender2.purintech.id.vn/api/Service/advise-services', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      }).then(res => res.json())
-    ])
-      .then(([testData, adviseData]) => {
-        // Gán loại cho từng dịch vụ
-        const testServices = (testData?.obj || []).map(item => ({
-          ...item,
-          ma: item.id,
-          ten: item.testName,
-          loai: 'Xét nghiệm',
-          mucdich: item.description,
-          thoigian: item.duration,
-          chiphi: item.price,
-          tinhtrang: item.isAvailable ? 'Có' : 'Không có',
-          an: !item.isAvailable,
-          overview: item.overview || '',
-          suitableFor: Array.isArray(item.suitableFor) ? item.suitableFor : (item.suitableFor || ''),
-          preparation: Array.isArray(item.preparation) ? item.preparation : (item.preparation || ''),
-          process: Array.isArray(item.process) ? item.process : (item.process || ''),
-          detail: item.detail || '',
-          moreInfo: item.moreInfo || '',
-          _raw: item
-        }));
-        const adviseServices = (adviseData?.obj || []).map(item => ({
-          ...item,
-          ma: item.id,
-          ten: item.consultationType || item.name || '',
-          loai: 'Tư vấn',
-          mucdich: item.description,
-          thoigian: item.duration || item.time || '',
-          chiphi: item.price,
-          tinhtrang: item.isAvailable ? 'Có' : 'Không có',
-          an: !item.isAvailable,
-          overview: item.overview || '',
-          suitableFor: Array.isArray(item.suitableFor) ? item.suitableFor : (item.suitableFor || ''),
-          preparation: Array.isArray(item.preparation) ? item.preparation : (item.preparation || ''),
-          process: Array.isArray(item.process) ? item.process : (item.process || ''),
-          detail: item.detail || '',
-          moreInfo: item.moreInfo || '',
-          _raw: item
-        }));
+    try {
+      const [testData, adviseData] = await Promise.all([
+        fetch('https://api-gender2.purintech.id.vn/api/Service/test-services', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Cache-Control': 'no-cache'
+          }
+        }).then(res => res.json()),
+        fetch('https://api-gender2.purintech.id.vn/api/Service/advise-services', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Cache-Control': 'no-cache'
+          }
+        }).then(res => res.json())
+      ]);
+      const testServices = (testData?.obj || []).map(item => ({
+        ...item,
+        ma: item.id,
+        ten: item.testName,
+        loai: 'Xét nghiệm',
+        mucdich: item.description,
+        thoigian: item.duration,
+        chiphi: item.price,
+        tinhtrang: item.isAvailable ? 'Có' : 'Không có',
+        an: !item.isAvailable,
+        overview: item.overview || '',
+        suitableFor: Array.isArray(item.suitableFor) ? item.suitableFor : (item.suitableFor || ''),
+        preparation: Array.isArray(item.preparation) ? item.preparation : (item.preparation || ''),
+        process: Array.isArray(item.process) ? item.process : (item.process || ''),
+        detail: item.detail || '',
+        moreInfo: item.moreInfo || '',
+        _raw: item
+      }));
+      const adviseServices = (adviseData?.obj || []).map(item => ({
+        ...item,
+        ma: item.id,
+        ten: item.consultationType || item.name || '',
+        loai: 'Tư vấn',
+        mucdich: item.description,
+        thoigian: item.duration || item.time || '',
+        chiphi: item.price,
+        tinhtrang: item.isAvailable ? 'Có' : 'Không có',
+        an: !item.isAvailable,
+        overview: item.overview || '',
+        suitableFor: Array.isArray(item.suitableFor) ? item.suitableFor : (item.suitableFor || ''),
+        preparation: Array.isArray(item.preparation) ? item.preparation : (item.preparation || ''),
+        process: Array.isArray(item.process) ? item.process : (item.process || ''),
+        detail: item.detail || '',
+        moreInfo: item.moreInfo || '',
+        _raw: item
+      }));
+      // Ép render lại
+      setServices([]);
+      setTimeout(() => {
         setServices([...testServices, ...adviseServices]);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Lỗi khi lấy danh sách dịch vụ:', error);
-        setServices([]);
-        setLoading(false);
-      });
+        console.log('Dịch vụ mới:', [...testServices, ...adviseServices]);
+      }, 0);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -362,7 +364,7 @@ const AdminQuanLyDichVu = () => {
     }
   };
   // Bước 1: Tiếp tục sang bước 2
-  const handleNextStep = e => {
+  const handleNextStep = async e => {
     e.preventDefault();
     if (!form.ma || !form.loai || !form.ten || !form.mucdich || !form.thoigian || !form.chiphi || !form.tinhtrang) {
       setFormError('Vui lòng nhập đầy đủ thông tin.');
@@ -374,24 +376,19 @@ const AdminQuanLyDichVu = () => {
       return;
     }
     setFormError('');
-    setModalStep(2);
+    // Bỏ qua bước 2, lưu trực tiếp
+    await handleSave(e);
   };
   // Bước 2: Lưu dịch vụ (THÊM/SỬA)
   const handleSave = async e => {
     e.preventDefault();
-    // Validate chi tiết bắt buộc
-    if (!form.overview || !form.suitableFor || !form.preparation || !form.process) {
-      setFormError('Vui lòng nhập đầy đủ thông tin chi tiết.');
-      return;
-    }
     setFormError('');
     try {
+      let data = null;
       if (modalType === 'add') {
-        // Gọi API thêm mới
         const endpoint = form.loai === 'Tư vấn' 
           ? 'https://api-gender2.purintech.id.vn/api/Service/advise-service'
           : 'https://api-gender2.purintech.id.vn/api/Service/test-service';
-        
         const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
@@ -400,32 +397,35 @@ const AdminQuanLyDichVu = () => {
           },
           body: JSON.stringify(form)
         });
-        
+        data = await response.json();
+        console.log('Kết quả thêm dịch vụ:', data);
         if (!response.ok) {
           throw new Error('Lỗi khi thêm dịch vụ');
         }
       } else if (modalType === 'edit' && editIndex !== null) {
-        // Gọi API cập nhật
         const id = services[editIndex]._raw.id || services[editIndex].ma;
         const endpoint = form.loai === 'Tư vấn'
           ? `https://api-gender2.purintech.id.vn/api/Service/advise-service/${id}`
           : `https://api-gender2.purintech.id.vn/api/Service/test-service/${id}`;
-        
+        const payload = { ...form, price: Number(form.chiphi) };
+        // Xóa trường chiphi nếu backend không cần
+        delete payload.chiphi;
         const response = await fetch(endpoint, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
-          body: JSON.stringify(form)
+          body: JSON.stringify(payload)
         });
-        
+        data = await response.json();
+        console.log('Kết quả cập nhật dịch vụ:', data);
         if (!response.ok) {
           throw new Error('Lỗi khi cập nhật dịch vụ');
         }
       }
       closeModal();
-      fetchServices();
+      await fetchServices();
     } catch (error) {
       console.error('Lỗi khi lưu dịch vụ:', error);
       setFormError('Lỗi khi lưu dịch vụ!');
@@ -538,47 +538,32 @@ const AdminQuanLyDichVu = () => {
               <ServiceTable>
                 <thead>
                   <tr>
-                    <ServiceTh>Mã</ServiceTh>
+                    <ServiceTh>ID</ServiceTh>
                     <ServiceTh>Loại</ServiceTh>
                     <ServiceTh>Tên dịch vụ</ServiceTh>
-                    <ServiceTh>Mục đích</ServiceTh>
+                    <ServiceTh>Mô tả</ServiceTh>
                     <ServiceTh>Thời gian</ServiceTh>
                     <ServiceTh>Chi phí</ServiceTh>
-                    <ServiceTh>Tình trạng</ServiceTh>
-                    <ServiceTh>Tổng quan</ServiceTh>
-                    <ServiceTh>Đối tượng phù hợp</ServiceTh>
-                    <ServiceTh>Lưu ý chuẩn bị</ServiceTh>
-                    <ServiceTh>Quy trình</ServiceTh>
-                    <ServiceTh>Chi tiết</ServiceTh>
-                    <ServiceTh>Thông tin bổ sung</ServiceTh>
-                    <ServiceTh>Ẩn/Hiện</ServiceTh>
+                    <ServiceTh>Trạng thái</ServiceTh>
                     <ServiceTh>Thao tác</ServiceTh>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
-                    <tr><ServiceTd colSpan={15} style={{ textAlign: 'center' }}>Đang tải dữ liệu...</ServiceTd></tr>
+                    <tr><ServiceTd colSpan={8} style={{ textAlign: 'center' }}>Đang tải dữ liệu...</ServiceTd></tr>
                   ) : filteredServices.length === 0 ? (
-                    <tr><ServiceTd colSpan={15} style={{ textAlign: 'center' }}>Không có dịch vụ phù hợp.</ServiceTd></tr>
+                    <tr><ServiceTd colSpan={8} style={{ textAlign: 'center' }}>Không có dịch vụ phù hợp.</ServiceTd></tr>
                   ) : (
                     filteredServices.map((item) => (
-                      <tr key={item.ma}>
-                        <ServiceTd>{item.ma}</ServiceTd>
+                      <tr key={item.id + '-' + item.loai}>
+                        <ServiceTd>{item.id}</ServiceTd>
                         <ServiceTd>{item.loai}</ServiceTd>
-                        <ServiceTd>{item.ten}</ServiceTd>
-                        <ServiceTd>{item.mucdich}</ServiceTd>
-                        <ServiceTd>{item.thoigian}</ServiceTd>
-                        <ServiceTd>{item.chiphi}</ServiceTd>
-                        <ServiceTd>{item.tinhtrang}</ServiceTd>
-                        <ServiceTd>{item.overview || ''}</ServiceTd>
-                        <ServiceTd>{Array.isArray(item.suitableFor) ? item.suitableFor.join(', ') : (item.suitableFor || '')}</ServiceTd>
-                        <ServiceTd>{Array.isArray(item.preparation) ? item.preparation.join(', ') : (item.preparation || '')}</ServiceTd>
-                        <ServiceTd>{Array.isArray(item.process) ? item.process.join(', ') : (item.process || '')}</ServiceTd>
-                        <ServiceTd>{item.detail || ''}</ServiceTd>
-                        <ServiceTd>{item.moreInfo || ''}</ServiceTd>
-                        <ServiceTd>{item.an ? 'Đã ẩn' : 'Hiện'}</ServiceTd>
+                        <ServiceTd>{item.testName || item.consultationType || item.ten || ''}</ServiceTd>
+                        <ServiceTd>{item.description || ''}</ServiceTd>
+                        <ServiceTd>{item.duration || item.thoigian || ''}</ServiceTd>
+                        <ServiceTd>{item.price ? item.price + '.000 VNĐ' : ''}</ServiceTd>
+                        <ServiceTd>{item.isAvailable ? 'Có' : 'Không có'}</ServiceTd>
                         <ServiceTd>
-                          {/* Các nút thao tác giữ nguyên */}
                           <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
                             <Button style={{ background: '#fbbf24', color: '#fff', marginRight: 6 }} onClick={() => openEditModal(services.indexOf(item))} title="Sửa"><FaEdit /></Button>
                             <Button style={{ background: 'transparent', color: item.an ? '#9ca3af' : '#22c55e', boxShadow: 'none', border: 'none', padding: '8px 12px' }} onClick={() => handleToggleAn(services.indexOf(item))} title={item.an ? 'Hiện' : 'Ẩn'}>
@@ -614,57 +599,36 @@ const AdminQuanLyDichVu = () => {
       {modalOpen && (
         <ModalOverlay>
           <ModalContent>
-            <ModalTitle>{modalType === 'add' ? (modalStep === 1 ? 'Thêm dịch vụ' : 'Chi tiết dịch vụ') : (modalStep === 1 ? 'Sửa dịch vụ' : 'Chi tiết dịch vụ')}</ModalTitle>
+            <ModalTitle>{modalType === 'add' ? 'Thêm dịch vụ' : 'Chỉnh sửa dịch vụ'}</ModalTitle>
             {formError && <ErrorMsg>{formError}</ErrorMsg>}
-            {modalStep === 1 ? (
-              <ModalForm onSubmit={handleNextStep}>
-                <ModalLabel>Loại</ModalLabel>
-                <ModalSelect name="loai" value={form.loai} onChange={handleChange}>
-                  <option value="">-- Chọn loại --</option>
-                  <option value="Tư vấn">Tư vấn</option>
-                  <option value="Xét nghiệm">Xét nghiệm</option>
-                </ModalSelect>
-                <ModalLabel>Mã dịch vụ</ModalLabel>
-                <ModalInput name="ma" value={form.ma} onChange={handleChange} placeholder="Mã dịch vụ" readOnly />
-                <ModalLabel>Tên dịch vụ</ModalLabel>
-                <ModalInput name="ten" value={form.ten} onChange={handleChange} placeholder="Nhập tên dịch vụ" />
-                <ModalLabel>Mục đích</ModalLabel>
-                <ModalInput name="mucdich" value={form.mucdich} onChange={handleChange} placeholder="Nhập mục đích" />
-                <ModalLabel>Thời gian</ModalLabel>
-                <ModalInput name="thoigian" value={form.thoigian} onChange={handleChange} placeholder="Nhập thời gian thực hiện" />
-                <ModalLabel>Chi phí</ModalLabel>
-                <ModalInput name="chiphi" value={form.chiphi} onChange={handleChange} placeholder="Nhập chi phí" />
-                <ModalLabel>Tình trạng</ModalLabel>
-                {modalType === 'add' ? (
-                  <ModalInput name="tinhtrang" value="Có" readOnly />
-                ) : (
-                  <ModalInput name="tinhtrang" value={form.tinhtrang} onChange={handleChange} placeholder="Có/Không" />
-                )}
-                <ModalActions>
-                  <Button type="button" style={{ background: '#e5e7eb', color: '#374151' }} onClick={closeModal}>Hủy</Button>
-                  <Button type="submit">Tiếp tục</Button>
-                </ModalActions>
-              </ModalForm>
-            ) : (
-              <ModalForm onSubmit={handleSave}>
-                <ModalLabel>Tổng quan xét nghiệm</ModalLabel>
-                <ModalInput as="textarea" rows={2} name="overview" value={form.overview || ''} onChange={handleChange} placeholder="Nhập tổng quan xét nghiệm" />
-                <ModalLabel>Xét nghiệm phù hợp dành cho đối tượng nào (mỗi dòng 1 đối tượng)</ModalLabel>
-                <ModalInput as="textarea" rows={2} name="suitableFor" value={form.suitableFor || ''} onChange={handleChange} placeholder="Nhập đối tượng phù hợp, mỗi dòng 1 đối tượng" />
-                <ModalLabel>Lưu ý trước khi thực hiện xét nghiệm (mỗi dòng 1 lưu ý)</ModalLabel>
-                <ModalInput as="textarea" rows={2} name="preparation" value={form.preparation || ''} onChange={handleChange} placeholder="Nhập lưu ý, mỗi dòng 1 lưu ý" />
-                <ModalLabel>Quy trình xét nghiệm (mỗi dòng 1 bước)</ModalLabel>
-                <ModalInput as="textarea" rows={2} name="process" value={form.process || ''} onChange={handleChange} placeholder="Nhập quy trình, mỗi dòng 1 bước" />
-                <ModalLabel>Chi tiết dịch vụ</ModalLabel>
-                <ModalInput as="textarea" rows={2} name="detail" value={form.detail || ''} onChange={handleChange} placeholder="Nhập chi tiết dịch vụ (tùy chọn)" />
-                <ModalLabel>Thông tin bổ sung</ModalLabel>
-                <ModalInput as="textarea" rows={2} name="moreInfo" value={form.moreInfo || ''} onChange={handleChange} placeholder="Nhập thông tin bổ sung (tùy chọn)" />
-                <ModalActions>
-                  <Button type="button" style={{ background: '#e5e7eb', color: '#374151' }} onClick={handleBackStep}>Quay lại</Button>
-                  <Button type="submit">Lưu</Button>
-                </ModalActions>
-              </ModalForm>
-            )}
+            <ModalForm onSubmit={handleNextStep}>
+              <ModalLabel>Loại</ModalLabel>
+              <ModalSelect name="loai" value={form.loai} onChange={handleChange}>
+                <option value="">-- Chọn loại --</option>
+                <option value="Tư vấn">Tư vấn</option>
+                <option value="Xét nghiệm">Xét nghiệm</option>
+              </ModalSelect>
+              <ModalLabel>Mã dịch vụ</ModalLabel>
+              <ModalInput name="ma" value={form.ma} onChange={handleChange} placeholder="Mã dịch vụ" readOnly />
+              <ModalLabel>Tên dịch vụ</ModalLabel>
+              <ModalInput name="ten" value={form.ten} onChange={handleChange} placeholder="Nhập tên dịch vụ" />
+              <ModalLabel>Mục đích</ModalLabel>
+              <ModalInput name="mucdich" value={form.mucdich} onChange={handleChange} placeholder="Nhập mục đích" />
+              <ModalLabel>Thời gian</ModalLabel>
+              <ModalInput name="thoigian" value={form.thoigian} onChange={handleChange} placeholder="Nhập thời gian thực hiện" />
+              <ModalLabel>Chi phí</ModalLabel>
+              <ModalInput name="chiphi" value={form.chiphi} onChange={handleChange} placeholder="Nhập chi phí" />
+              <ModalLabel>Tình trạng</ModalLabel>
+              {modalType === 'add' ? (
+                <ModalInput name="tinhtrang" value="Có" readOnly />
+              ) : (
+                <ModalInput name="tinhtrang" value={form.tinhtrang} onChange={handleChange} placeholder="Có/Không" />
+              )}
+              <ModalActions>
+                <Button type="button" style={{ background: '#e5e7eb', color: '#374151' }} onClick={closeModal}>Hủy</Button>
+                <Button type="submit">Lưu</Button>
+              </ModalActions>
+            </ModalForm>
           </ModalContent>
         </ModalOverlay>
       )}
