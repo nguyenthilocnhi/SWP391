@@ -229,6 +229,7 @@ function LichSuDatLich() {
     const token = localStorage.getItem('token');
     if (!token) {
       setLoadingAdvice(false);
+      setAdviceAppointments([]); // Đảm bảo luôn là mảng
       return;
     }
     fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
@@ -236,10 +237,19 @@ function LichSuDatLich() {
     })
       .then(res => res.json())
       .then(data => {
-        setAdviceAppointments(data.obj || data);
+        if (Array.isArray(data)) {
+          setAdviceAppointments(data);
+        } else if (Array.isArray(data.obj)) {
+          setAdviceAppointments(data.obj);
+        } else {
+          setAdviceAppointments([]);
+        }
         setLoadingAdvice(false);
       })
-      .catch(() => setLoadingAdvice(false));
+      .catch(() => {
+        setAdviceAppointments([]);
+        setLoadingAdvice(false);
+      });
   }, []);
 
   const filtered = filter
@@ -301,6 +311,28 @@ function LichSuDatLich() {
     return res.json();
   };
 
+  // Gộp dữ liệu lịch xét nghiệm và lịch tư vấn từ API
+  const mergedAppointments = [
+    ...Array.isArray(appointments) ? appointments.map(item => ({
+      id: item.id,
+      fullName: item.fullName,
+      phone: item.phoneNumber,
+      appointmentDate: item.appointmentDate,
+      serviceType: 'Xét nghiệm',
+      serviceName: item.testName,
+      note: item.note,
+    })) : [],
+    ...Array.isArray(adviceAppointments) ? adviceAppointments.map(item => ({
+      id: item.id,
+      fullName: item.fullName,
+      phone: item.phone,
+      appointmentDate: item.appointmentDate,
+      serviceType: 'Tư vấn',
+      serviceName: item.consultationType,
+      note: item.note,
+    })) : []
+  ].sort((a, b) => new Date(b.appointmentDate) - new Date(a.appointmentDate));
+
   return (
     <div style={styles.page}>
       <HeaderCustomer />
@@ -325,61 +357,36 @@ function LichSuDatLich() {
           <table style={styles.table}>
             <thead>
               <tr>
-                <th style={styles.th}>Ngày</th>
+                <th style={styles.th}>Ngày hẹn</th>
                 <th style={styles.th}>Dịch vụ</th>
-                <th style={styles.th}>Lý do</th>
+                <th style={styles.th}>Tên dịch vụ</th>
                 <th style={styles.th}>Họ tên</th>
                 <th style={styles.th}>SĐT</th>
-                <th style={styles.th}>Trạng thái</th>
+                <th style={styles.th}>Ghi chú</th>
                 <th style={styles.th}>Thao tác</th>
               </tr>
             </thead>
             <tbody>
-              {filtered.length === 0 ? (
+              {mergedAppointments.length === 0 ? (
                 <tr>
                   <td colSpan={7} style={{textAlign: 'center', color: '#888'}}>Không có lịch đặt nào.</td>
                 </tr>
               ) : (
-                filtered.map((lich, idx) => (
-                  <tr key={idx}>
-                    <td style={styles.td}>{lich.ngay || "-"}</td>
-                    <td style={styles.td}>{lich.dichVu || "-"}</td>
-                    <td style={styles.td}>{lich.lyDo || "-"}</td>
-                    <td style={styles.td}>{lich.hoTen || "-"}</td>
-                    <td style={styles.td}>{lich.sdt || "-"}</td>
-                    <td style={{
-                      ...styles.td,
-                      padding: 0,
-                      border: STATUS_LABELS[lich.trangThai]?.className === 'pending' ? '1px solid #faf089' : 'none',
-                    }}>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: '100%',
-                        minHeight: 28,
-                        background: STATUS_LABELS[lich.trangThai]?.className === 'pending' ? '#fefcbf' : STATUS_LABELS[lich.trangThai]?.className === 'confirmed' ? '#10b981' : '#ef4444',
-                        color: STATUS_LABELS[lich.trangThai]?.className === 'pending' ? '#744210' : '#fff',
-                        borderRadius: 16,
-                        fontWeight: 600,
-                        fontSize: 12,
-                        width: 'fit-content',
-                        margin: '0 auto',
-                        padding: '2px 12px',
-                      }}>{STATUS_LABELS[lich.trangThai]?.label || lich.trangThai || "-"}</div>
-                    </td>
+                mergedAppointments.map(item => (
+                  <tr key={item.serviceType + '-' + item.id}>
+                    <td style={styles.td}>{new Date(item.appointmentDate).toLocaleString()}</td>
+                    <td style={styles.td}>{item.serviceType}</td>
+                    <td style={styles.td}>{item.serviceName}</td>
+                    <td style={styles.td}>{item.fullName}</td>
+                    <td style={styles.td}>{item.phone}</td>
+                    <td style={styles.td}>{item.note}</td>
                     <td style={styles.td}>
                       <button
-                        style={btnViewHover === idx ? {...styles.btnView, ...styles.btnViewHover} : styles.btnView}
-                        onMouseEnter={() => setBtnViewHover(idx)}
-                        onMouseLeave={() => setBtnViewHover(-1)}
-                        onClick={() => setModal(lich)}
-                      >
-                        Xem
-                      </button>
-                      <button
                         style={{...styles.btnView, backgroundColor: '#ef4444'}}
-                        onClick={() => handleDelete(lichDat.indexOf(lich))}
+                        onClick={() => {
+                          if (item.serviceType === 'Xét nghiệm') handleDeleteAppointment(item.id);
+                          else handleDeleteAdviceAppointment(item.id);
+                        }}
                       >
                         Xóa
                       </button>
@@ -390,100 +397,6 @@ function LichSuDatLich() {
             </tbody>
           </table>
         </div>
-      </div>
-      {/* Bảng lịch xét nghiệm từ API */}
-      <div style={styles.container}>
-        <h2 style={styles.h2}>Lịch Xét Nghiệm Đã Đặt</h2>
-        {loadingAppointments ? (
-          <div>Đang tải...</div>
-        ) : (
-          <div style={{overflowX: 'auto'}}>
-            <table style={styles.table}>
-              <thead>
-                <tr>
-                  <th style={styles.th}>Họ tên</th>
-                  <th style={styles.th}>SĐT</th>
-                  <th style={styles.th}>Ngày hẹn</th>
-                  <th style={styles.th}>Tên xét nghiệm</th>
-                  <th style={styles.th}>Ghi chú</th>
-                  <th style={styles.th}>Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                {appointments.length === 0 ? (
-                  <tr>
-                    <td colSpan={6} style={{textAlign: 'center', color: '#888'}}>Không có lịch xét nghiệm nào.</td>
-                  </tr>
-                ) : (
-                  appointments.map(item => (
-                    <tr key={item.id}>
-                      <td style={styles.td}>{item.fullName}</td>
-                      <td style={styles.td}>{item.phoneNumber}</td>
-                      <td style={styles.td}>{new Date(item.appointmentDate).toLocaleString()}</td>
-                      <td style={styles.td}>{item.testName}</td>
-                      <td style={styles.td}>{item.note}</td>
-                      <td style={styles.td}>
-                        <button
-                          style={{...styles.btnView, backgroundColor: '#ef4444'}}
-                          onClick={() => handleDeleteAppointment(item.id)}
-                        >
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-      {/* Bảng lịch tư vấn từ API */}
-      <div style={styles.container}>
-        <h2 style={styles.h2}>Lịch Tư Vấn Đã Đặt</h2>
-        {loadingAdvice ? (
-          <div>Đang tải...</div>
-        ) : (
-          <div style={{overflowX: 'auto'}}>
-            <table style={styles.table}>
-              <thead>
-                <tr>
-                  <th style={styles.th}>Họ tên</th>
-                  <th style={styles.th}>SĐT</th>
-                  <th style={styles.th}>Ngày hẹn</th>
-                  <th style={styles.th}>Loại tư vấn</th>
-                  <th style={styles.th}>Ghi chú</th>
-                  <th style={styles.th}>Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                {adviceAppointments.length === 0 ? (
-                  <tr>
-                    <td colSpan={6} style={{textAlign: 'center', color: '#888'}}>Không có lịch tư vấn nào.</td>
-                  </tr>
-                ) : (
-                  adviceAppointments.map(item => (
-                    <tr key={item.id}>
-                      <td style={styles.td}>{item.fullName}</td>
-                      <td style={styles.td}>{item.phone}</td>
-                      <td style={styles.td}>{new Date(item.appointmentDate).toLocaleString()}</td>
-                      <td style={styles.td}>{item.consultationType}</td>
-                      <td style={styles.td}>{item.note}</td>
-                      <td style={styles.td}>
-                        <button
-                          style={{...styles.btnView, backgroundColor: '#ef4444'}}
-                          onClick={() => handleDeleteAdviceAppointment(item.id)}
-                        >
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
       {modal && (
         <div style={styles.modalOverlay}>
