@@ -166,6 +166,7 @@ function DatLichTuVan() {
   const [minDate, setMinDate] = useState("");
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
+  const [adviceNames, setAdviceNames] = useState([]);
 
   useEffect(() => {
     document.title = "Đặt Lịch Tư Vấn";
@@ -186,6 +187,29 @@ function DatLichTuVan() {
     }
   }, [form.ngay]);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-names', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            setAdviceNames(data);
+          } else if (Array.isArray(data.obj)) {
+            setAdviceNames(data.obj);
+          } else {
+            setAdviceNames([]);
+          }
+        })
+        .catch(err => {
+          setAdviceNames([]);
+          console.error(err);
+        });
+    }
+  }, []);
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');
@@ -199,21 +223,46 @@ function DatLichTuVan() {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
+  const datLichTuVan = async (data) => {
+    try {
+      const response = await fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Nếu cần token:
+          // 'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || 'Có lỗi khi đặt lịch tư vấn');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { hoten, sdt, ngay, gio, hinhThuc, loaiTuVan, ghichu } = form;
     if (!hoten || !sdt || !ngay || !gio || !loaiTuVan) {
-      alert("Vui lòng điền đầy đủ thông tin bắt buộc.");
+      setMessage('Vui lòng điền đầy đủ thông tin bắt buộc.');
+      return;
+    }
+    if (isNaN(Number(loaiTuVan))) {
+      setMessage('Vui lòng chọn loại tư vấn hợp lệ.');
       return;
     }
     const selectedDate = new Date(ngay);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     if (selectedDate < today) {
-      alert("Không thể đặt lịch cho ngày trong quá khứ. Vui lòng chọn ngày từ hôm nay trở đi.");
+      setMessage('Không thể đặt lịch cho ngày trong quá khứ. Vui lòng chọn ngày từ hôm nay trở đi.');
       return;
     }
-    // --- Gọi API đặt lịch tư vấn ---
     const token = localStorage.getItem('token');
     if (!token) {
       alert('Bạn cần đăng nhập để đặt lịch!');
@@ -221,12 +270,15 @@ function DatLichTuVan() {
       return;
     }
     const payload = {
+      fullName: hoten,
+      phone: sdt,
       appointmentDate: new Date(`${ngay}T${gio}:00`).toISOString(),
-      consultationType: loaiTuVan,
+      adviceServiceId: Number(loaiTuVan), // ép kiểu sang số
       consultationMethod: hinhThuc,
       note: ghichu || ""
     };
-    fetch('https://api-gender2.purintech.id.vn/api/Appointment/consult-appointment', {
+    console.log('Payload gửi lên:', payload);
+    fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointment', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -247,18 +299,27 @@ function DatLichTuVan() {
         return res.json();
       })
       .then(data => {
-        alert(data.message || "Đặt lịch thành công!");
-        localStorage.removeItem("tempHoTen");
-        localStorage.removeItem("tempSDT");
-        navigate("/customer/thanh-toan");
+        setMessage(data.message || 'Đặt lịch thành công!');
+        setForm({
+          hoten: '',
+          sdt: '',
+          ngay: '',
+          gio: '',
+          hinhThuc: 'Trực tiếp',
+          loaiTuVan: '',
+          ghichu: '',
+        });
+        localStorage.removeItem('tempHoTen');
+        localStorage.removeItem('tempSDT');
+        navigate('/customer/thanh-toan');
       })
       .catch(error => {
         if (error.message !== 'Unauthorized') {
-          alert("Có lỗi xảy ra khi đặt lịch: " + error.message);
+          setMessage('Có lỗi xảy ra khi đặt lịch: ' + error.message);
         }
-        console.error("Lỗi:", error);
+        console.error('Lỗi:', error);
       });
-  }
+  };
 
   return (
     <div style={styles.page}>
@@ -338,14 +399,9 @@ function DatLichTuVan() {
                   required
                 >
                   <option value="">-- Chọn loại tư vấn --</option>
-                  <option value="Tư vấn trước khi làm xét nghiệm STI">Tư vấn trước khi làm xét nghiệm STI</option>
-                  <option value="Tư vấn sau khi nhận kết quả xét nghiệm">Tư vấn sau khi nhận kết quả xét nghiệm</option>
-                  <option value="Tư vấn xét nghiệm định kỳ">Tư vấn xét nghiệm định kỳ</option>
-                  <option value="Tư vấn lựa chọn gói xét nghiệm phù hợp">Tư vấn lựa chọn gói xét nghiệm phù hợp</option>
-                  <option value="Tư vấn cho cặp đôi trước QHTD không bao">Tư vấn cho cặp đôi trước QHTD không bao</option>
-                  <option value="Tư vấn sức khỏe sinh sản">Tư vấn sức khỏe sinh sản</option>
-                  <option value="Tư vấn tình dục an toàn">Tư vấn tình dục an toàn</option>
-                  <option value="Tư vấn dậy thì và sức khỏe giới tính cho thanh thiếu niên">Tư vấn dậy thì và sức khỏe giới tính cho thanh thiếu niên</option>
+                  {Array.isArray(adviceNames) && adviceNames.map(item => (
+                    <option key={item.id} value={item.id}>{item.name}</option>
+                  ))}
                 </select>
               </div>
             </div>

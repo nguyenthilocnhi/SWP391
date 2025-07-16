@@ -178,6 +178,9 @@ function LichSuDatLich() {
   // Thêm state cho lịch xét nghiệm từ API
   const [appointments, setAppointments] = useState([]);
   const [loadingAppointments, setLoadingAppointments] = useState(true);
+  const [adviceNames, setAdviceNames] = useState([]);
+  const [adviceAppointments, setAdviceAppointments] = useState([]);
+  const [loadingAdvice, setLoadingAdvice] = useState(true);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("lichDat")) || [];
@@ -209,6 +212,34 @@ function LichSuDatLich() {
       .catch(err => {
         setLoadingAppointments(false);
       });
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-names', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => setAdviceNames(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  // Lấy danh sách lịch tư vấn từ API
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setLoadingAdvice(false);
+      return;
+    }
+    fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        setAdviceAppointments(data.obj || data);
+        setLoadingAdvice(false);
+      })
+      .catch(() => setLoadingAdvice(false));
   }, []);
 
   const filtered = filter
@@ -245,6 +276,30 @@ function LichSuDatLich() {
         alert('Lỗi: ' + err.message);
       });
   }
+
+  function handleDeleteAdviceAppointment(id) {
+    if (!window.confirm("Bạn có chắc muốn xóa lịch tư vấn này?")) return;
+    const token = localStorage.getItem('token');
+    fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-appointment/${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Xóa không thành công');
+        setAdviceAppointments(prev => prev.filter(item => item.id !== id));
+        alert('Xóa thành công!');
+      })
+      .catch(err => alert('Lỗi: ' + err.message));
+  }
+
+  const getAdviceAppointmentById = async (id) => {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-appointment/${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Không lấy được chi tiết lịch tư vấn');
+    return res.json();
+  };
 
   return (
     <div style={styles.page}>
@@ -371,6 +426,53 @@ function LichSuDatLich() {
                         <button
                           style={{...styles.btnView, backgroundColor: '#ef4444'}}
                           onClick={() => handleDeleteAppointment(item.id)}
+                        >
+                          Xóa
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+      {/* Bảng lịch tư vấn từ API */}
+      <div style={styles.container}>
+        <h2 style={styles.h2}>Lịch Tư Vấn Đã Đặt</h2>
+        {loadingAdvice ? (
+          <div>Đang tải...</div>
+        ) : (
+          <div style={{overflowX: 'auto'}}>
+            <table style={styles.table}>
+              <thead>
+                <tr>
+                  <th style={styles.th}>Họ tên</th>
+                  <th style={styles.th}>SĐT</th>
+                  <th style={styles.th}>Ngày hẹn</th>
+                  <th style={styles.th}>Loại tư vấn</th>
+                  <th style={styles.th}>Ghi chú</th>
+                  <th style={styles.th}>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                {adviceAppointments.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} style={{textAlign: 'center', color: '#888'}}>Không có lịch tư vấn nào.</td>
+                  </tr>
+                ) : (
+                  adviceAppointments.map(item => (
+                    <tr key={item.id}>
+                      <td style={styles.td}>{item.fullName}</td>
+                      <td style={styles.td}>{item.phone}</td>
+                      <td style={styles.td}>{new Date(item.appointmentDate).toLocaleString()}</td>
+                      <td style={styles.td}>{item.consultationType}</td>
+                      <td style={styles.td}>{item.note}</td>
+                      <td style={styles.td}>
+                        <button
+                          style={{...styles.btnView, backgroundColor: '#ef4444'}}
+                          onClick={() => handleDeleteAdviceAppointment(item.id)}
                         >
                           Xóa
                         </button>
