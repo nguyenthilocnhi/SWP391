@@ -7,13 +7,93 @@ const ConsultantLichHen = () => {
   const location = useLocation();
   const { appointmentCount } = location.state || {};
   const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
   const consultantName = "Nguyễn Thị Huyền";
   const notificationCount = 3;
 
   useEffect(() => {
-    const lichDat = JSON.parse(localStorage.getItem("lichDat") || "[]");
-    setAppointments(lichDat);
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setAppointments([]);
+      setLoading(false);
+      alert('Bạn cần đăng nhập để xem lịch hẹn!');
+      // window.location.href = '/login'; // Bỏ comment nếu muốn chuyển hướng
+      return;
+    }
+    fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'accept': '*/*',
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setAppointments(data);
+        } else if (Array.isArray(data.obj)) {
+          setAppointments(data.obj);
+        } else {
+          setAppointments([]);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setAppointments([]);
+        setLoading(false);
+      });
   }, []);
+
+  // Duyệt lịch hẹn
+  const handleApprove = (id) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Bạn cần đăng nhập để thao tác!');
+      return;
+    }
+    fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/approve`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'accept': '*/*',
+      },
+      body: JSON.stringify({
+        ServiceStatus: 0, // hoặc giá trị backend yêu cầu
+        note: '',
+        suggestion: ''
+      })
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Duyệt không thành công');
+        alert('Duyệt thành công!');
+        setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: 'Đã duyệt' } : a));
+      })
+      .catch(err => alert('Lỗi: ' + err.message));
+  };
+
+  // Xác nhận hoàn thành
+  const handleConfirm = (id) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Bạn cần đăng nhập để thao tác!');
+      return;
+    }
+    fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/confirm`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'accept': '*/*',
+      }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Xác nhận không thành công');
+        alert('Xác nhận hoàn thành!');
+        setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: 'Đã hoàn thành' } : a));
+      })
+      .catch(err => alert('Lỗi: ' + err.message));
+  };
 
   return (
     <>
@@ -75,7 +155,9 @@ const ConsultantLichHen = () => {
                 Tổng số lịch hẹn trong tháng: {appointmentCount}
               </div>
             )}
-            {appointments.length === 0 ? (
+            {loading ? (
+              <div className="lh-empty">Đang tải...</div>
+            ) : appointments.length === 0 ? (
               <div className="lh-empty">Không có lịch hẹn nào.</div>
             ) : (
               <table className="lh-table">
@@ -88,20 +170,23 @@ const ConsultantLichHen = () => {
                     <th>Hình thức</th>
                     <th>Loại tư vấn</th>
                     <th>Trạng thái</th>
-                    <th></th>
+                    <th>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
                   {appointments.map((a, idx) => (
-                    <tr key={idx}>
-                      <td>{a.hoTen}</td>
-                      <td>{a.sdt}</td>
-                      <td>{a.ngay}</td>
-                      <td>{a.gio}</td>
-                      <td>{a.hinhThuc}</td>
-                      <td>{a.loaiTuVan}</td>
-                      <td>{a.trangThai}</td>
-                      <td><button className="lh-btn-detail">Xem chi tiết</button></td>
+                    <tr key={a.id || idx}>
+                      <td>{a.fullName || a.hoTen}</td>
+                      <td>{a.phone || a.sdt}</td>
+                      <td>{a.appointmentDate ? new Date(a.appointmentDate).toLocaleDateString() : a.ngay}</td>
+                      <td>{a.appointmentDate ? new Date(a.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : a.gio}</td>
+                      <td>{a.consultationMethod || a.hinhThuc}</td>
+                      <td>{a.consultationType || a.loaiTuVan}</td>
+                      <td>{a.status || a.trangThai || '-'}</td>
+                      <td>
+                        <button className="lh-btn-detail" onClick={() => handleApprove(a.id)}>Duyệt</button>
+                        <button className="lh-btn-detail" style={{marginLeft: 8, background: '#f59e42'}} onClick={() => handleConfirm(a.id)}>Xác nhận</button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
