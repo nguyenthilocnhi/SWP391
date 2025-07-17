@@ -190,8 +190,35 @@ export default function HeaderCustomer() {
   const userRef = useRef();
 
   useEffect(() => {
-    setUserName(localStorage.getItem('userName') || 'Khách');
-  }, []);
+  const fetchUserInfo = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const response = await fetch('https://api-gender2.purintech.id.vn/api/Customer/get-user-info', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (data.code === 200 && data.obj?.fullName) {
+        setUserName(data.obj.fullName);
+      } else {
+        setUserName('Khách');
+      }
+    } catch (error) {
+      console.error('Lỗi khi lấy thông tin user:', error);
+      setUserName('Khách');
+    }
+  };
+
+  fetchUserInfo();
+}, []);
 
   // Đóng dropdown khi click ra ngoài (chuông)
   useEffect(() => {
