@@ -163,25 +163,25 @@ const Day = styled.div`
     border-color: #22c55e !important;
   }
 
-  /* Trạng thái chưa uống - MÀU ĐỎ */
+  /* Trạng thái chưa uống - MÀU XANH DƯƠNG */
   &.x {
-    background-color: #ef4444 !important;
+    background-color: #447defff !important;
     color: #ffffff !important;
-    border-color: #ef4444 !important;
+    border-color: #447defff !important;
   }
 
   /* Ngày hôm nay - đã uống - MÀU XANH */
   &.today.check {
-    background-color: #22c55e !important;
+    background-color: #fcc327ff !important;
     color: #ffffff !important;
-    border-color: #93c5fd !important;
+    border-color: #ffa237ff !important;
     border-width: 3px !important;
     font-weight: bold;
   }
 
-  /* Ngày hôm nay - chưa uống - MÀU ĐỎ */
+  /* Ngày hôm nay - chưa uống - MÀU XANH DƯƠNG */
   &.today.x {
-    background-color: #ef4444 !important;
+    background-color: #447defff !important;
     color: #ffffff !important;
     border-color: #93c5fd !important;
     border-width: 3px !important;
@@ -275,7 +275,7 @@ const Circle = styled.span`
   }
 
   &.x {
-    background: #ef4444;
+    background: #447defff;
   }
 
   &.today {
@@ -335,15 +335,81 @@ const ResetButton = styled.button`
   }
 `;
 
+
+
+
 const NhacNhoUongThuoc = () => {
     const today = new Date();
+    const [ongoingPack, setOngoingPack] = useState(null);
+    const [pillCalendar, setPillCalendar] = useState([]);
     const [currentMonth, setCurrentMonth] = useState(today.getMonth());
     const [currentYear, setCurrentYear] = useState(today.getFullYear());
     const [startDate, setStartDate] = useState(null);
     const [pillCycle, setPillCycle] = useState(28);
     const [missedDays, setMissedDays] = useState([]);
     const [showStartDateInput, setShowStartDateInput] = useState(false);
+    const checkOngoingPack = async () => {
+    try {
+        const response = await fetch('https://api-gender2.purintech.id.vn/api/PillIntakeCycle/get-ongoing-pill-pack', {
+            method: 'POST',
+            headers: {
+                'accept': '*/*',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
 
+        const result = await response.json();
+
+        if (response.ok && result.code === 200 && result.obj !== null) {
+            const { startDate, packSize } = result.obj;
+
+            // Lưu xuống localStorage để dùng lại (tùy chọn)
+            localStorage.setItem("startDate", startDate);
+            localStorage.setItem("pillCycle", packSize);
+            localStorage.setItem("hasUsedBefore", "true");
+
+            // Cập nhật state
+            setStartDate(new Date(startDate));
+            setPillCycle(packSize);
+            setOngoingPack(result.obj);
+            setShowStartDateInput(false);
+        } else {
+            // Không có pack hiện tại → cho phép hiển thị form chọn ngày
+            setShowStartDateInput(true);
+            setOngoingPack(null);
+        }
+    } catch (error) {
+        console.error("Lỗi check ongoing pack:", error);
+        setShowStartDateInput(true);
+        setOngoingPack(null); // fallback để không chặn UI
+    }
+};
+    const fetchCalendarFromAPI = async (month, year) => {
+    try {
+        const response = await fetch('https://api-gender2.purintech.id.vn/api/PillIntakeCycle/load-pill-pack-calendar', {
+            method: 'POST',
+            headers: {
+                'accept': '*/*',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+            body: JSON.stringify({
+                month: month + 1, // API dùng tháng 1–12
+                year: year,
+            }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            setPillCalendar(result.obj || []);
+        } else {
+            alert(`Lỗi API: ${result?.message || 'Không xác định'}`);
+        }
+    } catch (err) {
+        console.error("Lỗi fetch calendar:", err);
+    }
+};
     useEffect(() => {
         const savedStart = localStorage.getItem("startDate");
         const savedCycle = localStorage.getItem("pillCycle");
@@ -362,6 +428,12 @@ const NhacNhoUongThuoc = () => {
             localStorage.setItem("hasUsedBefore", "true");
         }
     }, []);
+useEffect(() => {
+    checkOngoingPack(); // Gọi API để kiểm tra pack hiện tại
+}, []);
+    useEffect(() => {
+    fetchCalendarFromAPI(currentMonth, currentYear);
+}, [currentMonth, currentYear]);
 
     useEffect(() => {
         if (!startDate) return;
@@ -400,17 +472,49 @@ const NhacNhoUongThuoc = () => {
 
     const getWeekday = (year, month, day) => new Date(year, month, day).getDay();
 
-    const saveStartDate = () => {
-        const input = document.getElementById("startDate").value;
-        const cycle = document.getElementById("pillCycle").value;
-        if (!input) return alert("Vui lòng chọn ngày bắt đầu!");
-        localStorage.setItem("startDate", input);
-        localStorage.setItem("pillCycle", cycle);
-        localStorage.setItem("hasUsedBefore", "true");
-        setStartDate(new Date(input));
-        setPillCycle(parseInt(cycle));
-        setShowStartDateInput(false);
-    };
+    const saveStartDate = async () => {
+    const input = document.getElementById("startDate").value;
+    const cycle = document.getElementById("pillCycle").value;
+
+    if (!input) return alert("Vui lòng chọn ngày bắt đầu!");
+
+    try {
+        // Gọi API để lưu pack mới
+        const response = await fetch('https://api-gender2.purintech.id.vn/api/PillIntakeCycle/add-pill-pack', {
+            method: 'POST',
+            headers: {
+                'accept': '*/*',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}` // Dùng token lưu ở localStorage
+            },
+            body: JSON.stringify({
+                startDate: input,
+                packSize: parseInt(cycle)
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Lưu vào localStorage nếu API thành công
+            localStorage.setItem("startDate", input);
+            localStorage.setItem("pillCycle", cycle);
+            localStorage.setItem("hasUsedBefore", "true");
+            setStartDate(new Date(input));
+            setPillCycle(parseInt(cycle));
+            setShowStartDateInput(false);
+            alert("Đã lưu thành công!");
+            await fetchCalendarFromAPI(currentMonth, currentYear);
+            await checkOngoingPack();
+        } else {
+            console.error("API response error:", data);
+            alert(`Lỗi API: ${data?.message || "Không xác định"}`);
+        }
+    } catch (error) {
+        console.error("API request failed:", error);
+        alert("Gọi API thất bại. Vui lòng kiểm tra kết nối hoặc token.");
+    }
+};
 
     const toggleDay = (day) => {
         const key = getKey();
@@ -435,21 +539,53 @@ const NhacNhoUongThuoc = () => {
         setMissedDays(updated);
     };
 
-    const resetLich = () => {
-        if (confirm("Bạn có chắc muốn đặt lại toàn bộ lịch không?")) {
+    const resetLich = async () => {
+    if (!ongoingPack) {
+        alert("Không tìm thấy vỉ thuốc hiện tại để xoá.");
+        return;
+    }
+
+    const confirmReset = confirm("Bạn có chắc muốn đặt lại toàn bộ lịch không?");
+    if (!confirmReset) return;
+
+    try {
+        const response = await fetch(`https://api-gender2.purintech.id.vn/api/PillIntakeCycle/delete-pack?packId=${ongoingPack.id}`, {
+            method: 'POST',
+            headers: {
+                'accept': '*/*',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.code === 200) {
+            alert("Đã đặt lại lịch thành công!");
+
             // Xóa dữ liệu localStorage
             localStorage.removeItem("startDate");
             localStorage.removeItem("pillCycle");
             localStorage.removeItem("hasUsedBefore");
             localStorage.removeItem(getKey());
-            
-            // Reset state về ban đầu
+
+            // Reset state
             setStartDate(null);
             setPillCycle(28);
             setMissedDays([]);
             setShowStartDateInput(true);
+            setOngoingPack(null);
+            setPillCalendar([]);
+            await checkOngoingPack();
+            await fetchCalendarFromAPI(currentMonth, currentYear);
+        } else {
+            console.error("Xoá pack thất bại:", data);
+            alert(`Lỗi khi xoá lịch: ${data?.message || "Không xác định"}`);
         }
-    };
+    } catch (err) {
+        console.error("Lỗi API khi xoá pack:", err);
+        alert("Không thể kết nối đến máy chủ.");
+    }
+};
 
     const formatDate = (date) => `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
 
@@ -461,7 +597,7 @@ const NhacNhoUongThuoc = () => {
         currentPackStart.setDate(startDate.getDate() + (currentCycle - 1) * pillCycle);
         const nextPackStart = new Date(currentPackStart);
         nextPackStart.setDate(currentPackStart.getDate() + pillCycle);
-        return `📦 Vỉ hiện tại: Vỉ số ${currentCycle} (từ ${formatDate(currentPackStart)})\n📅 Bắt đầu vỉ mới: ${formatDate(nextPackStart)}`;
+        return `📦 Vỉ hiện tại: từ ${formatDate(currentPackStart)}\n📅 Bắt đầu vỉ mới: ${formatDate(nextPackStart)}`;
     };
 
     const renderDays = () => {
@@ -475,65 +611,36 @@ const NhacNhoUongThuoc = () => {
         }
 
         for (let day = 1; day <= totalDays; day++) {
-            const dateObj = new Date(currentYear, currentMonth, day);
-            const isToday = dateObj.toDateString() === today.toDateString();
-            const isPastOrToday = dateObj <= today;
-            const isAfterStartDate = startDate ? dateObj.getTime() >= startDate.getTime() : false;
-            const isStartDate = startDate ? dateObj.toDateString() === startDate.toDateString() : false;
-            const isPastMonth = (currentYear < today.getFullYear()) || 
-                               (currentYear === today.getFullYear() && currentMonth < today.getMonth());
+    const dateObj = new Date(currentYear, currentMonth, day);
+    const isToday = dateObj.toDateString() === today.toDateString();
+    const isPastOrToday = dateObj <= today;
 
-            let className = "day";
-            
-            // Kiểm tra xem ngày này có thể click được không
-            // Cho phép click vào tất cả ngày từ ngày bắt đầu đến hôm nay, bao gồm cả tháng đã qua
-            const canClick = isPastOrToday && (isAfterStartDate || isStartDate);
+    let className = "day";
+    const pillData = pillCalendar.find(item => parseInt(item.date) === day);
 
-            if (isPastOrToday) {
-                const hasUsedBefore = localStorage.getItem("hasUsedBefore");
-                const key = getKey();
-                const hasDataForMonth = localStorage.getItem(key) !== null;
-                
-                if ((isAfterStartDate || isStartDate) && hasUsedBefore && hasDataForMonth) {
-                    // Hiển thị trạng thái uống thuốc cho các ngày từ ngày bắt đầu trở đi
-                    if (missedDays.includes(day)) {
-                        className += " x";
-                    } else {
-                        className += " check";
-                    }
-                    
-                    if (isToday) {
-                        className += " today";
-                    }
-                } else if (isAfterStartDate || isStartDate) {
-                    // Ngày sau start date nhưng chưa có dữ liệu cho tháng này - để trắng
-                    className += " before-start";
-                } else {
-                    // Ngày trước ngày bắt đầu - để trắng
-                    className += " before-start";
-                }
-                
-                // Không còn giới hạn tháng đã qua - cho phép tracking tất cả ngày từ start date
-            } else {
-                // Ngày chưa tới - không thể click
-                className += " future";
-            }
-            
-            days.push(
-                <Day
-                    key={day}
-                    className={className}
-                    data-day={day}
-                    onClick={() => {
-                        if (canClick) {
-                            toggleDay(day);
-                        }
-                    }}
-                >
-                    {day}
-                </Day>
-            );
+    if (pillData) {
+        if (pillData.type.includes("đã uống")) {
+            className += " check";
+        } else if (pillData.type.includes("chưa uống")) {
+            className += " x";
         }
+    }
+
+    
+
+    
+
+    days.push(
+        <Day
+            key={day}
+            className={className}
+            data-day={day}
+        >
+            {day}
+        </Day>
+    );
+}
+
 
         return days;
     };
@@ -606,23 +713,16 @@ const NhacNhoUongThuoc = () => {
                 </p>
                 </Legend>
                 
-                {startDate && (
-                    <>
-                        <Summary>
-                <p>
-                    <strong>Đã uống:</strong> {daysInMonth(currentMonth, currentYear) - missedDays.length} ngày
-                </p>
-                <p>
-                    <strong>Chưa uống:</strong> {missedDays.length} ngày
-                </p>
-                        </Summary>
-                        <NextPackInfo dangerouslySetInnerHTML={{ __html: suggestNextPack().replace(/\n/g, '<br>') }} />
-                        <ResetButton onClick={resetLich}>
-                    🔁 Đặt lại lịch
-                        </ResetButton>
-
-                    </>
-                )}
+                {ongoingPack && (
+  <>
+    <NextPackInfo
+      dangerouslySetInnerHTML={{
+        __html: suggestNextPack().replace(/\n/g, '<br>'),
+      }}
+    />
+    <ResetButton onClick={resetLich}>🔁 Đặt lại lịch</ResetButton>
+  </>
+)}
             </Container>
             <Footer />
         </>

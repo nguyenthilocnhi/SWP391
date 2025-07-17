@@ -30,6 +30,30 @@ const Banner = styled.div`
     img { margin: 0 0 16px 0; }
   }
 `;
+
+const SaveButton = styled.button`
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+  transition: background 0.2s ease, transform 0.1s ease;
+
+  &:hover {
+    background-color: #047857;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0px);
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
+  }
+`;
 const BannerTitle = styled.h1`
   font-size: 2.2rem;
   color: #047857;
@@ -181,7 +205,10 @@ function formatDayJS(date) {
   return `${y}-${m}-${d}`;
 }
 
+
+
 const TheoDoiChuKy = () => {
+  const [calendarData, setCalendarData] = useState([]);
   const [mainDate, setMainDate] = useState(new Date());
   const [periodData, setPeriodData] = useState([]);
   const [reminderMessages, setReminderMessages] = useState([]);
@@ -198,17 +225,70 @@ const TheoDoiChuKy = () => {
     const stored = localStorage.getItem('periodDays');
     return stored ? JSON.parse(stored) : [];
   });
+  
+
+const fetchUserMenstrualInfo = async () => {
+  const token = localStorage.getItem('token');
+  try {
+    const res = await fetch('https://api-gender2.purintech.id.vn/api/Customer/get-user-menstrual-info', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': '*/*'
+      }
+    });
+    const data = await res.json();
+    if (data.code === 200) {
+      setPeriodLength(data.obj.menstrualLength);
+      setCycleLength(data.obj.cycleLength);
+    }
+  } catch (err) {
+    console.error("Lỗi lấy thông tin chu kỳ:", err);
+  }
+};
+
+const getColorFromApiType = (type) => {
+  switch (type) {
+    case "ngày trắng": return '#e0e0e0ff'; 
+    case "ngày hành kinh thực tế": return '#fb6060';
+    case "ngày rụng trứng": return '#41b5f7';
+    case "ngày dễ thụ thai": return '#f9ec7a';
+    case "ngày an toàn tuyệt đối": return '#5ce089';
+    case "ngày an toàn tương đối": return '#5ce089';
+    case "ngày hành kinh dự đoán": return '#fca5a5';
+    default: return '#fff';
+  }
+};
+const fetchCalendarData = async (month, year) => {
+  const token = localStorage.getItem('token');
+  try {
+    const res = await fetch('https://api-gender2.purintech.id.vn/api/MenstrualCycle/load-menstrual-calendar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': '*/*'
+      },
+      body: JSON.stringify({ month: month + 1, year }) // chú ý +1 vì JS month = 0-11
+    });
+    const data = await res.json();
+    if (data.code === 200) {
+      setCalendarData(data.obj);
+    } else {
+      console.error("Lỗi khi tải lịch:", data.message);
+    }
+  } catch (err) {
+    console.error("Lỗi fetchCalendarData:", err);
+  }
+};
 
   useEffect(() => {
-    const stored = localStorage.getItem("periodData");
-    if (stored) setPeriodData(JSON.parse(stored));
-    updateReminders();
-    const pl = parseInt(localStorage.getItem('customPeriodLength'));
-    const cl = parseInt(localStorage.getItem('customCycleLength'));
-    if (!isNaN(pl)) setPeriodLength(pl);
-    if (!isNaN(cl)) setCycleLength(cl);
-  }, []);
+  fetchUserMenstrualInfo();
+}, []);
 
+
+useEffect(() => {
+  fetchCalendarData(currentMonth.month, currentMonth.year);
+}, [currentMonth]);
   useEffect(() => {
     updateCycleStats();
   }, [periodData]);
@@ -281,25 +361,78 @@ const TheoDoiChuKy = () => {
       updateReminders();
     }
   };
-  const handleSaveCycleSettings = (e) => {
-    e.preventDefault();
-    localStorage.setItem('customPeriodLength', periodLength);
-    localStorage.setItem('customCycleLength', cycleLength);
-    alert('Đã lưu cài đặt chu kỳ!');
-  };
+
+  const handleSaveCycleSettings = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token');
+  try {
+    const res = await fetch('https://api-gender2.purintech.id.vn/api/MenstrualCycle/update-user-menstrual-length-and-cycle-length', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': '*/*'
+      },
+      body: JSON.stringify({
+        menstrualLength: periodLength,
+        cycleLength: cycleLength
+      })
+    });
+
+    const result = await res.json();
+    if (result.code === 200) {
+      alert("Đã lưu cài đặt chu kỳ!");
+      // Gọi lại API để làm mới dữ liệu chu kỳ
+      await fetchUserMenstrualInfo();
+    } else {
+      alert("Lỗi khi lưu: " + result.message);
+    }
+  } catch (err) {
+    console.error("Lỗi khi gọi API cập nhật:", err);
+    alert("Không thể lưu cài đặt!");
+  }
+};
 
   // Click chọn ngày hành kinh
-  const handleDayClick = (dateObj) => {
-    const dayStr = formatDayJS(dateObj);
-    let newDays;
-    if (selectedDays.includes(dayStr)) {
-      newDays = selectedDays.filter(d => d !== dayStr);
+  const handleDayClick = async (dateObj) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const clickedDate = new Date(dateObj);
+  clickedDate.setHours(0, 0, 0, 0);
+
+  if (clickedDate > today) {
+    alert("Không thể chọn ngày trong tương lai.");
+    return;
+  }
+
+  const token = localStorage.getItem('token');
+  const day = clickedDate.getDate();
+  const month = clickedDate.getMonth() + 1; // JS month: 0-11
+  const year = clickedDate.getFullYear();
+
+  try {
+    const res = await fetch('https://api-gender2.purintech.id.vn/api/MenstrualCycle/toggle-menstrual-date', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': '*/*'
+      },
+      body: JSON.stringify({ day, month, year })
+    });
+
+    const result = await res.json();
+    if (result.code === 200) {
+      await fetchCalendarData(currentMonth.month, currentMonth.year); // Reload calendar
     } else {
-      newDays = [...selectedDays, dayStr];
+      alert("Lỗi khi cập nhật ngày: " + result.message);
     }
-    setSelectedDays(newDays);
-    localStorage.setItem('periodDays', JSON.stringify(newDays));
-  };
+  } catch (err) {
+    console.error("Lỗi gọi API toggle:", err);
+    alert("Không thể cập nhật ngày hành kinh.");
+  }
+};
+
 
   // Tính toán các ngày đặc biệt dựa vào các ngày hành kinh đã chọn
   const getDayType = (dateObj) => {
@@ -358,46 +491,41 @@ const TheoDoiChuKy = () => {
 
   // Render calendar grid (JS thuần)
   const renderCalendar = () => {
-    const { year, month } = currentMonth;
-    const daysInMonth = getDaysInMonth(year, month);
-    const firstDayOfWeek = getFirstDayOfWeek(year, month); // 0=CN, 1=T2...
-    const grid = [];
-    // Tính offset để lịch bắt đầu từ T2 (thứ 1)
-    let offset = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
-    let dayNum = 1;
-    for (let row = 0; row < 6; row++) {
-      for (let col = 0; col < 7; col++) {
-        let cell = null;
-        if (row === 0 && col < offset) {
-          cell = <CalendarCell key={`empty-${row}-${col}`} color="#f3f4f6" style={{ opacity: 0.4 }} />;
-        } else if (dayNum > daysInMonth) {
-          cell = <CalendarCell key={`empty-${row}-${col}`} color="#f3f4f6" style={{ opacity: 0.4 }} />;
-        } else {
-          const dateObj = new Date(year, month, dayNum);
-          const type = getDayType(dateObj);
-          // Kiểm tra có phải nằm trong dải ngày dự đoán kỳ kinh tiếp theo không
-          let isPredicted = false;
-          if (predictedNextPeriodRange && predictedNextPeriodRange.days.some(d => d.getFullYear() === dateObj.getFullYear() && d.getMonth() === dateObj.getMonth() && d.getDate() === dateObj.getDate())) {
-            isPredicted = true;
-          }
-          cell = (
-            <CalendarCell
-              key={formatDayJS(dateObj)}
-              color={getDayColor(type, isPredicted)}
-              style={{ opacity: 1, border: isPredicted ? '2px solid #fb6060' : undefined }}
-              onClick={() => handleDayClick(dateObj)}
-              title={isPredicted ? 'Dự đoán kỳ kinh tiếp theo' : ({ period: 'Ngày hành kinh', ovulation: 'Ngày rụng trứng', fertile: 'Ngày thụ thai', safe: 'Ngày an toàn' }[type])}
-            >
-              {dayNum}
-            </CalendarCell>
-          );
-          dayNum++;
-        }
-        grid.push(cell);
+  const { year, month } = currentMonth;
+  const daysInMonth = getDaysInMonth(year, month);
+  const firstDayOfWeek = getFirstDayOfWeek(year, month);
+  let offset = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
+  let dayNum = 1;
+  const grid = [];
+
+  for (let row = 0; row < 6; row++) {
+    for (let col = 0; col < 7; col++) {
+      let cell = null;
+      if (row === 0 && col < offset || dayNum > daysInMonth) {
+        cell = <CalendarCell key={`empty-${row}-${col}`} color="#f3f4f6" style={{ opacity: 0.4 }} />;
+      } else {
+        const dayStr = String(dayNum).padStart(2, '0');
+        const found = calendarData.find(d => d.date === dayStr);
+        const color = found ? getColorFromApiType(found.type) : '#fff';
+        const tooltip = found?.type || "Không có dữ liệu";
+        const dateObj = new Date(year, month, dayNum);
+        cell = (
+          <CalendarCell
+            key={formatDayJS(dateObj)}
+            color={color}
+            onClick={() => handleDayClick(dateObj)}
+            title={tooltip}
+          >
+            {dayNum}
+          </CalendarCell>
+        );
+        dayNum++;
       }
+      grid.push(cell);
     }
-    return grid;
-  };
+  }
+  return grid;
+};
 
   return (
     <PageWrapper>
@@ -513,6 +641,9 @@ const TheoDoiChuKy = () => {
                 </select>
               </SettingsRow>
             </div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <SaveButton onClick={handleSaveCycleSettings}>💾 Lưu cài đặt</SaveButton>
+  </div>
           </Section>
         </Container>
       </Main>
