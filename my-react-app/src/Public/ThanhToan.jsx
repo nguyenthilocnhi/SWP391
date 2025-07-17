@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const styles = {
   page: {
@@ -158,6 +159,9 @@ function ThanhToan() {
   const [voucherApplied, setVoucherApplied] = useState(false);
   const [timer, setTimer] = useState(300);
   const timerRef = useRef();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const meetLink = location.state?.meetLink;
 
   useEffect(() => {
     // Lấy lịch đặt mới nhất
@@ -279,7 +283,11 @@ function ThanhToan() {
       localStorage.setItem('activeVoucher', JSON.stringify(voucher));
     }
     alert('Thanh toán thành công!');
-    window.location.href = '/customer/thanh-cong-dat-lich';
+    if (meetLink) {
+      navigate('/customer/thanh-cong-dat-lich', { state: { meetLink } });
+    } else {
+      navigate('/customer/thanh-cong-dat-lich');
+    }
   };
   const handleRemoveVoucher = () => {
     if (window.confirm('Bạn có chắc muốn xóa voucher này?')) {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom";
 
 const styles = {
   body: {
@@ -74,14 +75,20 @@ const styles = {
 export default function ThanhCong() {
   const [meetLink, setMeetLink] = useState(null);
   const [copied, setCopied] = useState(false);
+  const location = useLocation();
+  const meetLinkFromState = location.state?.meetLink;
 
   useEffect(() => {
     document.title = 'Thành Công';
-    // Lấy lịch đặt mới nhất
-    const danhSach = JSON.parse(localStorage.getItem('lichDat')) || [];
-    const lichMoiNhat = danhSach[danhSach.length - 1] || {};
-    setMeetLink(lichMoiNhat.meetLink || null);
-  }, []);
+    if (meetLinkFromState) {
+      setMeetLink(meetLinkFromState);
+    } else {
+      // Lấy lịch đặt mới nhất từ localStorage nếu không có trong state
+      const danhSach = JSON.parse(localStorage.getItem('lichDat')) || [];
+      const lichMoiNhat = danhSach[danhSach.length - 1] || {};
+      setMeetLink(lichMoiNhat.meetLink || null);
+    }
+  }, [meetLinkFromState]);
 
   const copyToClipboard = async (text) => {
     try {

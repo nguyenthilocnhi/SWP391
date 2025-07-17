@@ -294,12 +294,36 @@ function LichSuDatLich() {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
     })
-      .then(res => {
-        if (!res.ok) throw new Error('Xóa không thành công');
-        setAdviceAppointments(prev => prev.filter(item => item.id !== id));
+      .then(async res => {
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          console.error('API xóa trả về lỗi:', err);
+          throw new Error('Xóa không thành công: ' + (err.message || JSON.stringify(err)));
+        }
+        // Xóa trong localStorage
+        const lichDat = JSON.parse(localStorage.getItem('lichDat') || '[]');
+        const newLichDat = lichDat.filter(l => l.id !== id);
+        localStorage.setItem('lichDat', JSON.stringify(newLichDat));
+        // Gọi lại API để lấy danh sách mới nhất
+        fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (Array.isArray(data)) {
+              setAdviceAppointments(data);
+            } else if (Array.isArray(data.obj)) {
+              setAdviceAppointments(data.obj);
+            } else {
+              setAdviceAppointments([]);
+            }
+          });
         alert('Xóa thành công!');
       })
-      .catch(err => alert('Lỗi: ' + err.message));
+      .catch(err => {
+        alert('Lỗi: ' + err.message);
+        console.error('Lỗi khi xóa lịch tư vấn:', err);
+      });
   }
 
   const getAdviceAppointmentById = async (id) => {
@@ -330,8 +354,16 @@ function LichSuDatLich() {
       serviceType: 'Tư vấn',
       serviceName: item.consultationType,
       note: item.note,
+      meetLink: item.meetLink, // thêm dòng này
+      contactType: item.contactType, // thêm dòng này
     })) : []
   ].sort((a, b) => new Date(b.appointmentDate) - new Date(a.appointmentDate));
+
+  // Lấy dữ liệu localStorage để map số điện thoại và meetLink
+  const lichDatLocal = JSON.parse(localStorage.getItem('lichDat') || '[]');
+  function getLocalInfoById(id) {
+    return lichDatLocal.find(l => l.id === id) || {};
+  }
 
   return (
     <div style={styles.page}>
@@ -363,36 +395,52 @@ function LichSuDatLich() {
                 <th style={styles.th}>Họ tên</th>
                 <th style={styles.th}>SĐT</th>
                 <th style={styles.th}>Ghi chú</th>
+                <th style={styles.th}>Link Meet</th>
                 <th style={styles.th}>Thao tác</th>
               </tr>
             </thead>
             <tbody>
               {mergedAppointments.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{textAlign: 'center', color: '#888'}}>Không có lịch đặt nào.</td>
+                  <td colSpan={8} style={{textAlign: 'center', color: '#888'}}>Không có lịch đặt nào.</td>
                 </tr>
               ) : (
-                mergedAppointments.map(item => (
-                  <tr key={item.serviceType + '-' + item.id}>
-                    <td style={styles.td}>{new Date(item.appointmentDate).toLocaleString()}</td>
-                    <td style={styles.td}>{item.serviceType}</td>
-                    <td style={styles.td}>{item.serviceName}</td>
-                    <td style={styles.td}>{item.fullName}</td>
-                    <td style={styles.td}>{item.phone}</td>
-                    <td style={styles.td}>{item.note}</td>
-                    <td style={styles.td}>
-                      <button
-                        style={{...styles.btnView, backgroundColor: '#ef4444'}}
-                        onClick={() => {
-                          if (item.serviceType === 'Xét nghiệm') handleDeleteAppointment(item.id);
-                          else handleDeleteAdviceAppointment(item.id);
-                        }}
-                      >
-                        Xóa
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                mergedAppointments.map(item => {
+                  // Nếu là tư vấn, lấy phone và meetLink từ localStorage nếu có
+                  let phone = item.phone;
+                  let meetLink = item.meetLink;
+                  if (item.serviceType === 'Tư vấn') {
+                    const local = getLocalInfoById(item.id);
+                    if (local.sdt) phone = local.sdt;
+                    if (local.meetLink) meetLink = local.meetLink;
+                  }
+                  return (
+                    <tr key={item.serviceType + '-' + item.id}>
+                      <td style={styles.td}>{new Date(item.appointmentDate).toLocaleString()}</td>
+                      <td style={styles.td}>{item.serviceType}</td>
+                      <td style={styles.td}>{item.serviceName}</td>
+                      <td style={styles.td}>{item.fullName}</td>
+                      <td style={styles.td}>{phone}</td>
+                      <td style={styles.td}>{item.note}</td>
+                      <td style={styles.td}>
+                        {item.serviceType === 'Tư vấn' && item.contactType === 2 && meetLink ? (
+                          <a href={meetLink} target="_blank" rel="noopener noreferrer" style={{color: '#d97706', fontWeight: 'bold', wordBreak: 'break-all'}}>Link Meet</a>
+                        ) : '-'}
+                      </td>
+                      <td style={styles.td}>
+                        <button
+                          style={{...styles.btnView, backgroundColor: '#ef4444'}}
+                          onClick={() => {
+                            if (item.serviceType === 'Xét nghiệm') handleDeleteAppointment(item.id);
+                            else handleDeleteAdviceAppointment(item.id);
+                          }}
+                        >
+                          Xóa
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>

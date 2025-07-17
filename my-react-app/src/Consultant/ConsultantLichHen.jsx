@@ -17,8 +17,7 @@ const ConsultantLichHen = () => {
       setAppointments([]);
       setLoading(false);
       alert('Bạn cần đăng nhập để xem lịch hẹn!');
-      // window.location.href = '/login'; // Bỏ comment nếu muốn chuyển hướng
-      return;
+      // window.location.href = '/login'; 
     }
     fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
       headers: {
@@ -51,6 +50,12 @@ const ConsultantLichHen = () => {
       alert('Bạn cần đăng nhập để thao tác!');
       return;
     }
+    const user = JSON.parse(localStorage.getItem('user')); 
+    console.log('User:', user);
+    console.log('staffId:', user?.id);
+    console.log('role:', user?.role);
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    console.log('Token payload:', payload);
     fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/approve`, {
       method: 'PUT',
       headers: {
@@ -59,17 +64,30 @@ const ConsultantLichHen = () => {
         'accept': '*/*',
       },
       body: JSON.stringify({
-        ServiceStatus: 0, // hoặc giá trị backend yêu cầu
-        note: '',
-        suggestion: ''
+        consultantId: user?.id, 
+        serviceStatus: 0,
+        note: 'string',
+        suggestion: 'string'
       })
     })
       .then(res => {
-        if (!res.ok) throw new Error('Duyệt không thành công');
+        if (!res.ok) {
+          return res.json().then(data => {
+            console.error('API error:', data);
+            alert('Lỗi: ' + (data.message || JSON.stringify(data)));
+            throw new Error('API error');
+          });
+        }
+        return res.json();
+      })
+      .then(data => {
         alert('Duyệt thành công!');
         setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: 'Đã duyệt' } : a));
       })
-      .catch(err => alert('Lỗi: ' + err.message));
+      .catch(error => {
+        console.error('Error approving appointment:', error);
+        alert('Có lỗi xảy ra khi duyệt lịch hẹn!');
+      });
   };
 
   // Xác nhận hoàn thành

@@ -260,11 +260,34 @@ function DatLichTuVan() {
     // Xác định contactType từ hinhThuc
     let contactType = 1; // 1: Trực tiếp, 2: Online
     if (hinhThuc === 'Online') contactType = 2;
+
+    const meetLinks = [
+      "https://meet.google.com/oer-ykxb-mbj",
+      "https://meet.google.com/hvx-pqoa-tyy",
+      "https://meet.google.com/ejx-zdvn-avr",
+      "https://meet.google.com/ceb-bqzm-ksd",
+      "https://meet.google.com/hsk-wgks-ydd",
+      "https://meet.google.com/ixr-oqur-rxu",
+      "https://meet.google.com/tpv-zgof-ogb",
+      "https://meet.google.com/mhk-zaie-pjc",
+      "https://meet.google.com/brf-nmfp-row",
+      "https://meet.google.com/gro-eqfo-fkw",
+      "https://meet.google.com/ggu-wjuc-hst",
+      "https://meet.google.com/hqr-eovq-yqr"
+    ];
+
+    let meetLink = "";
+    if (hinhThuc === "Online") {
+      // Có thể chọn ngẫu nhiên hoặc tuần tự, ví dụ ngẫu nhiên:
+      meetLink = meetLinks[Math.floor(Math.random() * meetLinks.length)];
+    }
+
     const payload = {
       appointmentDate: new Date(`${ngay}T${gio}:00`).toISOString(),
       adviceServiceId: Number(loaiTuVan),
       note: ghichu || "",
-      contactType: contactType
+      contactType: contactType,
+      meetLink: meetLink // thêm dòng này
     };
     console.log('Payload gửi lên:', payload);
     fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointment', {
@@ -289,6 +312,16 @@ function DatLichTuVan() {
       })
       .then(data => {
         setMessage(data.message || 'Đặt lịch thành công!');
+        // Cập nhật lại id vào localStorage cho lịch vừa đặt
+        if (data && data.obj && data.obj.id) {
+          const lichDat = JSON.parse(localStorage.getItem('lichDat') || '[]');
+          // Tìm lịch vừa đặt (chưa có id hoặc có cùng thông tin)
+          const idx = lichDat.findIndex(l => !l.id && l.hoten === form.hoten && l.sdt === form.sdt && l.ngay === form.ngay && l.gio === form.gio);
+          if (idx !== -1) {
+            lichDat[idx].id = data.obj.id;
+            localStorage.setItem('lichDat', JSON.stringify(lichDat));
+          }
+        }
         setForm({
           hoten: '',
           sdt: '',
@@ -300,7 +333,11 @@ function DatLichTuVan() {
         });
         localStorage.removeItem('tempHoTen');
         localStorage.removeItem('tempSDT');
-        navigate('/customer/thanh-toan');
+        if (hinhThuc === 'Online' && meetLink) {
+          navigate('/customer/thanh-toan', { state: { meetLink } });
+        } else {
+          navigate('/customer/thanh-toan');
+        }
       })
       .catch(error => {
         if (error.message !== 'Unauthorized') {
