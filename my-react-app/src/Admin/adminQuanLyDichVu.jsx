@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '../components/adminLayout';
 import styled from 'styled-components';
 import { FaPlus, FaEdit, FaTrash, FaEye, FaEyeSlash } from 'react-icons/fa';
+// Thêm thư viện toast đơn giản
+import { useRef } from 'react';
 
 // Styled-components giống adminKhachHang
 const MainContent = styled.main`
@@ -219,6 +221,18 @@ const FE_SAMPLE_DATA = [
 
 const initialForm = { ma: '', loai: '', ten: '', mucdich: '', thoigian: '', chiphi: '', tinhtrang: 'Có', overview: '', suitableFor: '', preparation: '', process: '', detail: '', moreInfo: '', an: false };
 
+// Toast component đơn giản
+const Toast = ({ message, type, onClose }) => (
+  <div style={{
+    position: 'fixed', top: 24, right: 24, zIndex: 2000, minWidth: 220,
+    background: type === 'success' ? '#22c55e' : '#ef4444', color: '#fff',
+    padding: '14px 24px', borderRadius: 10, fontWeight: 600, boxShadow: '0 2px 12px rgba(0,0,0,0.13)'
+  }}>
+    {message}
+    <span style={{marginLeft: 16, cursor: 'pointer', fontWeight: 700}} onClick={onClose}>×</span>
+  </div>
+);
+
 const AdminQuanLyDichVu = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -232,6 +246,9 @@ const AdminQuanLyDichVu = () => {
   const [modalStep, setModalStep] = useState(1);
   const [confirmAnIndex, setConfirmAnIndex] = useState(null);
   const [confirmAnMode, setConfirmAnMode] = useState(''); // 'an' hoặc 'hien'
+  const [deleteLoadingIdx, setDeleteLoadingIdx] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  const toastTimeout = useRef();
 
   // Lấy danh sách dịch vụ từ API
   const fetchServices = async () => {
@@ -448,6 +465,7 @@ const AdminQuanLyDichVu = () => {
   // Xóa dịch vụ
   const handleDelete = async idx => {
     if (!window.confirm('Bạn có chắc chắn muốn xóa dịch vụ này?')) return;
+    setDeleteLoadingIdx(idx);
     try {
       const s = services[idx];
       const id = s._raw?.id || s.ma;
@@ -465,13 +483,16 @@ const AdminQuanLyDichVu = () => {
       const data = await response.json();
       console.log('Kết quả xóa dịch vụ:', data);
       if (!response.ok) {
+        showToast('Lỗi khi xóa dịch vụ!', 'error');
         throw new Error('Lỗi khi xóa dịch vụ');
       }
       fetchServices();
-      alert('Xóa dịch vụ thành công!');
+      showToast('Xóa dịch vụ thành công!', 'success');
     } catch (error) {
       console.error('Lỗi khi xóa dịch vụ:', error);
-      alert('Lỗi khi xóa dịch vụ!');
+      showToast('Lỗi khi xóa dịch vụ!', 'error');
+    } finally {
+      setDeleteLoadingIdx(null);
     }
   };
   
@@ -522,6 +543,13 @@ const AdminQuanLyDichVu = () => {
   const handleBackStep = () => {
     setModalStep(1);
     setFormError('');
+  };
+
+  // Hàm show toast
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    if (toastTimeout.current) clearTimeout(toastTimeout.current);
+    toastTimeout.current = setTimeout(() => setToast({ show: false, message: '', type }), 2500);
   };
 
   return (
@@ -584,7 +612,9 @@ const AdminQuanLyDichVu = () => {
                             <Button style={{ background: 'transparent', color: item.an ? '#9ca3af' : '#22c55e', boxShadow: 'none', border: 'none', padding: '8px 12px' }} onClick={() => handleToggleAn(services.indexOf(item))} title={item.an ? 'Hiện' : 'Ẩn'}>
                               {item.an ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
                             </Button>
-                            <Button style={{ background: '#ef4444', color: '#fff', marginRight: 6 }} onClick={() => handleDelete(services.indexOf(item))} title="Xóa"><FaTrash /></Button>
+                            <Button style={{ background: '#ef4444', color: '#fff', marginRight: 6 }} onClick={() => handleDelete(services.indexOf(item))} title="Xóa" disabled={deleteLoadingIdx === services.indexOf(item)}>
+                              {deleteLoadingIdx === services.indexOf(item) ? 'Đang xóa...' : <FaTrash />}
+                            </Button>
                           </div>
                         </ServiceTd>
                       </tr>
@@ -646,6 +676,7 @@ const AdminQuanLyDichVu = () => {
           </ModalContent>
         </ModalOverlay>
       )}
+      {toast.show && <Toast message={toast.message} type={toast.type} onClose={() => setToast({ ...toast, show: false })} />}
     </>
   );
 };

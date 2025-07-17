@@ -349,7 +349,7 @@ function LichSuDatLich() {
     ...Array.isArray(adviceAppointments) ? adviceAppointments.map(item => ({
       id: item.id,
       fullName: item.fullName,
-      phone: item.phone,
+      phone: item.phone || item.phoneNumber || item.sdt || "", // lấy đúng trường số điện thoại
       appointmentDate: item.appointmentDate,
       serviceType: 'Tư vấn',
       serviceName: item.consultationType,

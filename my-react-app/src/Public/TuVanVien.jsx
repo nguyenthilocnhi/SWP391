@@ -173,7 +173,7 @@ function TuVanVien(props) {
             <AdvisorCard
               key={advisor.id}
               as={Link}
-              to={`/tu-van-vien/${advisor.id}`}
+              to={`/${userType === 'customer' ? 'customer/tu-van-vien' : 'tu-van-vien'}/${advisor.id}`}
             >
               <img
                 src={advisor.image}
