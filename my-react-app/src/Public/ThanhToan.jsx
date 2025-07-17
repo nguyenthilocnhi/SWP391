@@ -288,6 +288,43 @@ function ThanhToan() {
     }
   };
 
+  // Thêm hàm gọi VNPAY
+  const handleVnPay = async () => {
+    const orderId = lich.id || Date.now().toString();
+    const orderInfo = noiDung || "Thanh toán dịch vụ";
+    const amount = soTienCuoi || 100000;
+    const customerEmail = lich.email || "";
+    const customerPhone = lich.sdt || "";
+    const returnFrontendUrl = window.location.origin;
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch('https://api-gender2.purintech.id.vn/api/VnPay/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          orderId,
+          orderInfo,
+          amount,
+          customerEmail,
+          customerPhone,
+          returnFrontendUrl
+        })
+      });
+      const data = await res.json();
+      if (data.paymentUrl) {
+        window.location.href = data.paymentUrl;
+      } else {
+        alert('Có lỗi khi tạo thanh toán VNPAY!');
+      }
+    } catch (e) {
+      alert('Lỗi kết nối VNPAY!');
+    }
+  };
+
   function qrSrc() {
     const noiDungKhongDau = removeVietnameseTones(noiDung);
     return `https://img.vietqr.io/image/970436-123456789-compact.png?amount=${soTienCuoi}&addInfo=${encodeURIComponent(noiDungKhongDau)}`;
@@ -336,6 +373,7 @@ function ThanhToan() {
           <button style={styles.btn} onClick={handleCancel}>Hủy</button>
           <button style={{ ...styles.btn, ...styles.btnGreen }} onClick={handleDownloadQR}>Tải mã QR</button>
           <button style={{ ...styles.btn, ...styles.btnBlue }} onClick={handlePaid}>Tôi đã thanh toán</button>
+          <button style={{ ...styles.btn, ...styles.btnBlue }} onClick={handleVnPay}>Thanh toán qua VNPAY</button>
           {voucherApplied && (
             <button style={{ ...styles.btn, ...styles.btnRed }} onClick={handleRemoveVoucher}>Xóa voucher</button>
           )}

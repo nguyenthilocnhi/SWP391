@@ -134,22 +134,22 @@ const SearchInput = styled.input`
   }
 `;
 
-const TuVanVien = () => {
+function getUserType() {
+  const loggedIn = localStorage.getItem('loggedIn');
+  const role = (localStorage.getItem('role') || '').toLowerCase();
+  if (loggedIn === 'true' && role === 'customer') return 'customer';
+  return 'guest';
+}
+
+function TuVanVien(props) {
   const [searchTerm, setSearchTerm] = useState('');
-  // const [isCustomer, setIsCustomer] = useState(false);
 
-  // useEffect(() => {
-  //   const loggedIn = localStorage.getItem('loggedIn');
-  //   const role = localStorage.getItem('role');
-  //   if (loggedIn !== 'true') {
-  //     setIsCustomer(false);
-  //   } else {
-  //     setIsCustomer(role === 'customer');
-  //   }
-  // }, []);
-
-  // Lấy trực tiếp từ localStorage mỗi lần render
-  const isCustomer = localStorage.getItem('loggedIn') === 'true' && (localStorage.getItem('role') || '').toLowerCase() === 'customer';
+  // Xác định userType từ props hoặc localStorage (giống DichVu.jsx)
+  let userType = props?.userType;
+  if (!userType) {
+    const savedRole = localStorage.getItem('role');
+    userType = savedRole ? savedRole.toLowerCase() : 'guest';
+  }
 
   const filteredAdvisors = tuvanvien.filter(advisor =>
     advisor.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -157,7 +157,7 @@ const TuVanVien = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {isCustomer ? <HeaderCustomer /> : <HeaderGuest />}
+      {userType === 'customer' ? <HeaderCustomer /> : <HeaderGuest />}
       <Container>
         <SectionTitle>ĐỘI NGŨ TƯ VẤN VIÊN</SectionTitle>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -190,6 +190,6 @@ const TuVanVien = () => {
       <Footer />
     </div>
   );
-};
+}
 
 export default TuVanVien;

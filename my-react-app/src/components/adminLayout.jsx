@@ -428,6 +428,12 @@ export default function AdminLayout() {
     navigate('/login');
   };
 
+  // Ưu tiên lấy userName và userDisplayName từ localStorage
+  const localUserName = localStorage.getItem('userName');
+  const localUserDisplayName = localStorage.getItem('userDisplayName');
+  const displayName = localUserName || adminInfo.name || 'Admin';
+  const displayRole = localUserDisplayName || 'Quản trị viên';
+
   return (
     <>
       <Sidebar className={sidebarHidden ? 'hidden' : ''}>
@@ -464,7 +470,7 @@ export default function AdminLayout() {
       </Sidebar>
 
       <Header>
-        <HeaderTitle>Xin chào, {adminInfo.name || 'Admin'}</HeaderTitle>
+        <HeaderTitle>Xin chào, {displayName}</HeaderTitle>
         <HeaderActions>
           <SearchContainer ref={searchRef}>
             <input
@@ -530,7 +536,8 @@ export default function AdminLayout() {
           </div>
           <AdminInfo>
             <img src={adminInfo.avatar} alt="Admin" />
-            <span>{adminInfo.name || 'Admin'}</span>
+            <span>{displayName}</span>
+            <span style={{fontSize:'12px', color:'#888', marginLeft:6}}>{displayRole}</span>
           </AdminInfo>
         </HeaderActions>
       </Header>

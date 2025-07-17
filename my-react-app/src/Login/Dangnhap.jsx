@@ -33,6 +33,16 @@ const DangNhap = () => {
         // Nếu backend trả về role trong token, nên giải mã để lấy role
         const payload = JSON.parse(atob(data.obj.split('.')[1]));
         let role = payload.role;
+        // Lưu userName (email) vào localStorage
+        localStorage.setItem('userName', payload.email);
+        // Lưu tên hiển thị theo role
+        let userDisplayName = '';
+        if (role === 'Consultant' || role === 'Tư vấn viên') userDisplayName = 'Tư vấn viên';
+        else if (role === 'Admin' || role === 'admin') userDisplayName = 'Quản trị viên';
+        else if (role === 'Staff' || role === 'Nhân viên') userDisplayName = 'Nhân viên';
+        else if (role === 'Customer' || role === 'Khách hàng') userDisplayName = 'Khách hàng';
+        else userDisplayName = payload.email;
+        localStorage.setItem('userDisplayName', userDisplayName);
         console.log('ROLE TRONG JWT:', role, typeof role);
 
         // Mapping role string về số

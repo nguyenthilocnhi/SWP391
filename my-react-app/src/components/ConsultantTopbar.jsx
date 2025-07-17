@@ -1,9 +1,14 @@
 import React from "react";
 import { IoMdNotifications } from "react-icons/io";
 
-const ConsultantTopbar = ({ notificationCount, consultantName }) => (
-  <div className="topbar">
-    <style>{`
+const ConsultantTopbar = ({ notificationCount, consultantName }) => {
+  const localUserName = localStorage.getItem('userName');
+  const localUserDisplayName = localStorage.getItem('userDisplayName');
+  const displayName = localUserName || consultantName || 'Tư vấn viên';
+  const displayRole = localUserDisplayName || 'Tư vấn viên';
+  return (
+    <div className="topbar">
+      <style>{`
 .topbar {
   display: flex;
   justify-content: space-between;
@@ -47,22 +52,24 @@ const ConsultantTopbar = ({ notificationCount, consultantName }) => (
   white-space: nowrap;
 }
     `}</style>
-    <img className="logo" src="https://i.postimg.cc/g2C1ys2D/nh-ch-p-m-n-hh-2025-06-29-000958.png" alt="Logo" />
-    <input className="search" placeholder="Tìm kiếm khách hàng, bài viết..." />
-    <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-      <div style={{ position: "relative", fontSize: "1.6rem", color: "#10b981", cursor: "pointer" }}>
-        <IoMdNotifications />
-        <span style={{
-          position: "absolute", top: -6, right: -8, background: "#ef4444", color: "#fff",
-          fontSize: "0.8rem", borderRadius: "50%", padding: "2px 6px", fontWeight: 700
-        }}>{notificationCount}</span>
-      </div>
-      <div className="userbox">
-        <img className="avatar" src="https://i.postimg.cc/rFsJ2wWR/tuvanvien.jpg" alt="Consultant" />
-        <span className="username">{consultantName}</span>
+      <img className="logo" src="https://i.postimg.cc/g2C1ys2D/nh-ch-p-m-n-hh-2025-06-29-000958.png" alt="Logo" />
+      <input className="search" placeholder="Tìm kiếm khách hàng, bài viết..." />
+      <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+        <div style={{ position: "relative", fontSize: "1.6rem", color: "#10b981", cursor: "pointer" }}>
+          <IoMdNotifications />
+          <span style={{
+            position: "absolute", top: -6, right: -8, background: "#ef4444", color: "#fff",
+            fontSize: "0.8rem", borderRadius: "50%", padding: "2px 6px", fontWeight: 700
+          }}>{notificationCount}</span>
+        </div>
+        <div className="userbox">
+          <img className="avatar" src="https://i.postimg.cc/rFsJ2wWR/tuvanvien.jpg" alt="Consultant" />
+          <span className="username">{displayName}</span>
+          <span style={{fontSize:'12px', color:'#888', marginLeft:6}}>{displayRole}</span>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default ConsultantTopbar; 

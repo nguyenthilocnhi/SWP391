@@ -139,8 +139,11 @@ const StaffHeader = ({
     };
   }, []);
 
-  // Sử dụng thông tin từ localStorage nếu không có props
-  const displayName = userName || headerProfile.name;
+  // Ưu tiên lấy userName và userDisplayName từ localStorage
+  const localUserName = localStorage.getItem('userName');
+  const localUserDisplayName = localStorage.getItem('userDisplayName');
+  const displayName = localUserName || userName || headerProfile.name;
+  const displayRole = localUserDisplayName || userRole || 'Nhân viên';
   const displayAvatar = avatar || headerProfile.avatar;
   const displayWelcome = welcome || `Chào mừng trở lại, ${displayName.split(' ').pop()}!`;
 
@@ -154,7 +157,7 @@ const StaffHeader = ({
       <HeaderActions className="header-actions">
         <UserHeaderInfo className="user-header-info">
           <UserHeaderName className="user-header-name">{displayName}</UserHeaderName>
-          <UserHeaderRole className="user-header-role">{userRole}</UserHeaderRole>
+          <UserHeaderRole className="user-header-role">{displayRole}</UserHeaderRole>
         </UserHeaderInfo>
         <AvatarWrapper className="avatar">
           <AvatarImg src={avatar} alt="Avatar" className="rounded-full" />

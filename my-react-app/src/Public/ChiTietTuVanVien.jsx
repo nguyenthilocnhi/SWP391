@@ -364,25 +364,21 @@ const CustomListItem = styled.li`
   }
 `;
 
-const ChiTietTuVanVien = () => {
+function ChiTietTuVanVien(props) {
   const { id } = useParams();
-  const [isCustomer, setIsCustomer] = useState(false);
   const advisor = tuvanvien.find(tv => tv.id === id);
 
-  useEffect(() => {
-    const loggedIn = localStorage.getItem('loggedIn');
-    const role = localStorage.getItem('role');
-    if (loggedIn !== 'true') {
-      setIsCustomer(false);
-    } else {
-      setIsCustomer(role === 'customer');
-    }
-  }, []);
+  // Xác định userType từ props hoặc localStorage (giống DichVu.jsx)
+  let userType = props?.userType;
+  if (!userType) {
+    const savedRole = localStorage.getItem('role');
+    userType = savedRole ? savedRole.toLowerCase() : 'guest';
+  }
 
   if (!advisor) {
     return (
       <>
-        {isCustomer ? <HeaderCustomer /> : <HeaderGuest />}
+        {userType === 'customer' ? <HeaderCustomer /> : <HeaderGuest />}
         <Main>
           <ErrorMessage>
             <h2>Không tìm thấy tư vấn viên</h2>
@@ -397,7 +393,7 @@ const ChiTietTuVanVien = () => {
 
   return (
     <>
-      {isCustomer ? <HeaderCustomer /> : <HeaderGuest />}
+      {userType === 'customer' ? <HeaderCustomer /> : <HeaderGuest />}
       <Main>
         <Card>
           <Avatar src={advisor.image} alt={advisor.name} />
@@ -442,6 +438,6 @@ const ChiTietTuVanVien = () => {
       <Footer />
     </>
   );
-};
+}
 
 export default ChiTietTuVanVien; 
