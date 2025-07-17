@@ -3,7 +3,7 @@ import { useParams, Link as RouterLink } from 'react-router-dom';
 import styled from 'styled-components';
 import HeaderGuest from '../components/HeaderGuest';
 import HeaderCustomer from '../components/HeaderCustomer';
-import Footer from '../components/Footer';
+import Footer from '../components/Footer'; 
 
 const tuvanvien = [
   {
@@ -372,7 +372,12 @@ function ChiTietTuVanVien(props) {
   let userType = props?.userType;
   if (!userType) {
     const savedRole = localStorage.getItem('role');
-    userType = savedRole ? savedRole.toLowerCase() : 'guest';
+    // Mapping số về chuỗi role
+    if (savedRole === "1") userType = "customer";
+    else if (savedRole === "2") userType = "consultant";
+    else if (savedRole === "3") userType = "staff";
+    else if (savedRole === "4") userType = "admin";
+    else userType = "guest";
   }
 
   if (!advisor) {
@@ -432,7 +437,9 @@ function ChiTietTuVanVien(props) {
               </CustomList>
             </>
           )}
-          <BackLink to="/tu-van-vien">← Quay lại danh sách tư vấn viên</BackLink>
+          <BackLink to={`/${userType === 'customer' ? 'customer/tu-van-vien' : 'tu-van-vien'}`}>
+          ← Quay lại danh sách tư vấn viên
+          </BackLink>
         </Card>
       </Main>
       <Footer />

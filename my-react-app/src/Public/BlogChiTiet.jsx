@@ -1344,7 +1344,7 @@ const BlogChiTiet = ({ userType = 'guest' }) => {
         }
       `}</style>
             <main className="main-content">
-                <Link to="/blog">
+                <Link  to={`/${userType === 'customer' ? 'customer/blog' : 'blog'}`}>
                     <div className="breadcrumb">Kiến thức y khoa & Xét nghiệm</div>
                 </Link>
                 <h1 className="main-title">{blogData.title}</h1>
