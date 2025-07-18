@@ -1,116 +1,130 @@
 import React, { useState, useEffect } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
-import { useLocation } from "react-router-dom";
 
 const ConsultantLichHen = () => {
-  const location = useLocation();
-  const { appointmentCount } = location.state || {};
   const [appointments, setAppointments] = useState([]);
-  const [loading, setLoading] = useState(true);
   const consultantName = "Nguyễn Thị Huyền";
   const notificationCount = 3;
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      setAppointments([]);
-      setLoading(false);
-      alert('Bạn cần đăng nhập để xem lịch hẹn!');
-      // window.location.href = '/login'; 
+      window.location.href = '/login';
+      return;
     }
-    fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'accept': '*/*',
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const role = payload.role;
+      if (role !== 2 && role !== 'Consultant' && role !== 'Tư vấn viên') {
+        window.location.href = '/login';
+        return;
       }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setAppointments(data);
-        } else if (Array.isArray(data.obj)) {
-          setAppointments(data.obj);
-        } else {
-          setAppointments([]);
-        }
-        setLoading(false);
-      })
-      .catch(() => {
+    } catch (e) {
+      window.location.href = '/login';
+      return;
+    }
+
+    // Fetch API
+    const fetchAppointments = async () => {
+      try {
+        const res = await fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'accept': '*/*'
+          }
+        });
+        const data = await res.json();
+        console.log("API data:", data);
+
+        // Mapping dữ liệu
+        let newList = [];
+        if (Array.isArray(data)) newList = data;
+        else if (Array.isArray(data.obj)) newList = data.obj;
+        else newList = [];
+        setAppointments(newList);
+      } catch (error) {
+        console.error("Lỗi fetch API:", error);
         setAppointments([]);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchAppointments();
   }, []);
 
-  // Duyệt lịch hẹn
-  const handleApprove = (id) => {
+  const handleApprove = async (id) => {
     const token = localStorage.getItem('token');
     if (!token) {
       alert('Bạn cần đăng nhập để thao tác!');
       return;
     }
-    const user = JSON.parse(localStorage.getItem('user')); 
-    console.log('User:', user);
-    console.log('staffId:', user?.id);
-    console.log('role:', user?.role);
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    console.log('Token payload:', payload);
-    fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/approve`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'accept': '*/*',
-      },
-      body: JSON.stringify({
-        consultantId: user?.id, 
-        serviceStatus: 0,
-        note: 'string',
-        suggestion: 'string'
-      })
-    })
-      .then(res => {
-        if (!res.ok) {
-          return res.json().then(data => {
-            console.error('API error:', data);
-            alert('Lỗi: ' + (data.message || JSON.stringify(data)));
-            throw new Error('API error');
-          });
-        }
-        return res.json();
-      })
-      .then(data => {
-        alert('Duyệt thành công!');
-        setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: 'Đã duyệt' } : a));
-      })
-      .catch(error => {
-        console.error('Error approving appointment:', error);
-        alert('Có lỗi xảy ra khi duyệt lịch hẹn!');
+    let consultantId = null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      consultantId = payload.nameid || payload.sub || null;
+    } catch (e) {}
+    try {
+      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/approve`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+        },
+        body: JSON.stringify({
+          consultantId: consultantId,
+          serviceStatus: 0,
+          note: 'Duyệt lịch hẹn',
+          suggestion: 'Lịch hẹn đã được duyệt'
+        })
       });
+      if (!res.ok) {
+        const data = await res.json();
+        alert('Lỗi: ' + (data.message || JSON.stringify(data)));
+        return;
+      }
+      alert('Duyệt thành công!');
+      setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: "Đã duyệt" } : a));
+    } catch (error) {
+      alert('Có lỗi xảy ra khi duyệt lịch hẹn!');
+      console.error(error);
+    }
   };
 
-  // Xác nhận hoàn thành
-  const handleConfirm = (id) => {
+  const handleConfirm = async (id) => {
     const token = localStorage.getItem('token');
     if (!token) {
       alert('Bạn cần đăng nhập để thao tác!');
       return;
     }
-    fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/confirm`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'accept': '*/*',
+    let consultantId = null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      consultantId = payload.nameid || payload.sub || null;
+    } catch (e) {}
+    try {
+      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/confirm`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'accept': '*/*',
+        },
+        body: JSON.stringify({
+          consultantId: consultantId
+        })
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        alert('Lỗi: ' + (data.message || JSON.stringify(data)));
+        return;
       }
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Xác nhận không thành công');
-        alert('Xác nhận hoàn thành!');
-        setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: 'Đã hoàn thành' } : a));
-      })
-      .catch(err => alert('Lỗi: ' + err.message));
+      alert('Xác nhận hoàn thành!');
+      setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: "Đã hoàn thành" } : a));
+    } catch (error) {
+      alert('Có lỗi xảy ra khi xác nhận hoàn thành!');
+      console.error(error);
+    }
   };
 
   return (
@@ -168,47 +182,100 @@ const ConsultantLichHen = () => {
           <div className="lh-main-card">
             <div className="lh-title">Lịch hẹn tư vấn</div>
             <div className="lh-desc">Danh sách các lịch hẹn tư vấn của khách hàng.</div>
-            {appointmentCount !== undefined && (
-              <div style={{ margin: '16px 0', color: '#047857', fontWeight: 600 }}>
-                Tổng số lịch hẹn trong tháng: {appointmentCount}
+            {appointments.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+                <div style={{ fontSize: '1.2rem', color: '#6b7280', marginBottom: '16px', fontWeight: 500 }}>
+                  Không có lịch hẹn nào
+                </div>
               </div>
-            )}
-            {loading ? (
-              <div className="lh-empty">Đang tải...</div>
-            ) : appointments.length === 0 ? (
-              <div className="lh-empty">Không có lịch hẹn nào.</div>
             ) : (
-              <table className="lh-table">
-                <thead>
-                  <tr>
-                    <th>Khách hàng</th>
-                    <th>SĐT</th>
-                    <th>Ngày</th>
-                    <th>Giờ</th>
-                    <th>Hình thức</th>
-                    <th>Loại tư vấn</th>
-                    <th>Trạng thái</th>
-                    <th>Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {appointments.map((a, idx) => (
-                    <tr key={a.id || idx}>
-                      <td>{a.fullName || a.hoTen}</td>
-                      <td>{a.phone || a.sdt}</td>
-                      <td>{a.appointmentDate ? new Date(a.appointmentDate).toLocaleDateString() : a.ngay}</td>
-                      <td>{a.appointmentDate ? new Date(a.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : a.gio}</td>
-                      <td>{a.consultationMethod || a.hinhThuc}</td>
-                      <td>{a.consultationType || a.loaiTuVan}</td>
-                      <td>{a.status || a.trangThai || '-'}</td>
-                      <td>
-                        <button className="lh-btn-detail" onClick={() => handleApprove(a.id)}>Duyệt</button>
-                        <button className="lh-btn-detail" style={{marginLeft: 8, background: '#f59e42'}} onClick={() => handleConfirm(a.id)}>Xác nhận</button>
-                      </td>
+              <div style={{ overflowX: 'auto' }}>
+                <table className="lh-table">
+                  <thead>
+                    <tr>
+                      <th>Khách hàng</th>
+                      <th>Email</th>
+                      <th>SĐT</th>
+                      <th>Ngày</th>
+                      <th>Giờ</th>
+                      <th>Hình thức</th>
+                      <th>Loại tư vấn</th>
+                      <th>Ghi chú</th>
+                      <th>Link Meet</th>
+                      <th>Trạng thái</th>
+                      <th>Thao tác</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {appointments.map((a, idx) => (
+                      <tr key={a.id || idx}>
+                        <td style={{ fontWeight: 600, color: '#059669' }}>{a.fullName}</td>
+                        <td>{a.email}</td>
+                        <td>{a.phone}</td>
+                        <td>{a.appointmentDate ? new Date(a.appointmentDate).toLocaleDateString('vi-VN') : '-'}</td>
+                        <td>{a.appointmentDate ? new Date(a.appointmentDate).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : '-'}</td>
+                        <td>
+                          <span style={{
+                            padding: '4px 8px',
+                            borderRadius: '6px',
+                            fontSize: '0.9rem',
+                            fontWeight: 600,
+                            backgroundColor: a.contactType === 2 ? '#dbeafe' : '#fef3c7',
+                            color: a.contactType === 2 ? '#1e40af' : '#92400e'
+                          }}>
+                            {a.contactType === 2 ? 'Online' : 'Trực tiếp'}
+                          </span>
+                        </td>
+                        <td>{a.consultationType}</td>
+                        <td style={{ maxWidth: '200px', wordBreak: 'break-word' }}>{a.note}</td>
+                        <td>
+                          {a.contactType === 2 && a.meetLink ? (
+                            <a href={a.meetLink} target="_blank" rel="noopener noreferrer"
+                              style={{ color: '#d97706', fontWeight: 'bold', textDecoration: 'none', wordBreak: 'break-all' }}>
+                              Link Meet
+                            </a>
+                          ) : '-'}
+                        </td>
+                        <td>
+                          <span style={{
+                            padding: '4px 8px',
+                            borderRadius: '6px',
+                            fontSize: '0.9rem',
+                            fontWeight: 600,
+                            backgroundColor:
+                              a.status === 'Đã duyệt' ? '#d1fae5' :
+                                a.status === 'Đã hoàn thành' ? '#dbeafe' :
+                                  a.status === 'Đã hủy' ? '#fee2e2' : '#fef3c7',
+                            color:
+                              a.status === 'Đã duyệt' ? '#065f46' :
+                                a.status === 'Đã hoàn thành' ? '#1e40af' :
+                                  a.status === 'Đã hủy' ? '#dc2626' : '#92400e'
+                          }}>
+                            {a.status}
+                          </span>
+                        </td>
+                        <td>
+                          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                            {a.status === 'Chờ xử lý' && (
+                              <button className="lh-btn-detail" onClick={() => handleApprove(a.id)}
+                                style={{ fontSize: '0.85rem', padding: '4px 8px' }}>
+                                Duyệt
+                              </button>
+                            )}
+                            {a.status === 'Đã duyệt' && (
+                              <button className="lh-btn-detail"
+                                style={{ marginLeft: 0, background: '#f59e42', fontSize: '0.85rem', padding: '4px 8px' }}
+                                onClick={() => handleConfirm(a.id)}>
+                                Xác nhận
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         </main>

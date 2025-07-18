@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom';
 const Wrapper = styled.div`
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
+  width: 100vw; /* Thêm dòng này */
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #f8f9fa; /* Nên thêm màu nền nhẹ cho đẹp */
 `;
 
 const Card = styled.div`
