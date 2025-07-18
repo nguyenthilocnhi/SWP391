@@ -171,21 +171,11 @@ const styles = {
 };
 
 function LichSuDatLich() {
-  const [lichDat, setLichDat] = useState([]);
-  const [filter, setFilter] = useState("");
-  const [modal, setModal] = useState(null);
-  const [btnViewHover, setBtnViewHover] = useState(-1);
-  // Thêm state cho lịch xét nghiệm từ API
   const [appointments, setAppointments] = useState([]);
   const [loadingAppointments, setLoadingAppointments] = useState(true);
-  const [adviceNames, setAdviceNames] = useState([]);
   const [adviceAppointments, setAdviceAppointments] = useState([]);
   const [loadingAdvice, setLoadingAdvice] = useState(true);
-
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("lichDat")) || [];
-    setLichDat(data);
-  }, []);
+  const [filter, setFilter] = useState("");
 
   // Lấy danh sách lịch xét nghiệm từ API
   useEffect(() => {
@@ -214,22 +204,12 @@ function LichSuDatLich() {
       });
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-names', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-      .then(res => res.json())
-      .then(data => setAdviceNames(data))
-      .catch(err => console.error(err));
-  }, []);
-
   // Lấy danh sách lịch tư vấn từ API
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
       setLoadingAdvice(false);
-      setAdviceAppointments([]); // Đảm bảo luôn là mảng
+      setAdviceAppointments([]);
       return;
     }
     fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
@@ -237,13 +217,10 @@ function LichSuDatLich() {
     })
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) {
-          setAdviceAppointments(data);
-        } else if (Array.isArray(data.obj)) {
-          setAdviceAppointments(data.obj);
-        } else {
-          setAdviceAppointments([]);
-        }
+        let newList = [];
+        if (Array.isArray(data)) newList = data;
+        else if (Array.isArray(data.obj)) newList = data.obj;
+        setAdviceAppointments(newList);
         setLoadingAdvice(false);
       })
       .catch(() => {
@@ -251,19 +228,6 @@ function LichSuDatLich() {
         setLoadingAdvice(false);
       });
   }, []);
-
-  const filtered = filter
-    ? lichDat.filter(l => l.trangThai === filter)
-    : lichDat;
-
-  const handleDelete = (idx) => {
-    if (!window.confirm("Bạn có chắc muốn xóa lịch đặt này?")) return;
-    const newLichDat = [...lichDat];
-    newLichDat.splice(idx, 1);
-    setLichDat(newLichDat);
-    localStorage.setItem("lichDat", JSON.stringify(newLichDat));
-    if (modal && lichDat[idx] === modal) setModal(null);
-  };
 
   // Thêm hàm xử lý xóa lịch xét nghiệm từ API
   function handleDeleteAppointment(id) {
@@ -294,46 +258,16 @@ function LichSuDatLich() {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
     })
-      .then(async res => {
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          console.error('API xóa trả về lỗi:', err);
-          throw new Error('Xóa không thành công: ' + (err.message || JSON.stringify(err)));
-        }
-        // Xóa trong localStorage
-        const lichDat = JSON.parse(localStorage.getItem('lichDat') || '[]');
-        const newLichDat = lichDat.filter(l => l.id !== id);
-        localStorage.setItem('lichDat', JSON.stringify(newLichDat));
-        // Gọi lại API để lấy danh sách mới nhất
-        fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-          .then(res => res.json())
-          .then(data => {
-            if (Array.isArray(data)) {
-              setAdviceAppointments(data);
-            } else if (Array.isArray(data.obj)) {
-              setAdviceAppointments(data.obj);
-            } else {
-              setAdviceAppointments([]);
-            }
-          });
+      .then(res => {
+        if (!res.ok) throw new Error('Xóa không thành công');
+        // Xóa thành công, cập nhật lại danh sách
+        setAdviceAppointments(prev => prev.filter(item => item.id !== id));
         alert('Xóa thành công!');
       })
       .catch(err => {
         alert('Lỗi: ' + err.message);
-        console.error('Lỗi khi xóa lịch tư vấn:', err);
       });
   }
-
-  const getAdviceAppointmentById = async (id) => {
-    const token = localStorage.getItem('token');
-    const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-appointment/${id}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-    if (!res.ok) throw new Error('Không lấy được chi tiết lịch tư vấn');
-    return res.json();
-  };
 
   // Gộp dữ liệu lịch xét nghiệm và lịch tư vấn từ API
   const mergedAppointments = [
@@ -349,21 +283,15 @@ function LichSuDatLich() {
     ...Array.isArray(adviceAppointments) ? adviceAppointments.map(item => ({
       id: item.id,
       fullName: item.fullName,
-      phone: item.phone || item.phoneNumber || item.sdt || "", // lấy đúng trường số điện thoại
+      phone: item.phone || item.phoneNumber || "",
       appointmentDate: item.appointmentDate,
       serviceType: 'Tư vấn',
       serviceName: item.consultationType,
       note: item.note,
-      meetLink: item.meetLink, // thêm dòng này
-      contactType: item.contactType, // thêm dòng này
+      meetLink: item.meetLink,
+      contactType: item.contactType,
     })) : []
   ].sort((a, b) => new Date(b.appointmentDate) - new Date(a.appointmentDate));
-
-  // Lấy dữ liệu localStorage để map số điện thoại và meetLink
-  const lichDatLocal = JSON.parse(localStorage.getItem('lichDat') || '[]');
-  function getLocalInfoById(id) {
-    return lichDatLocal.find(l => l.id === id) || {};
-  }
 
   return (
     <div style={styles.page}>
@@ -372,16 +300,15 @@ function LichSuDatLich() {
         <h2 style={styles.h2}>Lịch Sử Đặt Lịch</h2>
         <div style={styles.filterBar}>
           <label style={styles.filterLabel}>
-            Trạng thái:
+            Loại dịch vụ:
             <select
               style={styles.filterSelect}
               value={filter}
               onChange={e => setFilter(e.target.value)}
             >
               <option value="">Tất cả</option>
-              <option value="Chờ xử lý">Chờ xử lý</option>
-              <option value="Đã xác nhận">Đã xác nhận</option>
-              <option value="Đã hủy">Đã hủy</option>
+              <option value="Xét nghiệm">Xét nghiệm</option>
+              <option value="Tư vấn">Tư vấn</option>
             </select>
           </label>
         </div>
@@ -395,7 +322,6 @@ function LichSuDatLich() {
                 <th style={styles.th}>Họ tên</th>
                 <th style={styles.th}>SĐT</th>
                 <th style={styles.th}>Ghi chú</th>
-                <th style={styles.th}>Link Meet</th>
                 <th style={styles.th}>Thao tác</th>
               </tr>
             </thead>
@@ -405,26 +331,19 @@ function LichSuDatLich() {
                   <td colSpan={8} style={{textAlign: 'center', color: '#888'}}>Không có lịch đặt nào.</td>
                 </tr>
               ) : (
-                mergedAppointments.map(item => {
-                  // Nếu là tư vấn, lấy phone và meetLink từ localStorage nếu có
-                  let phone = item.phone;
-                  let meetLink = item.meetLink;
-                  if (item.serviceType === 'Tư vấn') {
-                    const local = getLocalInfoById(item.id);
-                    if (local.sdt) phone = local.sdt;
-                    if (local.meetLink) meetLink = local.meetLink;
-                  }
-                  return (
+                mergedAppointments
+                  .filter(item => !filter || item.serviceType === filter)
+                  .map(item => (
                     <tr key={item.serviceType + '-' + item.id}>
                       <td style={styles.td}>{new Date(item.appointmentDate).toLocaleString()}</td>
                       <td style={styles.td}>{item.serviceType}</td>
                       <td style={styles.td}>{item.serviceName}</td>
                       <td style={styles.td}>{item.fullName}</td>
-                      <td style={styles.td}>{phone}</td>
+                      <td style={styles.td}>{item.phone}</td>
                       <td style={styles.td}>{item.note}</td>
                       <td style={styles.td}>
-                        {item.serviceType === 'Tư vấn' && item.contactType === 2 && meetLink ? (
-                          <a href={meetLink} target="_blank" rel="noopener noreferrer" style={{color: '#d97706', fontWeight: 'bold', wordBreak: 'break-all'}}>Link Meet</a>
+                        {item.serviceType === 'Tư vấn' && item.contactType === 2 && item.meetLink ? (
+                          <a href={item.meetLink} target="_blank" rel="noopener noreferrer" style={{color: '#d97706', fontWeight: 'bold', wordBreak: 'break-all'}}>Link Meet</a>
                         ) : '-'}
                       </td>
                       <td style={styles.td}>
@@ -439,36 +358,12 @@ function LichSuDatLich() {
                         </button>
                       </td>
                     </tr>
-                  );
-                })
+                  ))
               )}
             </tbody>
           </table>
         </div>
       </div>
-      {modal && (
-        <div style={styles.modalOverlay}>
-          <div style={styles.modalContent}>
-            <div style={styles.modalTitle}>Chi Tiết Lịch Hẹn</div>
-            <div style={styles.modalInfo}>
-              <p><strong>Ngày:</strong> {modal.ngay || "-"}</p>
-              <p><strong>Dịch vụ:</strong> {modal.dichVu || "-"}</p>
-              <p><strong>Hình thức:</strong> {modal.hinhThuc || "-"}</p>
-              <p><strong>Loại tư vấn:</strong> {modal.loaiTuVan || "-"}</p>
-              <p><strong>Lý do:</strong> {modal.lyDo || "-"}</p>
-              <p><strong>Họ tên:</strong> {modal.hoTen || "-"}</p>
-              <p><strong>SĐT:</strong> {modal.sdt || "-"}</p>
-              <p><strong>Trạng thái:</strong> {STATUS_LABELS[modal.trangThai]?.label || modal.trangThai || "-"}</p>
-              {modal.meetLink && (
-                <p><strong>Link Meet:</strong> <a href={modal.meetLink} target="_blank" rel="noopener noreferrer" style={{color: '#d97706', fontWeight: 'bold', wordBreak: 'break-all'}}>{modal.meetLink}</a></p>
-              )}
-            </div>
-            <div style={styles.modalFooter}>
-              <button style={styles.closeButton} onClick={() => setModal(null)}>ĐÓNG</button>
-            </div>
-          </div>
-        </div>
-      )}
       <Footer />
     </div>
   );

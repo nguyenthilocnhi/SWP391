@@ -148,8 +148,6 @@ const styles = {
 
 function DatLichXetNghiem() {
   const [form, setForm] = useState({
-    hoten: "",
-    sdt: "",
     ngay: "",
     gio: "",
     loaiXetNghiem: "",
@@ -162,11 +160,6 @@ function DatLichXetNghiem() {
 
   useEffect(() => {
     document.title = "Đặt Lịch Xét Nghiệm";
-    setForm((prev) => ({
-      ...prev,
-      hoten: localStorage.getItem("tempHoTen") || "",
-      sdt: localStorage.getItem("tempSDT") || "",
-    }));
     const today = new Date().toISOString().split('T')[0];
     setMinDate(today);
   }, []);
@@ -194,7 +187,11 @@ function DatLichXetNghiem() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // ... validate form
+    const { ngay, gio, loaiXetNghiem } = form;
+    if (!ngay || !gio || !loaiXetNghiem) {
+      alert('Vui lòng điền đầy đủ thông tin bắt buộc.');
+      return;
+    }
 
     const token = localStorage.getItem('token');
     if (!token) {
@@ -232,8 +229,6 @@ function DatLichXetNghiem() {
       })
       .then(data => {
         alert(data.message || "Đặt lịch thành công!");
-        localStorage.removeItem("tempHoTen");
-        localStorage.removeItem("tempSDT");
         navigate("/customer/thanh-toan");
       })
       .catch(error => {
@@ -254,17 +249,6 @@ function DatLichXetNghiem() {
           <form onSubmit={handleSubmit} autoComplete="off">
             <div style={styles.formRow}>
               <div style={styles.formCol}>
-                <label style={styles.label}>
-                  Họ và tên <span style={styles.required}>*</span>
-                </label>
-                <input
-                  type="text"
-                  name="hoten"
-                  style={styles.input}
-                  value={form.hoten}
-                  onChange={handleChange}
-                  required
-                />
                 <label style={styles.label}>
                   Ngày tháng năm <span style={styles.required}>*</span>
                 </label>
@@ -289,17 +273,6 @@ function DatLichXetNghiem() {
                 />
               </div>
               <div style={styles.formCol}>
-                <label style={styles.label}>
-                  Số điện thoại <span style={styles.required}>*</span>
-                </label>
-                <input
-                  type="tel"
-                  name="sdt"
-                  style={styles.input}
-                  value={form.sdt}
-                  onChange={handleChange}
-                  required
-                />
                 <label style={styles.label}>
                   Giờ xét nghiệm <span style={styles.required}>*</span>
                 </label>

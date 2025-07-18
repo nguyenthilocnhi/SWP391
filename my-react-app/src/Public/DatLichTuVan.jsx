@@ -153,8 +153,6 @@ const styles = {
 
 function DatLichTuVan() {
   const [form, setForm] = useState({
-    hoten: "",
-    sdt: "",
     ngay: "",
     gio: "",
     hinhThuc: "Trực tiếp",
@@ -167,14 +165,27 @@ function DatLichTuVan() {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [services, setServices] = useState([]);
+  const [showMeetLink, setShowMeetLink] = useState(false);
+  const [displayedMeetLink, setDisplayedMeetLink] = useState("");
+
+  // Thêm mảng 12 link Meet ở đầu component
+  const meetLinks = [
+    "https://meet.google.com/oer-ykxb-mbj",
+    "https://meet.google.com/hvx-pqoa-tyy",
+    "https://meet.google.com/ejx-zdvn-avr",
+    "https://meet.google.com/ceb-bqzm-ksd",
+    "https://meet.google.com/hsk-wgks-ydd",
+    "https://meet.google.com/ixr-oqur-rxu",
+    "https://meet.google.com/tpv-zgof-ogb",
+    "https://meet.google.com/mhk-zaie-pjc",
+    "https://meet.google.com/brf-nmfp-row",
+    "https://meet.google.com/gro-eqfo-fkw",
+    "https://meet.google.com/ggu-wjuc-hst",
+    "https://meet.google.com/hqr-eovq-yqr"
+  ];
 
   useEffect(() => {
     document.title = "Đặt Lịch Tư Vấn";
-    setForm((prev) => ({
-      ...prev,
-      hoten: localStorage.getItem("tempHoTen") || "",
-      sdt: localStorage.getItem("tempSDT") || "",
-    }));
     const today = new Date().toISOString().split('T')[0];
     setMinDate(today);
 
@@ -218,7 +229,7 @@ function DatLichTuVan() {
         headers: {
           'Content-Type': 'application/json',
           // Nếu cần token:
-          // 'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(data)
       });
@@ -235,8 +246,8 @@ function DatLichTuVan() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { hoten, sdt, ngay, gio, hinhThuc, loaiTuVan, ghichu } = form;
-    if (!hoten || !sdt || !ngay || !gio || !loaiTuVan) {
+    const { ngay, gio, hinhThuc, loaiTuVan, ghichu } = form;
+    if (!ngay || !gio || !loaiTuVan) {
       setMessage('Vui lòng điền đầy đủ thông tin bắt buộc.');
       return;
     }
@@ -259,35 +270,18 @@ function DatLichTuVan() {
     }
     // Xác định contactType từ hinhThuc
     let contactType = 1; // 1: Trực tiếp, 2: Online
-    if (hinhThuc === 'Online') contactType = 2;
-
-    const meetLinks = [
-      "https://meet.google.com/oer-ykxb-mbj",
-      "https://meet.google.com/hvx-pqoa-tyy",
-      "https://meet.google.com/ejx-zdvn-avr",
-      "https://meet.google.com/ceb-bqzm-ksd",
-      "https://meet.google.com/hsk-wgks-ydd",
-      "https://meet.google.com/ixr-oqur-rxu",
-      "https://meet.google.com/tpv-zgof-ogb",
-      "https://meet.google.com/mhk-zaie-pjc",
-      "https://meet.google.com/brf-nmfp-row",
-      "https://meet.google.com/gro-eqfo-fkw",
-      "https://meet.google.com/ggu-wjuc-hst",
-      "https://meet.google.com/hqr-eovq-yqr"
-    ];
-
     let meetLink = "";
-    if (hinhThuc === "Online") {
-      // Có thể chọn ngẫu nhiên hoặc tuần tự, ví dụ ngẫu nhiên:
+    if (hinhThuc === 'Online') {
+      contactType = 2;
+      // Chọn ngẫu nhiên 1 link Meet
       meetLink = meetLinks[Math.floor(Math.random() * meetLinks.length)];
     }
-
     const payload = {
       appointmentDate: new Date(`${ngay}T${gio}:00`).toISOString(),
       adviceServiceId: Number(loaiTuVan),
       note: ghichu || "",
       contactType: contactType,
-      meetLink: meetLink // thêm dòng này
+      ...(meetLink && { meetLink })
     };
     console.log('Payload gửi lên:', payload);
     fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointment', {
@@ -311,33 +305,45 @@ function DatLichTuVan() {
         return res.json();
       })
       .then(data => {
+        console.log('Response đặt lịch:', data);
         setMessage(data.message || 'Đặt lịch thành công!');
-        // Cập nhật lại id vào localStorage cho lịch vừa đặt
-        if (data && data.obj && data.obj.id) {
-          const lichDat = JSON.parse(localStorage.getItem('lichDat') || '[]');
-          // Tìm lịch vừa đặt (chưa có id hoặc có cùng thông tin)
-          const idx = lichDat.findIndex(l => !l.id && l.hoten === form.hoten && l.sdt === form.sdt && l.ngay === form.ngay && l.gio === form.gio);
-          if (idx !== -1) {
-            lichDat[idx].id = data.obj.id;
-            localStorage.setItem('lichDat', JSON.stringify(lichDat));
-          }
+        
+        // Lưu lịch vào localStorage
+        const lich = {
+          ngay: form.ngay,
+          gio: form.gio,
+          hinhThuc: form.hinhThuc,
+          loaiTuVan: form.loaiTuVan,
+          ghichu: form.ghichu,
+          trangThai: "Chờ xử lý",
+          id: data.obj?.id || null,
+          ...(meetLink && { meetLink })
+        };
+        
+        const danhSachLich = JSON.parse(localStorage.getItem('lichDat') || '[]');
+        danhSachLich.push(lich);
+        localStorage.setItem('lichDat', JSON.stringify(danhSachLich));
+        
+        // Nếu là online, hiển thị link Meet cho khách trước khi chuyển trang
+        if (hinhThuc === 'Online' && meetLink) {
+          setShowMeetLink(true);
+          setDisplayedMeetLink(meetLink);
+          localStorage.setItem('lastMeetLink', meetLink);
+          setTimeout(() => {
+            navigate('/customer/thanh-toan', { state: { meetLink } });
+          }, 3500); // Hiển thị link 3.5s rồi chuyển trang
+          return;
         }
+        
+        // Reset form và chuyển trang
         setForm({
-          hoten: '',
-          sdt: '',
           ngay: '',
           gio: '',
           hinhThuc: 'Trực tiếp',
           loaiTuVan: '',
           ghichu: '',
         });
-        localStorage.removeItem('tempHoTen');
-        localStorage.removeItem('tempSDT');
-        if (hinhThuc === 'Online' && meetLink) {
-          navigate('/customer/thanh-toan', { state: { meetLink } });
-        } else {
-          navigate('/customer/thanh-toan');
-        }
+        navigate('/customer/thanh-toan');
       })
       .catch(error => {
         if (error.message !== 'Unauthorized') {
@@ -350,23 +356,33 @@ function DatLichTuVan() {
   return (
     <div style={styles.page}>
       <HeaderCustomer />
+      {/* Hiển thị link Meet khi đặt lịch online */}
+      {showMeetLink && (
+        <div style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: '#10B981',
+          color: 'white',
+          padding: '20px',
+          borderRadius: '10px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+          zIndex: 1000,
+          textAlign: 'center',
+          maxWidth: '400px'
+        }}>
+          <h3 style={{ margin: '0 0 15px 0' }}>Link Meet của bạn:</h3>
+          <p style={{ margin: '0 0 15px 0', wordBreak: 'break-all' }}>{displayedMeetLink}</p>
+          <p style={{ margin: '0', fontSize: '14px' }}>Chuyển đến trang thanh toán sau 3 giây...</p>
+        </div>
+      )}
       <main style={styles.main}>
         <div style={styles.card}>
           <h2 style={styles.h2}>Đặt Lịch Tư Vấn</h2>
           <form onSubmit={handleSubmit} autoComplete="off">
             <div style={styles.formRow}>
               <div style={styles.formCol}>
-                <label style={styles.label}>
-                  Họ và tên <span style={styles.required}>*</span>
-                </label>
-                <input
-                  type="text"
-                  name="hoten"
-                  style={styles.input}
-                  value={form.hoten}
-                  onChange={handleChange}
-                  required
-                />
                 <label style={styles.label}>
                   Ngày tư vấn <span style={styles.required}>*</span>
                 </label>
@@ -392,17 +408,6 @@ function DatLichTuVan() {
                 </select>
               </div>
               <div style={styles.formCol}>
-                <label style={styles.label}>
-                  Số điện thoại <span style={styles.required}>*</span>
-                </label>
-                <input
-                  type="tel"
-                  name="sdt"
-                  style={styles.input}
-                  value={form.sdt}
-                  onChange={handleChange}
-                  required
-                />
                 <label style={styles.label}>
                   Giờ tư vấn <span style={styles.required}>*</span>
                 </label>

@@ -167,8 +167,6 @@ const styles = {
 
 function DatLichDichVu() {
   const [form, setForm] = useState({
-    hoten: "",
-    sdt: "",
     dichvu: "",
   });
   const [alert, setAlert] = useState({ show: false, message: "" });
@@ -186,14 +184,11 @@ function DatLichDichVu() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { hoten, sdt, dichvu } = form;
-    if (!hoten.trim() || !sdt.trim() || !dichvu) {
-      setAlert({ show: true, message: "Vui lòng điền đầy đủ thông tin bắt buộc." });
+    const { dichvu } = form;
+    if (!dichvu) {
+      setAlert({ show: true, message: "Vui lòng chọn dịch vụ." });
       return;
     }
-    // Lưu tạm vào localStorage
-    localStorage.setItem("tempHoTen", hoten.trim());
-    localStorage.setItem("tempSDT", sdt.trim());
     if (dichvu === "Tư Vấn") {
       navigate("/customer/dat-lich-tu-van");
       return;
@@ -204,8 +199,6 @@ function DatLichDichVu() {
     }
     // Nếu dịch vụ khác (mặc định lưu lịch và chuyển trang thành công)
     const lich = {
-      hoTen: hoten.trim(),
-      sdt: sdt.trim(),
       dichVu: dichvu,
       trangThai: "Chờ xử lý",
     };
@@ -242,28 +235,6 @@ function DatLichDichVu() {
             autoComplete="off"
           >
             <h2 style={styles.h2}>Đặt lịch dịch vụ</h2>
-            <label style={styles.label}>
-              Họ và tên <span style={styles.required}>*</span>
-            </label>
-            <input
-              type="text"
-              name="hoten"
-              style={styles.input}
-              value={form.hoten}
-              onChange={handleChange}
-              required
-            />
-            <label style={styles.label}>
-              Số điện thoại <span style={styles.required}>*</span>
-            </label>
-            <input
-              type="tel"
-              name="sdt"
-              style={styles.input}
-              value={form.sdt}
-              onChange={handleChange}
-              required
-            />
             <label style={styles.label}>
               Dịch vụ <span style={styles.required}>*</span>
             </label>

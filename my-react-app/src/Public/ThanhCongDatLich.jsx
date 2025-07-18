@@ -72,6 +72,11 @@ const styles = {
   },
 };
 
+function getQueryParam(name, search) {
+  const params = new URLSearchParams(search);
+  return params.get(name);
+}
+
 export default function ThanhCong() {
   const [meetLink, setMeetLink] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -80,15 +85,31 @@ export default function ThanhCong() {
 
   useEffect(() => {
     document.title = 'Thành Công';
+    // Ưu tiên lấy từ localStorage nếu có
+    const meetLinkLS = localStorage.getItem('lastMeetLink');
+    console.log('meetLinkLS:', meetLinkLS);
+    if (meetLinkLS) {
+      setMeetLink(meetLinkLS);
+      localStorage.removeItem('lastMeetLink');
+      return;
+    }
     if (meetLinkFromState) {
+      console.log('meetLinkFromState:', meetLinkFromState);
       setMeetLink(meetLinkFromState);
     } else {
-      // Lấy lịch đặt mới nhất từ localStorage nếu không có trong state
+      // Lấy orderId từ query string
+      const orderId = getQueryParam('orderId', location.search);
       const danhSach = JSON.parse(localStorage.getItem('lichDat')) || [];
-      const lichMoiNhat = danhSach[danhSach.length - 1] || {};
-      setMeetLink(lichMoiNhat.meetLink || null);
+      let lich = {};
+      if (orderId) {
+        lich = danhSach.find(l => String(l.id) === String(orderId)) || {};
+      } else {
+        lich = danhSach[danhSach.length - 1] || {};
+      }
+      console.log('Lấy meetLink từ lịch cuối:', lich.meetLink);
+      setMeetLink(lich.meetLink || null);
     }
-  }, [meetLinkFromState]);
+  }, [meetLinkFromState, location.search]);
 
   const copyToClipboard = async (text) => {
     try {
