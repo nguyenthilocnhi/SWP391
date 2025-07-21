@@ -243,20 +243,11 @@ const DichVu = (props) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) {
-      console.error("Không có token. Hãy đăng nhập lại.");
-      // Trang này yêu cầu token để fetch dữ liệu
-      return;
-    }
-
     setLoading(true);
 
     const fetchWithToken = async (url) => {
-      const res = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+      const res = await fetch(url, { headers });
       if (!res.ok) {
         const text = await res.text();
         throw new Error(`Lỗi ${res.status}: ${text}`);

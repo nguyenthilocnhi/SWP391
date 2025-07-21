@@ -144,7 +144,6 @@ function getUserType() {
 function TuVanVien(props) {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Xác định userType từ props hoặc localStorage (giống DichVu.jsx)
   let userType = props?.userType;
   if (!userType) {
     const savedRole = localStorage.getItem('role');
@@ -173,7 +172,7 @@ function TuVanVien(props) {
             <AdvisorCard
               key={advisor.id}
               as={Link}
-              to={`/${userType === 'customer' ? 'customer/tu-van-vien' : 'tu-van-vien'}/${advisor.id}`}
+              to={`/tu-van-vien/${advisor.id}`}
             >
               <img
                 src={advisor.image}
