@@ -4,6 +4,7 @@ import HeaderCustomer from '../components/HeaderCustomer';
 import Footer from '../components/Footer';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet';
+import axios from 'axios';
 
 const Container = styled.main`
   font-family: 'Segoe UI', sans-serif;
@@ -33,15 +34,44 @@ const ThongTinCaNhan = () => {
   });
 
   useEffect(() => {
-    // Load saved data from localStorage
-    const savedData = JSON.parse(localStorage.getItem("userInfo")) || {};
-    setFormData(prevData => ({ ...prevData, ...savedData }));
+    const fetchUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get('https://api-gender2.purintech.id.vn/api/Customer/get-user-info', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: '*/*',
+          },
+        });
+
+        if (response.data.code === 200) {
+          const data = response.data.obj;
+          setFormData({
+            id: data.id || '',
+            gender: data.gender || '',
+            fullname: data.fullName || '',
+            dob: data.dateOfBirth || '',
+            phone: data.phoneNumber || '',
+            address: data.address || '',
+            insurance: data.insurance || '',
+            email: data.email || '',
+            note: data.note || ''
+          });
+        } else {
+          showAlertMessage("⚠️ Không thể lấy thông tin người dùng.");
+        }
+      } catch (error) {
+        console.error("Fetch user info error:", error);
+        showAlertMessage("❌ Lỗi khi lấy thông tin người dùng.");
+      }
+    };
+
+    fetchUserInfo();
   }, []);
 
   const showAlertMessage = (message) => {
     setAlertMessage(message);
     setShowAlert(true);
-    
     setTimeout(() => {
       setShowAlert(false);
     }, 5000);
@@ -55,20 +85,34 @@ const ThongTinCaNhan = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem("userInfo", JSON.stringify(formData));
-    showAlertMessage("✅ Thông tin đã được lưu!");
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put('https://api-gender2.purintech.id.vn/api/Customer/update-user-info', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.data.code === 200) {
+        showAlertMessage("✅ Thông tin đã được cập nhật!");
+      } else {
+        showAlertMessage("⚠️ Cập nhật thất bại.");
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+      showAlertMessage("❌ Lỗi khi cập nhật thông tin.");
+    }
   };
 
   return (
     <div>
-      <Helmet>
-        <title>THÔNG TIN CÁ NHÂN</title>
-      </Helmet>
+      <Helmet><title>THÔNG TIN CÁ NHÂN</title></Helmet>
       <HeaderCustomer />
-      
-      {/* Alert Box */}
+
       {showAlert && (
         <div className="alert-box">
           <p>{alertMessage}</p>
@@ -76,128 +120,74 @@ const ThongTinCaNhan = () => {
         </div>
       )}
 
-      {/* Main Content */}
       <Container>
         <div className="intro-2">THÔNG TIN CÁ NHÂN</div>
 
         <div className="profile-section">
-          {/* Profile Photo */}
           <div className="profile-photo">
-            <img 
-              src="https://i.postimg.cc/SKWH4csZ/Avatar-pnj.jpg" 
-              alt="Ảnh đại diện"
-            />
+            <img src="https://i.postimg.cc/SKWH4csZ/Avatar-pnj.jpg" alt="Ảnh đại diện" />
             <p>Ảnh đại diện</p>
           </div>
 
-          {/* Information Form */}
           <form className="info-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Mã ID</label>
-              <input 
-                type="text" 
-                name="id" 
-                value={formData.id}
-                onChange={handleInputChange}
-                readOnly 
-              />
+              <input type="text" name="id" value={formData.id} readOnly />
             </div>
-            
+
             <div className="form-group">
               <label>Giới tính</label>
-              <select 
-                name="gender" 
-                value={formData.gender}
-                onChange={handleInputChange}
-              >
+              <select name="gender" value={formData.gender} onChange={handleInputChange}>
                 <option value="">Chọn giới tính</option>
                 <option value="Nam">Nam</option>
                 <option value="Nữ">Nữ</option>
                 <option value="Khác">Khác</option>
               </select>
             </div>
-            
+
             <div className="form-group">
               <label>Họ và tên</label>
-              <input 
-                type="text" 
-                name="fullname" 
-                value={formData.fullname}
-                onChange={handleInputChange}
-              />
+              <input type="text" name="fullname" value={formData.fullname} onChange={handleInputChange} />
             </div>
-            
+
             <div className="form-group">
               <label>Ngày sinh</label>
-              <input 
-                type="date" 
-                name="dob" 
-                value={formData.dob}
-                onChange={handleInputChange}
-              />
+              <input type="date" name="dob" value={formData.dob} onChange={handleInputChange} />
             </div>
-            
+
             <div className="form-group">
               <label>Số điện thoại</label>
-              <input 
-                type="text" 
-                name="phone" 
-                value={formData.phone}
-                onChange={handleInputChange}
-              />
+              <input type="text" name="phone" value={formData.phone} onChange={handleInputChange} />
             </div>
-            
+
             <div className="form-group">
               <label>Địa chỉ</label>
-              <input 
-                type="text" 
-                name="address" 
-                value={formData.address}
-                onChange={handleInputChange}
-              />
+              <input type="text" name="address" value={formData.address} onChange={handleInputChange} />
             </div>
-            
+
             <div className="form-group">
               <label>Mã bảo hiểm</label>
-              <input 
-                type="text" 
-                name="insurance" 
-                value={formData.insurance}
-                onChange={handleInputChange}
-                readOnly 
-              />
+              <input type="text" name="insurance" value={formData.insurance} readOnly />
             </div>
-            
+
             <div className="form-group">
               <label>Email</label>
-              <input 
-                type="email" 
-                name="email" 
-                value={formData.email}
-                onChange={handleInputChange}
-              />
+              <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
             </div>
-            
+
             <div className="form-group" style={{ gridColumn: 'span 2' }}>
               <label>Ghi chú</label>
-              <textarea 
-                name="note" 
-                value={formData.note}
-                onChange={handleInputChange}
-              ></textarea>
+              <textarea name="note" value={formData.note} onChange={handleInputChange}></textarea>
             </div>
-            
+
             <div className="form-group right-align">
-              <button className="edit-button" type="submit">
-                CHỈNH SỬA
-              </button>
+              <button className="edit-button" type="submit">CHỈNH SỬA</button>
             </div>
           </form>
         </div>
       </Container>
 
       <style jsx>{`
-        /* Alert Box */
         .alert-box {
           position: fixed;
           top: 95px;
@@ -214,10 +204,7 @@ const ThongTinCaNhan = () => {
           animation: slideIn 0.3s ease;
         }
 
-        .alert-box p {
-          margin: 0;
-        }
-
+        .alert-box p { margin: 0; }
         .alert-box span {
           font-weight: bold;
           cursor: pointer;
@@ -225,25 +212,8 @@ const ThongTinCaNhan = () => {
         }
 
         @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        /* Main Content */
-        .personal-info-container {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          background: #f9f9f9;
-          padding-top: 110px;
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
         .intro-2 {
@@ -335,22 +305,22 @@ const ThongTinCaNhan = () => {
           background-color: #1e40af;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
           .profile-section {
             grid-template-columns: 1fr;
             gap: 1rem;
           }
-          
+
           .info-form {
             grid-template-columns: 1fr;
           }
-          
+
           .form-group.right-align {
             grid-column: span 1;
           }
         }
       `}</style>
+
       <Footer />
     </div>
   );
