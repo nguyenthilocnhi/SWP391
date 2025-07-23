@@ -65,7 +65,12 @@ const ConsultantVietBlog = () => {
     const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
     const newBlog = {
       id: Date.now(),
-      ...blogData,
+      title: blogData.title,
+      content: blogData.content,
+      summary: blogData.summary,
+      category: blogData.category,
+      tags: blogData.tags,
+      imagePreview: blogData.imagePreview, // chỉ lưu URL
       author: consultantName,
       createdAt: new Date().toISOString(),
       status: "draft"
@@ -75,30 +80,42 @@ const ConsultantVietBlog = () => {
     alert("Đã lưu blog thành công!");
   };
 
-  const handlePublish = () => {
-    // Gửi bài viết để duyệt
-    const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+  const handlePublish = async () => {
+    // Lấy userId từ localStorage (hoặc context)
+    const userId = localStorage.getItem('userId');
     const newBlog = {
-      id: Date.now(),
-      ...blogData,
-      author: consultantName,
-      createdAt: new Date().toISOString(),
-      status: "pending" // Trạng thái chờ duyệt
+      title: blogData.title,
+      content: blogData.content,
+      summary: blogData.summary,
+      category: blogData.category,
+      tags: blogData.tags,
+      image: blogData.imagePreview, // hoặc upload ảnh riêng nếu backend yêu cầu
+      authorId: userId,
+      status: "pending"
     };
-    blogs.push(newBlog);
-    localStorage.setItem("blogs", JSON.stringify(blogs));
-    alert("Đã gửi bài viết để duyệt! Admin sẽ xem xét và phê duyệt bài viết của bạn.");
-    
-    // Reset form sau khi gửi
-    setBlogData({
-      title: "",
-      content: "",
-      summary: "",
-      category: "suc-khoe",
-      tags: "",
-      image: null,
-      imagePreview: null
-    });
+    try {
+      const res = await fetch('https://api-gender2.purintech.id.vn/api/Blog', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newBlog)
+      });
+      if (res.ok) {
+        alert("Đã gửi bài viết để duyệt! Admin sẽ xem xét và phê duyệt bài viết của bạn.");
+        setBlogData({
+          title: "",
+          content: "",
+          summary: "",
+          category: "suc-khoe",
+          tags: "",
+          image: null,
+          imagePreview: null
+        });
+      } else {
+        alert("Gửi bài thất bại!");
+      }
+    } catch (err) {
+      alert("Lỗi kết nối server!");
+    }
   };
 
   return (

@@ -14,10 +14,19 @@ const ConsultantBaiVietCuaToi = () => {
   const [selectedArticle, setSelectedArticle] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  const loadMyArticles = () => {
-    const allArticles = JSON.parse(localStorage.getItem("blogs")) || [];
-    const myArticles = allArticles.filter(article => article.author === consultantName);
-    setMyArticles(myArticles);
+  const loadMyArticles = async () => {
+    const userId = localStorage.getItem('userId');
+    try {
+      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Blog/user/${userId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setMyArticles(data);
+      } else {
+        setMyArticles([]);
+      }
+    } catch (err) {
+      setMyArticles([]);
+    }
   };
 
   useEffect(() => {
@@ -31,6 +40,11 @@ const ConsultantBaiVietCuaToi = () => {
       navigate('/login');
     }
     loadMyArticles();
+
+    // Lắng nghe sự kiện storage để tự động cập nhật khi có thay đổi
+    const handleStorage = () => loadMyArticles();
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
   }, [navigate]);
 
   const handleDelete = (articleId) => {

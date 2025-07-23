@@ -131,22 +131,60 @@ function convertToDays(dateStr) {
   return Infinity;
 }
 
+function getPublishedBlogsFromLocalStorage() {
+  const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
+  return blogs.filter(blog => blog.status === "published");
+}
+
+function formatDateVN(dateString) {
+  if (!dateString) return '';
+  const d = new Date(dateString);
+  if (isNaN(d)) return '';
+  return d.toLocaleDateString('vi-VN');
+}
+
 const BlogPage = ({ userType = 'guest' }) => {
-  const sortedBlogs = [...blogData].sort((a, b) => convertToDays(a.date) - convertToDays(b.date));
-  const [blogs] = useState(sortedBlogs);
-  const [displayedBlogs, setDisplayedBlogs] = useState(sortedBlogs);
+  const [blogs, setBlogs] = useState([]);
+  const [displayedBlogs, setDisplayedBlogs] = useState([]);
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [showPopup, setShowPopup] = useState(false);
   const emailRef = useRef();
   const blogGridRef = useRef();
 
+  // Lấy bài viết đã duyệt từ server
+  const loadPublishedBlogs = async () => {
+    try {
+      const res = await fetch('https://api-gender2.purintech.id.vn/api/Blog');
+      if (res.ok) {
+        const data = await res.json();
+        const published = data.filter(blog => blog.status === 'published');
+        // Gộp blogData với bài viết từ API, ưu tiên bài từ API lên đầu
+        const allBlogs = [...published, ...blogData];
+        setBlogs(allBlogs);
+        setDisplayedBlogs(allBlogs);
+      } else {
+        setBlogs(blogData);
+        setDisplayedBlogs(blogData);
+      }
+    } catch (err) {
+      setBlogs(blogData);
+      setDisplayedBlogs(blogData);
+    }
+  };
+
+  useEffect(() => {
+    loadPublishedBlogs();
+  }, []);
+
   // Tìm kiếm
   useEffect(() => {
     const keyword = search.toLowerCase();
     const filtered = blogs.filter(blog =>
-      blog.title.toLowerCase().includes(keyword) ||
-      (blog.tags && blog.tags.some(tag => tag.toLowerCase().includes(keyword)))
+      (blog.title && blog.title.toLowerCase().includes(keyword)) ||
+      (blog.tags && (Array.isArray(blog.tags)
+        ? blog.tags.some(tag => tag.toLowerCase().includes(keyword))
+        : blog.tags.toLowerCase().includes(keyword)))
     );
     setDisplayedBlogs(filtered);
     setCurrentPage(1);
@@ -579,17 +617,24 @@ const BlogPage = ({ userType = 'guest' }) => {
         {paginatedBlogs.length === 0 ? (
           <p style={{textAlign: 'center'}}>Không tìm thấy bài viết phù hợp.</p>
         ) : (
-          paginatedBlogs.map((blog, idx) => (
-            <article className="blog-card" key={idx}>
-              <Link to={userType === 'customer' ? `/customer${blog.link}` : blog.link}>
-                <img src={blog.image} alt={blog.alt} loading="lazy" />
-                <div className="content">
-                  <h2>{blog.title}</h2>
-                  <p className="date">{blog.date}</p>
-                </div>
-              </Link>
-            </article>
-          ))
+          paginatedBlogs.map((blog, idx) => {
+            // Ưu tiên ảnh preview, sau đó đến image, sau đó đến ảnh mẫu
+            const imgSrc = blog.imagePreview || blog.image || blog.imageUrl || blog.image_link || blog.image_link_url || blog.image_link_src || '';
+            // Ngày: nếu có date thì dùng, nếu có createdAt thì format lại, nếu không thì để trống
+            let dateStr = blog.date;
+            if (!dateStr && blog.createdAt) dateStr = formatDateVN(blog.createdAt);
+            return (
+              <article className="blog-card" key={blog.id || idx}>
+                <Link to={userType === 'customer' ? `/customer${blog.link || `/blog/${blog.id}`}` : (blog.link || `/blog/${blog.id}`)}>
+                  {imgSrc && <img src={imgSrc} alt={blog.alt || blog.title || 'Blog image'} loading="lazy" />}
+                  <div className="content">
+                    <h2>{blog.title}</h2>
+                    <p className="date">{dateStr}</p>
+                  </div>
+                </Link>
+              </article>
+            );
+          })
         )}
       </section>
 
