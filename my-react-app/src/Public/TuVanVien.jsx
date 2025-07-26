@@ -144,19 +144,33 @@ function getUserType() {
 function TuVanVien(props) {
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Xác định userType dựa trên token
   let userType = props?.userType;
   if (!userType) {
+    const token = localStorage.getItem('token');
     const savedRole = localStorage.getItem('role');
-    userType = savedRole ? savedRole.toLowerCase() : 'guest';
+    if (token) {
+      if (savedRole && savedRole.toLowerCase() === 'customer') userType = 'customer';
+      else userType = 'customer'; // Mặc định customer nếu có token
+    } else {
+      userType = 'guest';
+    }
   }
 
   const filteredAdvisors = tuvanvien.filter(advisor =>
     advisor.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Helper render header
+  const renderHeader = () => {
+    const token = localStorage.getItem('token');
+    if (token) return <HeaderCustomer />;
+    return <HeaderGuest />;
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen">
-      {userType === 'customer' ? <HeaderCustomer /> : <HeaderGuest />}
+      {renderHeader()}
       <Container>
         <SectionTitle>ĐỘI NGŨ TƯ VẤN VIÊN</SectionTitle>
         <div style={{ display: 'flex', justifyContent: 'center' }}>

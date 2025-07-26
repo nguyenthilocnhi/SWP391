@@ -5,6 +5,20 @@ import HeaderGuest from '../components/HeaderGuest';
 import HeaderCustomer from '../components/HeaderCustomer';
 import Footer from '../components/Footer'; 
 
+// Component helper để render header dựa trên trạng thái đăng nhập
+const renderHeader = (userType) => {
+  // Kiểm tra token để xác định người dùng đã đăng nhập chưa
+  const token = localStorage.getItem('token');
+  
+  if (token) {
+    // Nếu có token = đã đăng nhập, sử dụng HeaderCustomer (có thông báo và profile)
+    return <HeaderCustomer />;
+  } else {
+    // Nếu không có token = chưa đăng nhập, sử dụng HeaderGuest
+    return <HeaderGuest />;
+  }
+};
+
 const tuvanvien = [
   {
     id: 'K', name: 'GS. Trương Thanh K', image: 'https://i.postimg.cc/Y2QtdmMC/Tr-ng-Thanh.png', specialty: 'Trưởng khoa Sức khỏe sinh sản', experience: '12 năm', education: 'ĐH Y Dược TPHCM, 2005 – 2013',
@@ -232,10 +246,10 @@ const Main = styled.main`
   font-family: 'Segoe UI', sans-serif;
   min-height: 100vh;
   background: linear-gradient(135deg, #f0f4f8 0%, #e9f7f7 100%);
-  width: 99vw;
+  width: 100vw;
   margin: 0;
   padding: 2rem 0;
-  margin-top: 100px;
+  margin-top: 110px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -368,37 +382,44 @@ function ChiTietTuVanVien(props) {
   const { id } = useParams();
   const advisor = tuvanvien.find(tv => tv.id === id);
 
-  // Xác định userType từ props hoặc localStorage (giống DichVu.jsx)
+  // Xác định userType từ props hoặc localStorage
   let userType = props?.userType;
   if (!userType) {
     const savedRole = localStorage.getItem('role');
-    // Mapping số về chuỗi role
-    if (savedRole === "1") userType = "customer";
-    else if (savedRole === "2") userType = "consultant";
-    else if (savedRole === "3") userType = "staff";
-    else if (savedRole === "4") userType = "admin";
-    else userType = "guest";
+    const token = localStorage.getItem('token');
+    
+    // Nếu có token thì người dùng đã đăng nhập
+    if (token) {
+      // Mapping số về chuỗi role
+      if (savedRole === "1") userType = "customer";
+      else if (savedRole === "2") userType = "consultant";
+      else if (savedRole === "3") userType = "staff";
+      else if (savedRole === "4") userType = "admin";
+      else userType = "customer"; // Mặc định là customer nếu có token
+    } else {
+      userType = "guest"; // Không có token = chưa đăng nhập
+    }
   }
 
   if (!advisor) {
     return (
-      <>
-        {userType === 'customer' ? <HeaderCustomer /> : <HeaderGuest />}
+      <div>
+        {renderHeader(userType)}
         <Main>
           <ErrorMessage>
             <h2>Không tìm thấy tư vấn viên</h2>
             <p>ID không hợp lệ hoặc chưa có thông tin chi tiết.</p>
-            <BackLink to="/tu-van-vien">← Quay lại danh sách tư vấn viên</BackLink>
+            <BackLink to={`/${userType === 'customer' ? 'customer/tu-van-vien' : 'tu-van-vien'}`}>← Quay lại danh sách tư vấn viên</BackLink>
           </ErrorMessage>
         </Main>
         <Footer />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
-      {userType === 'customer' ? <HeaderCustomer /> : <HeaderGuest />}
+    <div>
+      {renderHeader(userType)}
       <Main>
         <Card>
           <Avatar src={advisor.image} alt={advisor.name} />
@@ -443,7 +464,7 @@ function ChiTietTuVanVien(props) {
         </Card>
       </Main>
       <Footer />
-    </>
+    </div>
   );
 }
 
