@@ -390,11 +390,11 @@ function ChiTietTuVanVien(props) {
     
     // Nếu có token thì người dùng đã đăng nhập
     if (token) {
-      // Mapping số về chuỗi role
-      if (savedRole === "1") userType = "customer";
-      else if (savedRole === "2") userType = "consultant";
-      else if (savedRole === "3") userType = "staff";
-      else if (savedRole === "4") userType = "admin";
+    // Mapping số về chuỗi role
+    if (savedRole === "1") userType = "customer";
+    else if (savedRole === "2") userType = "consultant";
+    else if (savedRole === "3") userType = "staff";
+    else if (savedRole === "4") userType = "admin";
       else userType = "customer"; // Mặc định là customer nếu có token
     } else {
       userType = "guest"; // Không có token = chưa đăng nhập

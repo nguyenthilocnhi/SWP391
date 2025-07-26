@@ -17,7 +17,7 @@ const styles = {
     maxWidth: 1100,
     width: "100%",
     margin: "90px auto 40px auto",
-    background: "#e6f9ed",
+    background: "#fff",
     padding: "30px 20px",
     borderRadius: 18,
     boxShadow: "0 6px 12px rgba(34,197,94,0.08)",
@@ -62,6 +62,7 @@ const styles = {
 
 function LichSuDatLich() {
   const [lichTongHop, setLichTongHop] = useState([]);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     Promise.all([
@@ -94,6 +95,52 @@ function LichSuDatLich() {
     }).catch(() => setLichTongHop([]));
   }, []);
 
+  // Hàm xóa lịch xét nghiệm
+  const handleDeleteTestAppointment = (id) => {
+    if (!window.confirm('Bạn có chắc muốn xóa lịch xét nghiệm này?')) return;
+    const token = localStorage.getItem('token');
+    fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-appointment/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'accept': '*/*',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.code === 200) {
+          setLichTongHop(prev => prev.filter(item => !(item.id === id && item.loaiDichVu === 'Xét nghiệm')));
+          alert('Xóa thành công!');
+        } else {
+          alert('Xóa không thành công!');
+        }
+      })
+      .catch(() => alert('Lỗi khi xóa lịch!'));
+  };
+
+  // Hàm xóa lịch tư vấn
+  const handleDeleteAdviceAppointment = (id) => {
+    if (!window.confirm('Bạn có chắc muốn xóa lịch tư vấn này?')) return;
+    const token = localStorage.getItem('token');
+    fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-appointment/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'accept': '*/*',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.code === 200) {
+          setLichTongHop(prev => prev.filter(item => !(item.id === id && item.loaiDichVu === 'Tư vấn')));
+          alert('Xóa thành công!');
+        } else {
+          alert('Xóa không thành công!');
+        }
+      })
+      .catch(() => alert('Lỗi khi xóa lịch!'));
+  };
+
   return (
     <div style={styles.page}>
       <HeaderCustomer />
@@ -110,11 +157,12 @@ function LichSuDatLich() {
               <th style={styles.th}>Thời lượng</th>
               <th style={styles.th}>Giá</th>
               <th style={styles.th}>Trạng thái</th>
+              <th style={styles.th}>Thao tác</th>
             </tr>
           </thead>
           <tbody>
             {lichTongHop.length === 0 ? (
-              <tr><td colSpan={8} style={styles.td}>Không có lịch dịch vụ nào.</td></tr>
+              <tr><td colSpan={9} style={styles.td}>Không có lịch dịch vụ nào.</td></tr>
             ) : (
               lichTongHop.map(item => (
                 <tr key={item.id + '-' + item.loaiDichVu}>
@@ -127,6 +175,17 @@ function LichSuDatLich() {
                   <td style={styles.td}>{item.price?.toLocaleString('vi-VN')}.000 VND</td>
                   <td style={item.serviceStatus === 1 ? styles.status1 : item.serviceStatus === 2 ? styles.status2 : styles.status0}>
                     {item.serviceStatus === 1 ? 'Đã thanh toán' : item.serviceStatus === 2 ? 'Đã hủy' : 'Chờ xử lý'}
+                  </td>
+                  <td style={styles.td}>
+                    {item.loaiDichVu === 'Xét nghiệm' ? (
+                      <button style={{background:'#ef4444',color:'#fff',border:'none',borderRadius:4,padding:'6px 12px',cursor:'pointer'}} onClick={() => handleDeleteTestAppointment(item.id)}>
+                        Xóa
+                      </button>
+                    ) : item.loaiDichVu === 'Tư vấn' ? (
+                      <button style={{background:'#ef4444',color:'#fff',border:'none',borderRadius:4,padding:'6px 12px',cursor:'pointer'}} onClick={() => handleDeleteAdviceAppointment(item.id)}>
+                        Xóa
+                      </button>
+                    ) : null}
                   </td>
                 </tr>
               ))

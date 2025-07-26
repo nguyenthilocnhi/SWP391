@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const CaiDat = () => {
   const navigate = useNavigate();
@@ -16,7 +17,6 @@ const CaiDat = () => {
   });
   const [statusMsg, setStatusMsg] = useState('');
 
-  // CSS Variables
   const cssVars = {
     green: '#22c55e',
     greenDark: '#16a34a',
@@ -29,7 +29,6 @@ const CaiDat = () => {
     darkBorder: '#64748b'
   };
 
-  // Styles
   const styles = {
     page: {
       minHeight: '100vh',
@@ -198,28 +197,38 @@ const CaiDat = () => {
       fontSize: '16px',
       marginBottom: '8px',
     },
-    // Responsive
-    '@media (max-width: 900px)': {
-      container: {
-        flexDirection: 'column',
-      },
-      left: {
-        borderRight: 'none',
-        borderBottom: '1px solid #bbf7d0',
-      },
-      right: {
-        padding: '24px 8px',
-      },
-    },
   };
 
   useEffect(() => {
-    const savedSettings = JSON.parse(localStorage.getItem('userSettings')) || {};
-    setSettings(prev => ({
-      ...prev,
-      ...savedSettings
-    }));
-    if (savedSettings.darkMode) {
+    const fetchUserInfo = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get('https://api-gender2.purintech.id.vn/api/Customer/get-user-info', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        if (res.data && res.data.obj) {
+          const user = res.data.obj;
+          const savedSettings = JSON.parse(localStorage.getItem('userSettings')) || {};
+          setSettings(prev => ({
+            ...prev,
+            ...savedSettings,
+            name: user.fullName || '',
+            email: user.email || '',
+            phone: user.phoneNumber || ''
+          }));
+        }
+      } catch (err) {
+        console.error('Lỗi khi tải thông tin người dùng:', err);
+      }
+    };
+
+    fetchUserInfo();
+
+    const saved = JSON.parse(localStorage.getItem('userSettings')) || {};
+    if (saved.darkMode) {
       document.body.classList.add('dark');
     }
   }, []);
@@ -311,7 +320,6 @@ const CaiDat = () => {
   return (
     <div style={styles.page}>
       <div style={styles.container}>
-        {/* Left column */}
         <div style={styles.left}>
           <Link to="/customer">
             <img src="https://i.postimg.cc/prDrNWLF/Screenshot-2025-07-06-235802.png" alt="Logo" style={styles.logo} />
@@ -325,18 +333,18 @@ const CaiDat = () => {
           </div>
           <div style={styles.userName}>{settings.name || 'Người dùng'}</div>
         </div>
-        {/* Right column */}
+
         <div style={styles.right}>
           <h2 style={styles.title}>Cài Đặt Tài Khoản</h2>
           <form onSubmit={handleSubmit}>
-            <label htmlFor="name" style={styles.label}>Họ tên:</label>
-            <input type="text" id="name" name="name" placeholder="Nhập họ tên" disabled value={settings.name} style={styles.input} />
+            <label style={styles.label}>Họ tên:</label>
+            <input type="text" name="name" disabled value={settings.name} style={styles.input} />
 
-            <label htmlFor="email" style={styles.label}>Email:</label>
-            <input type="email" id="email" name="email" placeholder="Nhập email" disabled value={settings.email} style={styles.input} />
+            <label style={styles.label}>Email:</label>
+            <input type="email" name="email" disabled value={settings.email} style={styles.input} />
 
-            <label htmlFor="password" style={styles.label}>Mật khẩu:</label>
-            <input type="password" id="password" name="password" placeholder="********" disabled value={settings.password} style={styles.input} />
+            <label style={styles.label}>Mật khẩu:</label>
+            <input type="password" name="password" disabled value={settings.password} style={styles.input} />
             <span
               style={{ ...styles.changePasswordLink, color: "#dc2626" }}
               onClick={() => navigate('/customer/doi-mat-khau')}
@@ -344,31 +352,33 @@ const CaiDat = () => {
               Đổi mật khẩu?
             </span>
 
-            <label htmlFor="phone" style={styles.label}>Số điện thoại:</label>
-            <input type="tel" id="phone" name="phone" placeholder="Nhập số điện thoại" value={settings.phone} onChange={handleInputChange} style={styles.input} />
+            <label style={styles.label}>Số điện thoại:</label>
+            <input type="tel" name="phone" value={settings.phone} onChange={handleInputChange} style={styles.input} />
 
             <label style={styles.label}>
-              <input type="checkbox" id="notifications" name="notifications" checked={settings.notifications} onChange={handleNotificationsChange} style={styles.checkbox} />
+              <input type="checkbox" name="notifications" checked={settings.notifications} onChange={handleNotificationsChange} style={styles.checkbox} />
               Nhận thông báo
             </label>
+
             <label style={styles.label}>
-              <input type="checkbox" id="twoFA" name="twoFA" checked={settings.twoFA} onChange={handleInputChange} style={styles.checkbox} />
+              <input type="checkbox" name="twoFA" checked={settings.twoFA} onChange={handleInputChange} style={styles.checkbox} />
               Bật xác thực hai lớp (2FA)
             </label>
+
             <label style={styles.label}>
-              <input type="checkbox" id="darkMode" name="darkMode" checked={settings.darkMode} onChange={handleInputChange} style={styles.checkbox} />
+              <input type="checkbox" name="darkMode" checked={settings.darkMode} onChange={handleInputChange} style={styles.checkbox} />
               Chế độ tối
             </label>
 
-            <label htmlFor="langSelect" style={styles.label}>🌐 Ngôn ngữ:</label>
-            <select id="langSelect" name="language" value={settings.language} onChange={handleInputChange} style={styles.select}>
+            <label style={styles.label}>🌐 Ngôn ngữ:</label>
+            <select name="language" value={settings.language} onChange={handleInputChange} style={styles.select}>
               <option value="vi">Tiếng Việt</option>
               <option value="en">English</option>
             </select>
 
             <button type="submit" style={styles.button}>Lưu Cài Đặt</button>
             <button type="button" onClick={handleLogout} style={styles.logoutBtn}>Đăng xuất</button>
-            <button type="button" style={styles.deleteBtn} onClick={handleDeleteAccount}>🗑 Xóa tài khoản</button>
+            <button type="button" onClick={handleDeleteAccount} style={styles.deleteBtn}>🗑 Xóa tài khoản</button>
           </form>
           <div style={styles.statusMessage}>{statusMsg}</div>
         </div>
@@ -377,4 +387,4 @@ const CaiDat = () => {
   );
 };
 
-export default CaiDat; 
+export default CaiDat;
