@@ -140,12 +140,12 @@ const FilterButton = styled.button`
   padding: 8px 16px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  background: ${props => props.active ? '#10b981' : 'white'};
-  color: ${props => props.active ? 'white' : '#374151'};
+  background: ${props => props.$active ? '#10b981' : 'white'};
+  color: ${props => props.$active ? 'white' : '#374151'};
   cursor: pointer;
   transition: all 0.2s;
   &:hover {
-    background: ${props => props.active ? '#059669' : '#f9fafb'};
+    background: ${props => props.$active ? '#059669' : '#f9fafb'};
   }
 `;
 const Modal = styled.div`
@@ -206,38 +206,53 @@ const AdminBaiViet = () => {
 
   useEffect(() => {
     loadArticles();
+    const handleStorage = () => loadArticles();
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
-  const loadArticles = () => {
-    const storedArticles = JSON.parse(localStorage.getItem("blogs")) || [];
-    setArticles(storedArticles);
+  const loadArticles = async () => {
+    try {
+      const res = await fetch('https://api-gender2.purintech.id.vn/api/Blog');
+      if (res.ok) {
+        const data = await res.json();
+        setArticles(data);
+      } else {
+        setArticles([]);
+      }
+    } catch (err) {
+      setArticles([]);
+    }
   };
 
-  const handleApprove = (articleId) => {
-    const updatedArticles = articles.map(article => 
-      article.id === articleId 
-        ? { ...article, status: 'published', approvedAt: new Date().toISOString() }
-        : article
-    );
-    localStorage.setItem("blogs", JSON.stringify(updatedArticles));
-    setArticles(updatedArticles);
+  const handleApprove = async (articleId) => {
+    try {
+      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Blog/status/${articleId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'published' })
+      });
+      if (res.ok) loadArticles();
+    } catch (err) {}
   };
 
-  const handleReject = (articleId) => {
-    const updatedArticles = articles.map(article => 
-      article.id === articleId 
-        ? { ...article, status: 'rejected', rejectedAt: new Date().toISOString() }
-        : article
-    );
-    localStorage.setItem("blogs", JSON.stringify(updatedArticles));
-    setArticles(updatedArticles);
+  const handleReject = async (articleId) => {
+    try {
+      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Blog/status/${articleId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'rejected' })
+      });
+      if (res.ok) loadArticles();
+    } catch (err) {}
   };
 
-  const handleDelete = (articleId) => {
+  const handleDelete = async (articleId) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
-      const updatedArticles = articles.filter(article => article.id !== articleId);
-      localStorage.setItem("blogs", JSON.stringify(updatedArticles));
-      setArticles(updatedArticles);
+      try {
+        const res = await fetch(`https://api-gender2.purintech.id.vn/api/Blog/${articleId}`, { method: 'DELETE' });
+        if (res.ok) loadArticles();
+      } catch (err) {}
     }
   };
 
@@ -274,31 +289,31 @@ const AdminBaiViet = () => {
           
           <FilterContainer>
             <FilterButton 
-              active={filter === 'all'} 
+              $active={filter === 'all'} 
               onClick={() => setFilter('all')}
             >
               Tất cả ({articles.length})
             </FilterButton>
             <FilterButton 
-              active={filter === 'pending'} 
+              $active={filter === 'pending'} 
               onClick={() => setFilter('pending')}
             >
               Chờ duyệt ({articles.filter(a => a.status === 'pending').length})
             </FilterButton>
             <FilterButton 
-              active={filter === 'published'} 
+              $active={filter === 'published'} 
               onClick={() => setFilter('published')}
             >
               Đã đăng ({articles.filter(a => a.status === 'published').length})
             </FilterButton>
             <FilterButton 
-              active={filter === 'rejected'} 
+              $active={filter === 'rejected'} 
               onClick={() => setFilter('rejected')}
             >
               Từ chối ({articles.filter(a => a.status === 'rejected').length})
             </FilterButton>
             <FilterButton 
-              active={filter === 'draft'} 
+              $active={filter === 'draft'} 
               onClick={() => setFilter('draft')}
             >
               Nháp ({articles.filter(a => a.status === 'draft').length})
