@@ -83,6 +83,20 @@ export default function ThanhCong() {
   const location = useLocation();
   const meetLinkFromState = location.state?.meetLink;
 
+  // Thêm logic lưu lịch vào localStorage nếu có thông tin dịch vụ truyền qua state
+  useEffect(() => {
+    if (location.state && location.state.dichvu) {
+      const lich = {
+        dichVu: location.state.dichvu,
+        trangThai: "Đã thanh toán",
+        thoiGian: new Date().toISOString(),
+      };
+      const danhSachLich = JSON.parse(localStorage.getItem('lichDat')) || [];
+      danhSachLich.push(lich);
+      localStorage.setItem('lichDat', JSON.stringify(danhSachLich));
+    }
+  }, [location.state]);
+
   useEffect(() => {
     document.title = 'Thành Công';
     // Ưu tiên lấy từ localStorage nếu có
