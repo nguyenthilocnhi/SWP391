@@ -452,7 +452,6 @@ const DichVu = (props) => {
                   <th>Thời gian</th>
                   <th>Chi phí</th>
                   <th>Tình trạng</th>
-                  <th>Thao tác</th>
                 </tr>
               </thead>
               <tbody>
@@ -465,9 +464,6 @@ const DichVu = (props) => {
                     <td>{item.thoigian}</td>
                     <td>{item.chiphi + '.000 VNĐ'}</td>
                     <td>{item.tinhtrang}</td>
-                    <td>
-                      {getDetailUrl(item)}
-                    </td>
                   </tr>
                 ))}
               </tbody>

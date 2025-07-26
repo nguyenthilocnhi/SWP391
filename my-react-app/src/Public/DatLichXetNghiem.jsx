@@ -156,12 +156,32 @@ function DatLichXetNghiem() {
   const [dateDisplay, setDateDisplay] = useState("");
   const [buttonHover, setButtonHover] = useState(false);
   const [minDate, setMinDate] = useState("");
+  const [testTypes, setTestTypes] = useState([]); // Thêm state cho loại xét nghiệm
+  const [selectedService, setSelectedService] = useState(null); // Thêm state cho dịch vụ được chọn
   const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Đặt Lịch Xét Nghiệm";
     const today = new Date().toISOString().split('T')[0];
     setMinDate(today);
+
+    // Gọi API lấy loại xét nghiệm
+    const token = localStorage.getItem('token');
+    fetch('https://api-gender2.purintech.id.vn/api/Service/test-services', {
+      headers: {
+        'accept': '*/*',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.obj) {
+          setTestTypes(data.obj);
+        } else {
+          setTestTypes([]);
+        }
+      })
+      .catch(() => setTestTypes([]));
   }, []);
 
   useEffect(() => {
@@ -171,6 +191,32 @@ function DatLichXetNghiem() {
       setDateDisplay("");
     }
   }, [form.ngay]);
+
+  // Thêm useEffect để lấy thông tin chi tiết dịch vụ khi chọn loại xét nghiệm
+  useEffect(() => {
+    if (form.loaiXetNghiem) {
+      const selectedTest = testTypes.find(test => test.testName === form.loaiXetNghiem);
+      if (selectedTest) {
+        // Gọi API lấy thông tin chi tiết
+        const token = localStorage.getItem('token');
+        fetch(`https://api-gender2.purintech.id.vn/api/Service/test-service/${selectedTest.id}`, {
+          headers: {
+            'accept': '*/*',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.obj) {
+              setSelectedService(data.obj);
+            }
+          })
+          .catch(() => setSelectedService(null));
+      }
+    } else {
+      setSelectedService(null);
+    }
+  }, [form.loaiXetNghiem, testTypes]);
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -202,7 +248,7 @@ function DatLichXetNghiem() {
 
     const payload = {
       appointmentDate: new Date(`${form.ngay}T${form.gio}:00`).toISOString(),
-      testServiceId: 1,
+      testServiceId: selectedService?.id || 1, // Sử dụng ID từ dịch vụ được chọn
       note: form.ghichu || ""
     };
 
@@ -228,6 +274,18 @@ function DatLichXetNghiem() {
         return res.json();
       })
       .then(data => {
+        // Lưu thông tin lịch hẹn vào localStorage để trang thanh toán lấy tên dịch vụ
+        const lichMoi = {
+          ...payload,
+          serviceName: selectedService?.testName,
+          gia: selectedService?.price,
+          gio: form.gio,
+          ngay: form.ngay,
+          id: selectedService?.id
+        };
+        const lichDat = JSON.parse(localStorage.getItem('lichDat')) || [];
+        lichDat.push(lichMoi);
+        localStorage.setItem('lichDat', JSON.stringify(lichDat));
         alert(data.message || "Đặt lịch thành công!");
         navigate("/customer/thanh-toan");
       })
@@ -295,17 +353,9 @@ function DatLichXetNghiem() {
                   required
                 >
                   <option value="">-- Chọn loại --</option>
-                  <option value="HIV Ag/Ab combo (HIV test thế hệ 4)">Xét nghiệm HIV</option>
-                  <option value="Giang mai (RPR/TPHA)">Xét nghiệm Giang Mai</option>
-                  <option value="Lậu (PCR hoặc nhuộm soi)">Xét nghiệm Lậu</option>
-                  <option value="Chlamydia(PCR)">Xét nghiệm PCR</option>
-                  <option value="HPV">Xét nghiệm Cổ Tử Cung</option>
-                  <option value="Virus Zika">Xét nghiệm Virus Zika</option>
-                  <option value="Pap smear">Xét nghiệm Tế bào học cổ tử cung</option>
-                  <option value="Sùi mào gà(HPV tuýp nguy cơ thấp)">Xét nghiệm Sùi Mào Gà</option>
-                  <option value="Herpes Simplex Virus">Xét nghiệm HSV 1 & 2</option>
-                  <option value="Hạ cam mềm">Xét nghiệm Chancroid</option>
-                  <option value="Rận mu">Xét nghiệm Pubic lice</option>
+                  {testTypes.map((item) => (
+                    <option key={item.id} value={item.testName}>{item.testName}</option>
+                  ))}
                 </select>
               </div>
             </div>

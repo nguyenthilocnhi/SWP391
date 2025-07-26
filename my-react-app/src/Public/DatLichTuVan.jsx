@@ -308,7 +308,10 @@ function DatLichTuVan() {
         console.log('Response đặt lịch:', data);
         setMessage(data.message || 'Đặt lịch thành công!');
         
-        // Lưu lịch vào localStorage
+        // Lấy thông tin chi tiết dịch vụ trước khi lưu
+        const selectedServiceInfo = services.find(s => s.id === Number(form.loaiTuVan));
+        
+        // Lưu lịch vào localStorage với thông tin đầy đủ
         const lich = {
           ngay: form.ngay,
           gio: form.gio,
@@ -317,6 +320,8 @@ function DatLichTuVan() {
           ghichu: form.ghichu,
           trangThai: "Chờ xử lý",
           id: data.obj?.id || null,
+          adviceServiceId: Number(form.loaiTuVan), // Thêm adviceServiceId
+          serviceName: selectedServiceInfo?.consultationType, // Tên dịch vụ
           ...(meetLink && { meetLink })
         };
         

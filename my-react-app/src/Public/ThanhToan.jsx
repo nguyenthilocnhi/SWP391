@@ -74,6 +74,7 @@ function ThanhToan() {
   const [soTienCuoi, setSoTienCuoi] = useState(100000);
   const [voucher, setVoucher] = useState(null);
   const [danhSachDichVu, setDanhSachDichVu] = useState([]);
+  const [selectedService, setSelectedService] = useState(null); // Thêm state cho dịch vụ được chọn
   const [paymentMethod, setPaymentMethod] = useState('vnpay');
   const [isProcessing, setIsProcessing] = useState(false);
   const location = useLocation();
@@ -149,11 +150,49 @@ function ThanhToan() {
     fetchServices();
   }, []);
 
-  const tenDichVu = lich.serviceName ||
+  // Thêm useEffect để lấy thông tin chi tiết dịch vụ tư vấn khi có adviceServiceId
+  useEffect(() => {
+    if (lich.adviceServiceId && !isNaN(Number(lich.adviceServiceId))) {
+      // Gọi API lấy thông tin chi tiết dịch vụ tư vấn
+      const token = localStorage.getItem('token');
+      fetch(`https://api-gender2.purintech.id.vn/api/Service/advise-service/${lich.adviceServiceId}`, {
+        headers: {
+          'accept': '*/*',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.obj) {
+            setSelectedService(data.obj);
+            // Cập nhật giá nếu chưa có hoặc giá hiện tại là giá mặc định
+            if ((!lich.gia || lich.gia === 100000) && data.obj.price) {
+              const newPrice = data.obj.price;
+              setSoTien(newPrice);
+              setSoTienCuoi(newPrice);
+              console.log('Cập nhật giá từ API:', newPrice);
+            }
+          }
+        })
+        .catch(() => setSelectedService(null));
+    } else {
+      setSelectedService(null);
+    }
+  }, [lich.adviceServiceId, lich.gia]);
+
+  // Lấy tên dịch vụ ưu tiên theo các trường phổ biến
+  const tenDichVu = lich.serviceName || lich.testName || lich.consultationType || lich.name || 
+    selectedService?.consultationType ||
     danhSachDichVu.find(s => String(s.id) === String(lich.maDichVu || lich.id || lich.adviceServiceId))?.name ||
     "Dịch vụ chưa xác định";
 
   const gioHen = lich.gio || "Chưa có giờ hẹn";
+
+  // Debug: Log thông tin để kiểm tra
+  console.log('Debug - Lịch từ localStorage:', lich);
+  console.log('Debug - Selected Service:', selectedService);
+  console.log('Debug - Tên dịch vụ cuối cùng:', tenDichVu);
+  console.log('Debug - Giá hiện tại:', soTien);
 
   const handleVnPay = async () => {
     // Tạo orderId duy nhất
@@ -286,13 +325,13 @@ function ThanhToan() {
         <div style={styles.info}>
           <div style={styles.row}><span style={styles.bold}>Dịch vụ:</span> {tenDichVu}</div>
           <div style={styles.row}><span style={styles.bold}>Giờ hẹn:</span> {gioHen}</div>
-          <div style={styles.row}><span style={styles.bold}>Giá gốc:</span> {soTien.toLocaleString('vi-VN')} VND</div>
+          <div style={styles.row}><span style={styles.bold}>Giá gốc:</span> {soTien.toLocaleString('vi-VN')}.000 VND</div>
           {voucher && (
             <div style={styles.row}>
               <span style={styles.bold}>Mã giảm:</span> {voucherMap[voucher.code]?.label || voucher.code}
             </div>
           )}
-          <div style={styles.row}><span style={styles.total}>Tổng cộng:</span> <span style={styles.final}>{soTienCuoi.toLocaleString('vi-VN')} VND</span></div>
+          <div style={styles.row}><span style={styles.total}>Tổng cộng:</span> <span style={styles.final}>{soTienCuoi.toLocaleString('vi-VN')}.000 VND</span></div>
         </div>
         
         {/* Phương thức thanh toán */}
