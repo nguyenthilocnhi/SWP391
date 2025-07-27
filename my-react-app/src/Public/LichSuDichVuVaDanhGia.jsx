@@ -203,13 +203,58 @@ const LichSuDichVu = () => {
   const [reviewText, setReviewText] = useState("");
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("lichSuDichVu")) || [];
-    setData(stored);
-    setTimeout(() => {
-      setAlertMsg("🔔 Bạn có 3 thông báo mới!");
-      setShowAlert(true);
-    }, 1000);
-  }, []);
+  const fetchLichSuDichVu = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("Không tìm thấy token trong localStorage");
+        return;
+      }
+
+      const res = await fetch("https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments", {
+        method: "GET",
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Lỗi mạng: ${res.status}`);
+      }
+
+      const json = await res.json();
+      if (json.code === 200) {
+        const mappedData = json.obj.map(item => ({
+          ten: item.consultationType,
+          ngayThucHien: new Date(item.appointmentDate).toLocaleDateString("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          }),
+          ghiChu: item.note,
+          trangThai: "Hoàn_tất", // hoặc dùng convertStatus(item.serviceStatus)
+        }));
+        setData(mappedData);
+      } else {
+        console.warn("API trả về lỗi:", json.message);
+      }
+    } catch (error) {
+      console.error("Lỗi khi tải dữ liệu:", error);
+    }
+  };
+
+  fetchLichSuDichVu();
+
+  // Hiển thị alert sau 1 giây
+  const alertTimeout = setTimeout(() => {
+    setAlertMsg("🔔 Bạn có 3 thông báo mới!");
+    setShowAlert(true);
+  }, 1000);
+
+  return () => clearTimeout(alertTimeout); // Dọn dẹp timeout
+}, []);
+
 
   useEffect(() => {
     if (showAlert) {
@@ -223,13 +268,13 @@ const LichSuDichVu = () => {
     : data.filter(d => d.trangThai === filter);
 
   const handleDelete = (index) => {
-    if (window.confirm("Bạn có chắc muốn xóa mục này?")) {
-      const newData = [...data];
-      newData.splice(index, 1);
-      setData(newData);
-      localStorage.setItem("lichSuDichVu", JSON.stringify(newData));
-    }
-  };
+  if (window.confirm("Bạn có chắc muốn xóa mục này?")) {
+    const newData = [...data];
+    newData.splice(index, 1);
+    setData(newData);
+    // không cần lưu lại localStorage nữa
+  }
+};
 
   const openModal = (ten) => {
     setDichVuDangDanhGia(ten);
@@ -242,7 +287,7 @@ const LichSuDichVu = () => {
       alert("Vui lòng nhập nội dung đánh giá!");
       return;
     }
-    const allReviews = JSON.parse(localStorage.getItem("danhGiaDichVu")) || [];
+    
     allReviews.push({
       tenDichVu: dichVuDangDanhGia,
       noiDung: reviewText,
@@ -281,9 +326,9 @@ const LichSuDichVu = () => {
           <thead>
             <Tr>
               <Th>Dịch Vụ</Th>
-              <Th>Ngày Đặt</Th>
+              
               <Th>Ngày Thực Hiện</Th>
-              <Th>Trạng Thái</Th>
+              
               <Th>Ghi Chú</Th>
               <Th>Thao Tác</Th>
             </Tr>
@@ -297,13 +342,9 @@ const LichSuDichVu = () => {
               filteredData.map((item, idx) => (
                 <Tr key={idx}>
                   <Td>{item.ten}</Td>
-                  <Td>{item.ngayDat}</Td>
+                  
                   <Td>{item.ngayThucHien}</Td>
-                  <Td>
-                    <Status type={STATUS_LABELS[item.trangThai] || ""}>
-                      {item.trangThai.replace("_", " ")}
-                    </Status>
-                  </Td>
+                  
                   <Td>{item.ghiChu || ""}</Td>
                   <Td>
                     <DeleteBtn onClick={() => handleDelete(data.indexOf(item))}>Xóa</DeleteBtn>

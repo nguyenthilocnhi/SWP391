@@ -2,6 +2,21 @@ import React, { useState, useEffect } from "react";
 import ConsultantSidebar from "../components/ConsultantSidebar";
 import ConsultantTopbar from "../components/ConsultantTopbar";
 
+const meetLinks = [
+  "https://meet.google.com/oer-ykxb-mbj",
+  "https://meet.google.com/hvx-pqoa-tyy",
+  "https://meet.google.com/ejx-zdvn-avr",
+  "https://meet.google.com/ceb-bqzm-ksd",
+  "https://meet.google.com/hsk-wgks-ydd",
+  "https://meet.google.com/ixr-oqur-rxu",
+  "https://meet.google.com/tpv-zgof-ogb",
+  "https://meet.google.com/mhk-zaie-pjc",
+  "https://meet.google.com/brf-nmfp-row",
+  "https://meet.google.com/gro-eqfo-fkw",
+  "https://meet.google.com/ggu-wjuc-hst",
+  "https://meet.google.com/hqr-eovq-yqr"
+];
+
 const ConsultantLichHen = () => {
   const [appointments, setAppointments] = useState([]);
   const consultantName = "Nguyễn Thị Huyền";
@@ -28,7 +43,7 @@ const ConsultantLichHen = () => {
     // Fetch API
     const fetchAppointments = async () => {
       try {
-        const res = await fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
+        const res = await fetch('https://api-gender2.purintech.id.vn/api/Appointment/get-all-advice-appointments', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'accept': '*/*'
@@ -41,8 +56,15 @@ const ConsultantLichHen = () => {
         let newList = [];
         if (Array.isArray(data)) newList = data;
         else if (Array.isArray(data.obj)) newList = data.obj;
-        else newList = [];
-        setAppointments(newList);
+        let onlineIndex = 0;
+const appointmentsWithLinks = newList.map((a) => {
+  if (a.contactType === 2 && onlineIndex < meetLinks.length) {
+    return { ...a, meetLink: meetLinks[onlineIndex++] };
+  }
+  return a;
+});
+setAppointments(appointmentsWithLinks);
+
       } catch (error) {
         console.error("Lỗi fetch API:", error);
         setAppointments([]);
@@ -53,43 +75,97 @@ const ConsultantLichHen = () => {
   }, []);
 
   const handleApprove = async (id) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Bạn cần đăng nhập để thao tác!');
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Bạn cần đăng nhập để thao tác!');
+    return;
+  }
+
+  // Tìm lịch hẹn tương ứng
+  const currentAppointment = appointments.find(a => a.id === id);
+  if (!currentAppointment) {
+    alert('Không tìm thấy lịch hẹn để duyệt!');
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/approve`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'accept': '*/*',
+      },
+      body: JSON.stringify({
+        serviceStatus: 2,
+        note: currentAppointment.note || '',
+        suggestion: ''  // dùng chung nếu không có trường suggestion riêng
+      })
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      alert('Lỗi: ' + (data.message || JSON.stringify(data)));
       return;
     }
-    let consultantId = null;
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      consultantId = payload.nameid || payload.sub || null;
-    } catch (e) {}
-    try {
-      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/approve`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'accept': '*/*',
-        },
-        body: JSON.stringify({
-          consultantId: consultantId,
-          serviceStatus: 0,
-          note: 'Duyệt lịch hẹn',
-          suggestion: 'Lịch hẹn đã được duyệt'
-        })
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        alert('Lỗi: ' + (data.message || JSON.stringify(data)));
-        return;
-      }
-      alert('Duyệt thành công!');
-      setAppointments(prev => prev.map(a => a.id === id ? { ...a, status: "Đã duyệt" } : a));
-    } catch (error) {
-      alert('Có lỗi xảy ra khi duyệt lịch hẹn!');
-      console.error(error);
+
+    alert('Duyệt thành công!');
+    setAppointments(prev =>
+      prev.map(a => a.id === id ? { ...a, serviceStatus: 2 } : a)
+    );
+  } catch (error) {
+    alert('Có lỗi xảy ra khi duyệt lịch hẹn!');
+    console.error(error);
+  }
+};
+
+const handleComplete = async (id) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Bạn cần đăng nhập để thao tác!');
+    return;
+  }
+
+  // Tìm lịch hẹn tương ứng
+  const currentAppointment = appointments.find(a => a.id === id);
+  if (!currentAppointment) {
+    alert('Không tìm thấy lịch hẹn để duyệt!');
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/approve`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'accept': '*/*',
+      },
+      body: JSON.stringify({
+        serviceStatus: 4,
+        note: currentAppointment.note || '',
+        suggestion: ''  // dùng chung nếu không có trường suggestion riêng
+      })
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      alert('Lỗi: ' + (data.message || JSON.stringify(data)));
+      return;
     }
-  };
+
+    alert('Duyệt thành công!');
+    setAppointments(prev =>
+      prev.map(a => a.id === id ? { ...a, serviceStatus: 4 } : a)
+    );
+  } catch (error) {
+    alert('Có lỗi xảy ra khi hoàn thành lịch hẹn!');
+    console.error(error);
+  }
+};
+
+
+
 
   const handleConfirm = async (id) => {
     const token = localStorage.getItem('token');
@@ -211,7 +287,7 @@ const ConsultantLichHen = () => {
                       <tr key={a.id || idx}>
                         <td style={{ fontWeight: 600, color: '#059669' }}>{a.fullName}</td>
                         <td>{a.email}</td>
-                        <td>{a.phone}</td>
+                        <td>{a.phoneNumber}</td>
                         <td>{a.appointmentDate ? new Date(a.appointmentDate).toLocaleDateString('vi-VN') : '-'}</td>
                         <td>{a.appointmentDate ? new Date(a.appointmentDate).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) : '-'}</td>
                         <td>
@@ -237,40 +313,71 @@ const ConsultantLichHen = () => {
                           ) : '-'}
                         </td>
                         <td>
-                          <span style={{
-                            padding: '4px 8px',
-                            borderRadius: '6px',
-                            fontSize: '0.9rem',
-                            fontWeight: 600,
-                            backgroundColor:
-                              a.status === 'Đã duyệt' ? '#d1fae5' :
-                                a.status === 'Đã hoàn thành' ? '#dbeafe' :
-                                  a.status === 'Đã hủy' ? '#fee2e2' : '#fef3c7',
-                            color:
-                              a.status === 'Đã duyệt' ? '#065f46' :
-                                a.status === 'Đã hoàn thành' ? '#1e40af' :
-                                  a.status === 'Đã hủy' ? '#dc2626' : '#92400e'
-                          }}>
-                            {a.status}
-                          </span>
-                        </td>
+                        <span style={{
+  padding: '4px 8px',
+  borderRadius: '6px',
+  fontSize: '0.9rem',
+  fontWeight: 600,
+  backgroundColor:
+    a.serviceStatus === 0 ? '#d1fae5' :       // xanh lá
+    a.serviceStatus === 2 ? '#fa7674ff' :       // xanh dương
+    a.serviceStatus === 4 ? '#fee2e2' : '#fef3c7'
+}}>
+  {
+    a.serviceStatus === 0 ? 'Đang chờ' :
+    a.serviceStatus === 2 ? 'Đã nhận' :
+    a.serviceStatus === 4 ? 'Đã hoàn thành' : 'Đã hoàn thành'
+  }
+</span>
+</td>
                         <td>
-                          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-                            {a.status === 'Chờ xử lý' && (
-                              <button className="lh-btn-detail" onClick={() => handleApprove(a.id)}
-                                style={{ fontSize: '0.85rem', padding: '4px 8px' }}>
-                                Duyệt
-                              </button>
-                            )}
-                            {a.status === 'Đã duyệt' && (
-                              <button className="lh-btn-detail"
-                                style={{ marginLeft: 0, background: '#f59e42', fontSize: '0.85rem', padding: '4px 8px' }}
-                                onClick={() => handleConfirm(a.id)}>
-                                Xác nhận
-                              </button>
-                            )}
-                          </div>
-                        </td>
+  <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+    {a.serviceStatus === 0 && (
+      <button
+        className="lh-btn-detail"
+        onClick={() => handleApprove(a.id)}
+        style={{
+          fontSize: '0.85rem',
+          padding: '4px 8px',
+        }}
+      >
+        Duyệt
+      </button>
+    )}
+
+    {a.serviceStatus === 2 && (
+      <button
+        className="lh-btn-detail"
+        onClick={() => handleComplete(a.id)}
+        style={{
+          fontSize: '0.85rem',
+          padding: '4px 8px',
+          backgroundColor: '#10b981', // xanh lá nhẹ
+          color: 'white',
+        }}
+      >
+        Hoàn thành
+      </button>
+    )}
+
+    {a.serviceStatus === 4 && (
+      <button
+        className="lh-btn-detail"
+        style={{
+          fontSize: '0.85rem',
+          padding: '4px 8px',
+          backgroundColor: '#d1d5db',
+          color: '#6b7280',
+          cursor: 'not-allowed',
+        }}
+        disabled
+      >
+        Đã hoàn thành
+      </button>
+    )}
+  </div>
+</td>
+
                       </tr>
                     ))}
                   </tbody>
