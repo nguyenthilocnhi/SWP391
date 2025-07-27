@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import StaffSidebar from '../components/staffSidebar';
 import StaffHeader from '../components/staffHeader';
@@ -196,41 +196,69 @@ const statusOptions = [
   'Đã trả kết quả'
 ];
 
-const sampleData = [
-  {
-    customer: 'Nguyễn Văn A',
-    service: 'HIV Ag/Ab Combo',
-    date: '2025-07-01',
-    status: 'Chờ xác nhận',
-    note: ''
-  },
-  {
-    customer: 'Trần Thị B',
-    service: 'Viêm gan B',
-    date: '2025-07-02',
-    status: 'Đã xác nhận',
-    note: ''
-  },
-  {
-    customer: 'Lê Văn C',
-    service: 'Giang mai TPHA',
-    date: '2025-07-03',
-    status: 'Đã lấy mẫu',
-    note: ''
-  }
-];
+
 
 function StaffQuanLyDatLich() {
-  const [appointments, setAppointments] = useState(sampleData);
+  const [appointments, setAppointments] = useState([]);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
-  const [form, setForm] = useState({ customer: '', service: '', date: '', status: '', note: '' });
+  const [form, setForm] = useState({ customerName: '', serviceName: '', ngay: '', status: '', note: '' });
+
+  // Gọi API lấy danh sách lịch xét nghiệm khi load trang
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch('https://api-gender2.purintech.id.vn/api/Appointment/test-appointments/all', {
+          headers: {
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+  
+        const data = await res.json();
+        if (data && data.obj) {
+          const mapped = data.obj.map(item => ({
+            id: item.id,
+            customerName: item.fullName || '', //  API trả về "fullName"
+            serviceName: item.testName || '',  //  API trả về "testName"
+            ngay: item.appointmentDate ? item.appointmentDate.split('T')[0] : '',
+            status: convertStatus(item.serviceStatus),
+            note: item.note || ''
+          }));
+          setAppointments(mapped);
+        } else {
+          setAppointments([]);
+        }
+      } catch (err) {
+        console.error('Lỗi khi lấy danh sách lịch:', err);
+        setAppointments([]);
+      }
+    };
+  
+    fetchAppointments();
+  }, []);
+
+  const convertStatus = (code) => {
+  switch (code) {
+    case 0: return 'Chờ xác nhận';
+    case 1: return 'Đã xác nhận';
+    case 2: return 'Đã lấy mẫu';
+    case 3: return 'Chờ kết quả';
+    case 4: return 'Đã trả kết quả';
+    default: return 'Không rõ';
+  }
+};
+
+  
+
+  
 
   // Lọc theo tên khách hoặc dịch vụ
   const filtered = appointments.filter(a =>
-    a.customer.toLowerCase().includes(search.toLowerCase()) ||
-    a.service.toLowerCase().includes(search.toLowerCase())
+    (a.customerName && a.customerName.toLowerCase().includes(search.toLowerCase())) ||
+    (a.serviceName && a.serviceName.toLowerCase().includes(search.toLowerCase()))
   );
 
   // Mở modal chỉnh sửa
@@ -251,9 +279,32 @@ function StaffQuanLyDatLich() {
     closeModal();
   };
   // Đổi trạng thái nhanh trên bảng
-  const handleStatusChange = (idx, value) => {
-    setAppointments(arr => arr.map((a, i) => i === idx ? { ...a, status: value } : a));
+  const handleStatusChange = async (idx, newStatus) => {
+    const appointment = appointments[idx];
+    const appointmentId = appointment.id;
+  
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`https://api-gender2.purintech.id.vn/api/Apointment/advice-result/${appointmentId}/confirm`, {
+        method: 'PUT',
+        headers: {
+          'accept': '*/*',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Xác nhận trạng thái thất bại');
+      }
+  
+      // Cập nhật trạng thái trong giao diện
+      setAppointments(prev => prev.map((a, i) => i === idx ? { ...a, status: newStatus } : a));
+    } catch (error) {
+      console.error('Lỗi khi gọi API xác nhận:', error);
+      alert('Lỗi khi xác nhận trạng thái. Vui lòng thử lại.');
+    }
   };
+  
 
   return (
     <Container>
@@ -283,11 +334,11 @@ function StaffQuanLyDatLich() {
             <tbody>
               {filtered.map((row, idx) => (
                 <Tr key={idx}>
-                  <Td>{row.customer}</Td>
-                  <Td>{row.service}</Td>
-                  <Td>{row.date}</Td>
-                  <Td>{row.status}</Td>
-                  <Td>{row.note}</Td>
+                  <Td>{row.customerName || ''}</Td>
+                  <Td>{row.serviceName || ''}</Td>
+                  <Td>{row.ngay || ''}</Td>
+                  <Td>{row.status || 'Chờ xác nhận'}</Td>
+                  <Td>{row.note || ''}</Td>
                   <Td>
                     <ActionBtn onClick={() => openEditModal(idx)}>Chỉnh sửa</ActionBtn>
                   </Td>
@@ -304,15 +355,15 @@ function StaffQuanLyDatLich() {
             <form onSubmit={handleSubmit}>
               <FormGroup>
                 <Label>Khách hàng</Label>
-                <Input type="text" value={form.customer} onChange={e => setForm(f => ({ ...f, customer: e.target.value }))} required />
+                <Input type="text" value={form.customerName} onChange={e => setForm(f => ({ ...f, customerName: e.target.value }))} required />
               </FormGroup>
               <FormGroup>
                 <Label>Dịch vụ</Label>
-                <Input type="text" value={form.service} onChange={e => setForm(f => ({ ...f, service: e.target.value }))} required />
+                <Input type="text" value={form.serviceName} onChange={e => setForm(f => ({ ...f, serviceName: e.target.value }))} required />
               </FormGroup>
               <FormGroup>
                 <Label>Ngày</Label>
-                <Input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} required />
+                <Input type="date" value={form.ngay} onChange={e => setForm(f => ({ ...f, ngay: e.target.value }))} required />
               </FormGroup>
               <FormGroup>
                 <Label>Trạng thái</Label>
