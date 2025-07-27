@@ -60,7 +60,6 @@ import StaffDangXuat from "../Staff/StaffDangXuat";
 {/* Consultant */}
 import ConsultantTrangChu from "../Consultant/ConsultantTrangChu";
 import ConsultantLichLamViec from "../Consultant/ConsultantLichLamViec";
-import ConsultantTuVanTrucTuyen from "../Consultant/ConsultantTuVanTrucTuyen";
 import ConsultantLichHen from "../Consultant/ConsultantLichHen";
 import ConsultantHoiDap from "../Consultant/ConsultantHoiDap";
 import ConsultantReply from "../Consultant/ConsultantReply";
@@ -143,7 +142,6 @@ function App() {
         {/* Consultant */}
         <Route path="/consultant/trangchu" element={<ConsultantTrangChu />} />
         <Route path="/consultant/lich-lam-viec" element={<ConsultantLichLamViec />} />
-        <Route path="/consultant/tu-van-truc-tuyen" element={<ConsultantTuVanTrucTuyen />} />
         <Route path="/consultant/lich-hen" element={<ConsultantLichHen />} />
         <Route path="/consultant/hoi-dap" element={<ConsultantHoiDap />} />
         <Route path="/consultant/hoi-dap/tra-loi/:id" element={<ConsultantReply />} />
