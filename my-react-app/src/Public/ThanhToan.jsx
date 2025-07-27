@@ -77,6 +77,7 @@ function ThanhToan() {
   const [selectedService, setSelectedService] = useState(null); // Thêm state cho dịch vụ được chọn
   const [paymentMethod, setPaymentMethod] = useState('vnpay');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const meetLink = location.state?.meetLink;
@@ -195,10 +196,11 @@ function ThanhToan() {
   console.log('Debug - Giá hiện tại:', soTien);
 
   const handleVnPay = async () => {
+    setIsRedirecting(true);
     // Tạo orderId duy nhất
     const orderId = lich.id || `ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const orderInfo = `Thanh toán dịch vụ: ${tenDichVu}`;
-    const amount = Math.round(soTienCuoi); // Đảm bảo amount là số nguyên
+    const amount = Math.round(soTienCuoi * 1000); // Đảm bảo amount là số nguyên và đúng đơn vị VND
     const customerEmail = lich.email || "";
     const customerPhone = lich.sdt || "";
     const returnFrontendUrl = window.location.origin + "/customer/thanh-cong-dat-lich";
@@ -289,6 +291,8 @@ function ThanhToan() {
       } else {
         alert(`Lỗi thanh toán VNPAY: ${e.message}`);
       }
+    } finally {
+      setIsRedirecting(false);
     }
   };
 
@@ -325,13 +329,13 @@ function ThanhToan() {
         <div style={styles.info}>
           <div style={styles.row}><span style={styles.bold}>Dịch vụ:</span> {tenDichVu}</div>
           <div style={styles.row}><span style={styles.bold}>Giờ hẹn:</span> {gioHen}</div>
-          <div style={styles.row}><span style={styles.bold}>Giá gốc:</span> {soTien.toLocaleString('vi-VN')}.000 VND</div>
+          <div style={styles.row}><span style={styles.bold}>Giá gốc:</span> {(soTien * 1000).toLocaleString('vi-VN')} VND</div>
           {voucher && (
             <div style={styles.row}>
               <span style={styles.bold}>Mã giảm:</span> {voucherMap[voucher.code]?.label || voucher.code}
             </div>
           )}
-          <div style={styles.row}><span style={styles.total}>Tổng cộng:</span> <span style={styles.final}>{soTienCuoi.toLocaleString('vi-VN')}.000 VND</span></div>
+          <div style={styles.row}><span style={styles.total}>Tổng cộng:</span> <span style={styles.final}>{(soTienCuoi * 1000).toLocaleString('vi-VN')} VND</span></div>
         </div>
         
         {/* Phương thức thanh toán */}
@@ -390,6 +394,7 @@ function ThanhToan() {
             Nội dung: {lich.id || 'Thanh toán dịch vụ'}
           </div>
         )}
+        {isRedirecting && <div className="loading">Đang chuyển sang cổng thanh toán, vui lòng chờ...</div>}
       </div>
     </div>
   );
