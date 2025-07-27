@@ -10,23 +10,14 @@ const CaiDat = () => {
     password: '',
     phone: '',
     notifications: false,
-    twoFA: false,
-    darkMode: false,
-    language: 'vi',
     avatar: 'https://i.postimg.cc/vZVQXR5n/avatar-default.png'
   });
   const [statusMsg, setStatusMsg] = useState('');
 
   const cssVars = {
     green: '#22c55e',
-    greenDark: '#16a34a',
     red: '#d32f2f',
-    redDark: '#b71c1c',
-    gray: '#e5e7eb',
-    darkBg: '#1e293b',
-    darkBox: '#334155',
-    darkInput: '#475569',
-    darkBorder: '#64748b'
+    gray: '#e5e7eb'
   };
 
   const styles = {
@@ -36,8 +27,7 @@ const CaiDat = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: settings.darkMode ? cssVars.darkBg : '#ecfdf5',
-      boxSizing: 'border-box',
+      background: '#ecfdf5',
       margin: 0,
       padding: 0,
     },
@@ -65,7 +55,7 @@ const CaiDat = () => {
     },
     right: {
       flex: 2,
-      padding: '32px 32px',
+      padding: '32px',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
@@ -160,21 +150,9 @@ const CaiDat = () => {
       cursor: 'pointer',
       fontSize: '16px',
     },
-    deleteBtn: {
-      marginTop: '12px',
-      padding: '12px',
-      width: '100%',
-      background: '#facc15',
-      color: '#1f2937',
-      fontWeight: 'bold',
-      border: 'none',
-      borderRadius: '6px',
-      cursor: 'pointer',
-      fontSize: '16px',
-    },
     statusMessage: {
       textAlign: 'center',
-      color: cssVars.greenDark,
+      color: cssVars.green,
       marginTop: '16px',
       fontWeight: 500,
     },
@@ -182,20 +160,9 @@ const CaiDat = () => {
       display: 'block',
       marginTop: '8px',
       textAlign: 'right',
-      color: '#047857',
+      color: '#dc2626',
       fontSize: '14px',
       cursor: 'pointer',
-    },
-    select: {
-      width: '100%',
-      padding: '10px 12px',
-      borderRadius: '6px',
-      border: `1px solid ${cssVars.gray}`,
-      backgroundColor: '#fff',
-      fontFamily: "'Segoe UI', sans-serif",
-      color: '#1f2937',
-      fontSize: '16px',
-      marginBottom: '8px',
     },
   };
 
@@ -204,9 +171,7 @@ const CaiDat = () => {
       try {
         const token = localStorage.getItem('token');
         const res = await axios.get('https://api-gender2.purintech.id.vn/api/Customer/get-user-info', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          headers: { Authorization: `Bearer ${token}` }
         });
 
         if (res.data && res.data.obj) {
@@ -226,11 +191,6 @@ const CaiDat = () => {
     };
 
     fetchUserInfo();
-
-    const saved = JSON.parse(localStorage.getItem('userSettings')) || {};
-    if (saved.darkMode) {
-      document.body.classList.add('dark');
-    }
   }, []);
 
   const handleInputChange = (e) => {
@@ -263,11 +223,6 @@ const CaiDat = () => {
     };
     localStorage.setItem('userSettings', JSON.stringify(updatedSettings));
     setStatusMsg('Đã lưu cài đặt thành công!');
-    if (settings.darkMode) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
     setTimeout(() => setStatusMsg(''), 3000);
   };
 
@@ -306,17 +261,6 @@ const CaiDat = () => {
     }
   };
 
-  const handleDeleteAccount = () => {
-    if (window.confirm('⚠️ Bạn có chắc chắn muốn xóa tài khoản và toàn bộ dữ liệu không?')) {
-      localStorage.removeItem('userSettings');
-      localStorage.removeItem('loggedIn');
-      localStorage.removeItem('sessionExpire');
-      localStorage.removeItem('role');
-      alert('Tài khoản đã được xóa!');
-      navigate('/dangnhap');
-    }
-  };
-
   return (
     <div style={styles.page}>
       <div style={styles.container}>
@@ -326,7 +270,7 @@ const CaiDat = () => {
           </Link>
           <div style={styles.avatarWrapper}>
             <label htmlFor="avatarInput" style={styles.avatarClickable}>
-              <img id="avatarPreview" src={settings.avatar} alt="Avatar" style={styles.avatarImg} />
+              <img src={settings.avatar} alt="Avatar" style={styles.avatarImg} />
               <span style={styles.avatarOverlay}>🖋</span>
             </label>
             <input type="file" id="avatarInput" accept="image/*" hidden onChange={handleAvatarChange} />
@@ -344,9 +288,9 @@ const CaiDat = () => {
             <input type="email" name="email" disabled value={settings.email} style={styles.input} />
 
             <label style={styles.label}>Mật khẩu:</label>
-            <input type="password" name="password" disabled value={settings.password} style={styles.input} />
+            <input type="password" name="password" disabled value="********" style={styles.input} />
             <span
-              style={{ ...styles.changePasswordLink, color: "#dc2626" }}
+              style={styles.changePasswordLink}
               onClick={() => navigate('/customer/doi-mat-khau')}
             >
               Đổi mật khẩu?
@@ -360,25 +304,8 @@ const CaiDat = () => {
               Nhận thông báo
             </label>
 
-            <label style={styles.label}>
-              <input type="checkbox" name="twoFA" checked={settings.twoFA} onChange={handleInputChange} style={styles.checkbox} />
-              Bật xác thực hai lớp (2FA)
-            </label>
-
-            <label style={styles.label}>
-              <input type="checkbox" name="darkMode" checked={settings.darkMode} onChange={handleInputChange} style={styles.checkbox} />
-              Chế độ tối
-            </label>
-
-            <label style={styles.label}>🌐 Ngôn ngữ:</label>
-            <select name="language" value={settings.language} onChange={handleInputChange} style={styles.select}>
-              <option value="vi">Tiếng Việt</option>
-              <option value="en">English</option>
-            </select>
-
             <button type="submit" style={styles.button}>Lưu Cài Đặt</button>
             <button type="button" onClick={handleLogout} style={styles.logoutBtn}>Đăng xuất</button>
-            <button type="button" onClick={handleDeleteAccount} style={styles.deleteBtn}>🗑 Xóa tài khoản</button>
           </form>
           <div style={styles.statusMessage}>{statusMsg}</div>
         </div>
