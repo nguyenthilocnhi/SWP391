@@ -81,7 +81,7 @@ const Badge = styled.span`
   display: inline-block;
   white-space: nowrap;
   background: ${props => {
-    switch(props.status) {
+    switch(props.$status) {
       case 'published': return '#d1fae5';
       case 'pending': return '#fef3c7';
       case 'rejected': return '#fee2e2';
@@ -90,7 +90,7 @@ const Badge = styled.span`
     }
   }};
   color: ${props => {
-    switch(props.status) {
+    switch(props.$status) {
       case 'published': return '#065f46';
       case 'pending': return '#92400e';
       case 'rejected': return '#991b1b';
@@ -105,15 +105,15 @@ const Button = styled.button`
   border-radius: 8px;
   border: none;
   background-color: ${props => {
-    if (props.variant === 'approve') return '#10b981';
-    if (props.variant === 'reject') return '#ef4444';
-    if (props.variant === 'view') return '#3b82f6';
-    if (props.variant === 'edit') return '#f59e0b';
-    if (props.variant === 'delete') return '#6b7280';
+    if (props.$variant === 'approve') return '#10b981';
+    if (props.$variant === 'reject') return '#ef4444';
+    if (props.$variant === 'view') return '#3b82f6';
+    if (props.$variant === 'edit') return '#f59e0b';
+    if (props.$variant === 'delete') return '#6b7280';
     return props.active ? '#e0e7ff' : 'transparent';
   }};
   color: ${props => {
-    if (['approve', 'reject', 'view', 'edit', 'delete'].includes(props.variant)) return 'white';
+    if (['approve', 'reject', 'view', 'edit', 'delete'].includes(props.$variant)) return 'white';
     return props.active ? '#4338ca' : '#4b5563';
   }};
   cursor: pointer;
@@ -121,11 +121,11 @@ const Button = styled.button`
   margin-right: 8px;
   &:hover {
     background-color: ${props => {
-      if (props.variant === 'approve') return '#059669';
-      if (props.variant === 'reject') return '#dc2626';
-      if (props.variant === 'view') return '#2563eb';
-      if (props.variant === 'edit') return '#d97706';
-      if (props.variant === 'delete') return '#4b5563';
+      if (props.$variant === 'approve') return '#059669';
+      if (props.$variant === 'reject') return '#dc2626';
+      if (props.$variant === 'view') return '#2563eb';
+      if (props.$variant === 'edit') return '#d97706';
+      if (props.$variant === 'delete') return '#4b5563';
       return '#f3f4f6';
     }};
   }
@@ -248,17 +248,61 @@ const AdminBaiViet = () => {
   };
 
   const handleDelete = async (articleId) => {
-    if (window.confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
-      try {
-        const res = await fetch(`https://api-gender2.purintech.id.vn/api/Blog/${articleId}`, { method: 'DELETE' });
-        if (res.ok) loadArticles();
-      } catch (err) {}
+    const token = localStorage.getItem("token");
+    if (!token || !token.startsWith("Bearer ")) {
+      alert("Token không hợp lệ hoặc chưa đăng nhập!");
+      return;
+    }
+    if (!window.confirm('Bạn có chắc chắn muốn xóa bài viết này?')) return;
+    try {
+      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Blog/${articleId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": token,
+          "accept": "*/*"
+        }
+      });
+      if (res.status === 204) {
+        alert("Xóa bài viết thành công!");
+        loadArticles();
+      } else {
+        alert("Xóa bài viết thất bại!");
+      }
+    } catch (err) {
+      alert("Lỗi kết nối server!\n" + err.message);
     }
   };
 
   const handleView = (article) => {
     setSelectedArticle(article);
     setShowModal(true);
+  };
+
+  const handleUpdateStatus = async (articleId, newStatus) => {
+    const token = localStorage.getItem("token");
+    if (!token || !token.startsWith("Bearer ")) {
+      alert("Token không hợp lệ hoặc chưa đăng nhập!");
+      return;
+    }
+    try {
+      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Blog/status/${articleId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token,
+          "accept": "*/*"
+        },
+        body: JSON.stringify(newStatus)
+      });
+      if (res.ok) {
+        alert("Cập nhật trạng thái thành công!");
+        loadArticles && loadArticles();
+      } else {
+        alert("Cập nhật trạng thái thất bại!");
+      }
+    } catch (err) {
+      alert("Lỗi kết nối server!\n" + err.message);
+    }
   };
 
   const getStatusText = (status) => {
@@ -361,30 +405,30 @@ const AdminBaiViet = () => {
                         </StaffTd>
                         <StaffTd>{formatDate(article.createdAt)}</StaffTd>
                         <StaffTd>
-                          <Badge status={article.status}>
+                          <Badge $status={article.status}>
                             {getStatusText(article.status)}
                           </Badge>
                         </StaffTd>
                         <StaffTd>
-                          <Button variant="view" onClick={() => handleView(article)}>
+                          <Button $variant="view" onClick={() => handleView(article)}>
                             Xem
                           </Button>
                           {article.status === 'pending' && (
                             <>
-                              <Button variant="approve" onClick={() => handleApprove(article.id)}>
+                              <Button $variant="approve" onClick={() => handleUpdateStatus(article.id, { status: 'published' })}>
                                 Duyệt
                               </Button>
-                              <Button variant="reject" onClick={() => handleReject(article.id)}>
+                              <Button $variant="reject" onClick={() => handleUpdateStatus(article.id, { status: 'rejected' })}>
                                 Từ chối
                               </Button>
                             </>
                           )}
                           {article.status === 'draft' && (
-                            <Button variant="edit">
+                            <Button $variant="edit">
                               Sửa
                             </Button>
                           )}
-                          <Button variant="delete" onClick={() => handleDelete(article.id)}>
+                          <Button $variant="delete" onClick={() => handleDelete(article.id)}>
                             Xóa
                           </Button>
                         </StaffTd>
@@ -481,13 +525,13 @@ const AdminBaiViet = () => {
               {selectedArticle.status === 'pending' && (
                 <>
                   <Button variant="approve" onClick={() => {
-                    handleApprove(selectedArticle.id);
+                    handleUpdateStatus(selectedArticle.id, { status: 'published' });
                     setShowModal(false);
                   }}>
                     Duyệt bài viết
                   </Button>
                   <Button variant="reject" onClick={() => {
-                    handleReject(selectedArticle.id);
+                    handleUpdateStatus(selectedArticle.id, { status: 'rejected' });
                     setShowModal(false);
                   }}>
                     Từ chối

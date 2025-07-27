@@ -15,9 +15,19 @@ const ConsultantBaiVietCuaToi = () => {
   const [showModal, setShowModal] = useState(false);
 
   const loadMyArticles = async () => {
-    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem("token");
+    if (!token || !token.startsWith("Bearer ")) {
+      alert("Token không hợp lệ hoặc chưa đăng nhập!");
+      setMyArticles([]);
+      return;
+    }
     try {
-      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Blog/user/${userId}`);
+      const res = await fetch('https://api-gender2.purintech.id.vn/api/Blog', {
+        headers: {
+          'Authorization': token,
+          'accept': '*/*'
+        }
+      });
       if (res.ok) {
         const data = await res.json();
         setMyArticles(data);
@@ -384,12 +394,6 @@ const ConsultantBaiVietCuaToi = () => {
                       </p>
                       <small style={{color: '#9ca3af'}}>
                         Tạo ngày: {formatDate(article.createdAt)}
-                        {article.category && ` • ${article.category === 'suc-khoe' ? 'Sức khỏe' : 
-                          article.category === 'dinh-duong' ? 'Dinh dưỡng' :
-                          article.category === 'the-thao' ? 'Thể thao' :
-                          article.category === 'tam-ly' ? 'Tâm lý' :
-                          article.category === 'benh-ly' ? 'Bệnh lý' :
-                          article.category === 'kham-benh' ? 'Khám bệnh' : article.category}`}
                       </small>
                     </div>
                     
@@ -478,17 +482,6 @@ const ConsultantBaiVietCuaToi = () => {
                   {getStatusIcon(selectedArticle.status)}
                   {getStatusText(selectedArticle.status)}
                 </div>
-              </div>
-              <div>
-                <h4 style={{margin: '0 0 8px 0', color: '#1f2937'}}>Danh mục:</h4>
-                <p style={{margin: 0}}>
-                  {selectedArticle.category === 'suc-khoe' && 'Sức khỏe'}
-                  {selectedArticle.category === 'dinh-duong' && 'Dinh dưỡng'}
-                  {selectedArticle.category === 'the-thao' && 'Thể thao'}
-                  {selectedArticle.category === 'tam-ly' && 'Tâm lý'}
-                  {selectedArticle.category === 'benh-ly' && 'Bệnh lý'}
-                  {selectedArticle.category === 'kham-benh' && 'Khám bệnh'}
-                </p>
               </div>
             </div>
 

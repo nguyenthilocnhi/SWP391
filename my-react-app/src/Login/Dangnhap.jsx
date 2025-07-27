@@ -73,7 +73,7 @@ const DangNhap = () => {
         {`
         * {
           margin: 0;
-          padding: 0;
+padding: 0;
           box-sizing: border-box;
         }
 
@@ -204,7 +204,7 @@ const DangNhap = () => {
           width: 18px;
           height: 18px;
           border: 2px solid #ddd;
-          border-radius: 4px;
+border-radius: 4px;
           background-color: white;
           cursor: pointer;
           position: relative;
@@ -305,7 +305,7 @@ const DangNhap = () => {
 
           {message && <p>{message}</p>}
         </div>
-      </div>
+</div>
     </>
   );
 };

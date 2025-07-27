@@ -84,21 +84,36 @@ const ConsultantVietBlog = () => {
   };
 
   const handlePublish = async () => {
-    if (!blogData.title || !blogData.content) {
+    const userId = Number(localStorage.getItem("userId"));
+    const token = localStorage.getItem("token");
+    if (!token || !token.startsWith("Bearer ")) {
+      alert("Token không hợp lệ hoặc chưa đăng nhập!");
+      return;
+    }
+    if (!userId || isNaN(userId)) {
+      alert("userId không hợp lệ!");
+      return;
+    }
+    if (!blogData.title.trim() || !blogData.content.trim()) {
       alert("Tiêu đề và nội dung là bắt buộc!");
       return;
     }
-    const userId = localStorage.getItem("userId");
+
     const blog = {
       title: blogData.title,
       content: blogData.content,
-      imageUrl: blogData.imagePreview || "",
-      userId: Number(userId),
+      imageUrl: blogData.imagePreview ? blogData.imagePreview : "",
+      userId: userId,
     };
+
     try {
       const res = await fetch("https://api-gender2.purintech.id.vn/api/Blog", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": token,
+          "accept": "*/*"
+        },
         body: JSON.stringify(blog),
       });
       if (res.ok) {
@@ -114,7 +129,6 @@ const ConsultantVietBlog = () => {
         });
       } else {
         const errorText = await res.text();
-        console.error("API Blog error:", errorText);
         alert("Gửi bài thất bại!\n" + errorText);
       }
     } catch (err) {
