@@ -61,7 +61,10 @@ const ConsultantVietBlog = () => {
   };
 
   const handleSave = () => {
-    // Lưu blog vào localStorage
+    if (!blogData.title || !blogData.content) {
+      alert("Vui lòng nhập tiêu đề và nội dung trước khi lưu.");
+      return;
+    }
     const blogs = JSON.parse(localStorage.getItem("blogs")) || [];
     const newBlog = {
       id: Date.now(),
@@ -70,10 +73,10 @@ const ConsultantVietBlog = () => {
       summary: blogData.summary,
       category: blogData.category,
       tags: blogData.tags,
-      imagePreview: blogData.imagePreview, // chỉ lưu URL
+      imagePreview: blogData.imagePreview,
       author: consultantName,
       createdAt: new Date().toISOString(),
-      status: "draft"
+      status: "draft",
     };
     blogs.push(newBlog);
     localStorage.setItem("blogs", JSON.stringify(blogs));
@@ -81,26 +84,25 @@ const ConsultantVietBlog = () => {
   };
 
   const handlePublish = async () => {
-    // Lấy userId từ localStorage (hoặc context)
-    const userId = localStorage.getItem('userId');
-    const newBlog = {
+    if (!blogData.title || !blogData.content) {
+      alert("Tiêu đề và nội dung là bắt buộc!");
+      return;
+    }
+    const userId = localStorage.getItem("userId");
+    const blog = {
       title: blogData.title,
       content: blogData.content,
-      summary: blogData.summary,
-      category: blogData.category,
-      tags: blogData.tags,
-      image: blogData.imagePreview, // hoặc upload ảnh riêng nếu backend yêu cầu
-      authorId: userId,
-      status: "pending"
+      imageUrl: blogData.imagePreview || "",
+      userId: Number(userId),
     };
     try {
-      const res = await fetch('https://api-gender2.purintech.id.vn/api/Blog', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newBlog)
+      const res = await fetch("https://api-gender2.purintech.id.vn/api/Blog", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(blog),
       });
       if (res.ok) {
-        alert("Đã gửi bài viết để duyệt! Admin sẽ xem xét và phê duyệt bài viết của bạn.");
+        alert("Đã gửi bài viết để duyệt!");
         setBlogData({
           title: "",
           content: "",
@@ -108,13 +110,15 @@ const ConsultantVietBlog = () => {
           category: "suc-khoe",
           tags: "",
           image: null,
-          imagePreview: null
+          imagePreview: null,
         });
       } else {
-        alert("Gửi bài thất bại!");
+        const errorText = await res.text();
+        console.error("API Blog error:", errorText);
+        alert("Gửi bài thất bại!\n" + errorText);
       }
     } catch (err) {
-      alert("Lỗi kết nối server!");
+      alert("Lỗi kết nối server!\n" + err.message);
     }
   };
 
