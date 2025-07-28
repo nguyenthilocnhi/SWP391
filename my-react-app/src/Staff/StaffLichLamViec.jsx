@@ -335,10 +335,7 @@ const dayNames = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
 
 const StaffLichLamViec = () => {
   // State
-  const [schedules, setSchedules] = useState(() => {
-    const local = localStorage.getItem('schedules');
-    return local ? JSON.parse(local) : [];
-  });
+  const [schedules, setSchedules] = useState([]); // KHÔNG lấy từ localStorage
   const [currentMonday, setCurrentMonday] = useState(getMonday(new Date()));
   const [viewMode, setViewMode] = useState('week');
   const [loading, setLoading] = useState(false);
@@ -348,9 +345,9 @@ const StaffLichLamViec = () => {
   const formRef = useRef();
 
   // Save to localStorage
-  useEffect(() => {
-    localStorage.setItem('schedules', JSON.stringify(schedules));
-  }, [schedules]);
+  // useEffect(() => {
+  //   localStorage.setItem('schedules', JSON.stringify(schedules));
+  // }, [schedules]);
 
   // Notification auto-hide
   useEffect(() => {
@@ -383,11 +380,11 @@ const StaffLichLamViec = () => {
   };
 
   const handleFormChange = e => {
-    const { name, value } = e.target;
+const { name, value } = e.target;
     setForm(f => ({ ...f, [name]: value }));
   };
 
-  const handleSave = e => {
+  const handleSave = async e => {
     e.preventDefault();
     const { date, shift, note } = form;
     if (!date || !shift) {
@@ -395,6 +392,7 @@ const StaffLichLamViec = () => {
       return;
     }
     let newSchedules = [...schedules];
+    let addedSlots = [];
     if (editingIndex !== null) {
       // Edit
       newSchedules.splice(editingIndex, 1);
@@ -402,10 +400,15 @@ const StaffLichLamViec = () => {
         newSchedules = newSchedules.filter(s => s.date !== date);
         newSchedules.push({ date, shift: 'sang', note });
         newSchedules.push({ date, shift: 'chieu', note });
+        addedSlots = [
+          { date, shift: 'sang', note },
+          { date, shift: 'chieu', note }
+        ];
         showNotification('Cập nhật ca làm cả ngày thành công!');
       } else {
         newSchedules = newSchedules.filter(s => !(s.date === date && s.shift === shift));
         newSchedules.push({ date, shift, note });
+        addedSlots = [{ date, shift, note }];
         showNotification('Cập nhật ca làm thành công!');
       }
     } else {
@@ -418,6 +421,10 @@ const StaffLichLamViec = () => {
         }
         newSchedules.push({ date, shift: 'sang', note });
         newSchedules.push({ date, shift: 'chieu', note });
+        addedSlots = [
+          { date, shift: 'sang', note },
+          { date, shift: 'chieu', note }
+        ];
         showNotification('Thêm ca làm cả ngày thành công!');
       } else {
         const conflict = newSchedules.find(s => s.date === date && s.shift === shift);
@@ -426,11 +433,49 @@ const StaffLichLamViec = () => {
           newSchedules = newSchedules.filter(s => !(s.date === date && s.shift === shift));
         }
         newSchedules.push({ date, shift, note });
+        addedSlots = [{ date, shift, note }];
         showNotification('Thêm ca làm thành công!');
       }
     }
     setSchedules(newSchedules);
     clearForm();
+
+    // Gọi API tạo ca làm mới
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('Không tìm thấy token đăng nhập!');
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const userId = payload.nameid || payload.sub || payload.userId || payload.id || 0;
+      for (const slot of addedSlots) {
+        let slotNum = 0;
+        if (slot.shift === 'sang') slotNum = 0;
+        else if (slot.shift === 'chieu') slotNum = 1;
+        else continue;
+        const body = {
+          userId: Number(userId),
+          date: slot.date,
+slot: slotNum,
+          note: slot.note || ''
+        };
+        const res = await fetch('https://api-gender2.purintech.id.vn/api/WorkSlot', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (res.ok && (data.code === 200 || data.code === 201)) {
+          showNotification('Tạo ca làm thành công!', 'success');
+        } else {
+          showNotification(data.message || 'Tạo ca làm thất bại!', 'error');
+        }
+      }
+    } catch (err) {
+      showNotification(err.message || 'Lỗi khi tạo ca làm!', 'error');
+    }
   };
 
   const handleEdit = idx => {
@@ -474,6 +519,7 @@ const StaffLichLamViec = () => {
         const dateStr = formatDate(day);
         const isToday = formatDate(new Date()) === dateStr;
         const daySchedules = schedules.filter(s => s.date === dateStr && s.shift === shift);
+        console.log('dateStr:', dateStr, 'shift:', shift, 'daySchedules:', daySchedules);
         grid.push(
           <ScheduleCell key={`${shift}-${i}`} className={isToday ? 'today' : ''}>
             {daySchedules.length === 0 ? (
@@ -483,7 +529,7 @@ const StaffLichLamViec = () => {
                 <div><strong>Có ca làm</strong></div>
                 {s.note && <div style={{ fontSize: 11, color: '#666', marginTop: 4 }}>{s.note}</div>}
                 <ScheduleActions>
-                  <EditBtn onClick={() => handleEdit(schedules.indexOf(s))}><i className="fas fa-edit"></i></EditBtn>
+<EditBtn onClick={() => handleEdit(schedules.indexOf(s))}><i className="fas fa-edit"></i></EditBtn>
                   <DeleteBtn onClick={() => handleDelete(schedules.indexOf(s))}><i className="fas fa-trash"></i></DeleteBtn>
                 </ScheduleActions>
               </ScheduleItem>
@@ -539,7 +585,7 @@ const StaffLichLamViec = () => {
                       </ScheduleActions>
                     </ScheduleItem>
                   </div>
-                ) : null;
+) : null;
               })
             )}
           </div>
@@ -577,6 +623,40 @@ const StaffLichLamViec = () => {
     return () => clearTimeout(t);
   }, [currentMonday, viewMode, schedules]);
 
+  useEffect(() => {
+    const fetchSchedules = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('Không tìm thấy token đăng nhập!');
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const userId = payload.nameid || payload.sub || payload.userId || payload.id || 0;
+        const res = await fetch(`https://api-gender2.purintech.id.vn/api/WorkSlot/user/${userId}`, {
+          method: 'GET',
+          headers: {
+            'accept': '*/*',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await res.json();
+        if (res.ok && data.code === 200 && Array.isArray(data.obj)) {
+          const apiSchedules = data.obj.map(item => ({
+            date: item.dayDate.split('/').reverse().join('-'), // "07/29/2025" -> "2025-07-29"
+            shift: item.slot === 0 ? 'sang' : 'chieu',
+            note: item.note || ''
+          }));
+          console.log('apiSchedules:', apiSchedules); // Thêm dòng này
+          setSchedules(apiSchedules);
+        } else {
+          showNotification(data.message || 'Không lấy được danh sách ca làm!', 'error');
+        }
+      } catch (err) {
+        showNotification(err.message || 'Lỗi khi lấy danh sách ca làm!', 'error');
+      }
+    };
+
+    fetchSchedules();
+    // eslint-disable-next-line
+  }, []);
 
 
   return (
@@ -586,7 +666,7 @@ const StaffLichLamViec = () => {
         <StaffHeader />
         <PageHeader className="page-header">
           <Title><i className="fas fa-calendar-alt"></i> Lịch Làm Việc Nhân Viên</Title>
-          <Toolbar className="toolbar">
+<Toolbar className="toolbar">
             <BtnSecondary type="button" onClick={() => changeWeek(-1)}>
               <i className="fas fa-chevron-left"></i> <span>{viewMode === 'week' ? 'Tuần trước' : 'Tháng trước'}</span>
             </BtnSecondary>
@@ -634,7 +714,7 @@ const StaffLichLamViec = () => {
           </form>
         </FormSection>
         {notification.show && (
-          <Notification type={notification.type}>{notification.message}</Notification>
+<Notification type={notification.type}>{notification.message}</Notification>
         )}
       </ContentArea>
     </Container>
