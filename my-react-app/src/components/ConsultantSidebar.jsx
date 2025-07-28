@@ -12,7 +12,6 @@ const ConsultantSidebar = () => {
     { href: "/consultant/trangchu", icon: <FaHome size={22} />, label: "Tổng quan" },
     { href: "/consultant/lich-hen", icon: <FaRegCalendarCheck size={22} />, label: "Lịch hẹn" },
     { href: "/consultant/lich-lam-viec", icon: <FaCalendarAlt size={22} />, label: "Lịch làm việc" },
-    { href: "/consultant/tu-van-truc-tuyen", icon: <FaComments size={22} />, label: "Tư vấn trực tuyến" },
     { href: "/consultant/hoi-dap", icon: <MdHealthAndSafety size={22} />, label: "Hỏi đáp" },
     { href: "/consultant/danh-gia", icon: <FaUserFriends size={22} />, label: "Đánh giá" },
     { href: "/consultant/viet-blog", icon: <FaClipboardList size={22} />, label: "Bài viết" },
