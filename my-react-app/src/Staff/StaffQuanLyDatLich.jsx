@@ -167,6 +167,13 @@ const Input = styled.input`
   font-size: 1rem;
   background: #f9f9f9;
   color: #333;
+  
+  &:disabled {
+    background-color: #f5f5f5;
+    color: #666;
+    cursor: not-allowed;
+    border-color: #ddd;
+  }
 `;
 const ModalBtnRow = styled.div`
   display: flex;
@@ -251,6 +258,17 @@ function StaffQuanLyDatLich() {
   }
 };
 
+  const getStatusCode = (statusText) => {
+    switch (statusText) {
+      case 'Chờ xác nhận': return 0;
+      case 'Đã xác nhận': return 1;
+      case 'Đã lấy mẫu': return 2;
+      case 'Chờ kết quả': return 3;
+      case 'Đã trả kết quả': return 4;
+      default: return 0;
+    }
+  };
+
   
 
   
@@ -273,10 +291,44 @@ function StaffQuanLyDatLich() {
     setEditIndex(null);
   };
   // Xử lý submit form
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setAppointments(arr => arr.map((a, i) => i === editIndex ? form : a));
-    closeModal();
+    
+    try {
+      const appointment = appointments[editIndex];
+      const appointmentId = appointment.id;
+      const token = localStorage.getItem('token');
+      
+      // Gọi API để approve test result - chỉ cập nhật trạng thái
+      const response = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-result/${appointmentId}/approve`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'accept': '*/*'
+        },
+        body: JSON.stringify({
+          serviceStatus: getStatusCode(form.status),
+          note: appointment.note || '', // Giữ nguyên ghi chú gốc
+          suggestion: ''
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Cập nhật thất bại');
+      }
+
+      // Cập nhật chỉ trạng thái trong giao diện
+      setAppointments(arr => arr.map((a, i) => 
+        i === editIndex ? { ...a, status: form.status } : a
+      ));
+      alert('Cập nhật trạng thái thành công!');
+      closeModal();
+    } catch (error) {
+      console.error('Lỗi khi cập nhật:', error);
+      alert('Lỗi khi cập nhật: ' + error.message);
+    }
   };
   // Đổi trạng thái nhanh trên bảng
   const handleStatusChange = async (idx, newStatus) => {
@@ -285,23 +337,31 @@ function StaffQuanLyDatLich() {
   
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`https://api-gender2.purintech.id.vn/api/Apointment/advice-result/${appointmentId}/confirm`, {
+      const response = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-result/${appointmentId}/approve`, {
         method: 'PUT',
         headers: {
-          'accept': '*/*',
-          'Authorization': `Bearer ${token}`
-        }
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'accept': '*/*'
+        },
+        body: JSON.stringify({
+          serviceStatus: getStatusCode(newStatus),
+          note: appointment.note || '',
+          suggestion: ''
+        })
       });
   
       if (!response.ok) {
-        throw new Error('Xác nhận trạng thái thất bại');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Xác nhận trạng thái thất bại');
       }
   
       // Cập nhật trạng thái trong giao diện
       setAppointments(prev => prev.map((a, i) => i === idx ? { ...a, status: newStatus } : a));
+      alert('Cập nhật trạng thái thành công!');
     } catch (error) {
       console.error('Lỗi khi gọi API xác nhận:', error);
-      alert('Lỗi khi xác nhận trạng thái. Vui lòng thử lại.');
+      alert('Lỗi khi xác nhận trạng thái: ' + error.message);
     }
   };
   
@@ -351,19 +411,22 @@ function StaffQuanLyDatLich() {
         <ModalOverlay open={modalOpen}>
           <ModalContent>
             <CloseBtn onClick={closeModal}>&times;</CloseBtn>
-            <ModalTitle>Chỉnh sửa lịch hẹn</ModalTitle>
+            <ModalTitle>Chỉnh sửa trạng thái lịch hẹn</ModalTitle>
+            <p style={{ fontSize: '0.9rem', color: '#666', marginBottom: '20px', textAlign: 'center' }}>
+              Chỉ có thể thay đổi trạng thái, các thông tin khác được cố định
+            </p>
             <form onSubmit={handleSubmit}>
               <FormGroup>
                 <Label>Khách hàng</Label>
-                <Input type="text" value={form.customerName} onChange={e => setForm(f => ({ ...f, customerName: e.target.value }))} required />
+                <Input type="text" value={form.customerName} disabled />
               </FormGroup>
               <FormGroup>
                 <Label>Dịch vụ</Label>
-                <Input type="text" value={form.serviceName} onChange={e => setForm(f => ({ ...f, serviceName: e.target.value }))} required />
+                <Input type="text" value={form.serviceName} disabled />
               </FormGroup>
               <FormGroup>
                 <Label>Ngày</Label>
-                <Input type="date" value={form.ngay} onChange={e => setForm(f => ({ ...f, ngay: e.target.value }))} required />
+                <Input type="date" value={form.ngay} disabled />
               </FormGroup>
               <FormGroup>
                 <Label>Trạng thái</Label>
@@ -373,10 +436,10 @@ function StaffQuanLyDatLich() {
               </FormGroup>
               <FormGroup>
                 <Label>Ghi chú</Label>
-                <Input type="text" value={form.note} onChange={e => setForm(f => ({ ...f, note: e.target.value }))} />
+                <Input type="text" value={form.note} disabled />
               </FormGroup>
               <ModalBtnRow>
-                <SaveBtn type="submit">Lưu</SaveBtn>
+                <SaveBtn type="submit">Cập nhật trạng thái</SaveBtn>
                 <CancelBtn type="button" onClick={closeModal}>Đóng</CancelBtn>
               </ModalBtnRow>
             </form>

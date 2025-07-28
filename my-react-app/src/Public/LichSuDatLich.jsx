@@ -63,6 +63,46 @@ const styles = {
 function LichSuDatLich() {
   const [lichTongHop, setLichTongHop] = useState([]);
 
+  // Hàm lấy text trạng thái dựa trên loại dịch vụ
+  const getStatusText = (serviceStatus, loaiDichVu) => {
+    if (loaiDichVu === 'Xét nghiệm') {
+      // Mapping cho xét nghiệm (giống staff)
+      switch (serviceStatus) {
+        case 0: return 'Chờ xác nhận';
+        case 1: return 'Đã xác nhận';
+        case 2: return 'Đã lấy mẫu';
+        case 3: return 'Chờ kết quả';
+        case 4: return 'Đã trả kết quả';
+        default: return 'Chờ xử lý';
+      }
+    } else {
+      // Mapping cho tư vấn (giữ nguyên cũ)
+      switch (serviceStatus) {
+        case 1: return 'Đã thanh toán';
+        case 2: return 'Đã hủy';
+        default: return 'Chờ xử lý';
+      }
+    }
+  };
+
+  // Hàm lấy style trạng thái dựa trên loại dịch vụ
+  const getStatusStyle = (serviceStatus, loaiDichVu) => {
+    if (loaiDichVu === 'Xét nghiệm') {
+      // Mapping cho xét nghiệm
+      switch (serviceStatus) {
+        case 0: return styles.status0; // Chờ xác nhận
+        case 1: return styles.status1; // Đã xác nhận
+        case 2: return styles.status1; // Đã lấy mẫu
+        case 3: return styles.status0; // Chờ kết quả
+        case 4: return styles.status1; // Đã trả kết quả
+        default: return styles.status0;
+      }
+    } else {
+      // Mapping cho tư vấn (giữ nguyên cũ)
+      return serviceStatus === 1 ? styles.status1 : serviceStatus === 2 ? styles.status2 : styles.status0;
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     Promise.all([
@@ -173,8 +213,8 @@ function LichSuDatLich() {
                   <td style={styles.td}>{new Date(item.appointmentDate).toLocaleString('vi-VN')}</td>
                   <td style={styles.td}>{item.thoiLuong}</td>
                   <td style={styles.td}>{item.price?.toLocaleString('vi-VN')}.000 VND</td>
-                  <td style={item.serviceStatus === 1 ? styles.status1 : item.serviceStatus === 2 ? styles.status2 : styles.status0}>
-                    {item.serviceStatus === 1 ? 'Đã thanh toán' : item.serviceStatus === 2 ? 'Đã hủy' : 'Chờ xử lý'}
+                  <td style={getStatusStyle(item.serviceStatus, item.loaiDichVu)}>
+                    {getStatusText(item.serviceStatus, item.loaiDichVu)}
                   </td>
                   <td style={styles.td}>
                     {item.loaiDichVu === 'Xét nghiệm' ? (

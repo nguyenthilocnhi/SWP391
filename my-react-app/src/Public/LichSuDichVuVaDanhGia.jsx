@@ -202,6 +202,30 @@ const LichSuDichVu = () => {
   const [dichVuDangDanhGia, setDichVuDangDanhGia] = useState("");
   const [reviewText, setReviewText] = useState("");
 
+  // Hàm chuyển đổi trạng thái từ code sang text
+  const convertStatus = (serviceStatus) => {
+    switch (serviceStatus) {
+      case 1: return 'Đã thanh toán';
+      case 2: return 'Đã hủy';
+      case 3: return 'Hoàn_tất';
+      default: return 'Chờ xử lý';
+    }
+  };
+
+  // Hàm lấy style cho trạng thái
+  const getStatusStyle = (trangThai) => {
+    switch (trangThai) {
+      case 'Hoàn_tất':
+      case 'Đã thanh toán':
+        return { color: '#22c55e', fontWeight: 600 };
+      case 'Đã hủy':
+        return { color: '#ef4444', fontWeight: 600 };
+      case 'Chờ xử lý':
+      default:
+        return { color: '#f59e42', fontWeight: 600 };
+    }
+  };
+
   useEffect(() => {
   const fetchLichSuDichVu = async () => {
     try {
@@ -233,7 +257,7 @@ const LichSuDichVu = () => {
             year: "numeric",
           }),
           ghiChu: item.note,
-          trangThai: "Hoàn_tất", // hoặc dùng convertStatus(item.serviceStatus)
+          trangThai: convertStatus(item.serviceStatus),
         }));
         setData(mappedData);
       } else {
@@ -326,9 +350,8 @@ const LichSuDichVu = () => {
           <thead>
             <Tr>
               <Th>Dịch Vụ</Th>
-              
               <Th>Ngày Thực Hiện</Th>
-              
+              <Th>Trạng Thái</Th>
               <Th>Ghi Chú</Th>
               <Th>Thao Tác</Th>
             </Tr>
@@ -336,15 +359,14 @@ const LichSuDichVu = () => {
           <tbody>
             {filteredData.length === 0 ? (
               <Tr>
-                <Td colSpan={6}>Không có dữ liệu phù hợp.</Td>
+                <Td colSpan={5}>Không có dữ liệu phù hợp.</Td>
               </Tr>
             ) : (
               filteredData.map((item, idx) => (
                 <Tr key={idx}>
                   <Td>{item.ten}</Td>
-                  
                   <Td>{item.ngayThucHien}</Td>
-                  
+                  <Td style={getStatusStyle(item.trangThai)}>{item.trangThai}</Td>
                   <Td>{item.ghiChu || ""}</Td>
                   <Td>
                     <DeleteBtn onClick={() => handleDelete(data.indexOf(item))}>Xóa</DeleteBtn>
