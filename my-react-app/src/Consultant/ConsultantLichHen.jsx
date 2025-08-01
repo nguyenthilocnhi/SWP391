@@ -187,7 +187,7 @@ const handleComplete = async (id) => {
       return;
     }
 
-    alert('Duyệt thành công!');
+    alert('Hoàn thành lịch hẹn thành công!');
     setAppointments(prev =>
       prev.map(a => a.id === id ? { ...a, serviceStatus: 4 } : a)
     );
