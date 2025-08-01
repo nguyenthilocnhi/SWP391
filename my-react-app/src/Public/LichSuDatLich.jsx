@@ -38,18 +38,6 @@ const styles = {
     fontSize: 28,
     fontWeight: 800,
   },
-  createButton: {
-    background: "#22c55e",
-    color: "#fff",
-    border: "none",
-    borderRadius: 8,
-    padding: "12px 24px",
-    fontSize: 16,
-    fontWeight: 600,
-    cursor: "pointer",
-    transition: "all 0.3s ease",
-    boxShadow: "0 2px 8px rgba(34,197,94,0.2)",
-  },
   table: {
     width: "100%",
     borderCollapse: "collapse",
@@ -75,9 +63,9 @@ const styles = {
     fontSize: 15,
     color: "#15803d",
   },
-  status0: { color: '#f59e42', fontWeight: 600 }, // Chờ xử lý
-  status1: { color: '#22c55e', fontWeight: 600 }, // Đã thanh toán
-  status2: { color: '#ef4444', fontWeight: 600 }, // Đã hủy
+  status0: { color: '#f59e42', fontWeight: 600 },
+  status1: { color: '#22c55e', fontWeight: 600 },
+  status2: { color: '#ef4444', fontWeight: 600 },
 };
 
 function LichSuDatLich() {
@@ -86,13 +74,12 @@ function LichSuDatLich() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Thay đổi từ 10 thành 5 - hiển thị 5 lịch mỗi trang
+  const [itemsPerPage] = useState(10);
   const navigate = useNavigate();
 
-  // Hàm lọc dữ liệu theo filter
   const filterAppointments = (filterType, statusType = statusFilter) => {
     setActiveFilter(filterType);
-    setCurrentPage(1); // Reset về trang đầu khi filter
+    setCurrentPage(1);
     let filtered = lichTongHop;
     if (filterType !== 'all') {
       filtered = filtered.filter(item => item.loaiDichVu === filterType);
@@ -103,7 +90,6 @@ function LichSuDatLich() {
     setFilteredLich(filtered);
   };
 
-  // Hàm lọc theo trạng thái
   const filterByStatus = (statusType) => {
     setStatusFilter(statusType);
     setCurrentPage(1);
@@ -117,34 +103,21 @@ function LichSuDatLich() {
     setFilteredLich(filtered);
   };
 
-  // Tính toán dữ liệu cho trang hiện tại
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredLich.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredLich.length / itemsPerPage);
 
-  // Hàm chuyển trang
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  // Cập nhật filteredLich khi lichTongHop thay đổi
   useEffect(() => {
     filterAppointments(activeFilter, statusFilter);
   }, [lichTongHop, activeFilter, statusFilter]);
 
-  // Debug: Log thông tin phân trang
-  useEffect(() => {
-    console.log('Total items:', filteredLich.length);
-    console.log('Total pages:', totalPages);
-    console.log('Current page:', currentPage);
-    console.log('Items per page:', itemsPerPage);
-  }, [filteredLich.length, totalPages, currentPage]);
-
-  // Hàm lấy text trạng thái dựa trên loại dịch vụ
   const getStatusText = (serviceStatus, loaiDichVu) => {
     if (loaiDichVu === 'Xét nghiệm') {
-      // Mapping cho xét nghiệm (giống staff)
       switch (serviceStatus) {
         case 0: return 'Chờ xác nhận';
         case 1: return 'Đã xác nhận';
@@ -154,7 +127,6 @@ function LichSuDatLich() {
         default: return 'Chờ xử lý';
       }
     } else {
-      // Mapping cho tư vấn (giữ nguyên cũ)
       switch (serviceStatus) {
         case 1: return 'Đã thanh toán';
         case 2: return 'Đã hủy';
@@ -163,20 +135,17 @@ function LichSuDatLich() {
     }
   };
 
-  // Hàm lấy style trạng thái dựa trên loại dịch vụ
   const getStatusStyle = (serviceStatus, loaiDichVu) => {
     if (loaiDichVu === 'Xét nghiệm') {
-      // Mapping cho xét nghiệm
       switch (serviceStatus) {
-        case 0: return styles.status0; // Chờ xác nhận
-        case 1: return styles.status1; // Đã xác nhận
-        case 2: return styles.status1; // Đã lấy mẫu
-        case 3: return styles.status0; // Chờ kết quả
-        case 4: return styles.status1; // Đã trả kết quả
+        case 0: return styles.status0;
+        case 1: return styles.status1;
+        case 2: return styles.status1;
+        case 3: return styles.status0;
+        case 4: return styles.status1;
         default: return styles.status0;
       }
     } else {
-      // Mapping cho tư vấn (giữ nguyên cũ)
       return serviceStatus === 1 ? styles.status1 : serviceStatus === 2 ? styles.status2 : styles.status0;
     }
   };
@@ -197,9 +166,6 @@ function LichSuDatLich() {
         }
       }).then(res => res.json())
     ]).then(([testData, adviceData]) => {
-      console.log('Test appointments data:', testData);
-      console.log('Advice appointments data:', adviceData);
-      
       const testList = Array.isArray(testData?.obj) ? testData.obj.map(item => ({
         ...item,
         loaiDichVu: 'Xét nghiệm',
@@ -212,62 +178,12 @@ function LichSuDatLich() {
         tenDichVu: item.consultationType,
         thoiLuong: item.duration,
       })) : [];
-      
-      console.log('Sample test item:', testList[0]);
-      console.log('Sample advice item:', adviceList[0]);
-      
       const merged = [...testList, ...adviceList].sort(
         (a, b) => new Date(b.createdAt || b.appointmentDate) - new Date(a.createdAt || a.appointmentDate)
       );
       setLichTongHop(merged);
     }).catch(() => setLichTongHop([]));
   }, []);
-
-  // Hàm xóa lịch xét nghiệm
-  const handleDeleteTestAppointment = (id) => {
-    if (!window.confirm('Bạn có chắc muốn xóa lịch xét nghiệm này?')) return;
-    const token = localStorage.getItem('token');
-    fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-appointment/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'accept': '*/*',
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.code === 200) {
-          setLichTongHop(prev => prev.filter(item => !(item.id === id && item.loaiDichVu === 'Xét nghiệm')));
-          alert('Xóa thành công!');
-        } else {
-          alert('Xóa không thành công!');
-        }
-      })
-      .catch(() => alert('Lỗi khi xóa lịch!'));
-  };
-
-  // Hàm xóa lịch tư vấn
-  const handleDeleteAdviceAppointment = (id) => {
-    if (!window.confirm('Bạn có chắc muốn xóa lịch tư vấn này?')) return;
-    const token = localStorage.getItem('token');
-    fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-appointment/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'accept': '*/*',
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.code === 200) {
-          setLichTongHop(prev => prev.filter(item => !(item.id === id && item.loaiDichVu === 'Tư vấn')));
-          alert('Xóa thành công!');
-        } else {
-          alert('Xóa không thành công!');
-        }
-      })
-      .catch(() => alert('Lỗi khi xóa lịch!'));
-  };
 
   return (
     <div style={styles.page}>
@@ -335,12 +251,11 @@ function LichSuDatLich() {
               <th style={styles.th}>Thời lượng</th>
               <th style={styles.th}>Giá</th>
               <th style={styles.th}>Trạng thái</th>
-              <th style={styles.th}>Thao tác</th>
             </tr>
           </thead>
           <tbody>
             {currentItems.length === 0 ? (
-              <tr><td colSpan={9} style={styles.td}>Không có lịch dịch vụ nào.</td></tr>
+              <tr><td colSpan={8} style={styles.td}>Không có lịch dịch vụ nào.</td></tr>
             ) : (
               currentItems.map(item => (
                 <tr key={item.id + '-' + item.loaiDichVu}>
@@ -354,96 +269,23 @@ function LichSuDatLich() {
                   <td style={getStatusStyle(item.serviceStatus, item.loaiDichVu)}>
                     {getStatusText(item.serviceStatus, item.loaiDichVu)}
                   </td>
-                  <td style={styles.td}>
-                    {item.loaiDichVu === 'Xét nghiệm' ? (
-                      <button style={{background:'#ef4444',color:'#fff',border:'none',borderRadius:4,padding:'6px 12px',cursor:'pointer'}} onClick={() => handleDeleteTestAppointment(item.id)}>
-                        Xóa
-                      </button>
-                    ) : item.loaiDichVu === 'Tư vấn' ? (
-                      <button style={{background:'#ef4444',color:'#fff',border:'none',borderRadius:4,padding:'6px 12px',cursor:'pointer'}} onClick={() => handleDeleteAdviceAppointment(item.id)}>
-                        Xóa
-                      </button>
-                    ) : null}
-                  </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
-        {/* Thông tin phân trang */}
         {filteredLich.length > 0 && (
-          <div style={{ 
-            textAlign: 'center', 
-            marginTop: '15px',
-            color: '#666',
-            fontSize: '14px'
-          }}>
+          <div style={{ textAlign: 'center', marginTop: '15px', color: '#666', fontSize: '14px' }}>
             Hiển thị {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredLich.length)} trong tổng số {filteredLich.length} lịch
           </div>
         )}
-        {/* Controls phân trang */}
         {filteredLich.length > 0 && (
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center',
-            marginTop: '20px',
-            gap: '8px'
-          }}>
-            <button 
-              onClick={() => handlePageChange(currentPage - 1)} 
-              disabled={currentPage === 1}
-              style={{
-                padding: '8px 16px',
-                border: '1px solid #22c55e',
-                borderRadius: 6,
-                backgroundColor: currentPage === 1 ? '#e0e0e0' : '#fff',
-                color: currentPage === 1 ? '#999' : '#22c55e',
-                cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
-                fontWeight: 600,
-                fontSize: 14,
-                transition: 'all 0.2s ease',
-              }}
-            >
-              Trước
-            </button>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px', gap: '8px' }}>
+            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} style={{ padding: '8px 16px', border: '1px solid #22c55e', borderRadius: 6, backgroundColor: currentPage === 1 ? '#e0e0e0' : '#fff', color: currentPage === 1 ? '#999' : '#22c55e', cursor: currentPage === 1 ? 'not-allowed' : 'pointer', fontWeight: 600, fontSize: 14 }}>Trước</button>
             {Array.from({ length: totalPages }, (_, i) => (
-              <button
-                key={i + 1}
-                onClick={() => handlePageChange(i + 1)}
-                style={{
-                  padding: '8px 12px',
-                  border: '1px solid #22c55e',
-                  borderRadius: 6,
-                  backgroundColor: currentPage === i + 1 ? '#22c55e' : '#fff',
-                  color: currentPage === i + 1 ? '#fff' : '#22c55e',
-                  cursor: 'pointer',
-                  fontWeight: currentPage === i + 1 ? 700 : 600,
-                  fontSize: 14,
-                  minWidth: '36px',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {i + 1}
-              </button>
+              <button key={i + 1} onClick={() => handlePageChange(i + 1)} style={{ padding: '8px 12px', border: '1px solid #22c55e', borderRadius: 6, backgroundColor: currentPage === i + 1 ? '#22c55e' : '#fff', color: currentPage === i + 1 ? '#fff' : '#22c55e', cursor: 'pointer', fontWeight: currentPage === i + 1 ? 700 : 600, fontSize: 14 }}>{i + 1}</button>
             ))}
-            <button 
-              onClick={() => handlePageChange(currentPage + 1)} 
-              disabled={currentPage === totalPages}
-              style={{
-                padding: '8px 16px',
-                border: '1px solid #22c55e',
-                borderRadius: 6,
-                backgroundColor: currentPage === totalPages ? '#e0e0e0' : '#fff',
-                color: currentPage === totalPages ? '#999' : '#22c55e',
-                cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
-                fontWeight: 600,
-                fontSize: 14,
-                transition: 'all 0.2s ease',
-              }}
-            >
-              Sau
-            </button>
+            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} style={{ padding: '8px 16px', border: '1px solid #22c55e', borderRadius: 6, backgroundColor: currentPage === totalPages ? '#e0e0e0' : '#fff', color: currentPage === totalPages ? '#999' : '#22c55e', cursor: currentPage === totalPages ? 'not-allowed' : 'pointer', fontWeight: 600, fontSize: 14 }}>Sau</button>
           </div>
         )}
       </div>
@@ -452,4 +294,4 @@ function LichSuDatLich() {
   );
 }
 
-export default LichSuDatLich; 
+export default LichSuDatLich;
