@@ -45,6 +45,7 @@ import AdminBaiViet from "../Admin/adminBaiViet";
 import AdminCaiDat from "../Admin/adminCaiDat";
 import AdminQuanLyDichVu from "../Admin/adminQuanLyDichVu";
 import AdminDangXuat from "../Admin/adminDangXuat";
+import AdminPhanCong from "../Admin/AdminPhanCong";
 
 
 {/* Staff */}
@@ -69,6 +70,8 @@ import ConsultantHoTro from "../Consultant/ConsultantHoTro";
 import ConsultantDangXuat from "../Consultant/ConsultantDangXuat";
 import ConsultantVietBlog from "../Consultant/ConsultantVietBlog";
 import ConsultantBaiVietCuaToi from "../Consultant/ConsultantBaiVietCuaToi";
+
+
 function App() {
   return (
     <Router>
@@ -138,6 +141,7 @@ function App() {
         <Route path="/admin/dangxuat" element={<AdminDangXuat />} />
         <Route path="/admin/danh-gia" element={<AdminDanhGia />} />
         <Route path="/admin/quan-ly-dich-vu" element={<AdminQuanLyDichVu />} />
+        <Route path="/admin/phan-cong" element={<AdminPhanCong />} />
 
         {/* Consultant */}
         <Route path="/consultant/trangchu" element={<ConsultantTrangChu />} />
@@ -151,6 +155,7 @@ function App() {
         <Route path="/consultant/dang-xuat" element={<ConsultantDangXuat />} />
         <Route path="/consultant/viet-blog" element={<ConsultantVietBlog />} />
         <Route path="/consultant/bai-viet-cua-toi" element={<ConsultantBaiVietCuaToi />} />
+       
       </Routes>
     </Router>
   );
