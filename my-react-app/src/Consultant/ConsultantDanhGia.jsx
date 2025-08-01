@@ -35,32 +35,38 @@ const ConsultantDanhGia = () => {
     loadReviews();
   }, [navigate]);
 
-  const loadReviews = () => {
-    // Lấy đánh giá từ localStorage (kết nối với trang đánh giá dịch vụ)
-    const serviceReviews = JSON.parse(localStorage.getItem("danhGiaDichVu")) || [];
-    const consultantReviews = JSON.parse(localStorage.getItem("consultantReviews")) || [];
-    
-    // Kết hợp và lọc đánh giá cho tư vấn viên hiện tại
-    const allReviews = [...serviceReviews, ...consultantReviews]
-      .filter(review => {
-        // Lọc đánh giá cho tư vấn viên hiện tại hoặc dịch vụ tư vấn
-        return review.consultant === consultantName || 
-               review.tenDichVu === "Tư Vấn" ||
-               review.consultantName === consultantName;
-      })
-      .map((review, index) => ({
-        id: index,
-        customerName: review.customerName || "Khách hàng",
-        rating: review.soSao || review.stars || 5,
-        comment: review.noiDung || review.comment || "",
-        date: review.thoiGian || review.time || new Date().toLocaleString(),
-        service: review.tenDichVu || "Tư vấn",
-        consultant: review.consultant || consultantName
-      }));
+  const loadReviews = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch("https://api-gender2.purintech.id.vn/api/Feedback/get-all-feedbacks-by-consultant", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "*/*"
+      }
+    });
 
-    setReviews(allReviews);
-    calculateStats(allReviews);
-  };
+    if (!response.ok) throw new Error("Failed to fetch reviews");
+
+    const result = await response.json();
+
+    const apiData = result.obj || [];
+
+    const transformed = apiData.map((review, index) => ({
+      id: index,
+      customerName: review.customerName || "Khách hàng",
+      rating: review.stars || 5,
+      comment: review.comment || "",
+      date: review.time || new Date().toLocaleString(),
+      service: review.serviceName || "Tư vấn",
+      consultant: review.consultantName || ""
+    }));
+
+    setReviews(transformed);
+    calculateStats(transformed);
+  } catch (err) {
+    console.error("Error loading reviews:", err);
+  }
+};
 
   const calculateStats = (reviewList) => {
     const total = reviewList.length;
@@ -120,7 +126,9 @@ const ConsultantDanhGia = () => {
       </span>
     ));
   };
-
+  useEffect(() => {
+  filterAndSortReviews();
+}, [reviews, searchTerm, sortBy, filterRating]);
   const getRatingPercentage = (rating) => {
     if (stats.totalReviews === 0) return 0;
     return ((stats.ratingDistribution[rating] / stats.totalReviews) * 100).toFixed(1);
@@ -459,7 +467,7 @@ const ConsultantDanhGia = () => {
                   </div>
                   {review.comment && (
                     <div className="review-content">
-                      "{review.comment}"
+                      {review.comment}
                     </div>
                   )}
                   <div className="review-service">
