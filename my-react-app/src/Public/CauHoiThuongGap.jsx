@@ -114,7 +114,7 @@ const CauHoiThuongGap = () => {
         <details>
           <summary>Làm sao để xem được kết quả xét nghiệm</summary>
           <div className="faq-answer">
-            Kết quả xét nghiệm sẽ tùy thuộc vào dịch vụ xét nghiệm của bạn, bạn có thể kiểm tra tại "Kết quả xét nghiệm" trên hệ thống.
+            KKết quả xét nghiệm sẽ tùy thuộc vào dịch vụ xét nghiệm của bạn, bạn có thể kiểm tra tại "Kết quả xét nghiệm" trên hệ thống.
           </div>
         </details>
 
