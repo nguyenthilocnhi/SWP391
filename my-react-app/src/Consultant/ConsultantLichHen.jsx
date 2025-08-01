@@ -19,8 +19,39 @@ const meetLinks = [
 
 const ConsultantLichHen = () => {
   const [appointments, setAppointments] = useState([]);
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
+  const [statusFilter, setStatusFilter] = useState('all');
   const consultantName = "Nguyễn Thị Huyền";
   const notificationCount = 3;
+
+  // Hàm lọc theo trạng thái
+  const filterByStatus = (statusType) => {
+    setStatusFilter(statusType);
+    if (statusType === 'all') {
+      setFilteredAppointments(appointments);
+    } else {
+      const filtered = appointments.filter(item => {
+        const statusText = getStatusText(item.serviceStatus);
+        return statusText === statusType;
+      });
+      setFilteredAppointments(filtered);
+    }
+  };
+
+  // Hàm lấy text trạng thái
+  const getStatusText = (serviceStatus) => {
+    switch (serviceStatus) {
+      case 0: return 'Đang chờ';
+      case 2: return 'Đã nhận';
+      case 4: return 'Đã hoàn thành';
+      default: return 'Đang chờ';
+    }
+  };
+
+  // Cập nhật filteredAppointments khi appointments thay đổi
+  useEffect(() => {
+    filterByStatus(statusFilter);
+  }, [appointments, statusFilter]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -63,6 +94,8 @@ const appointmentsWithLinks = newList.map((a) => {
   }
   return a;
 });
+// Sắp xếp theo thời gian tạo lịch gần nhất lên đầu
+appointmentsWithLinks.sort((a, b) => new Date(b.createdAt || b.appointmentDate) - new Date(a.createdAt || a.appointmentDate));
 setAppointments(appointmentsWithLinks);
 
       } catch (error) {
@@ -258,7 +291,30 @@ const handleComplete = async (id) => {
           <div className="lh-main-card">
             <div className="lh-title">Lịch hẹn tư vấn</div>
             <div className="lh-desc">Danh sách các lịch hẹn tư vấn của khách hàng.</div>
-            {appointments.length === 0 ? (
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+              <select
+                value={statusFilter}
+                onChange={(e) => filterByStatus(e.target.value)}
+                style={{
+                  padding: '10px 20px',
+                  fontSize: 16,
+                  fontWeight: 600,
+                  border: '2px solid #22c55e',
+                  borderRadius: 8,
+                  backgroundColor: '#fff',
+                  color: '#15803d',
+                  cursor: 'pointer',
+                  minWidth: '200px',
+                  outline: 'none',
+                }}
+              >
+                <option value="all">Tất cả trạng thái</option>
+                <option value="Đang chờ">Đang chờ</option>
+                <option value="Đã nhận">Đã nhận</option>
+                <option value="Đã hoàn thành">Đã hoàn thành</option>
+              </select>
+            </div>
+            {filteredAppointments.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px 20px' }}>
                 <div style={{ fontSize: '1.2rem', color: '#6b7280', marginBottom: '16px', fontWeight: 500 }}>
                   Không có lịch hẹn nào
@@ -283,7 +339,7 @@ const handleComplete = async (id) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {appointments.map((a, idx) => (
+                    {filteredAppointments.map((a, idx) => (
                       <tr key={a.id || idx}>
                         <td style={{ fontWeight: 600, color: '#059669' }}>{a.fullName}</td>
                         <td>{a.email}</td>

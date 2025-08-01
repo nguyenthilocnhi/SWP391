@@ -207,10 +207,43 @@ const statusOptions = [
 
 function StaffQuanLyDatLich() {
   const [appointments, setAppointments] = useState([]);
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
   const [modalOpen, setModalOpen] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
   const [form, setForm] = useState({ customerName: '', serviceName: '', ngay: '', status: '', note: '' });
+
+  // Hàm lọc theo trạng thái
+  const filterByStatus = (statusType) => {
+    setStatusFilter(statusType);
+    let filtered = appointments;
+    if (statusType !== 'all') {
+      filtered = filtered.filter(item => item.status === statusType);
+    }
+    if (search) {
+      filtered = filtered.filter(a =>
+        (a.customerName && a.customerName.toLowerCase().includes(search.toLowerCase())) ||
+        (a.serviceName && a.serviceName.toLowerCase().includes(search.toLowerCase()))
+      );
+    }
+    setFilteredAppointments(filtered);
+  };
+
+  // Cập nhật filteredAppointments khi appointments hoặc search thay đổi
+  useEffect(() => {
+    let filtered = appointments;
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(item => item.status === statusFilter);
+    }
+    if (search) {
+      filtered = filtered.filter(a =>
+        (a.customerName && a.customerName.toLowerCase().includes(search.toLowerCase())) ||
+        (a.serviceName && a.serviceName.toLowerCase().includes(search.toLowerCase()))
+      );
+    }
+    setFilteredAppointments(filtered);
+  }, [appointments, search, statusFilter]);
 
   // Gọi API lấy danh sách lịch xét nghiệm khi load trang
   useEffect(() => {
@@ -232,8 +265,11 @@ function StaffQuanLyDatLich() {
             serviceName: item.testName || '',  //  API trả về "testName"
             ngay: item.appointmentDate ? item.appointmentDate.split('T')[0] : '',
             status: convertStatus(item.serviceStatus),
-            note: item.note || ''
+            note: item.note || '',
+            createdAt: item.createdAt || item.appointmentDate // Lưu thời gian tạo lịch
           }));
+          // Sắp xếp theo thời gian tạo lịch gần nhất lên đầu
+          mapped.sort((a, b) => new Date(b.createdAt || b.ngay) - new Date(a.createdAt || a.ngay));
           setAppointments(mapped);
         } else {
           setAppointments([]);
@@ -273,15 +309,9 @@ function StaffQuanLyDatLich() {
 
   
 
-  // Lọc theo tên khách hoặc dịch vụ
-  const filtered = appointments.filter(a =>
-    (a.customerName && a.customerName.toLowerCase().includes(search.toLowerCase())) ||
-    (a.serviceName && a.serviceName.toLowerCase().includes(search.toLowerCase()))
-  );
-
   // Mở modal chỉnh sửa
   const openEditModal = (idx) => {
-    setForm(appointments[idx]);
+    setForm(filteredAppointments[idx]);
     setEditIndex(idx);
     setModalOpen(true);
   };
@@ -332,7 +362,7 @@ function StaffQuanLyDatLich() {
   };
   // Đổi trạng thái nhanh trên bảng
   const handleStatusChange = async (idx, newStatus) => {
-    const appointment = appointments[idx];
+    const appointment = filteredAppointments[idx];
     const appointmentId = appointment.id;
   
     try {
@@ -357,7 +387,12 @@ function StaffQuanLyDatLich() {
       }
   
       // Cập nhật trạng thái trong giao diện
-      setAppointments(prev => prev.map((a, i) => i === idx ? { ...a, status: newStatus } : a));
+      setAppointments(prev => prev.map((a, i) => {
+        if (a.id === appointmentId) {
+          return { ...a, status: newStatus };
+        }
+        return a;
+      }));
       alert('Cập nhật trạng thái thành công!');
     } catch (error) {
       console.error('Lỗi khi gọi API xác nhận:', error);
@@ -374,11 +409,34 @@ function StaffQuanLyDatLich() {
         <Section>
           <SectionHeader>
             <SectionTitle>Quản lý đặt lịch xét nghiệm</SectionTitle>
-            <SearchInput
-              placeholder="Tìm kiếm khách hàng hoặc dịch vụ..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <SearchInput
+                placeholder="Tìm kiếm khách hàng hoặc dịch vụ..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+              <select
+                value={statusFilter}
+                onChange={(e) => filterByStatus(e.target.value)}
+                style={{
+                  padding: '8px 14px',
+                  border: '1px solid #e0e0e0',
+                  borderRadius: 5,
+                  fontSize: '1rem',
+                  background: '#f9f9f9',
+                  color: '#333',
+                  minWidth: '150px',
+                  cursor: 'pointer',
+                }}
+              >
+                <option value="all">Tất cả trạng thái</option>
+                <option value="Chờ xác nhận">Chờ xác nhận</option>
+                <option value="Đã xác nhận">Đã xác nhận</option>
+                <option value="Đã lấy mẫu">Đã lấy mẫu</option>
+                <option value="Chờ kết quả">Chờ kết quả</option>
+                <option value="Đã trả kết quả">Đã trả kết quả</option>
+              </select>
+            </div>
           </SectionHeader>
           <Table>
             <Thead>
@@ -392,7 +450,7 @@ function StaffQuanLyDatLich() {
               </Tr>
             </Thead>
             <tbody>
-              {filtered.map((row, idx) => (
+              {filteredAppointments.map((row, idx) => (
                 <Tr key={idx}>
                   <Td>{row.customerName || ''}</Td>
                   <Td>{row.serviceName || ''}</Td>

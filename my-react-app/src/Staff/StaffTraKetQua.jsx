@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import StaffSidebar from '../components/staffSidebar';
 import StaffHeader from '../components/staffHeader';
@@ -193,6 +193,16 @@ function StaffTraKetQua() {
             note: ''
         }
     ]);
+    const [filteredResults, setFilteredResults] = useState([
+        {
+            customer: 'Trần Thị B',
+            testName: 'HIV Ag/Ab Combo',
+            date: '2025-07-01',
+            result: 'Âm tính',
+            note: ''
+        }
+    ]);
+    const [resultFilter, setResultFilter] = useState('all');
     const [modalOpen, setModalOpen] = useState(false);
     const [editIndex, setEditIndex] = useState(null);
     const [form, setForm] = useState({
@@ -202,6 +212,23 @@ function StaffTraKetQua() {
         result: '',
         note: ''
     });
+
+    // Hàm lọc theo kết quả
+    const filterByResult = (resultType) => {
+        setResultFilter(resultType);
+        if (resultType === 'all') {
+            setFilteredResults(results);
+        } else {
+            const filtered = results.filter(item => item.result === resultType);
+            setFilteredResults(filtered);
+        }
+    };
+
+    // Cập nhật filteredResults khi results thay đổi
+    useEffect(() => {
+        filterByResult(resultFilter);
+    }, [results, resultFilter]);
+
     // Mở modal thêm mới
     const openAddModal = () => {
         setForm({ customer: '', testName: '', date: '', result: '', note: '' });
@@ -210,7 +237,7 @@ function StaffTraKetQua() {
     };
     // Mở modal chỉnh sửa
     const openEditModal = (idx) => {
-        setForm(results[idx]);
+        setForm(filteredResults[idx]);
         setEditIndex(idx);
         setModalOpen(true);
     };
@@ -224,7 +251,8 @@ function StaffTraKetQua() {
         e.preventDefault();
         if (editIndex !== null) {
             // Cập nhật
-            setResults(rs => rs.map((r, i) => i === editIndex ? form : r));
+            const originalIndex = results.findIndex(r => r === filteredResults[editIndex]);
+            setResults(rs => rs.map((r, i) => i === originalIndex ? form : r));
         } else {
             // Thêm mới
             setResults(rs => [...rs, form]);
@@ -239,7 +267,29 @@ function StaffTraKetQua() {
                 <ResultSection>
                     <SectionHeader>
                         <SectionTitle>Trả kết quả xét nghiệm cho khách hàng</SectionTitle>
-                        <AddBtn title="Thêm kết quả mới" onClick={openAddModal}><i className="fas fa-plus"></i></AddBtn>
+                        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                            <select
+                                value={resultFilter}
+                                onChange={(e) => filterByResult(e.target.value)}
+                                style={{
+                                    padding: '8px 14px',
+                                    border: '1px solid #e0e0e0',
+                                    borderRadius: 5,
+                                    fontSize: '1rem',
+                                    background: '#f9f9f9',
+                                    color: '#333',
+                                    minWidth: '150px',
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                <option value="all">Tất cả kết quả</option>
+                                <option value="Âm tính">Âm tính</option>
+                                <option value="Dương tính">Dương tính</option>
+                                <option value="Không xác định">Không xác định</option>
+                                <option value="Chưa có kết quả">Chưa có kết quả</option>
+                            </select>
+                            <AddBtn title="Thêm kết quả mới" onClick={openAddModal}><i className="fas fa-plus"></i></AddBtn>
+                        </div>
                     </SectionHeader>
                     <Table>
                         <Thead>
@@ -253,7 +303,7 @@ function StaffTraKetQua() {
                             </Tr>
                         </Thead>
                         <tbody>
-                            {results.map((row, idx) => (
+                            {filteredResults.map((row, idx) => (
                                 <Tr key={idx}>
                                     <Td>{row.customer}</Td>
                                     <Td>{row.testName}</Td>
@@ -261,7 +311,7 @@ function StaffTraKetQua() {
                                     <Td>{row.result}</Td>
                                     <Td>{row.note}</Td>
                                     <Td>
-                                        <ActionBtn onClick={() => openEditModal(idx)}>Chỉnh sửa</ActionBtn>
+                                        <ActionBtn onClick={() => openEditModal(filteredResults.findIndex(r => r === row))}>Chỉnh sửa</ActionBtn>
                                     </Td>
                                 </Tr>
                             ))}

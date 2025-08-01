@@ -58,8 +58,12 @@ const ConsultantDanhGia = () => {
       comment: review.comment || "",
       date: review.time || new Date().toLocaleString(),
       service: review.serviceName || "Tư vấn",
-      consultant: review.consultantName || ""
+      consultant: review.consultantName || "",
+      createdAt: review.createdAt || review.time // Lưu thời gian tạo đánh giá
     }));
+
+    // Sắp xếp theo thời gian tạo đánh giá gần nhất lên đầu
+    transformed.sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date));
 
     setReviews(transformed);
     calculateStats(transformed);

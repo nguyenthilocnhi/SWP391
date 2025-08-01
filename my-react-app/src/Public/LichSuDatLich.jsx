@@ -23,12 +23,32 @@ const styles = {
     boxShadow: "0 6px 12px rgba(34,197,94,0.08)",
     border: "2px solid #bbf7d0",
   },
+  headerSection: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 30,
+    flexWrap: "wrap",
+    gap: 15,
+  },
   h2: {
     textAlign: "left",
     color: "#15803d",
-    marginBottom: 20,
+    marginBottom: 0,
     fontSize: 28,
     fontWeight: 800,
+  },
+  createButton: {
+    background: "#22c55e",
+    color: "#fff",
+    border: "none",
+    borderRadius: 8,
+    padding: "12px 24px",
+    fontSize: 16,
+    fontWeight: 600,
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    boxShadow: "0 2px 8px rgba(34,197,94,0.2)",
   },
   table: {
     width: "100%",
@@ -62,6 +82,64 @@ const styles = {
 
 function LichSuDatLich() {
   const [lichTongHop, setLichTongHop] = useState([]);
+  const [filteredLich, setFilteredLich] = useState([]);
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); // Thay đổi từ 10 thành 5 - hiển thị 5 lịch mỗi trang
+  const navigate = useNavigate();
+
+  // Hàm lọc dữ liệu theo filter
+  const filterAppointments = (filterType, statusType = statusFilter) => {
+    setActiveFilter(filterType);
+    setCurrentPage(1); // Reset về trang đầu khi filter
+    let filtered = lichTongHop;
+    if (filterType !== 'all') {
+      filtered = filtered.filter(item => item.loaiDichVu === filterType);
+    }
+    if (statusType !== 'all') {
+      filtered = filtered.filter(item => getStatusText(item.serviceStatus, item.loaiDichVu) === statusType);
+    }
+    setFilteredLich(filtered);
+  };
+
+  // Hàm lọc theo trạng thái
+  const filterByStatus = (statusType) => {
+    setStatusFilter(statusType);
+    setCurrentPage(1);
+    let filtered = lichTongHop;
+    if (activeFilter !== 'all') {
+      filtered = filtered.filter(item => item.loaiDichVu === activeFilter);
+    }
+    if (statusType !== 'all') {
+      filtered = filtered.filter(item => getStatusText(item.serviceStatus, item.loaiDichVu) === statusType);
+    }
+    setFilteredLich(filtered);
+  };
+
+  // Tính toán dữ liệu cho trang hiện tại
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredLich.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredLich.length / itemsPerPage);
+
+  // Hàm chuyển trang
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Cập nhật filteredLich khi lichTongHop thay đổi
+  useEffect(() => {
+    filterAppointments(activeFilter, statusFilter);
+  }, [lichTongHop, activeFilter, statusFilter]);
+
+  // Debug: Log thông tin phân trang
+  useEffect(() => {
+    console.log('Total items:', filteredLich.length);
+    console.log('Total pages:', totalPages);
+    console.log('Current page:', currentPage);
+    console.log('Items per page:', itemsPerPage);
+  }, [filteredLich.length, totalPages, currentPage]);
 
   // Hàm lấy text trạng thái dựa trên loại dịch vụ
   const getStatusText = (serviceStatus, loaiDichVu) => {
@@ -119,6 +197,9 @@ function LichSuDatLich() {
         }
       }).then(res => res.json())
     ]).then(([testData, adviceData]) => {
+      console.log('Test appointments data:', testData);
+      console.log('Advice appointments data:', adviceData);
+      
       const testList = Array.isArray(testData?.obj) ? testData.obj.map(item => ({
         ...item,
         loaiDichVu: 'Xét nghiệm',
@@ -131,7 +212,14 @@ function LichSuDatLich() {
         tenDichVu: item.consultationType,
         thoiLuong: item.duration,
       })) : [];
-      setLichTongHop([...testList, ...adviceList]);
+      
+      console.log('Sample test item:', testList[0]);
+      console.log('Sample advice item:', adviceList[0]);
+      
+      const merged = [...testList, ...adviceList].sort(
+        (a, b) => new Date(b.createdAt || b.appointmentDate) - new Date(a.createdAt || a.appointmentDate)
+      );
+      setLichTongHop(merged);
     }).catch(() => setLichTongHop([]));
   }, []);
 
@@ -185,7 +273,57 @@ function LichSuDatLich() {
     <div style={styles.page}>
       <HeaderCustomer />
       <div style={styles.container}>
-        <h2 style={styles.h2}>Lịch dịch vụ đã đặt</h2>
+        <div style={styles.headerSection}>
+          <h2 style={styles.h2}>Lịch dịch vụ đã đặt</h2>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', gap: '16px' }}>
+          <select
+            value={activeFilter}
+            onChange={(e) => filterAppointments(e.target.value, statusFilter)}
+            style={{
+              padding: '10px 20px',
+              fontSize: 16,
+              fontWeight: 600,
+              border: '2px solid #22c55e',
+              borderRadius: 8,
+              backgroundColor: '#fff',
+              color: '#15803d',
+              cursor: 'pointer',
+              minWidth: '200px',
+              outline: 'none',
+            }}
+          >
+            <option value="all">Tất cả dịch vụ</option>
+            <option value="Tư vấn">Tư vấn</option>
+            <option value="Xét nghiệm">Xét nghiệm</option>
+          </select>
+          <select
+            value={statusFilter}
+            onChange={(e) => filterByStatus(e.target.value)}
+            style={{
+              padding: '10px 20px',
+              fontSize: 16,
+              fontWeight: 600,
+              border: '2px solid #22c55e',
+              borderRadius: 8,
+              backgroundColor: '#fff',
+              color: '#15803d',
+              cursor: 'pointer',
+              minWidth: '200px',
+              outline: 'none',
+            }}
+          >
+            <option value="all">Tất cả trạng thái</option>
+            <option value="Chờ xử lý">Chờ xử lý</option>
+            <option value="Chờ xác nhận">Chờ xác nhận</option>
+            <option value="Đã xác nhận">Đã xác nhận</option>
+            <option value="Đã lấy mẫu">Đã lấy mẫu</option>
+            <option value="Chờ kết quả">Chờ kết quả</option>
+            <option value="Đã trả kết quả">Đã trả kết quả</option>
+            <option value="Đã thanh toán">Đã thanh toán</option>
+            <option value="Đã hủy">Đã hủy</option>
+          </select>
+        </div>
         <table style={styles.table}>
           <thead>
             <tr>
@@ -201,10 +339,10 @@ function LichSuDatLich() {
             </tr>
           </thead>
           <tbody>
-            {lichTongHop.length === 0 ? (
+            {currentItems.length === 0 ? (
               <tr><td colSpan={9} style={styles.td}>Không có lịch dịch vụ nào.</td></tr>
             ) : (
-              lichTongHop.map(item => (
+              currentItems.map(item => (
                 <tr key={item.id + '-' + item.loaiDichVu}>
                   <td style={styles.td}>{item.loaiDichVu}</td>
                   <td style={styles.td}>{item.fullName}</td>
@@ -232,6 +370,82 @@ function LichSuDatLich() {
             )}
           </tbody>
         </table>
+        {/* Thông tin phân trang */}
+        {filteredLich.length > 0 && (
+          <div style={{ 
+            textAlign: 'center', 
+            marginTop: '15px',
+            color: '#666',
+            fontSize: '14px'
+          }}>
+            Hiển thị {indexOfFirstItem + 1}-{Math.min(indexOfLastItem, filteredLich.length)} trong tổng số {filteredLich.length} lịch
+          </div>
+        )}
+        {/* Controls phân trang */}
+        {filteredLich.length > 0 && (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            marginTop: '20px',
+            gap: '8px'
+          }}>
+            <button 
+              onClick={() => handlePageChange(currentPage - 1)} 
+              disabled={currentPage === 1}
+              style={{
+                padding: '8px 16px',
+                border: '1px solid #22c55e',
+                borderRadius: 6,
+                backgroundColor: currentPage === 1 ? '#e0e0e0' : '#fff',
+                color: currentPage === 1 ? '#999' : '#22c55e',
+                cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+                fontWeight: 600,
+                fontSize: 14,
+                transition: 'all 0.2s ease',
+              }}
+            >
+              Trước
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i + 1}
+                onClick={() => handlePageChange(i + 1)}
+                style={{
+                  padding: '8px 12px',
+                  border: '1px solid #22c55e',
+                  borderRadius: 6,
+                  backgroundColor: currentPage === i + 1 ? '#22c55e' : '#fff',
+                  color: currentPage === i + 1 ? '#fff' : '#22c55e',
+                  cursor: 'pointer',
+                  fontWeight: currentPage === i + 1 ? 700 : 600,
+                  fontSize: 14,
+                  minWidth: '36px',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button 
+              onClick={() => handlePageChange(currentPage + 1)} 
+              disabled={currentPage === totalPages}
+              style={{
+                padding: '8px 16px',
+                border: '1px solid #22c55e',
+                borderRadius: 6,
+                backgroundColor: currentPage === totalPages ? '#e0e0e0' : '#fff',
+                color: currentPage === totalPages ? '#999' : '#22c55e',
+                cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+                fontWeight: 600,
+                fontSize: 14,
+                transition: 'all 0.2s ease',
+              }}
+            >
+              Sau
+            </button>
+          </div>
+        )}
       </div>
       <Footer />
     </div>
