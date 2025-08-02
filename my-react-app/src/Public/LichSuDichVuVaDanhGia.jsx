@@ -197,7 +197,7 @@ const LichSuDichVu = () => {
       case 2: return 'Đang chờ';
       case 4: return 'Hoàn tất';
       case 6: return 'Đã đánh giá';
-      default: return '';
+      default: return 'Đang chờ duyệt';
     }
   };
 

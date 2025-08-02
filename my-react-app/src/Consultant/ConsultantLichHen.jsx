@@ -122,7 +122,7 @@ setAppointments(appointmentsWithLinks);
   }
 
   try {
-    const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/approve`, {
+    const res = await fetch(`https://localhost:7100/api/Appointment/advice-result/${id}/approve`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
