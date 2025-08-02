@@ -76,22 +76,7 @@ const Td = styled.td`
 const Tr = styled.tr`
   &:hover { background-color: #f0fdf4; }
 `;
-const DeleteBtn = styled.button`
-  background-color: #ef4444;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(239,68,68,0.08);
-  transition: background 0.2s, box-shadow 0.2s;
-  &:hover {
-    background-color: #dc2626;
-    box-shadow: 0 4px 16px rgba(239,68,68,0.15);
-  }
-`;
+
 const ReviewBtn = styled.button`
   background-color: #3b82f6;
   color: #fff;
@@ -194,6 +179,7 @@ const STATUS_LABELS = {
 };
 
 const LichSuDichVu = () => {
+  const [rating, setRating] = useState(0);
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState("Tất cả");
   const [showAlert, setShowAlert] = useState(false);
@@ -201,26 +187,31 @@ const LichSuDichVu = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [dichVuDangDanhGia, setDichVuDangDanhGia] = useState("");
   const [reviewText, setReviewText] = useState("");
+  const [appointmentId, setAppointmentId] = useState(null);
+  const [readonlyMode, setReadonlyMode] = useState(false);
 
   // Hàm chuyển đổi trạng thái từ code sang text
   const convertStatus = (serviceStatus) => {
     switch (serviceStatus) {
       case 1: return 'Đã thanh toán';
-      case 2: return 'Đã hủy';
-      case 3: return 'Hoàn_tất';
-      default: return 'Chờ xử lý';
+      case 2: return 'Đang chờ';
+      case 4: return 'Hoàn tất';
+      case 6: return 'Đã đánh giá';
+      default: return '';
     }
   };
 
   // Hàm lấy style cho trạng thái
   const getStatusStyle = (trangThai) => {
     switch (trangThai) {
-      case 'Hoàn_tất':
+      case 'Đã đánh giá':
+        return { color: '#28afd1ff', fontWeight: 600 };
+      case 'Hoàn tất':
       case 'Đã thanh toán':
         return { color: '#22c55e', fontWeight: 600 };
       case 'Đã hủy':
         return { color: '#ef4444', fontWeight: 600 };
-      case 'Chờ xử lý':
+      case 'Đang chờ':
       default:
         return { color: '#f59e42', fontWeight: 600 };
     }
@@ -250,6 +241,7 @@ const LichSuDichVu = () => {
       const json = await res.json();
       if (json.code === 200) {
         const mappedData = json.obj.map(item => ({
+          id: item.id,
           ten: item.consultationType,
           ngayThucHien: new Date(item.appointmentDate).toLocaleDateString("vi-VN", {
             day: "2-digit",
@@ -291,35 +283,85 @@ const LichSuDichVu = () => {
     ? data
     : data.filter(d => d.trangThai === filter);
 
-  const handleDelete = (index) => {
-  if (window.confirm("Bạn có chắc muốn xóa mục này?")) {
-    const newData = [...data];
-    newData.splice(index, 1);
-    setData(newData);
-    // không cần lưu lại localStorage nữa
+  
+
+  const openModal = (id, ten) => {
+  setAppointmentId(id); // <-- lưu id vào state
+  setDichVuDangDanhGia(ten);
+  setReviewText("");
+  setRating(0);
+  setReadonlyMode(false);
+  setModalOpen(true);
+};
+const openReviewModal = async (id, ten) => {
+  try {
+    const token = localStorage.getItem("token");
+    const res = await fetch(`https://api-gender2.purintech.id.vn/api/Feedback/get-feedback-by-appointment-id?appointmentId=${id}`, {
+      method: "GET",
+      headers: {
+        Accept: "*/*",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await res.json();
+    if (res.ok && result.code === 200) {
+      setAppointmentId(id);
+      setDichVuDangDanhGia(ten);
+      setReviewText(result.obj.comment);
+      setRating(result.obj.point);
+      setReadonlyMode(true); // <-- Chế độ chỉ đọc
+      setModalOpen(true);
+    } else {
+      alert("Không thể tải đánh giá: " + result.message);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Lỗi khi tải đánh giá.");
   }
 };
 
-  const openModal = (ten) => {
-    setDichVuDangDanhGia(ten);
-    setReviewText("");
-    setModalOpen(true);
-  };
 
-  const saveReview = () => {
+
+  const saveReview = async () => {
+    if (rating === 0) {
+  alert("Vui lòng chọn số sao đánh giá!");
+  return;
+}
     if (!reviewText.trim()) {
       alert("Vui lòng nhập nội dung đánh giá!");
       return;
     }
     
-    allReviews.push({
-      tenDichVu: dichVuDangDanhGia,
-      noiDung: reviewText,
-      thoiGian: new Date().toLocaleString()
+    try {
+    const token = localStorage.getItem("token");
+    const res = await fetch("https://api-gender2.purintech.id.vn/api/Feedback", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        point: rating,
+        comment: reviewText,
+        appointmentId: appointmentId,
+      }),
     });
-    localStorage.setItem("danhGiaDichVu", JSON.stringify(allReviews));
-    alert("Cảm ơn bạn đã đánh giá!");
-    setModalOpen(false);
+
+    const result = await res.json();
+
+    if (res.ok && result.code === 200) {
+      alert("Cảm ơn bạn đã đánh giá!");
+      setModalOpen(false);
+      setRating(0);
+      // Tùy chọn: Reload lại danh sách để cập nhật trạng thái
+      window.location.reload();
+    } else {
+      alert("Không thể gửi đánh giá: " + result.message);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gửi đánh giá:", error);
+    alert("Đã xảy ra lỗi khi gửi đánh giá.");
+  }
   };
 
   return (
@@ -341,9 +383,9 @@ const LichSuDichVu = () => {
             onChange={e => setFilter(e.target.value)}
           >
             <option value="Tất cả">Tất cả</option>
-            <option value="Hoàn_tất">Hoàn tất</option>
-            <option value="Đã_hủy">Đã hủy</option>
-            <option value="Chờ_duyệt">Chờ duyệt</option>
+            <option value="Hoàn tất">Hoàn tất</option>
+            <option value="Đã đánh giá">Đã đánh giá</option>
+            <option value="Đang chờ">Đang chờ</option>
           </select>
         </FilterBar>
         <Table>
@@ -352,14 +394,14 @@ const LichSuDichVu = () => {
               <Th>Dịch Vụ</Th>
               <Th>Ngày Thực Hiện</Th>
               <Th>Trạng Thái</Th>
-              <Th>Ghi Chú</Th>
+              <Th>Ghi chú bác sĩ</Th>
               <Th>Thao Tác</Th>
             </Tr>
           </thead>
           <tbody>
             {filteredData.length === 0 ? (
               <Tr>
-                <Td colSpan={5}>Không có dữ liệu phù hợp.</Td>
+                <Td colSpan={5}>Không có lịch sử dịch vụ.</Td>
               </Tr>
             ) : (
               filteredData.map((item, idx) => (
@@ -369,13 +411,17 @@ const LichSuDichVu = () => {
                   <Td style={getStatusStyle(item.trangThai)}>{item.trangThai}</Td>
                   <Td>{item.ghiChu || ""}</Td>
                   <Td>
-                    <DeleteBtn onClick={() => handleDelete(data.indexOf(item))}>Xóa</DeleteBtn>
-                    {item.trangThai === "Hoàn_tất" && (
-                      <ReviewBtn onClick={() => openModal(item.ten)}>
-                        Đánh giá
-                      </ReviewBtn>
-                    )}
-                  </Td>
+  {item.trangThai === "Hoàn tất" && (
+    <ReviewBtn onClick={() => openModal(item.id,item.ten)}>
+      Đánh giá
+    </ReviewBtn>
+  )}
+  {item.trangThai === "Đã đánh giá" && (
+    <ReviewBtn onClick={() => openReviewModal(item.id, item.ten)}>
+      Xem đánh giá
+    </ReviewBtn>
+  )}
+</Td>
                 </Tr>
               ))
             )}
@@ -386,24 +432,39 @@ const LichSuDichVu = () => {
             <ModalContent>
               <h3>Đánh Giá Dịch Vụ</h3>
               <p>Dịch vụ: {dichVuDangDanhGia}</p>
+              <div style={{ margin: "10px 0" }}>
+  {[1, 2, 3, 4, 5].map((star) => (
+    <span
+      key={star}
+      onClick={() => !readonlyMode && setRating(star)}
+      style={{
+        fontSize: "32px",
+        cursor: readonlyMode ? "default" : "pointer",
+        color: star <= rating ? "#facc15" : "#e5e7eb",
+      }}
+    >
+      ★
+    </span>
+  ))}
+</div>
+
               <ModalTextarea
-                value={reviewText}
-                onChange={e => setReviewText(e.target.value)}
-                placeholder="Nhập đánh giá của bạn..."
-                rows={4}
-              />
+  value={reviewText}
+  onChange={e => setReviewText(e.target.value)}
+  placeholder="Nhập đánh giá của bạn..."
+  rows={4}
+  readOnly={readonlyMode}
+/>
               <ModalActions>
-                <button onClick={saveReview}>Gửi</button>
-                <button onClick={() => setModalOpen(false)}>Hủy</button>
-              </ModalActions>
+  {!readonlyMode && (
+    <button onClick={saveReview}>Gửi</button>
+  )}
+  <button onClick={() => setModalOpen(false)}>Đóng</button>
+</ModalActions>
             </ModalContent>
           </Modal>
         )}
-        <div style={{ textAlign: "center" }}>
-          <ViewReviewLink href="/customer/danh-gia-da-gui">
-            📄 Xem đánh giá đã gửi
-          </ViewReviewLink>
-        </div>
+        
       </HistoryContainer>
       <div style={{ width: "100%", marginTop: "auto" }}>
         <Footer />
