@@ -18,6 +18,9 @@ const meetLinks = [
 ];
 
 const ConsultantLichHen = () => {
+  const [showPopup, setShowPopup] = useState(false);
+const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
+const [suggestionText, setSuggestionText] = useState("");
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [statusFilter, setStatusFilter] = useState('all');
@@ -177,7 +180,7 @@ const handleComplete = async (id) => {
       body: JSON.stringify({
         serviceStatus: 4,
         note: currentAppointment.note || '',
-        suggestion: ''  // dùng chung nếu không có trường suggestion riêng
+        suggestion: suggestionText    // dùng chung nếu không có trường suggestion riêng
       })
     });
 
@@ -404,7 +407,10 @@ const handleComplete = async (id) => {
     {a.serviceStatus === 2 && (
       <button
         className="lh-btn-detail"
-        onClick={() => handleComplete(a.id)}
+         onClick={() => {
+      setSelectedAppointmentId(a.id);  // lưu ID lịch hẹn
+      setShowPopup(true);              // mở popup
+    }}
         style={{
           fontSize: '0.85rem',
           padding: '4px 8px',
@@ -441,6 +447,55 @@ const handleComplete = async (id) => {
               </div>
             )}
           </div>
+          {showPopup && (
+  <div style={{
+    position: 'fixed',
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 9999
+  }}>
+    <div style={{
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      padding: '24px',
+      width: '90%',
+      maxWidth: '500px',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.2)'
+    }}>
+      <h2 style={{ fontSize: '1.25rem', marginBottom: '12px' }}>Nhập kết quả tư vấn</h2>
+      <textarea
+        value={suggestionText}
+        onChange={(e) => setSuggestionText(e.target.value)}
+        rows={5}
+        style={{ width: '100%', padding: '10px', fontSize: '1rem', borderRadius: '8px', border: '1px solid #ccc' }}
+        placeholder="Nhập nội dung kết quả..."
+      />
+      <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+        <button
+          onClick={() => setShowPopup(false)}
+          style={{ padding: '8px 16px', borderRadius: '8px', backgroundColor: '#e5e7eb', fontWeight: 600 }}
+        >
+          Hủy
+        </button>
+        <button
+          onClick={() => {
+            if (!suggestionText.trim()) {
+              alert('Vui lòng nhập nội dung kết quả!');
+              return;
+            }
+            handleComplete(selectedAppointmentId, suggestionText);
+          }}
+          style={{ padding: '8px 16px', borderRadius: '8px', backgroundColor: '#10b981', color: 'white', fontWeight: 600 }}
+        >
+          Gửi
+        </button>
+      </div>
+    </div>
+  </div>
+)}
         </main>
       </div>
     </>
