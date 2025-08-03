@@ -9,7 +9,8 @@ const Container = styled.div`
   color: #333;
   background-color: #f9f9f9;
   width: 99vw;
-  
+  height: 100vh;
+  max-height: 100vh;
   margin: 0;
   padding: 4rem 0;
 `;
@@ -28,7 +29,7 @@ const ContentArea = styled.main`
     padding: 0.5rem;
   }
 `;
-const ResultSection = styled.section`
+const Section = styled.section`
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
@@ -47,24 +48,14 @@ const SectionTitle = styled.h3`
   color: #09a370;
   margin-bottom: 0;
 `;
-const AddBtn = styled.button`
-  background: #09a370;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
+const SearchInput = styled.input`
+  padding: 8px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
   font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: background 0.2s, transform 0.2s;
-  &:hover, &:focus {
-    background: #0d8a5f;
-    transform: scale(1.08);
-    outline: none;
-  }
+  background: #f9f9f9;
+  color: #333;
+  width: 220px;
 `;
 const Table = styled.table`
   width: 100%;
@@ -108,259 +99,185 @@ const ActionBtn = styled.button`
   }
 `;
 const ModalOverlay = styled.div`
-  display: ${props => (props.open ? 'flex' : 'none')};
   position: fixed;
-  z-index: 2000;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.3);
-  justify-content: center;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
   align-items: center;
+  justify-content: center;
+  z-index: 999;
 `;
 const ModalContent = styled.div`
-  background: #fff;
-  padding: 32px 24px 24px 24px;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-  position: relative;
-  animation: modalFadeIn 0.2s;
-  @keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(-30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
-const CloseBtn = styled.span`
-  position: absolute;
-  top: 12px;
-  right: 18px;
-  font-size: 1.5rem;
-  color: #888;
-  cursor: pointer;
-  transition: color 0.2s;
-  &:hover { color: #09a370; }
-`;
-const FormGroup = styled.div`
-  margin-bottom: 16px;
-`;
-const Label = styled.label`
-  display: block;
-  font-weight: 500;
-  margin-bottom: 6px;
-  color: #222;
-`;
-const Input = styled.input`
-  width: 95%;
-  padding: 8px 10px;
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  font-size: 1rem;
-  background: #f9f9f9;
-  color: #333;
-`;
-const Select = styled.select`
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  font-size: 1rem;
-  background: #f9f9f9;
-  color: #333;
-`;
-
-const testNameOptions = [
-    'HIV Ag/Ab Combo',
-    'Viêm gan B',
-    'Viêm gan C',
-    'Giang mai TPHA',
-    'Chlamydia',
-    'Lậu cầu',
-    'HPV',
-    'Sốt xuất huyết',
-    'Khác...'
-];
 
 function StaffTraKetQua() {
-    const [results, setResults] = useState([
-        {
-            customer: 'Trần Thị B',
-            testName: 'HIV Ag/Ab Combo',
-            date: '2025-07-01',
-            result: 'Âm tính',
-            note: ''
+  const [appointments, setAppointments] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterResult, setFilterResult] = useState('all');
+  const [showModal, setShowModal] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [resultStatus, setResultStatus] = useState('');
+  const [suggestion, setSuggestion] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('token');
+      const res = await fetch('https://api-gender2.purintech.id.vn/api/Appointment/test-appointments/all', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          accept: '*/*'
         }
-    ]);
-    const [filteredResults, setFilteredResults] = useState([
-        {
-            customer: 'Trần Thị B',
-            testName: 'HIV Ag/Ab Combo',
-            date: '2025-07-01',
-            result: 'Âm tính',
-            note: ''
-        }
-    ]);
-    const [resultFilter, setResultFilter] = useState('all');
-    const [modalOpen, setModalOpen] = useState(false);
-    const [editIndex, setEditIndex] = useState(null);
-    const [form, setForm] = useState({
-        customer: '',
-        testName: '',
-        date: '',
-        result: '',
-        note: ''
+      });
+      const data = await res.json();
+      if (data?.obj) {
+        const result = data.obj.filter(item => item.serviceStatus === 3).map(item => ({
+          id: item.id,
+          name: item.fullName,
+          test: item.testName,
+          result: item.testResult || '',
+          resultStatus: item.resultStatus || '',
+        }));
+        setAppointments(result);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const openModal = (id) => {
+    setSelectedId(id);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedId(null);
+    setResultStatus('');
+    setSuggestion('');
+  };
+
+  const handleApprove = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-result/${selectedId}/approve`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+          accept: '*/*'
+        },
+        body: JSON.stringify({
+          note: resultStatus,
+          suggestion: suggestion
+        })
+      });
+      if (res.ok) {
+        alert('Trả kết quả thành công');
+        setAppointments(prev =>
+          prev.map(item =>
+            item.id === selectedId
+              ? { ...item, result: resultStatus === 'Positive' ? 'Dương tính' : 'Âm tính', resultStatus, suggestion, serviceStatus: 4 }
+              : item
+          )
+        );
+        closeModal();
+      } else {
+        alert('Lỗi khi trả kết quả');
+      }
+    };
+
+    const filteredData = appointments.filter(a => {
+      const matchName = a.name.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchTest = a.test.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchResult = filterResult === 'all' || a.resultStatus === filterResult;
+      return (matchName || matchTest) && matchResult;
     });
 
-    // Hàm lọc theo kết quả
-    const filterByResult = (resultType) => {
-        setResultFilter(resultType);
-        if (resultType === 'all') {
-            setFilteredResults(results);
-        } else {
-            const filtered = results.filter(item => item.result === resultType);
-            setFilteredResults(filtered);
-        }
-    };
-
-    // Cập nhật filteredResults khi results thay đổi
-    useEffect(() => {
-        filterByResult(resultFilter);
-    }, [results, resultFilter]);
-
-    // Mở modal thêm mới
-    const openAddModal = () => {
-        setForm({ customer: '', testName: '', date: '', result: '', note: '' });
-        setEditIndex(null);
-        setModalOpen(true);
-    };
-    // Mở modal chỉnh sửa
-    const openEditModal = (idx) => {
-        setForm(filteredResults[idx]);
-        setEditIndex(idx);
-        setModalOpen(true);
-    };
-    // Đóng modal
-    const closeModal = () => {
-        setModalOpen(false);
-        setEditIndex(null);
-    };
-    // Xử lý submit form
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (editIndex !== null) {
-            // Cập nhật
-            const originalIndex = results.findIndex(r => r === filteredResults[editIndex]);
-            setResults(rs => rs.map((r, i) => i === originalIndex ? form : r));
-        } else {
-            // Thêm mới
-            setResults(rs => [...rs, form]);
-        }
-        closeModal();
-    };
     return (
-        <Container>
-            <StaffSidebar />
-            <ContentArea>
-                <StaffHeader />
-                <ResultSection>
-                    <SectionHeader>
-                        <SectionTitle>Trả kết quả xét nghiệm cho khách hàng</SectionTitle>
-                        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                            <select
-                                value={resultFilter}
-                                onChange={(e) => filterByResult(e.target.value)}
-                                style={{
-                                    padding: '8px 14px',
-                                    border: '1px solid #e0e0e0',
-                                    borderRadius: 5,
-                                    fontSize: '1rem',
-                                    background: '#f9f9f9',
-                                    color: '#333',
-                                    minWidth: '150px',
-                                    cursor: 'pointer',
-                                }}
-                            >
-                                <option value="all">Tất cả kết quả</option>
-                                <option value="Âm tính">Âm tính</option>
-                                <option value="Dương tính">Dương tính</option>
-                                <option value="Không xác định">Không xác định</option>
-                                <option value="Chưa có kết quả">Chưa có kết quả</option>
-                            </select>
-                            <AddBtn title="Thêm kết quả mới" onClick={openAddModal}><i className="fas fa-plus"></i></AddBtn>
-                        </div>
-                    </SectionHeader>
-                    <Table>
-                        <Thead>
-                            <Tr>
-                                <Th>Khách hàng</Th>
-                                <Th>Tên xét nghiệm</Th>
-                                <Th>Ngày thực hiện</Th>
-                                <Th>Kết quả</Th>
-                                <Th>Ghi chú</Th>
-                                <Th>Hành động</Th>
-                            </Tr>
-                        </Thead>
-                        <tbody>
-                            {filteredResults.map((row, idx) => (
-                                <Tr key={idx}>
-                                    <Td>{row.customer}</Td>
-                                    <Td>{row.testName}</Td>
-                                    <Td>{row.date}</Td>
-                                    <Td>{row.result}</Td>
-                                    <Td>{row.note}</Td>
-                                    <Td>
-                                        <ActionBtn onClick={() => openEditModal(filteredResults.findIndex(r => r === row))}>Chỉnh sửa</ActionBtn>
-                                    </Td>
-                                </Tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </ResultSection>
-                {/* Modal */}
-                <ModalOverlay open={modalOpen}>
-                    <ModalContent>
-                        <CloseBtn onClick={closeModal}>&times;</CloseBtn>
-                        <h3 style={{ marginBottom: 18 }}>{editIndex !== null ? 'Chỉnh sửa kết quả xét nghiệm' : 'Thêm kết quả xét nghiệm'}</h3>
-                        <form onSubmit={handleSubmit}>
-                            <FormGroup>
-                                <Label>Khách hàng</Label>
-                                <Input type="text" name="customer" value={form.customer} onChange={e => setForm(f => ({ ...f, customer: e.target.value }))} required />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label>Tên xét nghiệm</Label>
-                                <Select name="testName" value={form.testName} onChange={e => setForm(f => ({ ...f, testName: e.target.value }))} required>
-                                    <option value="">--Chọn dịch vụ--</option>
-                                    {testNameOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                                </Select>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label>Ngày thực hiện</Label>
-                                <Input type="date" name="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} required />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label>Kết quả</Label>
-                                <Select name="result" value={form.result} onChange={e => setForm(f => ({ ...f, result: e.target.value }))} required>
-                                    <option value="">--Chọn--</option>
-                                    <option value="Âm tính">Âm tính</option>
-                                    <option value="Dương tính">Dương tính</option>
-                                    <option value="Không xác định">Không xác định</option>
-                                </Select>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label>Ghi chú</Label>
-                                <Input type="text" name="note" value={form.note} onChange={e => setForm(f => ({ ...f, note: e.target.value }))} />
-                            </FormGroup>
-                            <div style={{ textAlign: 'right', marginTop: 16 }}>
-                                <ActionBtn type="submit">{editIndex !== null ? 'Cập nhật' : 'Gửi kết quả'}</ActionBtn>
-                                <ActionBtn type="button" style={{ background: '#ccc', color: '#333' }} onClick={closeModal}>Đóng</ActionBtn>
-                            </div>
-                        </form>
-                    </ModalContent>
-                </ModalOverlay>
-            </ContentArea>
-        </Container>
+      <Container>
+        <StaffSidebar />
+        <ContentArea>
+          <StaffHeader />
+          <Section>
+            <SectionHeader>
+              <SectionTitle>Trả kết quả xét nghiệm</SectionTitle>
+              <div style={{ display: 'flex', gap: '14px' }}>
+                <SearchInput placeholder="Tìm kiếm..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                <select
+                  value={filterResult}
+                  onChange={e => setFilterResult(e.target.value)}
+                  style={{
+                    padding: '8px 12px',
+                    borderRadius: '5px',
+                    border: '1px solid #ddd'
+                  }}
+                >
+                  <option value="all">Tất cả kết quả</option>
+                  <option value="Positive">Dương tính</option>
+                  <option value="Negative">Âm tính</option>
+                </select>
+              </div>
+            </SectionHeader>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Khách hàng</Th>
+                  <Th>Dịch vụ</Th>
+                  <Th>Kết quả</Th>
+                  <Th>Tình trạng</Th>
+                  <Th>Hành động</Th>
+                </Tr>
+              </Thead>
+              <tbody>
+                {filteredData.map((item, index) => (
+                  <Tr key={index}>
+                    <Td>{item.name}</Td>
+                    <Td>{item.test}</Td>
+                    <Td>{item.result}</Td>
+                    <Td>{item.resultStatus === 'Positive' ? 'Dương tính' : item.resultStatus === 'Negative' ? 'Âm tính' : '-'}</Td>
+                    <Td>
+                      <ActionBtn onClick={() => openModal(item.id)}>Kết quả</ActionBtn>
+                    </Td>
+                  </Tr>
+                ))}
+              </tbody>
+            </Table>
+          </Section>
+        </ContentArea>
+        {showModal && (
+          <ModalOverlay>
+            <ModalContent>
+              <h3>Nhập kết quả xét nghiệm</h3>
+              <select value={resultStatus} onChange={e => setResultStatus(e.target.value)}>
+                <option value="">-- Chọn kết quả --</option>
+                <option value="Positive">Dương tính</option>
+                <option value="Negative">Âm tính</option>
+              </select>
+              <textarea
+                rows="4"
+                placeholder="Lời khuyên..."
+                value={suggestion}
+                onChange={e => setSuggestion(e.target.value)}
+              />
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <ActionBtn onClick={handleApprove}>Xác nhận</ActionBtn>
+                <ActionBtn style={{ background: '#ccc', color: '#000' }} onClick={closeModal}>Hủy</ActionBtn>
+              </div>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+      </Container>
     );
-}
-export default StaffTraKetQua;
+  }
+
+  export default StaffTraKetQua;
+  F
