@@ -63,9 +63,15 @@ const styles = {
     fontSize: 15,
     color: "#15803d",
   },
-  status0: { color: '#f59e42', fontWeight: 600 },
-  status1: { color: '#22c55e', fontWeight: 600 },
-  status2: { color: '#ef4444', fontWeight: 600 },
+  status0: { color: '#f59e42', fontWeight: 600 }, // Chờ xác nhận - cam
+  status1: { color: '#22c55e', fontWeight: 600 }, // Đã xác nhận - xanh lá
+  status2: { color: '#3b82f6', fontWeight: 600 }, // Đã tới - xanh dương
+  status3: { color: '#f59e42', fontWeight: 600 }, // Đang thực hiện - cam
+  status4: { color: '#8b5cf6', fontWeight: 600 }, // Đã lấy mẫu - tím
+  status5: { color: '#f59e42', fontWeight: 600 }, // Chờ kết quả - cam
+  status6: { color: '#10b981', fontWeight: 600 }, // Đã trả kết quả - xanh ngọc
+  status7: { color: '#059669', fontWeight: 600 }, // Hoàn thành - xanh đậm
+  status8: { color: '#ef4444', fontWeight: 600 }, // Không tới - đỏ
 };
 
 function LichSuDatLich() {
@@ -121,16 +127,27 @@ function LichSuDatLich() {
       switch (serviceStatus) {
         case 0: return 'Chờ xác nhận';
         case 1: return 'Đã xác nhận';
-        case 2: return 'Đã lấy mẫu';
-        case 3: return 'Chờ kết quả';
-        case 4: return 'Đã trả kết quả';
-        default: return 'Chờ xử lý';
+        case 2: return 'Đã tới';
+        case 3: return 'Đang thực hiện';
+        case 4: return 'Đã lấy mẫu';
+        case 5: return 'Chờ kết quả';
+        case 6: return 'Đã trả kết quả';
+        case 7: return 'Hoàn thành';
+        case 8: return 'Không tới';
+        default: return 'Không rõ';
       }
     } else {
       switch (serviceStatus) {
-        case 1: return 'Đã thanh toán';
-        case 2: return 'Đã hủy';
-        default: return 'Chờ xử lý';
+        case 0: return 'Chờ xác nhận';
+        case 1: return 'Đã xác nhận';
+        case 2: return 'Đã tới';
+        case 3: return 'Đang thực hiện';
+        case 4: return 'Đã lấy mẫu';
+        case 5: return 'Chờ kết quả';
+        case 6: return 'Đã trả kết quả';
+        case 7: return 'Hoàn thành';
+        case 8: return 'Không tới';
+        default: return 'Không rõ';
       }
     }
   };
@@ -138,15 +155,30 @@ function LichSuDatLich() {
   const getStatusStyle = (serviceStatus, loaiDichVu) => {
     if (loaiDichVu === 'Xét nghiệm') {
       switch (serviceStatus) {
-        case 0: return styles.status0;
-        case 1: return styles.status1;
-        case 2: return styles.status1;
-        case 3: return styles.status0;
-        case 4: return styles.status1;
+        case 0: return styles.status0; // Chờ xác nhận - cam
+        case 1: return styles.status1; // Đã xác nhận - xanh lá
+        case 2: return styles.status2; // Đã tới - xanh dương
+        case 3: return styles.status3; // Đang thực hiện - cam
+        case 4: return styles.status4; // Đã lấy mẫu - tím
+        case 5: return styles.status5; // Chờ kết quả - cam
+        case 6: return styles.status6; // Đã trả kết quả - xanh ngọc
+        case 7: return styles.status7; // Hoàn thành - xanh đậm
+        case 8: return styles.status8; // Không tới - đỏ
         default: return styles.status0;
       }
     } else {
-      return serviceStatus === 1 ? styles.status1 : serviceStatus === 2 ? styles.status2 : styles.status0;
+      switch (serviceStatus) {
+        case 0: return styles.status0; // Chờ xác nhận - cam
+        case 1: return styles.status1; // Đã xác nhận - xanh lá
+        case 2: return styles.status2; // Đã tới - xanh dương
+        case 3: return styles.status3; // Đang thực hiện - cam
+        case 4: return styles.status4; // Đã lấy mẫu - tím
+        case 5: return styles.status5; // Chờ kết quả - cam
+        case 6: return styles.status6; // Đã trả kết quả - xanh ngọc
+        case 7: return styles.status7; // Hoàn thành - xanh đậm
+        case 8: return styles.status8; // Không tới - đỏ
+        default: return styles.status0;
+      }
     }
   };
 
@@ -230,13 +262,15 @@ function LichSuDatLich() {
             }}
           >
             <option value="all">Tất cả trạng thái</option>
-            <option value="Chờ xác nhận">Chờ xác nhận</option>
-            <option value="Đã xác nhận">Đã xác nhận</option>
-            <option value="Đã lấy mẫu">Đã lấy mẫu</option>
-            <option value="Chờ kết quả">Chờ kết quả</option>
-            <option value="Đã trả kết quả">Đã trả kết quả</option>
-            <option value="Hoàn thành">Hoàn thành</option>
-            <option value="Không tới">Đã hủy</option>
+                         <option value="Chờ xác nhận">Chờ xác nhận</option>
+             <option value="Đã xác nhận">Đã xác nhận</option>
+             <option value="Đã tới">Đã tới</option>
+             <option value="Đang thực hiện">Đang thực hiện</option>
+             <option value="Đã lấy mẫu">Đã lấy mẫu</option>
+             <option value="Chờ kết quả">Chờ kết quả</option>
+             <option value="Đã trả kết quả">Đã trả kết quả</option>
+             <option value="Hoàn thành">Hoàn thành</option>
+             <option value="Không tới">Không tới</option>
           </select>
         </div>
         <table style={styles.table}>
