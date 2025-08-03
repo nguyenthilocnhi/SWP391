@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import HeaderCustomer from "../components/HeaderCustomer";
 import Footer from "../components/Footer";
 import styled from "styled-components";
+import axios from "axios";
 
 const Container = styled.main`
   font-family: 'Segoe UI', sans-serif;
@@ -18,8 +19,25 @@ const KetQuaXetNghiem = () => {
   const [ketQuaList, setKetQuaList] = useState([]);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("ketQuaXetNghiem")) || [];
-    setKetQuaList(data);
+    const fetchKetQua = async () => {
+      try {
+        const token = localStorage.getItem("token"); // hoặc dùng cookie nếu cần
+        const response = await axios.get(
+          "https://api-gender2.purintech.id.vn/api/Appointment/test-appointments/customer",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setKetQuaList(response.data || []);
+      } catch (error) {
+        console.error("Lỗi khi tải kết quả:", error);
+        setKetQuaList([]);
+      }
+    };
+
+    fetchKetQua();
   }, []);
 
   return (
@@ -31,31 +49,29 @@ const KetQuaXetNghiem = () => {
           <thead>
             <tr>
               <th>STT</th>
-              <th>Họ tên</th>
               <th>Loại xét nghiệm</th>
               <th>Kết quả</th>
               <th>Ngày xét nghiệm</th>
               <th>Ngày trả kết quả</th>
-              <th>Ghi chú</th>
+              <th>Lời khuyên</th>
             </tr>
           </thead>
           <tbody>
             {ketQuaList.length === 0 ? (
               <tr>
-                <td colSpan={7} style={{ color: "gray", textAlign: "center" }}>
-                  ⚠️ Hiện chưa có kết quả xét nghiệm nào được lưu.
+                <td colSpan={6} style={{ color: "gray", textAlign: "center" }}>
+                  ⚠️ Hiện chưa có kết quả xét nghiệm nào.
                 </td>
               </tr>
             ) : (
               ketQuaList.map((item, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{item.hoTen}</td>
-                  <td>{item.loai}</td>
-                  <td>{item.ketQua}</td>
-                  <td>{item.ngayXetNghiem}</td>
-                  <td>{item.ngayTra}</td>
-                  <td>{item.ghiChu || "-"}</td>
+                  <td>{item.testServiceName}</td>
+                  <td>{item.result || "Chưa có"}</td>
+                  <td>{item.bookingDate?.split("T")[0]}</td>
+                  <td>{item.approvedDate?.split("T")[0] || "-"}</td>
+                  <td>{item.suggestion || "-"}</td>
                 </tr>
               ))
             )}
@@ -64,24 +80,10 @@ const KetQuaXetNghiem = () => {
       </Container>
       <Footer />
       <style>{`
-        body {
-          font-family: 'Segoe UI', sans-serif;
-          line-height: 1.6;
-          color: #333;
-          background-color: #f9f9f9;
-        }
-        .result-container {
-          max-width: 1200px;
-          margin: 140px auto 0 auto; /* tăng từ 110px lên 140px */
-          padding: 20px;
-          background-color: white;
-          border-radius: 12px;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
         .page-title {
           text-align: center;
           color: #0f172a;
-          margin-top: 60px; /* tăng từ 30px lên 60px */
+          margin-top: 60px;
           margin-bottom: 30px;
         }
         .result-table {
