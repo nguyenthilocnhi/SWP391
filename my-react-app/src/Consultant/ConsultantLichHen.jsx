@@ -194,6 +194,9 @@ const handleComplete = async (id) => {
     setAppointments(prev =>
       prev.map(a => a.id === id ? { ...a, serviceStatus: 4 } : a)
     );
+    setShowPopup(false);
+    setSuggestionText("");
+    setSelectedAppointmentId(null);
   } catch (error) {
     alert('Có lỗi xảy ra khi hoàn thành lịch hẹn!');
     console.error(error);
