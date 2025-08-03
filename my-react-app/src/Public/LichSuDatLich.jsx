@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; 
 import { useNavigate } from "react-router-dom";
 import HeaderCustomer from "../components/HeaderCustomer";
 import Footer from "../components/Footer";
@@ -63,15 +63,9 @@ const styles = {
     fontSize: 15,
     color: "#15803d",
   },
-  status0: { color: '#f59e42', fontWeight: 600 }, // Chờ xác nhận - cam
-  status1: { color: '#22c55e', fontWeight: 600 }, // Đã xác nhận - xanh lá
-  status2: { color: '#3b82f6', fontWeight: 600 }, // Đã tới - xanh dương
-  status3: { color: '#f59e42', fontWeight: 600 }, // Đang thực hiện - cam
-  status4: { color: '#8b5cf6', fontWeight: 600 }, // Đã lấy mẫu - tím
-  status5: { color: '#f59e42', fontWeight: 600 }, // Chờ kết quả - cam
-  status6: { color: '#10b981', fontWeight: 600 }, // Đã trả kết quả - xanh ngọc
-  status7: { color: '#059669', fontWeight: 600 }, // Hoàn thành - xanh đậm
-  status8: { color: '#ef4444', fontWeight: 600 }, // Không tới - đỏ
+  status0: { color: '#f59e42', fontWeight: 600 },
+  status1: { color: '#22c55e', fontWeight: 600 },
+  status2: { color: '#ef4444', fontWeight: 600 },
 };
 
 function LichSuDatLich() {
@@ -83,31 +77,39 @@ function LichSuDatLich() {
   const [itemsPerPage] = useState(10);
   const navigate = useNavigate();
 
-  const filterAppointments = (filterType, statusType = statusFilter) => {
-    setActiveFilter(filterType);
-    setCurrentPage(1);
-    let filtered = lichTongHop;
-    if (filterType !== 'all') {
-      filtered = filtered.filter(item => item.loaiDichVu === filterType);
-    }
-    if (statusType !== 'all') {
-      filtered = filtered.filter(item => getStatusText(item.serviceStatus, item.loaiDichVu) === statusType);
-    }
-    setFilteredLich(filtered);
-  };
+  const filterAppointments = (filterType, statusType = 'all') => {
+  setActiveFilter(filterType);
+  setStatusFilter(statusType);
+  setCurrentPage(1);
 
-  const filterByStatus = (statusType) => {
-    setStatusFilter(statusType);
-    setCurrentPage(1);
-    let filtered = lichTongHop;
-    if (activeFilter !== 'all') {
-      filtered = filtered.filter(item => item.loaiDichVu === activeFilter);
-    }
-    if (statusType !== 'all') {
-      filtered = filtered.filter(item => getStatusText(item.serviceStatus, item.loaiDichVu) === statusType);
-    }
-    setFilteredLich(filtered);
-  };
+  localStorage.setItem('activeFilter', filterType);
+  localStorage.setItem('statusFilter', statusType);
+
+  let filtered = lichTongHop;
+  if (filterType !== 'all') {
+    filtered = filtered.filter(item => item.loaiDichVu === filterType);
+  }
+  if (statusType !== 'all') {
+    filtered = filtered.filter(item => getStatusText(item.serviceStatus, item.loaiDichVu) === statusType);
+  }
+  setFilteredLich(filtered);
+};
+
+const filterByStatus = (statusType) => {
+  setStatusFilter(statusType);
+  setCurrentPage(1);
+  localStorage.setItem('statusFilter', statusType);
+
+  let filtered = lichTongHop;
+  if (activeFilter !== 'all') {
+    filtered = filtered.filter(item => item.loaiDichVu === activeFilter);
+  }
+  if (statusType !== 'all') {
+    filtered = filtered.filter(item => getStatusText(item.serviceStatus, item.loaiDichVu) === statusType);
+  }
+  setFilteredLich(filtered);
+};
+
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -118,36 +120,21 @@ function LichSuDatLich() {
     setCurrentPage(pageNumber);
   };
 
-  useEffect(() => {
-    filterAppointments(activeFilter, statusFilter);
-  }, [lichTongHop, activeFilter, statusFilter]);
-
   const getStatusText = (serviceStatus, loaiDichVu) => {
     if (loaiDichVu === 'Xét nghiệm') {
       switch (serviceStatus) {
         case 0: return 'Chờ xác nhận';
         case 1: return 'Đã xác nhận';
-        case 2: return 'Đã tới';
-        case 3: return 'Đang thực hiện';
-        case 4: return 'Đã lấy mẫu';
-        case 5: return 'Chờ kết quả';
-        case 6: return 'Đã trả kết quả';
-        case 7: return 'Hoàn thành';
-        case 8: return 'Không tới';
-        default: return 'Không rõ';
+        case 2: return 'Đã lấy mẫu';
+        case 3: return 'Chờ kết quả';
+        case 4: return 'Đã trả kết quả';
+        default: return 'Chờ xử lý';
       }
     } else {
       switch (serviceStatus) {
-        case 0: return 'Chờ xác nhận';
-        case 1: return 'Đã xác nhận';
-        case 2: return 'Đã tới';
-        case 3: return 'Đang thực hiện';
-        case 4: return 'Đã lấy mẫu';
-        case 5: return 'Chờ kết quả';
-        case 6: return 'Đã trả kết quả';
-        case 7: return 'Hoàn thành';
-        case 8: return 'Không tới';
-        default: return 'Không rõ';
+        case 1: return 'Đã thanh toán';
+        case 2: return 'Đã hủy';
+        default: return 'Chờ xử lý';
       }
     }
   };
@@ -155,67 +142,63 @@ function LichSuDatLich() {
   const getStatusStyle = (serviceStatus, loaiDichVu) => {
     if (loaiDichVu === 'Xét nghiệm') {
       switch (serviceStatus) {
-        case 0: return styles.status0; // Chờ xác nhận - cam
-        case 1: return styles.status1; // Đã xác nhận - xanh lá
-        case 2: return styles.status2; // Đã tới - xanh dương
-        case 3: return styles.status3; // Đang thực hiện - cam
-        case 4: return styles.status4; // Đã lấy mẫu - tím
-        case 5: return styles.status5; // Chờ kết quả - cam
-        case 6: return styles.status6; // Đã trả kết quả - xanh ngọc
-        case 7: return styles.status7; // Hoàn thành - xanh đậm
-        case 8: return styles.status8; // Không tới - đỏ
+        case 0: return styles.status0;
+        case 1: return styles.status1;
+        case 2: return styles.status1;
+        case 3: return styles.status0;
+        case 4: return styles.status1;
         default: return styles.status0;
       }
     } else {
-      switch (serviceStatus) {
-        case 0: return styles.status0; // Chờ xác nhận - cam
-        case 1: return styles.status1; // Đã xác nhận - xanh lá
-        case 2: return styles.status2; // Đã tới - xanh dương
-        case 3: return styles.status3; // Đang thực hiện - cam
-        case 4: return styles.status4; // Đã lấy mẫu - tím
-        case 5: return styles.status5; // Chờ kết quả - cam
-        case 6: return styles.status6; // Đã trả kết quả - xanh ngọc
-        case 7: return styles.status7; // Hoàn thành - xanh đậm
-        case 8: return styles.status8; // Không tới - đỏ
-        default: return styles.status0;
-      }
+      return serviceStatus === 1 ? styles.status1 : serviceStatus === 2 ? styles.status2 : styles.status0;
+    }
+  };
+
+  const getStatusOptions = () => {
+    if (activeFilter === 'Xét nghiệm') {
+      return ['Tất cả trạng thái', 'Chờ xác nhận', 'Đã xác nhận', 'Đã lấy mẫu', 'Chờ kết quả', 'Đã trả kết quả'];
+    } else if (activeFilter === 'Tư vấn') {
+      return ['Tất cả trạng thái', 'Chờ xử lý', 'Đã thanh toán', 'Đã hủy'];
+    } else {
+      return ['Tất cả trạng thái', 'Chờ xử lý', 'Chờ xác nhận', 'Đã xác nhận', 'Đã lấy mẫu', 'Chờ kết quả', 'Đã trả kết quả', 'Đã thanh toán', 'Đã hủy'];
     }
   };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    Promise.all([
-      fetch('https://api-gender2.purintech.id.vn/api/Appointment/test-appointments', {
-        headers: {
-          'accept': '*/*',
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        }
-      }).then(res => res.json()),
-      fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments', {
-        headers: {
-          'accept': '*/*',
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        }
-      }).then(res => res.json())
-    ]).then(([testData, adviceData]) => {
-      const testList = Array.isArray(testData?.obj) ? testData.obj.map(item => ({
-        ...item,
-        loaiDichVu: 'Xét nghiệm',
-        tenDichVu: item.testName,
-        thoiLuong: item.duration,
-      })) : [];
-      const adviceList = Array.isArray(adviceData?.obj) ? adviceData.obj.map(item => ({
-        ...item,
-        loaiDichVu: 'Tư vấn',
-        tenDichVu: item.consultationType,
-        thoiLuong: item.duration,
-      })) : [];
-      const merged = [...testList, ...adviceList].sort(
-        (a, b) => new Date(b.createdAt || b.appointmentDate) - new Date(a.createdAt || a.appointmentDate)
-      );
-      setLichTongHop(merged);
-    }).catch(() => setLichTongHop([]));
+    fetch('https://api-gender2.purintech.id.vn/api/Appointment/advice-and-test-appointments', {
+      headers: {
+        'accept': '*/*',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        const list = Array.isArray(data?.obj)
+          ? data.obj.map(item => ({
+              ...item,
+              loaiDichVu: item.type?.toLowerCase() === "xét nghiệm" ? "Xét nghiệm" : "Tư vấn",
+              tenDichVu: item.name,
+              thoiLuong: item.duration,
+              phone: item.phoneNumber || item.phone,
+              appointmentDate: item.appointmentDate,
+              createdAt: item.createdDate,
+            }))
+          : [];
+        setLichTongHop(list);
+      })
+      .catch(() => setLichTongHop([]));
   }, []);
+
+  useEffect(() => {
+  if (lichTongHop.length > 0) {
+    const savedFilter = localStorage.getItem('activeFilter') || 'all';
+    const savedStatus = localStorage.getItem('statusFilter') || 'all';
+    filterAppointments(savedFilter, savedStatus);
+  }
+}, [lichTongHop]);
+
+
 
   return (
     <div style={styles.page}>
@@ -227,7 +210,7 @@ function LichSuDatLich() {
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px', gap: '16px' }}>
           <select
             value={activeFilter}
-            onChange={(e) => filterAppointments(e.target.value, statusFilter)}
+            onChange={(e) => filterAppointments(e.target.value, 'all')}
             style={{
               padding: '10px 20px',
               fontSize: 16,
@@ -261,16 +244,11 @@ function LichSuDatLich() {
               outline: 'none',
             }}
           >
-            <option value="all">Tất cả trạng thái</option>
-                         <option value="Chờ xác nhận">Chờ xác nhận</option>
-             <option value="Đã xác nhận">Đã xác nhận</option>
-             <option value="Đã tới">Đã tới</option>
-             <option value="Đang thực hiện">Đang thực hiện</option>
-             <option value="Đã lấy mẫu">Đã lấy mẫu</option>
-             <option value="Chờ kết quả">Chờ kết quả</option>
-             <option value="Đã trả kết quả">Đã trả kết quả</option>
-             <option value="Hoàn thành">Hoàn thành</option>
-             <option value="Không tới">Không tới</option>
+            {getStatusOptions().map((option, index) => (
+              <option key={index} value={option === 'Tất cả trạng thái' ? 'all' : option}>
+                {option}
+              </option>
+            ))}
           </select>
         </div>
         <table style={styles.table}>

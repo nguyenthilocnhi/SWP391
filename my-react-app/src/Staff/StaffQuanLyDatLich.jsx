@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';   
 import styled from 'styled-components';
 import StaffSidebar from '../components/staffSidebar';
 import StaffHeader from '../components/staffHeader';
@@ -266,12 +266,12 @@ function StaffQuanLyDatLich() {
         if (data && data.obj) {
           const mapped = data.obj.map(item => ({
             id: item.id,
-            customerName: item.fullName || '', //  API trả về "fullName"
-            serviceName: item.testName || '',  //  API trả về "testName"
+            customerName: item.fullName || '',
+            serviceName: item.testName || '',
             ngay: item.appointmentDate ? item.appointmentDate.split('T')[0] : '',
             status: convertStatus(item.serviceStatus),
             note: item.note || '',
-            createdAt: item.createdAt || item.appointmentDate // Lưu thời gian tạo lịch
+            createdAt: item.createdDate || item.appointmentDate // vẫn giữ phòng trường hợp backend sửa
           }));
           // Sắp xếp theo thời gian tạo lịch gần nhất lên đầu
           mapped.sort((a, b) => new Date(b.createdAt || b.ngay) - new Date(a.createdAt || a.ngay));
