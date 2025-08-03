@@ -198,10 +198,15 @@ const CancelBtn = styled(ActionBtn)`
 const statusOptions = [
   'Chờ xác nhận',
   'Đã xác nhận',
+  'Đã tới',
+  'Đang thực hiện',
   'Đã lấy mẫu',
   'Chờ kết quả',
-  'Đã trả kết quả'
+  'Đã trả kết quả',
+  'Hoàn thành',
+  'Không tới'
 ];
+
 
 
 
@@ -256,7 +261,7 @@ function StaffQuanLyDatLich() {
             'Authorization': `Bearer ${token}`
           }
         });
-  
+
         const data = await res.json();
         if (data && data.obj) {
           const mapped = data.obj.map(item => ({
@@ -279,35 +284,45 @@ function StaffQuanLyDatLich() {
         setAppointments([]);
       }
     };
-  
+
     fetchAppointments();
   }, []);
 
   const convertStatus = (code) => {
-  switch (code) {
-    case 0: return 'Chờ xác nhận';
-    case 1: return 'Đã xác nhận';
-    case 2: return 'Đã lấy mẫu';
-    case 3: return 'Chờ kết quả';
-    case 4: return 'Đã trả kết quả';
-    default: return 'Không rõ';
-  }
-};
+    switch (code) {
+      case 0: return 'Chờ xác nhận';
+      case 1: return 'Đã xác nhận';
+      case 2: return 'Đã tới';
+      case 3: return 'Đang thực hiện';
+      case 4: return 'Đã lấy mẫu';
+      case 5: return 'Chờ kết quả';
+      case 6: return 'Đã trả kết quả';
+      case 7: return 'Hoàn thành';
+      case 8: return 'Không tới';
+      default: return 'Không rõ';
+    }
+  };
+
 
   const getStatusCode = (statusText) => {
     switch (statusText) {
       case 'Chờ xác nhận': return 0;
       case 'Đã xác nhận': return 1;
-      case 'Đã lấy mẫu': return 2;
-      case 'Chờ kết quả': return 3;
-      case 'Đã trả kết quả': return 4;
+      case 'Đã tới': return 2;
+      case 'Đang thực hiện': return 3;
+      case 'Đã lấy mẫu': return 4;
+      case 'Chờ kết quả': return 5;
+      case 'Đã trả kết quả': return 6;
+      case 'Hoàn thành': return 7;
+      case 'Không tới': return 8;
       default: return 0;
     }
   };
 
-  
 
-  
+
+
+
 
   // Mở modal chỉnh sửa
   const openEditModal = (idx) => {
@@ -323,13 +338,22 @@ function StaffQuanLyDatLich() {
   // Xử lý submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       const appointment = appointments[editIndex];
       const appointmentId = appointment.id;
       const token = localStorage.getItem('token');
-      
-      // Gọi API để approve test result - chỉ cập nhật trạng thái
+
+      const currentCode = getStatusCode(appointment.status);
+      const newCode = getStatusCode(form.status);
+
+      // ✅ Kiểm tra nếu cố gắng quay lại trạng thái trước đó
+      if (newCode < currentCode) {
+        alert('Không thể quay lại trạng thái trước đó!');
+        return;
+      }
+
+      // Gọi API cập nhật
       const response = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-result/${appointmentId}/approve`, {
         method: 'PUT',
         headers: {
@@ -338,8 +362,8 @@ function StaffQuanLyDatLich() {
           'accept': '*/*'
         },
         body: JSON.stringify({
-          serviceStatus: getStatusCode(form.status),
-          note: appointment.note || '', // Giữ nguyên ghi chú gốc
+          serviceStatus: newCode,
+          note: appointment.note || '',
           suggestion: ''
         })
       });
@@ -349,10 +373,10 @@ function StaffQuanLyDatLich() {
         throw new Error(errorData.message || 'Cập nhật thất bại');
       }
 
-      // Cập nhật chỉ trạng thái trong giao diện
-      setAppointments(arr => arr.map((a, i) => 
-        i === editIndex ? { ...a, status: form.status } : a
-      ));
+      // Cập nhật UI
+      setAppointments(arr =>
+        arr.map((a, i) => i === editIndex ? { ...a, status: form.status } : a)
+      );
       alert('Cập nhật trạng thái thành công!');
       closeModal();
     } catch (error) {
@@ -360,11 +384,12 @@ function StaffQuanLyDatLich() {
       alert('Lỗi khi cập nhật: ' + error.message);
     }
   };
+
   // Đổi trạng thái nhanh trên bảng
   const handleStatusChange = async (idx, newStatus) => {
     const appointment = filteredAppointments[idx];
     const appointmentId = appointment.id;
-  
+
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-result/${appointmentId}/approve`, {
@@ -380,12 +405,12 @@ function StaffQuanLyDatLich() {
           suggestion: ''
         })
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Xác nhận trạng thái thất bại');
       }
-  
+
       // Cập nhật trạng thái trong giao diện
       setAppointments(prev => prev.map((a, i) => {
         if (a.id === appointmentId) {
@@ -399,7 +424,7 @@ function StaffQuanLyDatLich() {
       alert('Lỗi khi xác nhận trạng thái: ' + error.message);
     }
   };
-  
+
 
   return (
     <Container>
@@ -432,9 +457,13 @@ function StaffQuanLyDatLich() {
                 <option value="all">Tất cả trạng thái</option>
                 <option value="Chờ xác nhận">Chờ xác nhận</option>
                 <option value="Đã xác nhận">Đã xác nhận</option>
+                <option value="Đã tới">Đã tới</option>
+                <option value="Đang thực hiện">Đang thực hiện</option>
                 <option value="Đã lấy mẫu">Đã lấy mẫu</option>
                 <option value="Chờ kết quả">Chờ kết quả</option>
                 <option value="Đã trả kết quả">Đã trả kết quả</option>
+                <option value="Hoàn thành">Hoàn thành</option>
+                <option value="Không tới">Không tới</option>
               </select>
             </div>
           </SectionHeader>
@@ -488,9 +517,22 @@ function StaffQuanLyDatLich() {
               </FormGroup>
               <FormGroup>
                 <Label>Trạng thái</Label>
-                <StatusSelect value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))} required>
-                  {statusOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                <StatusSelect
+                  value={form.status}
+                  onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
+                  required
+                >
+                  {statusOptions.map(opt => {
+                    const currentCode = getStatusCode(form.status);
+                    const optCode = getStatusCode(opt);
+                    return (
+                      <option key={opt} value={opt} disabled={optCode < currentCode}>
+                        {opt}
+                      </option>
+                    );
+                  })}
                 </StatusSelect>
+
               </FormGroup>
               <FormGroup>
                 <Label>Ghi chú</Label>
