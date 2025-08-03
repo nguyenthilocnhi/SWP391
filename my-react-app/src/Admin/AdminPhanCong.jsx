@@ -1041,51 +1041,16 @@ const AdminPhanCong = () => {
     department: 'all'
   });
 
-  // Mock data for appointments
-  const [appointments, setAppointments] = useState([
-    {
-      id: 1,
-      customerName: 'Nguyễn Thị Anh',
-      customerEmail: 'anh.nguyen@email.com',
-      customerPhone: '0901234567',
-      appointmentDate: '2024-02-15',
-      appointmentTime: '14:00',
-      consultationType: 'Tư vấn sức khỏe sinh sản',
-      status: 'pending',
-      assignedConsultant: null,
-      notes: 'Khách hàng muốn tư vấn về các vấn đề sức khỏe sinh sản'
-    },
-    {
-      id: 2,
-      customerName: 'Trần Văn Bình',
-      customerEmail: 'binh.tran@email.com',
-      customerPhone: '0902345678',
-      appointmentDate: '2024-02-16',
-      appointmentTime: '09:30',
-      consultationType: 'Tư vấn tâm lý',
-      status: 'assigned',
-      assignedConsultant: 'Dr. Nguyễn Thị Huyền',
-      notes: 'Khách hàng cần tư vấn về các vấn đề tâm lý'
-    },
-    {
-      id: 3,
-      customerName: 'Lê Thị Cẩm',
-      customerEmail: 'cam.le@email.com',
-      customerPhone: '0903456789',
-      appointmentDate: '2024-02-17',
-      appointmentTime: '16:00',
-      consultationType: 'Tư vấn dinh dưỡng',
-      status: 'completed',
-      assignedConsultant: 'Dr. Phạm Văn Minh',
-      notes: 'Khách hàng muốn tư vấn về chế độ dinh dưỡng'
-    }
-  ]);
+  // State for appointments from API
+  const [appointments, setAppointments] = useState([]);
+  const [loadingAppointments, setLoadingAppointments] = useState(true);
 
   // Mock data for consultants
   const [consultants, setConsultants] = useState([
     {
       id: 1,
       name: 'Dr. Nguyễn Thị Huyền',
+      email: 'matchamint120404@gmail.com',
       specialization: 'Sức khỏe sinh sản',
       experience: '8 năm',
       rating: 4.8,
@@ -1096,6 +1061,7 @@ const AdminPhanCong = () => {
     {
       id: 2,
       name: 'Dr. Phạm Văn Minh',
+      email: 'taetae30121995112@gmail.com',
       specialization: 'Tâm lý học',
       experience: '6 năm',
       rating: 4.6,
@@ -1106,6 +1072,7 @@ const AdminPhanCong = () => {
     {
       id: 3,
       name: 'Dr. Trần Thị Lan',
+      email: 'user3@example.com',
       specialization: 'Dinh dưỡng',
       experience: '5 năm',
       rating: 4.9,
@@ -1116,6 +1083,7 @@ const AdminPhanCong = () => {
     {
       id: 4,
       name: 'Dr. Hoàng Văn Nam',
+      email: 'user4@example.com',
       specialization: 'Sức khỏe tổng quát',
       experience: '10 năm',
       rating: 4.7,
@@ -1124,6 +1092,8 @@ const AdminPhanCong = () => {
       appointmentsCount: 20
     }
   ]);
+
+
   const getPriorityColor = (priority) => {
     switch (priority) {
       case 'high': return '#ef4444';
@@ -1190,6 +1160,55 @@ const AdminPhanCong = () => {
     }
   };
 
+  // Fetch appointments from API
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('https://api-gender2.purintech.id.vn/api/Appointment/get-all-advice-appointments', {
+          headers: {
+            'accept': '*/*',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          if (data.obj && Array.isArray(data.obj)) {
+            // Transform API data to match our component structure
+            const transformedAppointments = data.obj.map(item => ({
+              id: item.id,
+              customerName: item.fullName || item.customerName,
+              customerEmail: item.email || item.customerEmail,
+              customerPhone: item.phoneNumber || item.phone,
+              appointmentDate: item.appointmentDate,
+              appointmentTime: item.appointmentTime || item.time,
+              consultationType: item.consultationType || item.serviceType,
+              status: item.serviceStatus === 0 ? 'pending' : 
+                     item.serviceStatus === 1 ? 'assigned' : 
+                     item.serviceStatus === 2 ? 'completed' : 'pending',
+              assignedConsultant: item.consultantName || item.assignedConsultant,
+              notes: item.notes || item.description || 'Không có ghi chú'
+            }));
+            setAppointments(transformedAppointments);
+          } else {
+            setAppointments([]);
+          }
+        } else {
+          console.error('Failed to fetch appointments');
+          setAppointments([]);
+        }
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+        setAppointments([]);
+      } finally {
+        setLoadingAppointments(false);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
+
   const stats = [
     {
       icon: '📋',
@@ -1208,6 +1227,12 @@ const AdminPhanCong = () => {
       number: tasks.filter(t => t.status === 'completed').length,
       label: 'Hoàn thành',
       color: '#10b981'
+    },
+    {
+      icon: '📅',
+      number: appointments.length,
+      label: 'Lịch tư vấn',
+      color: '#8b5cf6'
     }
   ];
 
@@ -1307,53 +1332,73 @@ const AdminPhanCong = () => {
             ))}
 
             {/* Appointments Section */}
-            {appointments.map((appointment) => (
-              <UnifiedCard key={`appointment-${appointment.id}`} className={appointment.status}>
-                <CardHeader>
-                  <div>
-                    <CardTitle>{appointment.customerName}</CardTitle>
-                    <CardSubtitle>{appointment.appointmentDate} - {appointment.appointmentTime}</CardSubtitle>
-                  </div>
-                  <CardStatus className={appointment.status}>
-                    {appointment.status === 'pending' ? 'Chờ phân công' : appointment.status === 'assigned' ? 'Đã phân công' : 'Hoàn thành'}
-                  </CardStatus>
-                </CardHeader>
-                
-                <CardDescription>{appointment.consultationType}</CardDescription>
-                
-                <CardMeta>
-                  <span>Email: {appointment.customerEmail}</span>
-                  <span>SĐT: {appointment.customerPhone}</span>
-                </CardMeta>
-
-                <CardNotes>
-                  <strong>Ghi chú:</strong> {appointment.notes}
-                </CardNotes>
-
-                <CardActions>
-                  {appointment.assignedConsultant ? (
-                    <span style={{ fontSize: '14px', color: '#6b7280', background: '#f3f4f6', padding: '8px 12px', borderRadius: '8px' }}>
-                      👨‍⚕️ {appointment.assignedConsultant}
-                    </span>
-                  ) : (
-                    <Button
-                      className="small assign"
-                      onClick={() => setSelectedAppointment(appointment)}
-                    >
-                      Phân công
-                    </Button>
-                  )}
-                  
-                  <Button className="small edit">
-                    Sửa
-                  </Button>
-                  
-                  <Button className="small delete">
-                    Xóa
-                  </Button>
-                </CardActions>
+            {loadingAppointments ? (
+              <UnifiedCard>
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                  <div style={{ fontSize: '2rem', marginBottom: '16px' }}>⏳</div>
+                  <div style={{ color: '#6b7280' }}>Đang tải danh sách lịch tư vấn...</div>
+                </div>
               </UnifiedCard>
-            ))}
+            ) : appointments.length === 0 ? (
+              <UnifiedCard>
+                <div style={{ textAlign: 'center', padding: '40px' }}>
+                  <div style={{ fontSize: '2rem', marginBottom: '16px' }}>📅</div>
+                  <div style={{ color: '#6b7280' }}>Chưa có lịch tư vấn nào</div>
+                </div>
+              </UnifiedCard>
+            ) : (
+              appointments.map((appointment) => (
+                <UnifiedCard key={`appointment-${appointment.id}`} className={appointment.status}>
+                  <CardHeader>
+                    <div>
+                      <CardTitle>{appointment.customerName}</CardTitle>
+                      <CardSubtitle>{appointment.appointmentDate} - {appointment.appointmentTime}</CardSubtitle>
+                    </div>
+                    <CardStatus className={appointment.status}>
+                      {appointment.status === 'pending' ? 'Chờ phân công' : appointment.status === 'assigned' ? 'Đã phân công' : 'Hoàn thành'}
+                    </CardStatus>
+                  </CardHeader>
+                  
+                  <CardDescription>{appointment.consultationType}</CardDescription>
+                  
+                  <CardMeta>
+                    <span>Email: {appointment.customerEmail}</span>
+                    <span>SĐT: {appointment.customerPhone}</span>
+                  </CardMeta>
+
+                  <CardNotes>
+                    <strong>Ghi chú:</strong> {appointment.notes}
+                  </CardNotes>
+
+                  <CardActions>
+                    {appointment.status === 'completed' ? (
+                      <span style={{ fontSize: '14px', color: '#10b981', background: '#d1fae5', padding: '8px 12px', borderRadius: '8px', fontWeight: '600' }}>
+                        ✅ Đã hoàn thành
+                      </span>
+                    ) : appointment.assignedConsultant ? (
+                      <span style={{ fontSize: '14px', color: '#6b7280', background: '#f3f4f6', padding: '8px 12px', borderRadius: '8px' }}>
+                        👨‍⚕️ {appointment.assignedConsultant}
+                      </span>
+                    ) : (
+                      <Button
+                        className="small assign"
+                        onClick={() => setSelectedAppointment(appointment)}
+                      >
+                        Phân công
+                      </Button>
+                    )}
+                    
+                    <Button className="small edit">
+                      Sửa
+                    </Button>
+                    
+                    <Button className="small delete">
+                      Xóa
+                    </Button>
+                  </CardActions>
+                </UnifiedCard>
+              ))
+            )}
           </UnifiedGrid>
         </ContentWrapper>
       </MainContent>
@@ -1434,11 +1479,13 @@ const AdminPhanCong = () => {
                   key={consultant.id}
                   className={consultant.status}
                   onClick={() => {
+                    // Update appointment status
                     setAppointments(prev => prev.map(app => 
                       app.id === selectedAppointment.id 
                         ? { ...app, assignedConsultant: consultant.name, status: 'assigned' }
                         : app
                     ));
+                    alert(`Đã phân công tư vấn viên ${consultant.name} thành công!`);
                     setSelectedAppointment(null);
                   }}
                 >

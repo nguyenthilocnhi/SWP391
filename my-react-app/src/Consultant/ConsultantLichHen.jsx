@@ -77,7 +77,7 @@ const [suggestionText, setSuggestionText] = useState("");
     // Fetch API
     const fetchAppointments = async () => {
       try {
-        const res = await fetch('https://api-gender2.purintech.id.vn/api/Appointment/get-all-advice-appointments', {
+        const res = await fetch('https://api-gender2.purintech.id.vn/api/Appointment/get-all-advice-appointments-by-consultant', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'accept': '*/*'
