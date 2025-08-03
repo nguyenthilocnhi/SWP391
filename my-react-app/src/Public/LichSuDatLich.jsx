@@ -230,14 +230,13 @@ function LichSuDatLich() {
             }}
           >
             <option value="all">Tất cả trạng thái</option>
-            <option value="Chờ xử lý">Chờ xử lý</option>
             <option value="Chờ xác nhận">Chờ xác nhận</option>
             <option value="Đã xác nhận">Đã xác nhận</option>
             <option value="Đã lấy mẫu">Đã lấy mẫu</option>
             <option value="Chờ kết quả">Chờ kết quả</option>
             <option value="Đã trả kết quả">Đã trả kết quả</option>
-            <option value="Đã thanh toán">Đã thanh toán</option>
-            <option value="Đã hủy">Đã hủy</option>
+            <option value="Hoàn thành">Hoàn thành</option>
+            <option value="Không tới">Đã hủy</option>
           </select>
         </div>
         <table style={styles.table}>
