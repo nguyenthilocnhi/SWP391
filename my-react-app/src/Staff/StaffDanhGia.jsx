@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import StaffSidebar from '../components/staffSidebar';
 import StaffHeader from '../components/staffHeader';
@@ -86,6 +86,8 @@ const Td = styled.td`
   text-align: center;
   vertical-align: middle;
   border-bottom: 1px solid #f0f0f0;
+  max-width: 200px;
+  word-wrap: break-word;
 `;
 const Tr = styled.tr``;
 const ActionBtn = styled.button`
@@ -262,46 +264,83 @@ const ModalTextarea = styled.textarea`
   margin-bottom: 16px;
 `;
 
-const sampleReviews = [
-  {
-    customer: 'Nguyễn Văn A',
-    service: 'HIV Ag/Ab Combo',
-    rating: 5,
-    comment: 'Dịch vụ rất tốt, nhân viên nhiệt tình!',
-    date: '2025-07-01',
-    status: 'Chưa xử lý'
-  },
-  {
-    customer: 'Trần Thị B',
-    service: 'Viêm gan B',
-    rating: 4,
-    comment: 'Thời gian chờ hơi lâu nhưng nhân viên thân thiện.',
-    date: '2025-07-02',
-    status: 'Chưa xử lý'
-  },
-  {
-    customer: 'Lê Văn C',
-    service: 'Giang mai TPHA',
-    rating: 3,
-    comment: 'Cần cải thiện khâu tiếp nhận.',
-    date: '2025-07-03',
-    status: 'Đã xử lý'
-  }
-];
+const LoadingSpinner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: #09a370;
+`;
+
+const ErrorMessage = styled.div`
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  text-align: center;
+`;
 
 function StaffDanhGia() {
-  const [reviews, setReviews] = useState(sampleReviews);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalIdx, setModalIdx] = useState(null);
   const [response, setResponse] = useState('');
 
+  // Fetch feedback data from API
+  useEffect(() => {
+    const fetchFeedback = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch('https://api-gender2.purintech.id.vn/api/Feedback');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        
+        if (result.code === 200 && result.obj) {
+          // Transform API data to match our component structure
+          const transformedData = result.obj.map(feedback => ({
+            id: feedback.id,
+            customer: feedback.customerName || 'Khách hàng',
+            service: 'Dịch vụ xét nghiệm', // Default service name
+            rating: feedback.point || 5,
+            comment: feedback.comment || 'Không có bình luận',
+            date: feedback.createdAt ? new Date(feedback.createdAt).toLocaleDateString('vi-VN') : new Date().toLocaleDateString('vi-VN'),
+            status: feedback.isProcessed ? 'Đã xử lý' : 'Chưa xử lý',
+            staffResponse: null, // API doesn't provide staff response yet
+            appointmentId: feedback.appointmentId
+          }));
+          
+          setReviews(transformedData);
+        } else {
+          throw new Error(result.message || 'Không thể tải dữ liệu đánh giá');
+        }
+      } catch (err) {
+        console.error('Error fetching feedback:', err);
+        setError('Không thể tải dữ liệu đánh giá. Vui lòng thử lại sau.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeedback();
+  }, []);
+
   const filtered = reviews.filter(r =>
     (filter === 'all' || r.rating === Number(filter)) &&
     (r.customer.toLowerCase().includes(search.toLowerCase()) ||
-      r.service.toLowerCase().includes(search.toLowerCase()) ||
-      r.comment.toLowerCase().includes(search.toLowerCase()))
+      r.comment.toLowerCase().includes(search.toLowerCase()) ||
+      (r.appointmentId && r.appointmentId.toString().includes(search)))
   );
 
   // Summary calculations (use filtered data)
@@ -310,8 +349,28 @@ function StaffDanhGia() {
   const starCounts = [1,2,3,4,5].map(star => filtered.filter(r => r.rating === star).length);
   const maxStarCount = Math.max(...starCounts, 1);
 
-  const handleMarkHandled = idx => {
-    setReviews(arr => arr.map((r, i) => i === idx ? { ...r, status: 'Đã xử lý' } : r));
+  const handleMarkHandled = async (idx) => {
+    const feedback = reviews[idx];
+    try {
+      // Here you would typically make an API call to mark the feedback as processed
+      // For now, we'll just update the local state
+      setReviews(arr => arr.map((r, i) => i === idx ? { ...r, status: 'Đã xử lý' } : r));
+      
+      // Example API call (uncomment when backend is ready):
+      // const response = await fetch(`https://api-gender2.purintech.id.vn/api/Feedback/${feedback.id}/process`, {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ isProcessed: true })
+      // });
+      // if (!response.ok) throw new Error('Failed to update status');
+      
+    } catch (error) {
+      console.error('Error marking feedback as handled:', error);
+      // Revert the change if API call fails
+      setReviews(arr => arr.map((r, i) => i === idx ? { ...r, status: 'Chưa xử lý' } : r));
+    }
   };
 
   const handleOpenModal = idx => {
@@ -319,17 +378,56 @@ function StaffDanhGia() {
     setResponse(reviews[idx].staffResponse || '');
     setModalOpen(true);
   };
+  
   const handleCloseModal = () => {
     setModalOpen(false);
     setModalIdx(null);
     setResponse('');
   };
-  const handleSubmitResponse = e => {
+  
+  const handleSubmitResponse = async (e) => {
     e.preventDefault();
     if (response.length === 0 || response.length > 150) return;
-    setReviews(arr => arr.map((r, i) => i === modalIdx ? { ...r, status: 'Đã xử lý', staffResponse: response } : r));
-    handleCloseModal();
+    
+    const feedback = reviews[modalIdx];
+    try {
+      // Here you would typically make an API call to save the staff response
+      // For now, we'll just update the local state
+      setReviews(arr => arr.map((r, i) => i === modalIdx ? { ...r, status: 'Đã xử lý', staffResponse: response } : r));
+      
+      // Example API call (uncomment when backend is ready):
+      // const apiResponse = await fetch(`https://api-gender2.purintech.id.vn/api/Feedback/${feedback.id}/respond`, {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ 
+      //     isProcessed: true,
+      //     staffResponse: response 
+      //   })
+      // });
+      // if (!apiResponse.ok) throw new Error('Failed to save response');
+      
+      handleCloseModal();
+    } catch (error) {
+      console.error('Error saving staff response:', error);
+      // You might want to show an error message to the user here
+    }
   };
+
+  if (loading) {
+    return (
+      <Container>
+        <StaffSidebar />
+        <ContentArea>
+          <StaffHeader />
+          <Section>
+            <LoadingSpinner>Đang tải dữ liệu đánh giá...</LoadingSpinner>
+          </Section>
+        </ContentArea>
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -341,7 +439,7 @@ function StaffDanhGia() {
             <SectionTitle>Đánh giá dịch vụ xét nghiệm</SectionTitle>
             <div style={{display:'flex',alignItems:'center'}}>
               <SearchInput
-                placeholder="Tìm kiếm khách hàng, dịch vụ hoặc nội dung..."
+                placeholder="Tìm kiếm khách hàng, nội dung hoặc ID cuộc hẹn..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
@@ -355,6 +453,9 @@ function StaffDanhGia() {
               </FilterSelect>
             </div>
           </SectionHeader>
+          
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          
           {/* Redesigned Summary Box */}
           <SummaryBox>
             <SummaryTop>
@@ -376,46 +477,54 @@ function StaffDanhGia() {
               ))}
             </StarBreakdown>
           </SummaryBox>
-          <Table>
-            <Thead>
-              <Tr>
-                <Th>Khách hàng</Th>
-                <Th>Dịch vụ</Th>
-                <Th>Đánh giá</Th>
-                <Th>Bình luận</Th>
-                <Th>Ngày</Th>
-                <Th>Trạng thái</Th>
-                <Th>Phản hồi NV</Th>
-                <Th>Hành động</Th>
-              </Tr>
-            </Thead>
-            <tbody>
-              {filtered.map((row, idx) => (
-                <Tr key={idx}>
-                  <Td>{row.customer}</Td>
-                  <Td>{row.service}</Td>
-                  <Td><RatingStars>{'★'.repeat(row.rating)}{'☆'.repeat(5-row.rating)}</RatingStars></Td>
-                  <Td>{row.comment}</Td>
-                  <Td>{row.date}</Td>
-                  <Td><StatusTag status={row.status}>{row.status}</StatusTag></Td>
-                  <Td>{row.staffResponse || <span style={{color:'#aaa'}}>—</span>}</Td>
-                  <Td>
-                    {row.status !== 'Đã xử lý' && (
-                      <>
-                        <CheckBtn
-                          title="Đánh dấu đã xử lý"
-                          onClick={() => handleMarkHandled(idx)}
-                        >
-                          <i className="fas fa-check"></i>
-                        </CheckBtn>
-                        <ActionBtn onClick={() => handleOpenModal(idx)} style={{background:'#f59e42', color:'#fff', marginLeft: 8}}>Xử lý</ActionBtn>
-                      </>
-                    )}
-                  </Td>
+          
+          {filtered.length === 0 ? (
+            <div style={{textAlign: 'center', padding: '2rem', color: '#666'}}>
+              {search || filter !== 'all' ? 'Không tìm thấy đánh giá nào phù hợp với bộ lọc.' : 'Chưa có đánh giá nào.'}
+            </div>
+          ) : (
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>ID</Th>
+                  <Th>Khách hàng</Th>
+                  <Th>Đánh giá</Th>
+                  <Th>Bình luận</Th>
+                  <Th>Ngày tạo</Th>
+                  <Th>Trạng thái</Th>
+                  <Th>Phản hồi NV</Th>
+                  <Th>Hành động</Th>
                 </Tr>
-              ))}
-            </tbody>
-          </Table>
+              </Thead>
+              <tbody>
+                {filtered.map((row, idx) => (
+                  <Tr key={row.id || idx}>
+                    <Td>#{row.appointmentId || row.id}</Td>
+                    <Td>{row.customer}</Td>
+                    <Td><RatingStars>{'★'.repeat(row.rating)}{'☆'.repeat(5-row.rating)}</RatingStars></Td>
+                    <Td style={{maxWidth: '200px', wordWrap: 'break-word'}}>{row.comment}</Td>
+                    <Td>{row.date}</Td>
+                    <Td><StatusTag status={row.status}>{row.status}</StatusTag></Td>
+                    <Td>{row.staffResponse || <span style={{color:'#aaa'}}>—</span>}</Td>
+                    <Td>
+                      {row.status !== 'Đã xử lý' && (
+                        <>
+                          <CheckBtn
+                            title="Đánh dấu đã xử lý"
+                            onClick={() => handleMarkHandled(idx)}
+                          >
+                            <i className="fas fa-check"></i>
+                          </CheckBtn>
+                          <ActionBtn onClick={() => handleOpenModal(idx)} style={{background:'#f59e42', color:'#fff', marginLeft: 8}}>Xử lý</ActionBtn>
+                        </>
+                      )}
+                    </Td>
+                  </Tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+          
           {/* Modal for staff response */}
           <ModalOverlay open={modalOpen}>
             <ModalContent>
