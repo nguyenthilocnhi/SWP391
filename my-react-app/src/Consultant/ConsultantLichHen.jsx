@@ -98,7 +98,7 @@ const appointmentsWithLinks = newList.map((a) => {
   return a;
 });
 // Sắp xếp theo thời gian tạo lịch gần nhất lên đầu
-appointmentsWithLinks.sort((a, b) => new Date(b.createdAt || b.appointmentDate) - new Date(a.createdAt || a.appointmentDate));
+
 setAppointments(appointmentsWithLinks);
 
       } catch (error) {
