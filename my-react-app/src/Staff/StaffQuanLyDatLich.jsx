@@ -347,9 +347,16 @@ function StaffQuanLyDatLich() {
       const currentCode = getStatusCode(appointment.status);
       const newCode = getStatusCode(form.status);
 
-      // ✅ Kiểm tra nếu cố gắng quay lại trạng thái trước đó
+      // Kiểm tra nếu cố gắng quay lại trạng thái trước đó
       if (newCode < currentCode) {
         alert('Không thể quay lại trạng thái trước đó!');
+        return;
+      }
+
+      // Kiểm tra không cho phép nhảy cóc trạng thái (chỉ được chuyển đến trạng thái tiếp theo)
+      // Ngoại lệ: "Không tới" có thể được chọn từ bất kỳ trạng thái nào
+      if (newCode > currentCode + 1 && newCode !== 8) {
+        alert('Không thể nhảy cóc trạng thái! Chỉ được chuyển đến trạng thái tiếp theo.');
         return;
       }
 
@@ -391,6 +398,22 @@ function StaffQuanLyDatLich() {
     const appointmentId = appointment.id;
 
     try {
+      const currentCode = getStatusCode(appointment.status);
+      const newCode = getStatusCode(newStatus);
+
+      // Kiểm tra nếu cố gắng quay lại trạng thái trước đó
+      if (newCode < currentCode) {
+        alert('Không thể quay lại trạng thái trước đó!');
+        return;
+      }
+
+      // Kiểm tra không cho phép nhảy cóc trạng thái (chỉ được chuyển đến trạng thái tiếp theo)
+      // Ngoại lệ: "Không tới" có thể được chọn từ bất kỳ trạng thái nào
+      if (newCode > currentCode + 1 && newCode !== 8) {
+        alert('Không thể nhảy cóc trạng thái! Chỉ được chuyển đến trạng thái tiếp theo.');
+        return;
+      }
+
       const token = localStorage.getItem('token');
       const response = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-result/${appointmentId}/approve`, {
         method: 'PUT',
@@ -522,15 +545,18 @@ function StaffQuanLyDatLich() {
                   onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
                   required
                 >
-                  {statusOptions.map(opt => {
-                    const currentCode = getStatusCode(form.status);
-                    const optCode = getStatusCode(opt);
-                    return (
-                      <option key={opt} value={opt} disabled={optCode < currentCode}>
-                        {opt}
-                      </option>
-                    );
-                  })}
+                                     {statusOptions.map(opt => {
+                     const currentCode = getStatusCode(form.status);
+                     const optCode = getStatusCode(opt);
+                     // Chỉ cho phép chọn trạng thái hiện tại hoặc trạng thái tiếp theo
+                     // Ngoại lệ: "Không tới" có thể được chọn từ bất kỳ trạng thái nào
+                     const isDisabled = optCode < currentCode || (optCode > currentCode + 1 && optCode !== 8);
+                     return (
+                       <option key={opt} value={opt} disabled={isDisabled}>
+                         {opt}
+                       </option>
+                     );
+                   })}
                 </StatusSelect>
 
               </FormGroup>

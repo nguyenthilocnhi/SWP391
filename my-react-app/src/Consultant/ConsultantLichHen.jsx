@@ -44,10 +44,14 @@ const [suggestionText, setSuggestionText] = useState("");
   // Hàm lấy text trạng thái
   const getStatusText = (serviceStatus) => {
     switch (serviceStatus) {
-      case 0: return 'Đang chờ';
-      case 2: return 'Đã nhận';
-      case 4: return 'Đã hoàn thành';
-      default: return 'Đang chờ';
+      case 0: return 'Chờ xác nhận';
+      case 1: return 'Đã xác nhận';
+      case 2: return 'Đã tới';
+      case 3: return 'Đang thực hiện';
+      case 4: return 'Đã tư vấn';
+      case 5: return 'Hoàn thành';
+      case 6: return 'Không tới';
+      default: return 'Chờ xác nhận';
     }
   };
 
@@ -133,9 +137,9 @@ setAppointments(appointmentsWithLinks);
         'accept': '*/*',
       },
       body: JSON.stringify({
-        serviceStatus: 2,
+        serviceStatus: 1,
         note: currentAppointment.note || '',
-        suggestion: ''  // dùng chung nếu không có trường suggestion riêng
+        suggestion: ''
       })
     });
 
@@ -145,12 +149,70 @@ setAppointments(appointmentsWithLinks);
       return;
     }
 
-    alert('Duyệt thành công!');
+    alert('Xác nhận thành công!');
     setAppointments(prev =>
-      prev.map(a => a.id === id ? { ...a, serviceStatus: 2 } : a)
+      prev.map(a => a.id === id ? { ...a, serviceStatus: 1 } : a)
     );
   } catch (error) {
-    alert('Có lỗi xảy ra khi duyệt lịch hẹn!');
+    alert('Có lỗi xảy ra khi xác nhận lịch hẹn!');
+    console.error(error);
+  }
+};
+
+// Hàm cập nhật trạng thái chung
+const updateStatus = async (id, newStatus) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Bạn cần đăng nhập để thao tác!');
+    return;
+  }
+
+  const currentAppointment = appointments.find(a => a.id === id);
+  if (!currentAppointment) {
+    alert('Không tìm thấy lịch hẹn!');
+    return;
+  }
+
+  // Kiểm tra không cho phép quay lại trạng thái trước đó
+  if (newStatus < currentAppointment.serviceStatus) {
+    alert('Không thể quay lại trạng thái trước đó!');
+    return;
+  }
+
+  // Kiểm tra không cho phép nhảy cóc trạng thái
+  if (newStatus > currentAppointment.serviceStatus + 1) {
+    alert('Không thể nhảy cóc trạng thái! Chỉ được chuyển đến trạng thái tiếp theo.');
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/approve`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'accept': '*/*',
+      },
+      body: JSON.stringify({
+        serviceStatus: newStatus,
+        note: currentAppointment.note || '',
+        suggestion: ''
+      })
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      alert('Lỗi: ' + (data.message || JSON.stringify(data)));
+      return;
+    }
+
+    const statusText = getStatusText(newStatus);
+    alert(`Cập nhật trạng thái thành công: ${statusText}`);
+    setAppointments(prev =>
+      prev.map(a => a.id === id ? { ...a, serviceStatus: newStatus } : a)
+    );
+  } catch (error) {
+    alert('Có lỗi xảy ra khi cập nhật trạng thái!');
     console.error(error);
   }
 };
@@ -165,7 +227,7 @@ const handleComplete = async (id) => {
   // Tìm lịch hẹn tương ứng
   const currentAppointment = appointments.find(a => a.id === id);
   if (!currentAppointment) {
-    alert('Không tìm thấy lịch hẹn để duyệt!');
+    alert('Không tìm thấy lịch hẹn để hoàn thành!');
     return;
   }
 
@@ -178,9 +240,9 @@ const handleComplete = async (id) => {
         'accept': '*/*',
       },
       body: JSON.stringify({
-        serviceStatus: 4,
+        serviceStatus: 5,
         note: currentAppointment.note || '',
-        suggestion: suggestionText    // dùng chung nếu không có trường suggestion riêng
+        suggestion: suggestionText
       })
     });
 
@@ -192,7 +254,7 @@ const handleComplete = async (id) => {
 
     alert('Hoàn thành lịch hẹn thành công!');
     setAppointments(prev =>
-      prev.map(a => a.id === id ? { ...a, serviceStatus: 4 } : a)
+      prev.map(a => a.id === id ? { ...a, serviceStatus: 5 } : a)
     );
     setShowPopup(false);
     setSuggestionText("");
@@ -314,10 +376,14 @@ const handleComplete = async (id) => {
                   outline: 'none',
                 }}
               >
-                <option value="all">Tất cả trạng thái</option>
-                <option value="Đang chờ">Đang chờ</option>
-                <option value="Đã nhận">Đã nhận</option>
-                <option value="Đã hoàn thành">Đã hoàn thành</option>
+                                 <option value="all">Tất cả trạng thái</option>
+                 <option value="Chờ xác nhận">Chờ xác nhận</option>
+                 <option value="Đã xác nhận">Đã xác nhận</option>
+                 <option value="Đã tới">Đã tới</option>
+                 <option value="Đang thực hiện">Đang thực hiện</option>
+                 <option value="Đã tư vấn">Đã tư vấn</option>
+                 <option value="Hoàn thành">Hoàn thành</option>
+                 <option value="Không tới">Không tới</option>
               </select>
             </div>
             {filteredAppointments.length === 0 ? (
@@ -375,72 +441,133 @@ const handleComplete = async (id) => {
                           ) : '-'}
                         </td>
                         <td>
-                        <span style={{
-  padding: '4px 8px',
-  borderRadius: '6px',
-  fontSize: '0.9rem',
-  fontWeight: 600,
-  backgroundColor:
-    a.serviceStatus === 0 ? '#d1fae5' :       // xanh lá
-    a.serviceStatus === 2 ? '#fa7674ff' :       // xanh dương
-    a.serviceStatus === 4 ? '#fee2e2' : '#fef3c7'
-}}>
-  {
-    a.serviceStatus === 0 ? 'Đang chờ' :
-    a.serviceStatus === 2 ? 'Đã nhận' :
-    a.serviceStatus === 4 ? 'Đã hoàn thành' : 'Đã hoàn thành'
-  }
-</span>
+                                                 <span style={{
+   padding: '4px 8px',
+   borderRadius: '6px',
+   fontSize: '0.9rem',
+   fontWeight: 600,
+   backgroundColor:
+     a.serviceStatus === 0 ? '#fef3c7' :       // vàng - chờ xác nhận
+     a.serviceStatus === 1 ? '#dbeafe' :       // xanh dương - đã xác nhận
+     a.serviceStatus === 2 ? '#d1fae5' :       // xanh lá - đã tới
+     a.serviceStatus === 3 ? '#fef3c7' :       // vàng - đang thực hiện
+     a.serviceStatus === 4 ? '#d1fae5' :       // xanh lá - đã tư vấn
+     a.serviceStatus === 5 ? '#d1fae5' :       // xanh lá - hoàn thành
+     a.serviceStatus === 6 ? '#fee2e2' : '#fef3c7'  // đỏ - không tới
+ }}>
+   {getStatusText(a.serviceStatus)}
+ </span>
 </td>
                         <td>
-  <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-    {a.serviceStatus === 0 && (
-      <button
-        className="lh-btn-detail"
-        onClick={() => handleApprove(a.id)}
-        style={{
-          fontSize: '0.85rem',
-          padding: '4px 8px',
-        }}
-      >
-        Duyệt
-      </button>
-    )}
+     <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+     {a.serviceStatus === 0 && (
+       <button
+         className="lh-btn-detail"
+         onClick={() => updateStatus(a.id, 1)}
+         style={{
+           fontSize: '0.85rem',
+           padding: '4px 8px',
+         }}
+       >
+         Xác nhận
+       </button>
+     )}
 
-    {a.serviceStatus === 2 && (
-      <button
-        className="lh-btn-detail"
+     {a.serviceStatus === 1 && (
+       <button
+         className="lh-btn-detail"
+         onClick={() => updateStatus(a.id, 2)}
+         style={{
+           fontSize: '0.85rem',
+           padding: '4px 8px',
+           backgroundColor: '#3b82f6',
+           color: 'white',
+         }}
+       >
+         Đã tới
+       </button>
+     )}
+
+     {a.serviceStatus === 2 && (
+       <button
+         className="lh-btn-detail"
+         onClick={() => updateStatus(a.id, 3)}
+         style={{
+           fontSize: '0.85rem',
+           padding: '4px 8px',
+           backgroundColor: '#f59e0b',
+           color: 'white',
+         }}
+       >
+         Bắt đầu
+       </button>
+     )}
+
+     {a.serviceStatus === 3 && (
+       <button
+         className="lh-btn-detail"
+         onClick={() => updateStatus(a.id, 4)}
+         style={{
+           fontSize: '0.85rem',
+           padding: '4px 8px',
+           backgroundColor: '#10b981',
+           color: 'white',
+         }}
+       >
+         Đã tư vấn
+       </button>
+     )}
+
+     {a.serviceStatus === 4 && (
+       <button
+         className="lh-btn-detail"
          onClick={() => {
-      setSelectedAppointmentId(a.id);  // lưu ID lịch hẹn
-      setShowPopup(true);              // mở popup
-    }}
-        style={{
-          fontSize: '0.85rem',
-          padding: '4px 8px',
-          backgroundColor: '#10b981', // xanh lá nhẹ
-          color: 'white',
-        }}
-      >
-        Hoàn thành
-      </button>
-    )}
+           setSelectedAppointmentId(a.id);
+           setShowPopup(true);
+         }}
+         style={{
+           fontSize: '0.85rem',
+           padding: '4px 8px',
+           backgroundColor: '#10b981',
+           color: 'white',
+         }}
+       >
+         Hoàn thành
+       </button>
+     )}
 
-    {a.serviceStatus === 4 && (
-      <button
-        className="lh-btn-detail"
-        style={{
-          fontSize: '0.85rem',
-          padding: '4px 8px',
-          backgroundColor: '#d1d5db',
-          color: '#6b7280',
-          cursor: 'not-allowed',
-        }}
-        disabled
-      >
-        Đã hoàn thành
-      </button>
-    )}
-  </div>
+     {a.serviceStatus === 5 && (
+       <button
+         className="lh-btn-detail"
+         style={{
+           fontSize: '0.85rem',
+           padding: '4px 8px',
+           backgroundColor: '#d1d5db',
+           color: '#6b7280',
+           cursor: 'not-allowed',
+         }}
+         disabled
+       >
+         Đã hoàn thành
+       </button>
+     )}
+
+     {/* Nút "Không tới" có thể được chọn từ bất kỳ trạng thái nào */}
+     {a.serviceStatus !== 6 && (
+       <button
+         className="lh-btn-detail"
+         onClick={() => updateStatus(a.id, 6)}
+         style={{
+           fontSize: '0.85rem',
+           padding: '4px 8px',
+           backgroundColor: '#ef4444',
+           color: 'white',
+         }}
+       >
+         Không tới
+       </button>
+     )}
+   </div>
 </td>
 
                       </tr>
