@@ -192,12 +192,10 @@ const LichSuDichVu = () => {
 
   // Hàm chuyển đổi trạng thái từ code sang text
   const convertStatus = (serviceStatus) => {
-    switch (serviceStatus) {
-      case 1: return 'Đã thanh toán';
-      case 2: return 'Đang chờ';
-      case 4: return 'Hoàn tất';
+    switch (serviceStatus) {     
+      case 5: return 'Hoàn tất';
       case 6: return 'Đã đánh giá';
-      default: return 'Đang chờ duyệt';
+      default: return 'Không xác định';
     }
   };
 
@@ -212,6 +210,7 @@ const LichSuDichVu = () => {
       case 'Đã hủy':
         return { color: '#ef4444', fontWeight: 600 };
       case 'Đang chờ':
+      case 'Không xác định':  
       default:
         return { color: '#f59e42', fontWeight: 600 };
     }
@@ -240,7 +239,9 @@ const LichSuDichVu = () => {
 
       const json = await res.json();
       if (json.code === 200) {
-        const mappedData = json.obj.map(item => ({
+        const mappedData = json.obj
+        .filter(item => item.serviceStatus === 5 || item.serviceStatus === 6)
+        .map(item => ({
           id: item.id,
           ten: item.consultationType,
           ngayThucHien: new Date(item.appointmentDate).toLocaleDateString("vi-VN", {

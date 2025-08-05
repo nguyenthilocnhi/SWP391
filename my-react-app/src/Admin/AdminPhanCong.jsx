@@ -1048,7 +1048,7 @@ const AdminPhanCong = () => {
   // Mock data for consultants
   const [consultants, setConsultants] = useState([
     {
-      id: 1,
+      id: 1045,
       name: 'Dr. Nguyễn Thị Huyền',
       email: 'matchamint120404@gmail.com',
       specialization: 'Sức khỏe sinh sản',
@@ -1070,7 +1070,7 @@ const AdminPhanCong = () => {
       appointmentsCount: 8
     },
     {
-      id: 3,
+      id: 1047,
       name: 'Dr. Trần Thị Lan',
       email: 'user3@example.com',
       specialization: 'Dinh dưỡng',
@@ -1081,7 +1081,7 @@ const AdminPhanCong = () => {
       appointmentsCount: 15
     },
     {
-      id: 4,
+      id: 1048,
       name: 'Dr. Hoàng Văn Nam',
       email: 'user4@example.com',
       specialization: 'Sức khỏe tổng quát',
@@ -1185,12 +1185,13 @@ const AdminPhanCong = () => {
               appointmentTime: item.appointmentTime || item.time,
               consultationType: item.consultationType || item.serviceType,
               status: item.serviceStatus === 0 ? 'pending' : 
-                     item.serviceStatus === 1 ? 'assigned' : 
-                     item.serviceStatus === 2 ? 'completed' : 'pending',
+                     [2, 3, 4].includes(item.serviceStatus)  ? 'assigned' : 
+                     item.serviceStatus >= 5 ? 'completed' : 'unidentified',
               assignedConsultant: item.consultantName || item.assignedConsultant,
-              notes: item.notes || item.description || 'Không có ghi chú'
+              notes: item.note || item.description || 'Không có ghi chú'
             }));
-            setAppointments(transformedAppointments);
+            const filteredAppointments = transformedAppointments.filter(item => item.status !== 'unidentified');
+            setAppointments(filteredAppointments);
           } else {
             setAppointments([]);
           }
@@ -1299,35 +1300,32 @@ const AdminPhanCong = () => {
                 </CardProgress>
 
                 <CardActions>
-                  {task.assignedTo ? (
-                    <span style={{ fontSize: '14px', color: '#6b7280', background: '#f3f4f6', padding: '8px 12px', borderRadius: '8px' }}>
-                      👤 {task.assignedTo}
-                    </span>
-                  ) : (
-                    <Button
-                      className="small assign"
-                      onClick={() => {
-                        setSelectedTask(task);
-                        setShowAssignModal(true);
-                      }}
-                    >
-                      Phân công
-                    </Button>
-                  )}
-                  
-                  <Button className="small edit">
-                    Sửa
-                  </Button>
-                  
-                  <Button
-                    className="small delete"
-                    onClick={() => {
-                      setTasks(prev => prev.filter(t => t.id !== task.id));
-                    }}
-                  >
-                    Xóa
-                  </Button>
-                </CardActions>
+  {appointment.status === 'completed' ? (
+    <span style={{ fontSize: '14px', color: '#10b981', background: '#d1fae5', padding: '8px 12px', borderRadius: '8px', fontWeight: '600' }}>
+      ✅ Đã hoàn thành
+    </span>
+  ) : appointment.status === 'assigned' && appointment.assignedConsultant ? (
+    <span style={{ fontSize: '14px', color: '#6b7280', background: '#f3f4f6', padding: '8px 12px', borderRadius: '8px' }}>
+      👨‍⚕️ {appointment.assignedConsultant}
+    </span>
+  ) : appointment.status === 'pending' ? (
+    <Button
+      className="small assign"
+      onClick={() => setSelectedAppointment(appointment)}
+    >
+      Phân công
+    </Button>
+  ) : null}
+  
+  <Button
+  className="small edit"
+  onClick={() => setSelectedAppointment(appointment)}
+>
+  Sửa
+</Button>
+  <Button className="small delete">Xóa</Button>
+</CardActions>
+
               </UnifiedCard>
             ))}
 
@@ -1388,11 +1386,16 @@ const AdminPhanCong = () => {
                       </Button>
                     )}
                     
-                    <Button className="small edit">
-                      Sửa
-                    </Button>
+                     {appointment.status === 'assigned' && (
+    <Button
+      className="small edit"
+      onClick={() => setSelectedAppointment(appointment)}
+    >
+      Sửa
+    </Button>
+  )}
                     
-                    <Button className="small delete">
+                    <Button className="small delete" >
                       Xóa
                     </Button>
                   </CardActions>
@@ -1478,16 +1481,53 @@ const AdminPhanCong = () => {
                 <ConsultantCard
                   key={consultant.id}
                   className={consultant.status}
-                  onClick={() => {
-                    // Update appointment status
-                    setAppointments(prev => prev.map(app => 
-                      app.id === selectedAppointment.id 
-                        ? { ...app, assignedConsultant: consultant.name, status: 'assigned' }
-                        : app
-                    ));
-                    alert(`Đã phân công tư vấn viên ${consultant.name} thành công!`);
-                    setSelectedAppointment(null);
-                  }}
+                  onClick={async () => {
+  if (consultant.status === 'busy') return;
+
+  try {
+    const token = localStorage.getItem('token');
+    const appointmentId = selectedAppointment.id;
+
+    // Lấy note và suggestion hiện tại (nếu có)
+    const note = selectedAppointment.notes || '';
+    const suggestion = ''; // nếu bạn không lưu suggestion thì để rỗng
+
+    const response = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${appointmentId}/approve-for-consultant`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify({
+        serviceStatus: 2,
+        note: note,
+        suggestion: suggestion,
+        consultantId: consultant.id
+      })
+    });
+
+    if (response.ok) {
+      // Cập nhật appointment trong state
+      setAppointments(prev =>
+        prev.map(app =>
+          app.id === appointmentId
+            ? { ...app, status: 'assigned', assignedConsultant: consultant.name }
+            : app
+        )
+      );
+
+      alert(`Đã phân công và hoàn thành lịch tư vấn với ${consultant.name}`);
+    } else {
+      alert('Lỗi khi gửi yêu cầu cập nhật');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Lỗi kết nối máy chủ');
+  }
+
+  setSelectedAppointment(null);
+}}
+
                 >
                   <ConsultantAvatar>{consultant.avatar}</ConsultantAvatar>
                   <ConsultantName>{consultant.name}</ConsultantName>

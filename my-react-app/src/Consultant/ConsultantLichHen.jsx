@@ -44,14 +44,14 @@ const [suggestionText, setSuggestionText] = useState("");
   // Hàm lấy text trạng thái
   const getStatusText = (serviceStatus) => {
     switch (serviceStatus) {
-      case 0: return 'Chờ xác nhận';
-      case 1: return 'Đã xác nhận';
-      case 2: return 'Đã tới';
+      
+      case 2: return 'Đã duyệt';
       case 3: return 'Đang thực hiện';
       case 4: return 'Đã tư vấn';
       case 5: return 'Hoàn thành';
-      case 6: return 'Không tới';
-      default: return 'Chờ xác nhận';
+      case 6: return 'Đã đánh giá';
+      case 7: return 'Không tới';
+      default: return 'Chờ rõ';
     }
   };
 
@@ -137,7 +137,8 @@ setAppointments(appointmentsWithLinks);
         'accept': '*/*',
       },
       body: JSON.stringify({
-        serviceStatus: 1,
+        serviceStatus:
+         1,
         note: currentAppointment.note || '',
         suggestion: ''
       })
@@ -180,10 +181,10 @@ const updateStatus = async (id, newStatus) => {
   }
 
   // Kiểm tra không cho phép nhảy cóc trạng thái
-  if (newStatus > currentAppointment.serviceStatus + 1) {
-    alert('Không thể nhảy cóc trạng thái! Chỉ được chuyển đến trạng thái tiếp theo.');
-    return;
-  }
+  //if (newStatus > currentAppointment.serviceStatus + 1) {
+  //  alert('Không thể nhảy cóc trạng thái! Chỉ được chuyển đến trạng thái tiếp theo.');
+  //  return;
+  //}
 
   try {
     const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${id}/approve`, {
@@ -377,12 +378,13 @@ const handleComplete = async (id) => {
                 }}
               >
                                  <option value="all">Tất cả trạng thái</option>
-                 <option value="Chờ xác nhận">Chờ xác nhận</option>
-                 <option value="Đã xác nhận">Đã xác nhận</option>
+                 
+                 <option value="Đã duyệt">Đã xác nhận</option>
                  <option value="Đã tới">Đã tới</option>
                  <option value="Đang thực hiện">Đang thực hiện</option>
                  <option value="Đã tư vấn">Đã tư vấn</option>
                  <option value="Hoàn thành">Hoàn thành</option>
+                 <option value="Đã đánh giá">Đã đánh giá</option>
                  <option value="Không tới">Không tới</option>
               </select>
             </div>
@@ -452,8 +454,9 @@ const handleComplete = async (id) => {
      a.serviceStatus === 2 ? '#d1fae5' :       // xanh lá - đã tới
      a.serviceStatus === 3 ? '#fef3c7' :       // vàng - đang thực hiện
      a.serviceStatus === 4 ? '#d1fae5' :       // xanh lá - đã tư vấn
-     a.serviceStatus === 5 ? '#d1fae5' :       // xanh lá - hoàn thành
-     a.serviceStatus === 6 ? '#fee2e2' : '#fef3c7'  // đỏ - không tới
+     a.serviceStatus === 5 ? '#d1fae5' :
+     a.serviceStatus === 6 ? '#d1fae5' :       // xanh lá - hoàn thành
+     a.serviceStatus === 7 ? '#fee2e2' : '#fef3c7'  // đỏ - không tới
  }}>
    {getStatusText(a.serviceStatus)}
  </span>
@@ -536,27 +539,13 @@ const handleComplete = async (id) => {
        </button>
      )}
 
-     {a.serviceStatus === 5 && (
-       <button
-         className="lh-btn-detail"
-         style={{
-           fontSize: '0.85rem',
-           padding: '4px 8px',
-           backgroundColor: '#d1d5db',
-           color: '#6b7280',
-           cursor: 'not-allowed',
-         }}
-         disabled
-       >
-         Đã hoàn thành
-       </button>
-     )}
+     
 
      {/* Nút "Không tới" có thể được chọn từ bất kỳ trạng thái nào */}
-     {a.serviceStatus !== 6 && (
+     {a.serviceStatus === 2 && (
        <button
          className="lh-btn-detail"
-         onClick={() => updateStatus(a.id, 6)}
+         onClick={() => updateStatus(a.id, 7)}
          style={{
            fontSize: '0.85rem',
            padding: '4px 8px',
