@@ -548,9 +548,12 @@ function StaffQuanLyDatLich() {
                                      {statusOptions.map(opt => {
                      const currentCode = getStatusCode(form.status);
                      const optCode = getStatusCode(opt);
+                    // Trường hợp đặc biệt: Chờ kết quả không cho lên "Đã trả kết quả"
+                    const blockFromChoKetQuaToDaTra = currentCode === 5 && optCode === 6;
                      // Chỉ cho phép chọn trạng thái hiện tại hoặc trạng thái tiếp theo
                      // Ngoại lệ: "Không tới" có thể được chọn từ bất kỳ trạng thái nào
-                     const isDisabled = optCode < currentCode || (optCode > currentCode + 1 && optCode !== 8);
+                     const isDisabled = optCode < currentCode || (optCode > currentCode + 1 && optCode !== 8)
+                     ||blockFromChoKetQuaToDaTra;
                      return (
                        <option key={opt} value={opt} disabled={isDisabled}>
                          {opt}

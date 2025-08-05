@@ -164,23 +164,47 @@ function StaffTraKetQua() {
           // Lọc các đặt lịch có trạng thái 2 (đã xét nghiệm) hoặc đã có kết quả, nhưng chưa hoàn thành
           const filtered = data.obj.filter(item => {
             console.log('Item serviceStatus:', item.serviceStatus, 'Item:', item);
-            return (item.serviceStatus === 2 || (item.testResult && item.resultStatus)) && item.serviceStatus !== 7;
+            return item.serviceStatus === 5  || item.serviceStatus == 6 || item.serviceStatus == 7 ;
           });
           
                      console.log('Filtered appointments (status 2 or has result, not completed):', filtered.length);
           
-                                 const result = filtered.map(item => ({
-              id: item.id,
-              name: item.fullName,
-              test: item.testName,
-              result: item.testResult || 'Chưa có kết quả',
-              resultStatus: item.resultStatus || 'Pending',
-              serviceStatus: item.serviceStatus,
-              appointmentDate: item.appointmentDate,
-              phoneNumber: item.phoneNumber,
-              hasResult: !!(item.testResult && item.resultStatus),
-              canComplete: item.serviceStatus === 2 || (item.testResult && item.resultStatus)
-            }));
+                                 const result = filtered.map(item => {
+  let statusText = '';
+  let action = ''; // 'enter-result', 'complete', or ''
+
+  switch (item.serviceStatus) {
+    case 5:
+      statusText = 'Chờ kết quả';
+      action = 'enter-result';
+      break;
+    case 6:
+      statusText = 'Đã trả kết quả';
+      action = 'complete';
+      break;
+    case 7:
+      statusText = 'Đã hoàn thành';
+      action = '';
+      break;
+    default:
+      statusText = 'Không xác định';
+      action = '';
+  }
+
+  return {
+    id: item.id,
+    name: item.fullName,
+    test: item.testName,
+    result: item.result || 'Chưa có kết quả',
+    resultStatus: item.resultStatus || '',
+    serviceStatus: item.serviceStatus,
+    appointmentDate: item.appointmentDate,
+    phoneNumber: item.phoneNumber,
+    statusText,
+    action,
+  };
+});
+
           
           console.log('Final result:', result);
           setAppointments(result);
@@ -195,17 +219,19 @@ function StaffTraKetQua() {
   }, []);
 
   const openModal = (id) => {
-    const appointment = appointments.find(item => item.id === id);
-    setSelectedId(id);
-    setShowModal(true);
-    // Nếu đã có kết quả, chỉ cho phép hoàn thành
-    if (appointment?.hasResult) {
-      setResultStatus('Completed');
-    } else {
-      setResultStatus('');
-      setSuggestion('');
-    }
-  };
+  const appointment = appointments.find(item => item.id === id);
+  setSelectedId(id);
+  setShowModal(true);
+
+  // Dựa vào serviceStatus thay vì hasResult
+  if (appointment?.serviceStatus === 6) {
+    setResultStatus('Completed'); // Đã trả kết quả → chỉ hoàn thành
+  } else {
+    setResultStatus('');
+    setSuggestion('');
+  }
+};
+
 
   const closeModal = () => {
     setShowModal(false);
@@ -215,57 +241,71 @@ function StaffTraKetQua() {
   };
 
   const handleApprove = async () => {
-    const token = localStorage.getItem('token');
-    const appointment = appointments.find(item => item.id === selectedId);
-    
-    // Kiểm tra nếu chưa chọn kết quả
-    if (!appointment?.hasResult && !resultStatus) {
-      alert('Vui lòng chọn kết quả xét nghiệm');
-      return;
-    }
-    
-    try {
-      const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-result/${selectedId}/approve`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-          accept: '*/*'
-        },
-        body: JSON.stringify({
-          note: appointment?.hasResult ? 'Completed' : resultStatus,
-          suggestion: appointment?.hasResult ? 'Hoàn thành quy trình' : suggestion
-        })
-      });
-      if (res.ok) {
-        if (appointment?.hasResult) {
-          alert('Hoàn thành đặt lịch thành công');
-          setAppointments(prev =>
-            prev.map(item =>
-              item.id === selectedId
-                ? { ...item, serviceStatus: 7, canComplete: false } // Hoàn thành
-                : item
-            )
-          );
-        } else {
-          alert('Trả kết quả thành công');
-          setAppointments(prev =>
-            prev.map(item =>
-              item.id === selectedId
-                ? { ...item, result: resultStatus === 'Positive' ? 'Dương tính' : 'Âm tính', resultStatus, suggestion, serviceStatus: 6, hasResult: true }
-                : item
-            )
-          );
-        }
-        closeModal();
+  const token = localStorage.getItem('token');
+  const appointment = appointments.find(item => item.id === selectedId);
+
+  if (appointment?.serviceStatus === 5 && !resultStatus) {
+    alert('Vui lòng chọn kết quả xét nghiệm');
+    return;
+  }
+
+  try {
+    const body = appointment.serviceStatus === 6
+  ? { serviceStatus: 7 } // Chỉ gửi trạng thái mới để hoàn thành
+  : {
+      serviceStatus: 6,
+      result: resultStatus,
+      suggestion: suggestion
+    };
+
+const res = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-result/${selectedId}/approve`, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+    accept: '*/*'
+  },
+  body: JSON.stringify(body)
+});
+
+    if (res.ok) {
+      if (appointment.serviceStatus === 6) {
+        alert('Hoàn thành đặt lịch thành công');
+        setAppointments(prev =>
+          prev.map(item =>
+            item.id === selectedId
+              ? { ...item, serviceStatus: 7, action: '', statusText: 'Đã hoàn thành' }
+              : item
+          )
+        );
       } else {
-        alert(appointment?.hasResult ? 'Lỗi khi hoàn thành' : 'Lỗi khi trả kết quả');
+        alert('Trả kết quả thành công');
+        setAppointments(prev =>
+          prev.map(item =>
+            item.id === selectedId
+              ? {
+                  ...item,
+                  result: resultStatus === 'Positive' ? 'Dương tính' : 'Âm tính',
+                  resultStatus,
+                  suggestion,
+                  serviceStatus: 6,
+                  action: 'complete',
+                  statusText: 'Đã trả kết quả'
+                }
+              : item
+          )
+        );
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert(appointment?.hasResult ? 'Lỗi khi hoàn thành' : 'Lỗi khi trả kết quả');
+      closeModal();
+    } else {
+      alert(appointment.serviceStatus === 6 ? 'Lỗi khi hoàn thành' : 'Lỗi khi trả kết quả');
     }
-  };
+  } catch (error) {
+    console.error('Error:', error);
+    alert(appointment.serviceStatus === 6 ? 'Lỗi khi hoàn thành' : 'Lỗi khi trả kết quả');
+  }
+};
+
 
   const filteredData = appointments.filter(a => {
     const matchName = a.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -312,18 +352,19 @@ function StaffTraKetQua() {
                     <Td>{item.test}</Td>
                     <Td>{item.appointmentDate ? new Date(item.appointmentDate).toLocaleDateString('vi-VN') : 'N/A'}</Td>
                     <Td>{item.result}</Td>
-                                         <Td>{item.hasResult ? 'Đã trả kết quả' : 'Chờ kết quả'}</Td>
+                                         <Td>{item.statusText}</Td>
                                          <Td>
-                       {item.canComplete ? (
-                         item.hasResult ? (
-                           <ActionBtn onClick={() => openModal(item.id)}>Hoàn thành</ActionBtn>
-                         ) : (
-                           <ActionBtn onClick={() => openModal(item.id)}>Nhập kết quả</ActionBtn>
-                         )
-                       ) : (
-                         <span style={{ color: '#999' }}>Đã hoàn thành</span>
-                       )}
-                     </Td>
+  {item.action === 'enter-result' && (
+    <ActionBtn onClick={() => openModal(item.id)}>Nhập kết quả</ActionBtn>
+  )}
+  {item.action === 'complete' && (
+    <ActionBtn onClick={() => openModal(item.id)}>Hoàn thành</ActionBtn>
+  )}
+  {!item.action && (
+    <span style={{ color: '#999' }}>Đã hoàn thành</span>
+  )}
+</Td>
+
                   </Tr>
                 ))}
               </tbody>
@@ -352,26 +393,33 @@ function StaffTraKetQua() {
          <ModalOverlay>
            <ModalContent>
              <h3>
-               {appointments.find(item => item.id === selectedId)?.hasResult 
-                 ? 'Hoàn thành đặt lịch' 
-                 : 'Nhập kết quả xét nghiệm'
-               }
-             </h3>
-             {!appointments.find(item => item.id === selectedId)?.hasResult && (
-               <>
-                 <select value={resultStatus} onChange={e => setResultStatus(e.target.value)}>
-                   <option value="">-- Chọn kết quả --</option>
-                   <option value="Positive">Dương tính</option>
-                   <option value="Negative">Âm tính</option>
-                 </select>
-                 <textarea
-                   rows="4"
-                   placeholder="Lời khuyên..."
-                   value={suggestion}
-                   onChange={e => setSuggestion(e.target.value)}
-                 />
-               </>
-             )}
+  {appointments.find(item => item.id === selectedId)?.serviceStatus === 6 
+    ? 'Hoàn thành đặt lịch'
+    : 'Nhập kết quả xét nghiệm'
+  }
+</h3>
+
+{appointments.find(item => item.id === selectedId)?.serviceStatus === 5 && (
+  <>
+    <select value={resultStatus} onChange={e => setResultStatus(e.target.value)}>
+      <option value="">-- Chọn kết quả --</option>
+      <option value="Positive">Dương tính</option>
+      <option value="Negative">Âm tính</option>
+    </select>
+    <textarea
+      rows="4"
+      placeholder="Lời khuyên..."
+      value={suggestion}
+      onChange={e => setSuggestion(e.target.value)}
+    />
+  </>
+)}
+
+{appointments.find(item => item.id === selectedId)?.serviceStatus === 6 && (
+  <p style={{ color: '#666', fontSize: '14px' }}>
+    Đặt lịch này đã được trả kết quả. Bạn có muốn hoàn thành quy trình không?
+  </p>
+)}
              {appointments.find(item => item.id === selectedId)?.hasResult && (
                <p style={{ color: '#666', fontSize: '14px' }}>
                  Đặt lịch này đã được trả kết quả. Bạn có muốn hoàn thành quy trình không?
