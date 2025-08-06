@@ -141,13 +141,18 @@ const filterByStatus = (statusType) => {
     }
     
     try {
-      // Tạo thời gian mới từ ngày và giờ đã chọn
-      const newDateTime = new Date(`${newAppointmentDate}T${newAppointmentTime}`);
-      
+      // const newDateTime = new Date(`${newAppointmentDate}T${newAppointmentTime}`);
       const token = localStorage.getItem('token');
-      
-      // Gọi API để cập nhật lịch hẹn trên server
-      const response = await fetch(`https://api-gender2.purintech.id.vn/api/Appointment/test-result/${selectedItem.id}/approve`, {
+
+      // Chọn endpoint phù hợp
+      let endpoint = '';
+      if (selectedItem.loaiDichVu === 'Tư vấn') {
+        endpoint = `https://api-gender2.purintech.id.vn/api/Appointment/advice-result/${selectedItem.id}/approve`;
+      } else {
+        endpoint = `https://api-gender2.purintech.id.vn/api/Appointment/test-result/${selectedItem.id}/approve`;
+      }
+
+      const response = await fetch(endpoint, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -155,10 +160,10 @@ const filterByStatus = (statusType) => {
           'accept': '*/*'
         },
         body: JSON.stringify({
-          serviceStatus: 0, // Reset về trạng thái "Chờ xác nhận"
-          appointmentDate: newDateTime.toISOString(),
-          note: selectedItem.note || '',
-          suggestion: ''
+          serviceStatus: 0 // Reset về trạng thái "Chờ xác nhận"
+          // appointmentDate: newDateTime.toISOString(),
+          // note: selectedItem.note || '',
+          // suggestion: ''
         })
       });
 
