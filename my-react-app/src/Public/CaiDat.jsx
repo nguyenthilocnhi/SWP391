@@ -10,7 +10,7 @@ const CaiDat = () => {
     password: '',
     phone: '',
     notifications: false,
-    avatar: 'https://i.postimg.cc/vZVQXR5n/avatar-default.png'
+    avatar: 'https://i.postimg.cc/SKWH4csZ/Avatar-pnj.jpg'
   });
   const [statusMsg, setStatusMsg] = useState('');
 

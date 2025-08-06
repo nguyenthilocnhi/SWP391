@@ -1048,9 +1048,9 @@ const AdminPhanCong = () => {
   // Mock data for consultants
   const [consultants, setConsultants] = useState([
     {
-      id: 1045,
+      id: 4,
       name: 'Dr. Nguyễn Thị Huyền',
-      email: 'matchamint120404@gmail.com',
+      email: 'nguyenthihuyen@gmail.com',
       specialization: 'Sức khỏe sinh sản',
       experience: '8 năm',
       rating: 4.8,
@@ -1059,9 +1059,9 @@ const AdminPhanCong = () => {
       appointmentsCount: 12
     },
     {
-      id: 2,
+      id: 33,
       name: 'Dr. Phạm Văn Minh',
-      email: 'taetae30121995112@gmail.com',
+      email: 'phamvanminh@gmail.com',
       specialization: 'Tâm lý học',
       experience: '6 năm',
       rating: 4.6,
@@ -1070,9 +1070,9 @@ const AdminPhanCong = () => {
       appointmentsCount: 8
     },
     {
-      id: 1047,
+      id: 5,
       name: 'Dr. Trần Thị Lan',
-      email: 'user3@example.com',
+      email: 'tranthilan@gmail.com',
       specialization: 'Dinh dưỡng',
       experience: '5 năm',
       rating: 4.9,
@@ -1081,9 +1081,9 @@ const AdminPhanCong = () => {
       appointmentsCount: 15
     },
     {
-      id: 1048,
+      id: 6,
       name: 'Dr. Hoàng Văn Nam',
-      email: 'user4@example.com',
+      email: 'hoangvannam@gmail.com',
       specialization: 'Sức khỏe tổng quát',
       experience: '10 năm',
       rating: 4.7,
