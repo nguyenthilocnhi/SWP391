@@ -192,12 +192,17 @@ const LichSuDichVu = () => {
 
   // Hàm chuyển đổi trạng thái từ code sang text
   const convertStatus = (serviceStatus) => {
-    switch (serviceStatus) {     
-      case 5: return 'Hoàn tất';
-      case 6: return 'Đã đánh giá';
-      default: return 'Không xác định';
-    }
-  };
+  switch (serviceStatus) {
+    case 5: // Tư vấn hoàn tất
+    case 7: // Xét nghiệm hoàn tất
+      return 'Hoàn tất';
+    case 6: // Tư vấn đã đánh giá
+    case 9: // Xét nghiệm đã đánh giá
+      return 'Đã đánh giá';
+    default:
+      return 'Không xác định';
+  }
+};
 
   // Hàm lấy style cho trạng thái
   const getStatusStyle = (trangThai) => {
@@ -218,48 +223,65 @@ const LichSuDichVu = () => {
 
   useEffect(() => {
   const fetchLichSuDichVu = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.warn("Không tìm thấy token trong localStorage");
-        return;
-      }
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.warn("Không tìm thấy token trong localStorage");
+      return;
+    }
 
-      const res = await fetch("https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments", {
+    const [resAdvice, resTest] = await Promise.all([
+      fetch("https://api-gender2.purintech.id.vn/api/Appointment/advice-appointments", {
         method: "GET",
         headers: {
           Accept: "*/*",
           Authorization: `Bearer ${token}`,
         },
-      });
+      }),
+      fetch("https://api-gender2.purintech.id.vn/api/Appointment/test-appointments", {
+        method: "GET",
+        headers: {
+          Accept: "*/*",
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    ]);
 
-      if (!res.ok) {
-        throw new Error(`Lỗi mạng: ${res.status}`);
-      }
+    const [jsonAdvice, jsonTest] = await Promise.all([resAdvice.json(), resTest.json()]);
 
-      const json = await res.json();
-      if (json.code === 200) {
-        const mappedData = json.obj
-        .filter(item => item.serviceStatus === 5 || item.serviceStatus === 6)
-        .map(item => ({
-          id: item.id,
-          ten: item.consultationType,
-          ngayThucHien: new Date(item.appointmentDate).toLocaleDateString("vi-VN", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          }),
-          ghiChu: item.note,
-          trangThai: convertStatus(item.serviceStatus),
-        }));
-        setData(mappedData);
-      } else {
-        console.warn("API trả về lỗi:", json.message);
-      }
-    } catch (error) {
-      console.error("Lỗi khi tải dữ liệu:", error);
-    }
-  };
+    const adviceData = jsonAdvice.code === 200
+      ? jsonAdvice.obj
+          .filter(item => item.serviceStatus === 5 || item.serviceStatus === 6)
+          .map(item => ({
+            id: item.appointmentId,
+            ten: item.consultationType,
+            ngayThucHien: new Date(item.appointmentDate).toLocaleDateString("vi-VN"),
+            ghiChu:item.note, 
+            trangThai: convertStatus(item.serviceStatus),
+            loai: "Tư vấn", // Gắn nhãn loại
+          }))
+      : [];
+
+    const testData = jsonTest.code === 200
+      ? jsonTest.obj
+          .filter(item => item.serviceStatus === 7 || item.serviceStatus === 9)
+          .map(item => ({
+            id: item.appointmentId,
+            ten: item.testName,
+            ngayThucHien: new Date(item.appointmentDate).toLocaleDateString("vi-VN"),
+            ghiChu: item.result + ": " + item.note,
+            trangThai: convertStatus(item.serviceStatus),
+            loai: "Xét nghiệm", // Gắn nhãn loại
+          }))
+      : [];
+
+    setData([...adviceData, ...testData]);
+
+  } catch (error) {
+    console.error("Lỗi khi tải dữ liệu:", error);
+  }
+};
+
 
   fetchLichSuDichVu();
 
@@ -392,6 +414,7 @@ const openReviewModal = async (id, ten) => {
         <Table>
           <thead>
             <Tr>
+            <Th>Loại Dịch Vụ</Th>
               <Th>Dịch Vụ</Th>
               <Th>Ngày Thực Hiện</Th>
               <Th>Trạng Thái</Th>
@@ -407,6 +430,7 @@ const openReviewModal = async (id, ten) => {
             ) : (
               filteredData.map((item, idx) => (
                 <Tr key={idx}>
+                <Td>{item.loai}</Td> {/* thêm dòng này */}
                   <Td>{item.ten}</Td>
                   <Td>{item.ngayThucHien}</Td>
                   <Td style={getStatusStyle(item.trangThai)}>{item.trangThai}</Td>

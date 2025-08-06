@@ -89,8 +89,7 @@ const KetQuaXetNghiem = () => {
              <tr>
                <th>STT</th>
                <th>Loại xét nghiệm</th>
-               <th>Trạng thái</th>
-               <th>Kết luận</th>
+               <th>Kết quả</th>
                <th>Ngày xét nghiệm</th>
                <th>Ngày trả kết quả</th>
                <th>Lời khuyên</th>
@@ -109,7 +108,6 @@ const KetQuaXetNghiem = () => {
                    <td>{index + 1}</td>
                    <td>{item.testName}</td>
                    <td>{item.result || item.testResult || item.resultStatus || "Đã hoàn thành"}</td>
-                   <td>{item.conclusion || "-"}</td>
                    <td>{item.appointmentDate?.split("T")[0]}</td>
                    <td>{item.createdDate?.split("T")[0] || "-"}</td>
                    <td>{item.suggestion || item.note || "-"}</td>
