@@ -319,7 +319,7 @@ export default function HeaderCustomer() {
           </NotificationWrapper>
 
           <UserInfo ref={userRef} onClick={toggleUserMenu}>
-            <Avatar src="/src/assets/react.svg" alt="Avatar" />
+            <Avatar src="https://i.postimg.cc/SKWH4csZ/Avatar-pnj.jpg" alt="Avatar" />
             <div className="user-details">
               <span className="user-name">{userName}</span>
               <span className="user-role">Khách Hàng</span>
