@@ -329,13 +329,13 @@ function ThanhToan() {
         <div style={styles.info}>
           <div style={styles.row}><span style={styles.bold}>Dịch vụ:</span> {tenDichVu}</div>
           <div style={styles.row}><span style={styles.bold}>Giờ hẹn:</span> {gioHen}</div>
-          <div style={styles.row}><span style={styles.bold}>Giá gốc:</span> {(soTien * 1000).toLocaleString('vi-VN')} VND</div>
+          <div style={styles.row}><span style={styles.bold}>Giá gốc:</span> {(soTien * 1).toLocaleString('vi-VN')} VND</div>
           {voucher && (
             <div style={styles.row}>
               <span style={styles.bold}>Mã giảm:</span> {voucherMap[voucher.code]?.label || voucher.code}
             </div>
           )}
-          <div style={styles.row}><span style={styles.total}>Tổng cộng:</span> <span style={styles.final}>{(soTienCuoi * 1000).toLocaleString('vi-VN')} VND</span></div>
+          <div style={styles.row}><span style={styles.total}>Tổng cộng:</span> <span style={styles.final}>{(soTienCuoi * 1).toLocaleString('vi-VN')} VND</span></div>
         </div>
         
         {/* Phương thức thanh toán */}
