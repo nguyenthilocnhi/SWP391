@@ -299,7 +299,7 @@ function StaffDanhGia() {
         setLoading(true);
         setError(null);
         
-        const response = await fetch('https://api-gender2.purintech.id.vn/api/Feedback');
+        const response = await fetch('https://api-gender2.purintech.id.vn/api/Feedback/test');
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
